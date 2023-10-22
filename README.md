@@ -1,0 +1,3 @@
+- git clone this repo and switch to the correct branch
+- npm i to install the necessary modules
+- npx expo start to run the project
