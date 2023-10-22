@@ -7,20 +7,20 @@ This is meant to introduce you to basic React. You will consider ways to build o
 This is meant to be good practice and an opportunity to challenge yourself. You should be able to quickly remind yourself the basics of React and fullstack development with challenges in database structuring and server route creation.
 
 ### Setup:
-1.
+1)
 Clone the repo to your local setup to build off your starter code. You should be able to then remove the remote git connection and create your own repo to save your progress.
 ```
 git clone https://github.com/lablueprint/dev-onboarding-2023.git
 ```
 
-2.
+2)
 Once you have setup your new repo, install the necessary modules to run the application. Make sure that you are in the main repo directory in your terminal and type the following command:
 ```
 npm install
 ```
 This is essential to do every time you pull new changes made from other teammates as well.
 
-3.
+3)
 To run the application, make sure you are in your main repo directory and type the following command in your terminal:
 ```
 npx expo start
