@@ -1,11 +1,15 @@
+require('dotenv').config();
+
+// Module Imports
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
-require('dotenv').config();
-
 const uri = process.env.MONGODB_URI;
 const port = process.env.PORT;
+
+// Route Imports
+const testRouter = require('./routes/testRoute');
 
 // Connect to the MongoDB database
 async function connectToDatabase() {
@@ -23,6 +27,9 @@ connectToDatabase();
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// API Routes
+app.use('/test', testRouter);
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
