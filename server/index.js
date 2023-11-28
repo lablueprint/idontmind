@@ -8,8 +8,12 @@ const cors = require('cors');
 const uri = process.env.MONGODB_URI;
 const port = process.env.PORT;
 
+// console.log(uri);
+// console.log(port);
+
 // Route Imports
 const testRouter = require('./routes/testRoute');
+const postRouter = require('./routes/postRoute');
 
 // Connect to the MongoDB database
 async function connectToDatabase() {
@@ -30,6 +34,7 @@ app.use(express.json());
 
 // API Routes
 app.use('/test', testRouter);
+app.use('/posts', postRouter);
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
