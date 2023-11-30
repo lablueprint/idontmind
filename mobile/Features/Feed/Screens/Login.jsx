@@ -19,9 +19,9 @@ export default function Login({ navigation }) {
     console.log(username);
     try {
       const userData = {
-        name: username,
+        username,
       };
-      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/createUser`, userData);
+      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/users/createUser`, userData);
       if (res.data.error) {
         console.error(res.data.error);
       } else {
@@ -30,6 +30,7 @@ export default function Login({ navigation }) {
     } catch (err) {
       console.error(err.message);
     }
+    setUsername('');
   };
 
   return (

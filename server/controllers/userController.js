@@ -3,6 +3,7 @@ const User = require('../models/UserSchema');
 // Example of creating a document in the database
 const createUser = async (req, res) => {
   console.log('ran Create User');
+  console.log(req.body);
 
   const test = new User(req.body);
   try {
