@@ -1,5 +1,5 @@
 import {
-    StyleSheet, Text, View, Button, TextInput
+   ScrollView, Text, View, Button, TextInput, Keyboard, TouchableWithoutFeedback,
   } from 'react-native';
   import PropTypes from 'prop-types';
 import styles from "./JournalStyle"
@@ -7,17 +7,17 @@ import styles from "./JournalStyle"
   
   export default function Journal() {
     return (
-      <>
       <View style={styles.container}>
         <Text style={styles.prompt}>Create a journal post!</Text>
-      
-        <TextInput
-            placeholder = "Type your response"
-        />
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+          <View style={styles.textBox}>
+            <TextInput
+              multiline={true}
+              placeholder="Type your response"
+            />
+          </View>
+        </TouchableWithoutFeedback>
       </View>
-      
-      </>
-      
     );
   }
   
