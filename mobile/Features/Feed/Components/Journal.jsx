@@ -1,26 +1,23 @@
 import {
-    StyleSheet, Text, View, Button,
+    StyleSheet, Text, View, Button, TextInput
   } from 'react-native';
   import PropTypes from 'prop-types';
-  
-  const styles = StyleSheet.create({
-    container: {
-      width: 1000,
-      borderWidth: 1,
-      borderColor: '#ccc', 
-    },
-    prompt: {
-      fontSize: 32,
-      fontWeight: 'bold', 
-    },
-  });
+import styles from "./JournalStyle"
+
   
   export default function Journal() {
-  
     return (
+      <>
       <View style={styles.container}>
         <Text style={styles.prompt}>Create a journal post!</Text>
+      
+        <TextInput
+            placeholder = "Type your response"
+        />
       </View>
+      
+      </>
+      
     );
   }
   
