@@ -1,33 +1,29 @@
 import {
-  Button, Text, View,
+  Button, Text, View, TextInput,
 } from 'react-native';
 import PropTypes from 'prop-types';
 
-export default function Landing({ navigation }) {
+export default function Login({ navigation }) {
   const navigateToFeed = () => {
     navigation.navigate('Feed');
   };
 
-  const navigateToLogin = () => {
-    navigation.navigate('Login');
-  };
-
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Landing Page</Text>
+      <Text>Login Page</Text>
+      <TextInput placeholder="Enter username" />
+      <Button
+        title="Enter"
+      />
       <Button
         title="To Feed"
         onPress={navigateToFeed}
-      />
-      <Button
-        title="To Login"
-        onPress={navigateToLogin}
       />
     </View>
   );
 }
 
-Landing.propTypes = {
+Login.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func,
   }).isRequired,
