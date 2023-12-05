@@ -6,11 +6,11 @@ const initialState = {
 };
 
 const authSlice = createSlice({
-  name: 'username',
+  name: 'auth',
   initialState,
   reducers: {
     login: (state, action) => {
-      state.username = action.payload.username;
+      state.email = action.payload.email;
     },
   },
 });

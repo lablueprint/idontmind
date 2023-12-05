@@ -4,6 +4,7 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const passport = require('./passport');
 
 const uri = process.env.MONGODB_URI;
 const port = process.env.PORT;
@@ -32,6 +33,7 @@ connectToDatabase();
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(passport.initialize());
 
 // API Routes
 app.use('/test', testRouter);

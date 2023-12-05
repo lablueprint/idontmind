@@ -8,42 +8,50 @@ import { useDispatch } from 'react-redux';
 import { login } from '../../../redux/authSlice';
 
 export default function Login({ navigation }) {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const dispatch = useDispatch();
 
   const navigateToFeed = () => {
     navigation.navigate('Feed');
   };
 
-  const handleUsername = async () => {
-    console.log(username);
+  const handleEmail = async () => {
+    console.log(email);
     try {
       const userData = {
-        username,
+        email,
       };
       const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/users/createUser`, userData);
       if (res.data.error) {
         console.error(res.data.error);
       } else {
         dispatch(login(res.data));
+        setEmail('');
+        setPassword('');
+        navigation.navigate('Feed');
       }
     } catch (err) {
       console.error(err.message);
     }
-    setUsername('');
   };
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>Login Page</Text>
       <TextInput
-        placeholder="Username"
-        value={username}
-        onChangeText={setUsername}
+        placeholder="Email"
+        value={email}
+        onChangeText={setEmail}
+      />
+      <TextInput
+        placeholder="Password"
+        value={password}
+        onChangeText={setPassword}
       />
       <Button
         title="Enter"
-        onPress={handleUsername}
+        onPress={handleEmail}
       />
       <Button
         title="To Feed"

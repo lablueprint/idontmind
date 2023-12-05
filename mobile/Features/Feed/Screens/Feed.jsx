@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import {
   Button, Text, View, TextInput,
 } from 'react-native';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import Post from '../Components/Post';
@@ -9,24 +10,7 @@ import Post from '../Components/Post';
 export default function Feed({ navigation }) {
   const [postDraftBody, setPostDraftBody] = useState('');
   const [postDraftUser, setPostDraftUser] = useState('');
-
-  // const GIVEN_POSTS = [
-  //   {
-  //     _id: 1,
-  //     username: 'James',
-  //     body: 'Mobile development is fun!',
-  //   },
-  //   {
-  //     _id: 2,
-  //     username: 'Sidd',
-  //     body: 'I just finished watching another movie. It was interesting, but kind of boring :(',
-  //   },
-  //   {
-  //     _id: 3,
-  //     username: 'Jerry',
-  //     body: 'I am excited to see everyone become friends!',
-  //   },
-  // ];
+  const { email } = useSelector((state) => state.auth);
 
   const [postList, setPostList] = useState([]);
   const navigateToLanding = () => {
@@ -64,7 +48,6 @@ export default function Feed({ navigation }) {
         console.log(err);
       }
     };
-
     // const currentdate = new Date();
     // const datetime = `Last Sync: ${currentdate.getDate()}/${
     //   currentdate.getMonth() + 1}/${
@@ -106,6 +89,11 @@ export default function Feed({ navigation }) {
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>
+        Hi
+        {' '}
+        {email}
+      </Text>
       {postList.map(
         (p) => (
           <Post
