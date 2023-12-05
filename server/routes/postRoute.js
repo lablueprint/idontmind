@@ -7,4 +7,6 @@ postRouter.post('/createPost', postController.createPost);
 
 postRouter.get('/fetchPosts', postController.getAllPosts);
 
+postRouter.post('/createUsers', postController.createUsers);
+
 module.exports = postRouter;
