@@ -1,5 +1,5 @@
 import {
-  StyleSheet, Text, View, Button,
+  StyleSheet, Text, View,
 } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -24,12 +24,6 @@ const styles = StyleSheet.create({
 export default function Post({
   username, body, timestamp, navigation,
 }) {
-  console.log(username);
-
-  // const navigateToDetails = () => {
-  //   navigation.navigate('Details??');
-  // }
-
   const formatDate = (date) => {
     console.log(date);
     const testDate = new Date(date);
