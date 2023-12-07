@@ -10,7 +10,7 @@ import Post from '../Components/Post';
 export default function Feed({ navigation }) {
   const [postDraftBody, setPostDraftBody] = useState('');
   const [postDraftUser, setPostDraftUser] = useState('');
-  const { email } = useSelector((state) => state.auth);
+  const { email } = useSelector((state) => state.auth); // grabs the email from the backend
 
   const [postList, setPostList] = useState([]);
   const navigateToLanding = () => {

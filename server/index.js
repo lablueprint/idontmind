@@ -4,13 +4,19 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const jwtStrategy = require('passport-jwt').Strategy;
+const { ExtractJwt } = require('passport-jwt');
 const passport = require('./passport');
+const LoginUser = require('./models/UserSchema');
 
 const uri = process.env.MONGODB_URI;
 const port = process.env.PORT;
 
-// console.log(uri);
-// console.log(port);
+// JWT Authentication Options
+const jwtOptions = {
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  secretOrKey: 'secret',
+};
 
 // Route Imports
 const testRouter = require('./routes/testRoute');
@@ -43,6 +49,21 @@ app.use('/users', userRouter);
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
+
+// JWT Authentication for /protected route
+passport.use(
+  new jwtStrategy(jwtOptions, async (payload, done) => {
+    try {
+      const user = await LoginUser.findById(payload.id);
+      if (!user) {
+        return done(null, false);
+      }
+      done(null, user);
+    } catch (error) {
+      done(error, false);
+    }
+  }),
+);
 
 app.listen(port, () => {
   console.log(`Server started at port ${port}`);

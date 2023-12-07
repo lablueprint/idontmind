@@ -17,7 +17,6 @@ export default function Login({ navigation }) {
   };
 
   const handleEmail = async () => {
-    console.log(email);
     try {
       const userData = {
         email,

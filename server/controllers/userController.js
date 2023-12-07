@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const User = require('../models/UserSchema');
+const LoginUser = require('../models/UserSchema');
 const passport = require('../passport');
 
 // Example of creating a document in the database
@@ -7,7 +7,7 @@ const createUser = async (req, res) => {
   console.log('ran Create User');
   console.log(req.body);
 
-  const test = new User(req.body);
+  const test = new LoginUser(req.body);
   try {
     const data = await test.save(test);
     res.send(data);
@@ -16,10 +16,11 @@ const createUser = async (req, res) => {
   }
 };
 
+// Creates user with given email and password to send to backend
 const signUpUser = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    const user = new User({ email, password });
+    const user = new LoginUser({ email, password });
     await user.save();
     res.send('User created successfully');
   } catch (error) {
@@ -27,6 +28,7 @@ const signUpUser = async (req, res, next) => {
   }
 };
 
+// Signs in User and gives state id to differentiate user in backend
 const signInUser = async (req, res, next) => {
   passport.authenticate('local', { session: false }, (err, user, info) => {
     if (err || !user) {
@@ -51,19 +53,12 @@ const welcomeUser = (req, res) => {
   res.send(`Welcome, ${req.user.email}!`);
 };
 
-// const getAllPosts = async (req, res) => {
-//   try {
-//     const posts = await User.find({});
-//     res.send(posts);
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).send(err);
-//   }
-// };
+const authenticatePassport = passport.authenticate('jwt', { session: false });
 
 module.exports = {
   createUser,
   signInUser,
   signUpUser,
   welcomeUser,
+  authenticatePassport,
 };
