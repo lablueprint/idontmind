@@ -1,12 +1,16 @@
 const mongoose = require('mongoose');
 
 // Example of a model schema to validate and structure documents
-const postSchema = new mongoose.Schema({
+const journalSchema = new mongoose.Schema({
   username: {
     required: true,
     type: String,
   },
-  body: {
+  prompt: {
+    required: true,
+    type: String,
+  },
+  text: {
     required: true,
     type: String,
   },
@@ -16,4 +20,4 @@ const postSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('Post', postSchema);
+module.exports = mongoose.model('Journal', journalSchema);
