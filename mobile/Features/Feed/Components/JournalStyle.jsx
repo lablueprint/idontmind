@@ -1,12 +1,12 @@
 import {StyleSheet} from 'react-native';
 export default StyleSheet.create({
     container: {
-      alignItems: 'center',
       width: '90%',
-      height: '80%',
-      justifyContent: 'flex-start',
-      borderWidth: 1,
-      borderColor: '#ccc', 
+      height: '90%',
+      
+      flex: 1, 
+      alignItems: 'center', 
+      justifyContent: 'center'
 
     },
     prompt: {
@@ -22,4 +22,20 @@ export default StyleSheet.create({
       minWidth: '90%',
       height: 500,
     },
+
+    modalView: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      flex: 1,
+    },
+
+    modal: {
+      height: 100,
+      alignItems: 'center',
+      backgroundColor:'#FFFFFF',
+      borderColor: '#ccc',
+      borderWidth: 1,
+      width: 200,
+      padding: 10,
+    }
   });

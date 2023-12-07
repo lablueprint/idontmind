@@ -7,9 +7,7 @@ import Journal from '../Components/Journal';
 
 export default function JournalPage({ navigation }) {
     return(
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
           <Journal></Journal>
-        </View>
 
     )
 
