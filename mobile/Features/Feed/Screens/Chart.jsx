@@ -5,11 +5,11 @@ import {
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { BarChart, LineChart } from 'react-native-gifted-charts';
-import Post from '../Components/Post';
 
 export default function Chart({ navigation }) {
   const [newNum, setNewNum] = useState();
   const [newAmt, setNewAmt] = useState(1);
+  /* State Variable for Data Visualization */
   const [data, setData] = useState([
     {
       value: 10,
@@ -31,7 +31,7 @@ export default function Chart({ navigation }) {
       value: 14,
       timestamp: '2023-10-23T00:41:59.057Z',
     }]);
-
+  /* Bar Data for Data Visualization */
   const barData = [
     {
       value: 230,
@@ -69,25 +69,6 @@ export default function Chart({ navigation }) {
       topColor: '#B0EAEB',
     }];
 
-  // const GIVEN_POSTS = [
-  //   {
-  //     _id: 1,
-  //     username: 'James',
-  //     body: 'Mobile development is fun!',
-  //   },
-  //   {
-  //     _id: 2,
-  //     username: 'Sidd',
-  //     body: 'I just finished watching another movie. It was interesting, but kind of boring :(',
-  //   },
-  //   {
-  //     _id: 3,
-  //     username: 'Jerry',
-  //     body: 'I am excited to see everyone become friends!',
-  //   },
-  // ];
-
-  const [postList, setPostList] = useState([]);
   const navigateToLanding = () => {
     navigation.navigate('Landing');
   };
@@ -95,31 +76,22 @@ export default function Chart({ navigation }) {
   useEffect(() => {
     const foo = async () => {
       try {
-        const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/posts/fetchPosts`);
-        // const res2 = await axios.get('http://localhost:4000/posts/fetchPosts');
-        // // const squirreltime = new Date(res.data[5].timestamp);
+        /* Gets all users */
+        // const users = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/posts/getUsers`);
 
-        // const testdate = `Last Sync: ${squirreltime.getDate()}/${
-        //   squirreltime.getMonth() + 1}/${
-        //   squirreltime.getFullYear()} @ ${
-        //   squirreltime.getHours()}:${
-        //   squirreltime.getMinutes()}:${
-        //   squirreltime.getSeconds()}`;
-        setPostList(res.data);
-        // console.log(testdate);
+        // console.log(users);
       } catch (err) {
         console.log(err);
       }
     };
     foo();
   }, []);
-
+  /* Adds users to database */
   const addUser = (e) => {
     e.preventDefault();
     const foo = async () => {
       try {
         await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/posts/createUsers`, { amount: newAmt });
-        // console.log(res.data);
       } catch (err) {
         console.log(err);
       }
@@ -127,7 +99,7 @@ export default function Chart({ navigation }) {
     foo();
     setNewAmt(1);
   };
-
+  /* Adds the new number stored to line graph */
   const addNewNum = (e) => {
     e.preventDefault();
     const tempPostList = data;
@@ -138,28 +110,17 @@ export default function Chart({ navigation }) {
     setData(tempPostList);
     setNewNum('');
   };
-
+  /* Sets Value for new number you wish to add to line graph */
   const onChangeNewNum = (val) => {
     setNewNum(val);
   };
-
+  /* Sets Value for amount of users you wish to create */
   const onChangeNewAmt = (val) => {
     setNewAmt(val);
   };
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      {postList.map(
-        (p) => (
-          <Post
-            key={p._id}
-            username={p.username}
-            body={p.body}
-            timestamp={p.timestamp}
-            navigation={navigation}
-          />
-        ),
-      )}
       <Text> Demo Form </Text>
       <View>
         <BarChart

@@ -20,8 +20,9 @@ const createUsers = async (req, res) => {
     for (let i = 0; i < numUsers; i += 1) {
       const user = {
         timestamp: getRandomTimestamp(),
-        username: `user${i}`,
+        username: `user${i + 6}`,
         number: Math.floor(Math.random() * 200),
+        email: `gmail${i + 6}`,
       };
 
       const newUser = new User(user);
@@ -36,6 +37,17 @@ const createUsers = async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).send('Internal Server Error');
+  }
+};
+
+// Function to grab users from database
+const getUsers = async (req, res) => {
+  try {
+    const users = await User.find({});
+    res.send(users);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(err);
   }
 };
 
@@ -66,5 +78,5 @@ const getAllPosts = async (req, res) => {
 };
 
 module.exports = {
-  createPost, getAllPosts, createUsers,
+  createPost, getAllPosts, createUsers, getUsers,
 };
