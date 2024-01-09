@@ -14,7 +14,7 @@ export default function Landing({ navigation }) {
 
   const navigateToTrends = () => {
     navigation.navigate('Trends');
-  }
+  };
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
