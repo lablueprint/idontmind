@@ -12,6 +12,10 @@ export default function Landing({ navigation }) {
     navigation.navigate('Login');
   };
 
+  const navigateToTrends = () => {
+    navigation.navigate('Trends');
+  }
+
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>Landing Page</Text>
@@ -22,6 +26,10 @@ export default function Landing({ navigation }) {
       <Button
         title="To Login"
         onPress={navigateToLogin}
+      />
+      <Button
+        title="Trends"
+        onPress={navigateToTrends}
       />
     </View>
   );
