@@ -30,7 +30,7 @@ export default function Feed({ navigation }) {
 
   const [postList, setPostList] = useState([]);
   const navigateToLanding = () => {
-    navigation.navigate('Landing');
+    navigation.navigate('Content Library');
   };
 
   useEffect(() => {

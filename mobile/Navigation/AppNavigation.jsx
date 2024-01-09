@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Landing from '../Features/Landing/Screens/Landing';
 import Feed from '../Features/Feed/Screens/Feed';
 import Login from '../Features/Feed/Screens/Login';
+import ContentLibrary from '../Features/Feed/Screens/ContentLibrary';
 
 const Stack = createNativeStackNavigator();
 
@@ -13,7 +14,7 @@ export default function AppNavigation() {
         <Stack.Screen name="Landing" component={Landing} options={{ headerShown: false }} />
         <Stack.Screen name="Feed" component={Feed} options={{ headerShown: false }} />
         <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-        <Stack.Screen name="Content Library" component={Feed} options={{ headerShown: false }} />
+        <Stack.Screen name="Content Library" component={ContentLibrary} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
