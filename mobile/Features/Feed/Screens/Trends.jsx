@@ -1,5 +1,5 @@
-import useState from 'react';
-import { View } from 'react-native';
+import { useState } from 'react';
+import { View, Text } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 export default function Trends() {
@@ -12,7 +12,7 @@ export default function Trends() {
   ]);
 
   return (
-    <View>
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <DropDownPicker
         open={open}
         value={value}
@@ -23,7 +23,8 @@ export default function Trends() {
         style={{ width: '90%', alignSelf: 'center' }}
         dropDownContainerStyle={{ width: '90%', alignSelf: 'center' }}
       />
-
+      <Text>trends</Text>
+      <Text>your tendencies in this past week</Text>
     </View>
   );
 }
