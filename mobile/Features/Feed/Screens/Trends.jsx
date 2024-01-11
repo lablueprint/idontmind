@@ -5,7 +5,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 export default function Trends() {
   // dropdown states
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
+  const [value, setValue] = useState('week');
   const [items, setItems] = useState([
     { label: 'week', value: 'week' },
     { label: 'month', value: 'month' },
@@ -22,11 +22,11 @@ export default function Trends() {
   // map week number to displayed text
   const getWeekText = () => {
     if (weekDisplay === 0) {
-      return 'this week.';
+      return `this ${value}.`;
     } if (weekDisplay === -1) {
-      return 'last week';
+      return `last ${value}.`;
     }
-    return `${Math.abs(weekDisplay)} weeks ago`;
+    return `${Math.abs(weekDisplay)} ${value}s ago.`;
   };
 
   return (
@@ -42,7 +42,11 @@ export default function Trends() {
         dropDownContainerStyle={{ width: '90%', alignSelf: 'center' }}
       />
       <Text>trends</Text>
-      <Text>your tendencies in this past week</Text>
+      <Text>
+        your tendencies in this past
+        {' '}
+        {value}
+      </Text>
       <View style={{
         flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
       }}
