@@ -13,8 +13,10 @@ const createJournal = async (req, res) => {
 };
 
 const getAllJournals = async (req, res) => {
+  console.log("getAllJournals")
   try {
     const journals = await Journal.find({});
+    console.log("find")
     res.send(journals);
   } catch (err) {
     console.error(err);

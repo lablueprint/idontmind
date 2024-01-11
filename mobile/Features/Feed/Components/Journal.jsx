@@ -1,5 +1,5 @@
 import {
-  ScrollView, Text, View, Button, TextInput, Keyboard, TouchableWithoutFeedback, Modal, TouchableOpacity, KeyboardAvoidingView,
+  ScrollView, Text, View, Button, TextInput, Keyboard, TouchableWithoutFeedback, Modal, TouchableOpacity, Pressable,
 } from 'react-native';
 // import PropTypes from 'prop-types';
 import React, { useState } from 'react';
@@ -18,10 +18,10 @@ export default function Journal() {
   const username = 'Nicole';
 
   const addNewJournal = async (newUsername, newPrompt, newText) => {
+    handlePopUp();
     const currentdate = new Date();
     const timestamp = currentdate;
     const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/journals/createJournal`, { 'username': newUsername, 'prompt': newPrompt, 'text': newText, 'timestamp': timestamp });
-    handlePopUp();
     console.log(res);
   };
 
@@ -42,30 +42,27 @@ export default function Journal() {
             </ScrollView>
           </View>
           <Button title="Submit" onPress={handlePopUp} />
-          <Modal visible={confirmPopUp} transparent>
+          <Modal visible={confirmPopUp}>
             <TouchableOpacity onPressOut={handlePopUp} style={styles.modalView}>
-              <View style={styles.modal}>
-                <Text>Confirm Submission?</Text>
-                <View style={{ flexDirection: 'row' }}>
-                  <Button title="Yes" onPress={() => addNewJournal(username, prompt, text)} />
-                  <Button title="No" onPress={handlePopUp} />
-                </View>
+              <View>
+                <Text style={{fontSize: 20}}>confirm journal entry?</Text>
+                <Pressable style={styles.modalSelections} onPress={() => addNewJournal(username, prompt, text)}>
+                    <Text>
+                        yes
+                    </Text>
+                </Pressable>
+                <Pressable style={styles.modalSelections} onPress={handlePopUp}>
+                    <Text>
+                        no
+                    </Text>
+                </Pressable>
               </View>
             </TouchableOpacity>
           </Modal>
-
         </View>
 
       </View>
+      
     </TouchableWithoutFeedback>
   );
 }
-
-//   Post.propTypes = {
-//     username: PropTypes.string.isRequired,
-//     body: PropTypes.string.isRequired,
-//     timestamp: PropTypes.string.isRequired,
-//     navigation: PropTypes.shape({
-//       navigate: PropTypes.func,
-//     }).isRequired,
-//   };

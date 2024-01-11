@@ -32,9 +32,13 @@ export default StyleSheet.create({
     height: 100,
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
-    borderColor: '#ccc',
-    borderWidth: 1,
-    width: 200,
     padding: 10,
   },
+
+  modalSelections: {
+    borderRadius: 8,
+    padding: 10,
+    margin: 10,
+    backgroundColor: '#D9D9D9'
+  }
 });

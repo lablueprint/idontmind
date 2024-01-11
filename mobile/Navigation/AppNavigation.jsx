@@ -4,6 +4,7 @@ import Landing from '../Features/Landing/Screens/Landing';
 import Feed from '../Features/Feed/Screens/Feed';
 import Login from '../Features/Feed/Screens/Login';
 import JournalPage from '../Features/Feed/Screens/JournalPage';
+import JournalHistory from '../Features/Feed/Screens/JournalHistoryPage';
 
 const Stack = createNativeStackNavigator();
 
@@ -15,6 +16,7 @@ export default function AppNavigation() {
         <Stack.Screen name="Feed" component={Feed} options={{ headerShown: false }} />
         <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
         <Stack.Screen name="Journal" component={JournalPage} options={{ headerShown: false }} />
+        <Stack.Screen name="Journal History" component={JournalHistory} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
