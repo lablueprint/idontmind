@@ -59,10 +59,10 @@ export default function Feed({ navigation }) {
     foo();
   }, []);
 
-  const pushPosts = async (data) => {
+  const pushPosts = async (rdata) => {
     const foo = async () => {
       try {
-        await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/posts/createPost`, data);
+        await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/posts/createPost`, rdata);
         // console.log(res.data);
       } catch (err) {
         console.log(err);
