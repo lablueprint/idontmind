@@ -2,58 +2,42 @@ import { Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-function FirstScreen() {
-    return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Screen 1!</Text>
-        </View>
-    );
+import Landing from '../../Landing/Screens/Landing';
+import Feed from './Feed';
+import CheckIn from './CheckIn';
+import Login from './Login';
+
+function Misc() {
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>Empty Screen 1!</Text>
+    </View>
+  );
 }
 
-function SecondScreen() {
-    return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Screen 2!</Text>
-        </View>
-    );
-}
-
-function ThirdScreen() {
-    return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Screen 3!</Text>
-        </View>
-    );
-}
-
-function FourthScreen() {
-    return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Screen 4!</Text>
-        </View>
-    );
-}
-
-function FifthScreen() {
-    return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Screen 5!</Text>
-        </View>
-    );
+function Other() {
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>Other Empty Screen!</Text>
+    </View>
+  );
 }
 
 const Tab = createBottomTabNavigator();
 
 export default function NavigationBar() {
-    return (
-        <NavigationContainer independent={true}>
-            <Tab.Navigator>
-                <Tab.Screen name="Screen 1" component={FirstScreen} />
-                <Tab.Screen name="Screen 2" component={SecondScreen} />
-                <Tab.Screen name="Screen 3" component={ThirdScreen} />
-                <Tab.Screen name="Screen 4" component={FourthScreen} />
-                <Tab.Screen name="Screen 5" component={FifthScreen} />
-            </Tab.Navigator>
-        </NavigationContainer>
-    );
+  return (
+    <NavigationContainer independent>
+      <Tab.Navigator>
+
+        <Tab.Screen name="Landing" component={Landing} options={{ headerShown: false }} />
+        <Tab.Screen name="Feed" component={Feed} options={{ headerShown: false }} />
+        <Tab.Screen name="CheckIn" component={CheckIn} options={{ headerShown: false }} />
+        <Tab.Screen name="Login" component={Login} options={{ headerShown: false }} />
+
+        <Tab.Screen name="Misc" component={Misc} />
+        <Tab.Screen name="Other" component={Other} />
+      </Tab.Navigator>
+    </NavigationContainer>
+  );
 }
