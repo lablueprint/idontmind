@@ -33,6 +33,10 @@ export default function Feed({ navigation }) {
     navigation.navigate('Landing');
   };
 
+  const navigateToCheckIn = () => {
+    navigation.navigate('CheckIn');
+  };
+
   useEffect(() => {
     const foo = async () => {
       try {
@@ -140,6 +144,11 @@ export default function Feed({ navigation }) {
       <Button
         title="To Landing"
         onPress={navigateToLanding}
+      />
+       {/* added for testing */}
+      <Button
+        title="To CheckIn"
+        onPress={navigateToCheckIn}
       />
     </View>
   );
