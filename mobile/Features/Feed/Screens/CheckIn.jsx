@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import {
-  Text, View, TextInput, StyleSheet, Button
+  Text, View, TextInput, StyleSheet, Button,
 } from 'react-native';
-import { CheckBox } from 'react-native-elements';
+import { CheckBox } from '@rneui/themed';
 import Slider from '@react-native-community/slider';
 import DropDownPicker from 'react-native-dropdown-picker';
 
