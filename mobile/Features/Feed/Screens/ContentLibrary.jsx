@@ -132,7 +132,7 @@ export default function ContentLibrary({ navigation }) {
           style={[style.container, { flex: 3 }]}
         >
           <TouchableOpacity
-            onPress={() => navigateToLanding}
+            onPress={() => navigateToLanding()}
             style={[style.button, {
               flexBasis: 37, justifyContent: 'center', backgroundColor: 'lightgray', width: 110, flexDirection: 'row',
             }]}
