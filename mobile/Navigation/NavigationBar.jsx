@@ -2,12 +2,12 @@ import { Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import Landing from './Landing';
-import Feed from './Feed';
-import Login from './Login';
-import CheckIn from './CheckIn';
-import Chart from './Chart';
-import JournalPage from './JournalPage';
+import Landing from '../Features/Feed/Screens/Landing';
+import Feed from '../Features/Feed/Screens/Feed';
+import Login from '../Features/Feed/Screens/Login';
+import CheckIn from '../Features/Feed/Screens/CheckIn';
+import Chart from '../Features/Feed/Screens/Chart';
+import JournalPage from '../Features/Feed/Screens/JournalPage';
 
 function Misc() {
   return (

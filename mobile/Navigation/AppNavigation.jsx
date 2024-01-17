@@ -1,5 +1,5 @@
 import { NavigationContainer } from '@react-navigation/native';
-import NavigationBar from '../Features/Feed/Screens/NavigationBar';
+import NavigationBar from './NavigationBar';
 
 export default function AppNavigation() {
   return (
