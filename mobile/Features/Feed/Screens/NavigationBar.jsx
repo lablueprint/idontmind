@@ -7,43 +7,12 @@ import Feed from './Feed';
 import Login from './Login';
 import CheckIn from './CheckIn';
 import Chart from './Chart';
+import JournalPage from './JournalPage';
 
-function FirstScreen() {
+function Misc() {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Screen 1!</Text>
-    </View>
-  );
-}
-
-function SecondScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Screen 2!</Text>
-    </View>
-  );
-}
-
-function ThirdScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Screen 3!</Text>
-    </View>
-  );
-}
-
-function FourthScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Screen 4!</Text>
-    </View>
-  );
-}
-
-function FifthScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Screen 5!</Text>
+      <Text>Misc!</Text>
     </View>
   );
 }
@@ -59,6 +28,8 @@ export default function NavigationBar() {
         <Tab.Screen name="Login" component={Login} options={{ headerShown: false }} />
         <Tab.Screen name="CheckIn" component={CheckIn} options={{ headerShown: false }} />
         <Tab.Screen name="Chart" component={Chart} options={{ headerShown: false }} />
+        <Tab.Screen name="Journal" component={JournalPage} options={{ headerShown: false }} />
+        <Tab.Screen name="Misc" component={Misc} options={{ headerShown: false }} />
       </Tab.Navigator>
     </NavigationContainer>
   );

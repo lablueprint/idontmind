@@ -12,6 +12,10 @@ export default function Landing({ navigation }) {
     navigation.navigate('Login');
   };
 
+  const navigateToJournal = () => {
+    navigation.navigate('Journal');
+  };
+
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>Landing Page</Text>
@@ -22,6 +26,10 @@ export default function Landing({ navigation }) {
       <Button
         title="To Login"
         onPress={navigateToLogin}
+      />
+      <Button
+        title="To Journal"
+        onPress={navigateToJournal}
       />
     </View>
   );
