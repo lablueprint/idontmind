@@ -8,6 +8,7 @@ import Login from '../Features/Feed/Screens/Login';
 import CheckIn from '../Features/Feed/Screens/CheckIn';
 import Chart from '../Features/Feed/Screens/Chart';
 import JournalPage from '../Features/Feed/Screens/JournalPage';
+import ContentLibrary from '../Features/Feed/Screens/ContentLibrary';
 
 function Misc() {
   return (
@@ -30,6 +31,7 @@ export default function NavigationBar() {
         <Tab.Screen name="Chart" component={Chart} options={{ headerShown: false }} />
         <Tab.Screen name="Journal" component={JournalPage} options={{ headerShown: false }} />
         <Tab.Screen name="Misc" component={Misc} options={{ headerShown: false }} />
+        <Tab.Screen name="Content Library" component={ContentLibrary} options={{ headerShown: false }} />
       </Tab.Navigator>
     </NavigationContainer>
   );
