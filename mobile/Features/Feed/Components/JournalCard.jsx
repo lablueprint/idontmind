@@ -9,12 +9,15 @@ import {
   //props: username, prompt, text, timestamp
   export default function JournalCard(props) {
 
+    const handlePress = (text) => {
+        props.onPress(text);
+    }
     return (
-      <View style={styles.journalCard}>
-        <Text>{props.username}</Text>
-        <Text>{props.prompt}</Text>
-        <Text>{props.text}</Text>
-      </View>
+      <Pressable style={styles.journalCard} onPress={()=>handlePress(props.text)}>
+        <Text>username: {props.username}</Text>
+        <Text>date: {props.date}</Text>
+        <Text>prompt: {props.prompt}</Text>
+      </Pressable>
     );
   }
   

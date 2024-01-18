@@ -13,6 +13,14 @@ import {
     {'username':'alice','prompt': 'prompt #2', 'text': 'here is my second journal post yay!!'}]
  
     const [journals, setJournals] = useState([]); 
+    const [clickedDate, setClickedDate] = useState(new Date());
+    const [clickedJournal, setClickedJournal] = useState({});
+    const update = (date) => {
+        setClickedDate(date);
+        console.log(clickedDate);
+        //want to get the journal and navigate to journal page
+
+    }
 
     useEffect(() => {
         getPastJournals();
@@ -21,16 +29,15 @@ import {
       }, []);
 
     const getPastJournals = async () => {
-      console.log(`${process.env.EXPO_PUBLIC_SERVER_URL}/journals/getAllJournals`)
+      //console.log(`${process.env.EXPO_PUBLIC_SERVER_URL}/journals/getAllJournals`)
       const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/journals/getAllJournals`);
-    //   newJournals = [];
-    //   for(let i=0; i<res.data.length; i++){
-    //     newJournals.push(res.data[i]);
-    //   }
-    //   setJournals(newJournals);
-
       setJournals(res.data);
-      
+    };
+
+    const getJournal = async () => {
+        const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/journals/getAllJournals`);
+        setClickedDate(res.data);
+
     };
 
     // const getPastJournals = () => {
@@ -54,7 +61,7 @@ import {
         <View>
             <Text style={{fontSize: 18}}>recent entries</Text>
             {journals.map((x) => (
-                <JournalCard username={x.username} prompt={x.prompt} text={x.text}/>
+                <JournalCard username={x.username} date={x.timestamp} prompt={x.prompt} text={x.text} updateParent={update}/>
             ))}
         </View>
     );
