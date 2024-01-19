@@ -1,15 +1,15 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import Landing from '../Features/Feed/Screens/Landing';
-import Feed from '../Features/Feed/Screens/Feed';
+import Landing from '../Features/Other/Screens/Landing';
+import Feed from '../Features/Other/Screens/Feed';
 import Login from '../Features/Login/Screens/Login';
-import CheckIn from '../Features/Feed/Screens/CheckIn';
-import Trends from '../Features/Feed/Screens/Trends';
+import CheckIn from '../Features/Other/Screens/CheckIn';
+import Trends from '../Features/Other/Screens/Trends';
 import JournalPage from '../Features/Journal/Screens/JournalPage';
-import ContentLibrary from '../Features/Feed/Screens/ContentLibrary';
+import ContentLibrary from '../Features/Other/Screens/ContentLibrary';
 import PushNotifications from '../Features/Settings/Screens/PushNotifications';
-import FindHelp from '../Features/Feed/Screens/FindHelp';
+import FindHelp from '../Features/Other/Screens/FindHelp';
 
 const Tab = createBottomTabNavigator();
 
