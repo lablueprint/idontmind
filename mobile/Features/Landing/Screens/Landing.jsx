@@ -8,8 +8,8 @@ export default function Landing({ navigation }) {
     navigation.navigate('Feed');
   };
 
-  const navigateToLogin = () => {
-    navigation.navigate('Login');
+  const navigateToOptions = () => {
+    navigation.navigate('Options');
   };
 
   return (
@@ -20,8 +20,8 @@ export default function Landing({ navigation }) {
         onPress={navigateToFeed}
       />
       <Button
-        title="To Login"
-        onPress={navigateToLogin}
+        title="To Options"
+        onPress={navigateToOptions}
       />
     </View>
   );
