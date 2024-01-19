@@ -6,9 +6,10 @@ import Landing from '../Features/Feed/Screens/Landing';
 import Feed from '../Features/Feed/Screens/Feed';
 import Login from '../Features/Feed/Screens/Login';
 import CheckIn from '../Features/Feed/Screens/CheckIn';
-import Chart from '../Features/Feed/Screens/Chart';
+import Trends from '../Features/Feed/Screens/Trends';
 import JournalPage from '../Features/Feed/Screens/JournalPage';
 import ContentLibrary from '../Features/Feed/Screens/ContentLibrary';
+import PushNotifications from '../Features/Feed/Screens/PushNotifications';
 
 function Misc() {
   return (
@@ -28,10 +29,11 @@ export default function NavigationBar() {
         <Tab.Screen name="Feed" component={Feed} options={{ headerShown: false }} />
         <Tab.Screen name="Login" component={Login} options={{ headerShown: false }} />
         <Tab.Screen name="CheckIn" component={CheckIn} options={{ headerShown: false }} />
-        <Tab.Screen name="Chart" component={Chart} options={{ headerShown: false }} />
+        <Tab.Screen name="Trends" component={Trends} options={{ headerShown: false }} />
         <Tab.Screen name="Journal" component={JournalPage} options={{ headerShown: false }} />
-        <Tab.Screen name="Misc" component={Misc} options={{ headerShown: false }} />
+        <Tab.Screen name="Notifs" component={PushNotifications} options={{ headerShown: false }} />
         <Tab.Screen name="Content Library" component={ContentLibrary} options={{ headerShown: false }} />
+        <Tab.Screen name="Misc" component={Misc} options={{ headerShown: false }} />
       </Tab.Navigator>
     </NavigationContainer>
   );
