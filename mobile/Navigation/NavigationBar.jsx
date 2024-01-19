@@ -1,4 +1,3 @@
-import { Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
@@ -10,14 +9,7 @@ import Trends from '../Features/Feed/Screens/Trends';
 import JournalPage from '../Features/Feed/Screens/JournalPage';
 import ContentLibrary from '../Features/Feed/Screens/ContentLibrary';
 import PushNotifications from '../Features/Feed/Screens/PushNotifications';
-
-function Misc() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Misc!</Text>
-    </View>
-  );
-}
+import FindHelp from '../Features/Feed/Screens/FindHelp';
 
 const Tab = createBottomTabNavigator();
 
@@ -33,7 +25,7 @@ export default function NavigationBar() {
         <Tab.Screen name="Journal" component={JournalPage} options={{ headerShown: false }} />
         <Tab.Screen name="Notifs" component={PushNotifications} options={{ headerShown: false }} />
         <Tab.Screen name="Content Library" component={ContentLibrary} options={{ headerShown: false }} />
-        <Tab.Screen name="Misc" component={Misc} options={{ headerShown: false }} />
+        <Tab.Screen name="Find Help" component={FindHelp} options={{ headerShown: false }} />
       </Tab.Navigator>
     </NavigationContainer>
   );
