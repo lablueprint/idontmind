@@ -3,12 +3,12 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import Landing from '../Features/Feed/Screens/Landing';
 import Feed from '../Features/Feed/Screens/Feed';
-import Login from '../Features/Feed/Screens/Login';
+import Login from '../Features/Login/Screens/Login';
 import CheckIn from '../Features/Feed/Screens/CheckIn';
 import Trends from '../Features/Feed/Screens/Trends';
-import JournalPage from '../Features/Feed/Screens/JournalPage';
+import JournalPage from '../Features/Journal/Screens/JournalPage';
 import ContentLibrary from '../Features/Feed/Screens/ContentLibrary';
-import PushNotifications from '../Features/Feed/Screens/PushNotifications';
+import PushNotifications from '../Features/Settings/Screens/PushNotifications';
 import FindHelp from '../Features/Feed/Screens/FindHelp';
 
 const Tab = createBottomTabNavigator();
