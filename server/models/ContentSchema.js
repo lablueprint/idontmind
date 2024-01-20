@@ -1,10 +1,15 @@
 const mongoose = require('mongoose');
 
 const ContentSchema = new mongoose.Schema({
+  // id of the resource it maps to
+  resourceID: {
+    required: true,
+    type: String,
+  },
   contentType: {
     required: true,
     type: String,
-    enum: ['articles', 'q&a', 'prompts'],
+    enum: ['Article', 'QnA', 'Prompt'],
   },
   tags: {
     default: [],
