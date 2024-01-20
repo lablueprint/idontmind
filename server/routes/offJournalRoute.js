@@ -1,10 +1,14 @@
 const express = require('express');
 
-const journalRouter = express.Router();
-const journalController = require('../controllers/journalController');
+const offJournalRouter = express.Router();
+const offJournalController = require('../controllers/offJournalController');
 
-journalRouter.post('/createJournal', journalController.createJournal);
+offJournalRouter.post('/createJournal', offJournalController.createJournal);
 
-journalRouter.get('/getAllJournals', journalController.getAllJournals);
+offJournalRouter.get('/getAllJournals', offJournalController.getAllJournals);
 
-module.exports = journalRouter;
+offJournalRouter.post('/updateJournal', offJournalController.updateJournal);
+
+offJournalRouter.post('/deleteJournalById', offJournalController.deleteJournalById);
+
+module.exports = offJournalRouter;

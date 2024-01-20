@@ -16,6 +16,8 @@ const testRouter = require('./routes/testRoute');
 const journalRouter = require('./routes/journalRoute');
 const postRouter = require('./routes/postRoute');
 const contentRouter = require('./routes/contentRoute');
+const offJournalRouter = require('./routes/offJournalRoute');
+const offUserRouter = require('./routes/offUserRoute');
 
 // Connect to the MongoDB database
 async function connectToDatabase() {
@@ -39,6 +41,8 @@ app.use('/test', testRouter);
 app.use('/journals', journalRouter);
 app.use('/posts', postRouter);
 app.use('/content', contentRouter);
+app.use('/offUser', offUserRouter);
+app.use('/offJournal', offJournalRouter);
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
