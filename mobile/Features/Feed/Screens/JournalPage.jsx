@@ -61,7 +61,7 @@ export default function JournalPage({navigation}) {
               <Button title="Submit" onPress={handlePopUp} />
               <Modal visible={confirmPopUp}>
                 <TouchableOpacity onPressOut={handlePopUp} style={styles.modalView}>
-                  <View>
+                  <View style={styles.modalBox}>
                     <Text style={{fontSize: 20}}>confirm journal entry?</Text>
                     <Pressable style={styles.modalSelections} onPress={() => addNewJournal(username, prompt, text)}>
                         <Text>

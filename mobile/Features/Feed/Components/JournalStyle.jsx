@@ -39,6 +39,13 @@ export default StyleSheet.create({
     borderRadius: 8,
     padding: 10,
     margin: 10,
-    backgroundColor: '#D9D9D9'
-  }
+    backgroundColor: '#D9D9D9',
+    alignItems: 'center'
+  },
+
+  modalBox: {
+    padding: 20,
+    borderRadius: 8,
+    backgroundColor: '#C1C1C1'
+  },
 });
