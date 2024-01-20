@@ -1,5 +1,6 @@
 import { View, Text, TouchableOpacity, Button } from 'react-native';
 import { useState } from 'react';
+import FilterStyle from './FilterStyle';
 
 export default function Filter({ navigation }) {
   const tags = ['abuse', 'addiction', 'anger',
@@ -27,17 +28,17 @@ export default function Filter({ navigation }) {
   console.log(selectedTags);
 
   return (
-    <View>
+    <View style={FilterStyle.container}>
       {tags.map((tag) => (
-        <>
-          <Text>
+        <View style={FilterStyle.tagContainer}>
+          <Text style={FilterStyle.tagText}>
             {' '}
             {tag}
           </Text>
           <TouchableOpacity key={tag} onPress={() => toggleTag(tag)}>
-            <Text> x </Text>
+            <Text style={FilterStyle.tagText}> x </Text>
           </TouchableOpacity>
-        </>
+        </View>
       ))}
 
       <TouchableOpacity onPress={() => clearAll()}>

@@ -1,3 +1,4 @@
+// to be deleted after this round of PR's finish.
 import {
   Button, Text, View,
 } from 'react-native';
@@ -12,8 +13,8 @@ export default function Landing({ navigation }) {
     navigation.navigate('Login');
   };
 
-  const navigateToContent = () => {
-    navigation.navigate('Content');
+  const navigateToJournal = () => {
+    navigation.navigate('Journal');
   };
 
   return (
@@ -28,8 +29,8 @@ export default function Landing({ navigation }) {
         onPress={navigateToLogin}
       />
       <Button
-        title="To Content"
-        onPress={navigateToContent}
+        title="To Journal"
+        onPress={navigateToJournal}
       />
     </View>
   );

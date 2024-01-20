@@ -1,21 +1,15 @@
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Landing from '../Features/Landing/Screens/Landing';
-import Feed from '../Features/Feed/Screens/Feed';
-import Login from '../Features/Feed/Screens/Login';
-import ContentScreen from '../Features/Feed/Screens/ContentScreen';
-import Filter from '../Features/Feed/Screens/Filter';
+import { createStackNavigator } from '@react-navigation/stack';
+import NavigationBar from './NavigationBar';
+import Filter from '../Features/Other/Screens/Filter';
 
-const Stack = createNativeStackNavigator();
+const Stack = createStackNavigator();
 
 export default function AppNavigation() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Landing" component={Landing} options={{ headerShown: false }} />
-        <Stack.Screen name="Feed" component={Feed} options={{ headerShown: false }} />
-        <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-        <Stack.Screen name="Content" component={ContentScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="NavigationBar" component={NavigationBar} options={{ headerShown: false }} />
         <Stack.Screen name="Filter" component={Filter} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
