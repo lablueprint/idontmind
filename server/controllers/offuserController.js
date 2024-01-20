@@ -1,7 +1,7 @@
 const User = require('../models/OfficialUserSchema');
 
+// create a user
 const createUser = async (req, res) => {
-  console.log('ran Create User');
   const test = new User(req.body);
   try {
     const data = await test.save(test);
@@ -11,6 +11,7 @@ const createUser = async (req, res) => {
   }
 };
 
+// get all users in the database
 const getAllUsers = async (req, res) => {
   try {
     const users = await User.find({});

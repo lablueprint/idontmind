@@ -6,7 +6,7 @@ const PromptSchema = new mongoose.Schema({
     required: true,
     type: String,
   },
-  prompt: {
+  question: {
     required: true,
     type: String,
   },
