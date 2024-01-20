@@ -1,3 +1,4 @@
+// to be deleted after this round of PR's finish.
 import {
   Button, Text, View,
 } from 'react-native';
