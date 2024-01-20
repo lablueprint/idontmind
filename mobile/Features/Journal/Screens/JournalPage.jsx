@@ -1,16 +1,27 @@
 import {
   ScrollView, Text, View, Button, TextInput, Keyboard, TouchableWithoutFeedback, Modal, TouchableOpacity, Pressable,
 } from 'react-native';
-import { useRoute } from '@react-navigation/native';
+import { useRoute, useFocusEffect } from '@react-navigation/native';
 // import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import axios from 'axios';
 import styles from '../Components/JournalStyle';
 
 export default function JournalPage({navigation}) {
+  
   const route = useRoute()
   const body = route.params?.body
-  const isHistory = route.params?.isHistory
+  let isHistory = route.params?.isHistory
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     return() => {
+  //       isHistory = false
+  //       console.log("focus")
+  //       console.log(isHistory)
+  //     };
+  //   }, [])
+  // );
+
   let text_box;
   if (isHistory){
     text_box = <Text>{body}</Text>
@@ -38,9 +49,6 @@ export default function JournalPage({navigation}) {
     console.log(res);
   };
 
-  const navigateToLanding = () => {
-    navigation.navigate('Landing');
-  };
   const navigateToJournalHistory = () => {
     navigation.navigate('Journal History');
   };
@@ -84,10 +92,6 @@ export default function JournalPage({navigation}) {
           title="To Past Journal Entries"
           onPress={navigateToJournalHistory}
         />
-        <Button
-          title="To Landing"
-          onPress={navigateToLanding}
-        />
       </View>
       
     );
@@ -109,10 +113,6 @@ export default function JournalPage({navigation}) {
         <Button
           title="To Past Journal Entries"
           onPress={navigateToJournalHistory}
-        />
-        <Button
-          title="To Landing"
-          onPress={navigateToLanding}
         />
       </View>
       

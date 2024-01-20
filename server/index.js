@@ -14,6 +14,7 @@ const port = process.env.PORT;
 // Route Imports
 const testRouter = require('./routes/testRoute');
 const journalRouter = require('./routes/journalRoute');
+const postRouter = require('./routes/postRoute');
 
 // Connect to the MongoDB database
 async function connectToDatabase() {
@@ -35,6 +36,7 @@ app.use(express.json());
 // API Routes
 app.use('/test', testRouter);
 app.use('/journals', journalRouter);
+app.use('/posts', postRouter);
 
 app.get('/', (req, res) => {
   res.send('Hello World!');

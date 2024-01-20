@@ -1,5 +1,6 @@
-const Test = require('../models/testModel');
+const Test = require('../models/testSchema');
 
+// Example of creating a document in the database
 const createTest = async (req, res) => {
   const test = new Test(req.body);
   try {

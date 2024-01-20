@@ -1,7 +1,8 @@
 import {
-  ScrollView, Text, View, Button, TextInput, Keyboard, TouchableWithoutFeedback, Modal, TouchableOpacity, Pressable,
+  ScrollView, Text, View, Button, TextInput, Keyboard,
+  TouchableWithoutFeedback, Modal, TouchableOpacity, Pressable,
 } from 'react-native';
-// import PropTypes from 'prop-types';
+
 import React, { useState } from 'react';
 import axios from 'axios';
 import styles from './JournalStyle';
@@ -21,7 +22,9 @@ export default function Journal() {
     handlePopUp();
     const currentdate = new Date();
     const timestamp = currentdate;
-    const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/journals/createJournal`, { 'username': newUsername, 'prompt': newPrompt, 'text': newText, 'timestamp': timestamp });
+    const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/journals/createJournal`, {
+       'username': newUsername, 'prompt': newPrompt, 'text': newText, 'timestamp': timestamp 
+    });
     console.log(res);
   };
 
@@ -65,4 +68,8 @@ export default function Journal() {
       
     </TouchableWithoutFeedback>
   );
+<<<<<<< HEAD:mobile/Features/Feed/Components/Journal.jsx
 }
+=======
+}
+>>>>>>> dce96b1edf667825416cdd2451bcadcd384dcd9d:mobile/Features/Journal/Components/Journal.jsx
