@@ -11,7 +11,7 @@ import {
 export default function JournalHistoryPage({ navigation }) {
     const [journals, setJournals] = useState([]); //array of journal entries
     
-    useFocusEffect(() => {
+    useEffect(() => {
         getPastJournals();      
     }, []); //this is kinda confusing, i think i might have to reload the app for the journal i just submitted to show up in 'recent entries'
 
