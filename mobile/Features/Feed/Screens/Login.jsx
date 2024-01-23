@@ -20,6 +20,7 @@ export default function Login({ navigation }) {
     try {
       const userData = {
         email,
+        password,
       };
       const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/users/createUser`, userData);
       if (res.data.error) {
