@@ -1,50 +1,8 @@
 import {
-  Text, View, StyleSheet, TouchableOpacity, FlatList, Image,
+  Text, View, TouchableOpacity, FlatList, Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
-
-/* Style Sheet */
-const style = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    backgroundColor: 'white',
-  },
-  row: {
-    flexDirection: 'row',
-  },
-  button: {
-    backgroundColor: 'white',
-    borderRadius: 20,
-  },
-  horizontalCard: {
-    padding: 10, marginVertical: 8, marginRight: 16, backgroundColor: 'lightgrey', borderRadius: 10, width: 122, flex: 1,
-  },
-  star: {
-    width: 20, height: 20, opacity: 0.4,
-  },
-  horizontalCardInfo: {
-    flexDirection: 'row', flex: 1, width: 70,
-  },
-  horizontalText: {
-    color: 'black', alignSelf: 'flex-end', marginBottom: 20, flexWrap: 'wrap', flex: 1, fontSize: 16, marginLeft: 5,
-  },
-  verticalCard: {
-    padding: 10, marginVertical: 8, marginRight: 16, backgroundColor: 'lightgrey', borderRadius: 10, flex: 1, flexDirection: 'column',
-  },
-  shape: {
-    width: 95, height: 85, marginRight: 15,
-  },
-  verticalCardInfo: {
-    flex: 1, flexDirection: 'row-reverse',
-  },
-  verticalText: {
-    fontSize: 25,
-  },
-  whiteBox: {
-    backgroundColor: 'white', width: 100, height: 25, borderRadius: 8, marginBottom: 5, marginLeft: 5,
-  },
-});
+import style from './ContentLibraryStyle';
 
 /* Fake Data */
 const DATA = [
@@ -74,6 +32,33 @@ const DATA = [
   },
 ];
 
+const DATA2 = [
+  {
+    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+    title: 'subtopic header',
+  },
+  {
+    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+    title: 'subtopic header',
+  },
+  {
+    id: '58694a0f-3da1-471f-bd96-145571e29d72',
+    title: 'subtopic header',
+  },
+  {
+    id: 'bd7acbea-c1b1-42c2-aed5-3ad53abb28ba',
+    title: 'subtopic header',
+  },
+  {
+    id: '3ac68afc-c605-46d3-a4f8-fbd91aa97f63',
+    title: 'subtopic header',
+  },
+  {
+    id: '58694a0f-3da2-471f-bd96-145571e29d72',
+    title: 'subtopic header',
+  },
+];
+
 export default function ContentLibrary({ navigation }) {
   const navigateToLanding = () => {
     navigation.navigate('Landing');
@@ -83,12 +68,14 @@ export default function ContentLibrary({ navigation }) {
     <TouchableOpacity
       style={[style.horizontalCard]}
     >
-      <Image
-        style={[style.star,
-          { alignSelf: 'flex-end' },
-        ]}
-        source={require('../../../assets/star.png')}
-      />
+      <TouchableOpacity>
+        <Image
+          style={[style.star,
+            { alignSelf: 'flex-end' },
+          ]}
+          source={require('../../../assets/star.png')}
+        />
+      </TouchableOpacity>
       <View
         style={[style.horizontalCardInfo]}
       >
@@ -127,12 +114,12 @@ export default function ContentLibrary({ navigation }) {
       style={[style.container, { paddingLeft: 25 }]}
     >
       <View style={[style.row, { paddingTop: 75, flexBasis: 125, backgroundColor: 'white' }]}>
-        <Text style={{ fontSize: 30, flex: 3, paddingLeft: 5, }}>content</Text>
+        <Text style={{ fontSize: 30, flex: 3, paddingLeft: 5 }}>content</Text>
         <View
           style={[style.container, { flex: 3 }]}
         >
           <TouchableOpacity
-            onPress={() => navigateToLanding()}
+            onPress={() => navigateToLanding}
             style={[style.button, {
               flexBasis: 37, justifyContent: 'center', backgroundColor: 'lightgray', width: 110, flexDirection: 'row',
             }]}
@@ -179,7 +166,7 @@ export default function ContentLibrary({ navigation }) {
       />
       <View style={[style.row, { flex: 2, paddingTop: 25 }]}>
         <FlatList
-          data={DATA}
+          data={DATA2}
           renderItem={verticalRenderItem}
           showsVerticalScrollIndicator={false}
         />
