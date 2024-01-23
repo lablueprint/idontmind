@@ -8,10 +8,12 @@ import axios from 'axios';
 import styles from '../Components/JournalStyle';
 
 export default function JournalPage({navigation}) {
-  
   const route = useRoute()
   const body = route.params?.body
-  let isHistory = route.params?.isHistory
+  let isHistory = route.params?.isHistory //retrieve the value of isHistory from the previous navigation page (JournalHistoryPage)
+
+  // an effort to make the journal reset to today's journal after switching between screens (failed):
+
   // useFocusEffect(
   //   React.useCallback(() => {
   //     return() => {
@@ -22,37 +24,29 @@ export default function JournalPage({navigation}) {
   //   }, [])
   // );
 
-  let text_box;
-  if (isHistory){
-    text_box = <Text>{body}</Text>
-  }
-  else{
-    console.log(body)
-    text_box = <TextInput multiline placeholder="Type your response" onChangeText={setText} value={text}/>
-  }
-
-  const [text, setText] = useState('');
-  const [confirmPopUp, setConfirmPopUp] = useState(false);
+  const [text, setText] = useState(''); //state for the text the user types in
+  const [confirmPopUp, setConfirmPopUp] = useState(false); //state that tells if the confirm popup is showing or not
 
   const handlePopUp = () => {
     setConfirmPopUp(!confirmPopUp);
-  };
+  }; //toggles confirmPopUp
 
   const prompt = 'Create a journal post!';
-  const username = 'Nicole';
+  const username = 'Nicole';  //set prompt and username to constants at the moment, but should be able to get that info dynamically
 
   const addNewJournal = async (newUsername, newPrompt, newText) => {
     handlePopUp();
     const currentdate = new Date();
     const timestamp = currentdate;
     const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/journals/createJournal`, { 'username': newUsername, 'prompt': newPrompt, 'text': newText, 'timestamp': timestamp });
-    console.log(res);
-  };
+    //console.log(res);
+  }; //function that creates a new journal entry with username, prompt, text, and timestamp and sends it to the MongoDB
 
   const navigateToJournalHistory = () => {
     navigation.navigate('Journal History');
-  };
+  }; //navigate to Journal History page
 
+  //render it in two different ways depending on if isHistory(if false, editable text box, if true, uneditable text box with previously written text)
   if(!isHistory){
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
@@ -118,6 +112,5 @@ export default function JournalPage({navigation}) {
       
     );
   }
-
   
 }

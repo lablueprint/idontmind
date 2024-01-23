@@ -9,25 +9,25 @@ import {
   
 
 export default function JournalHistoryPage({ navigation }) {
-    const placeholder = [{'username':'nicole','prompt': 'prompt #1', 'text': 'here is my journal post yay!'}, 
-    {'username':'alice','prompt': 'prompt #2', 'text': 'here is my second journal post yay!!'}]
-
-    const [journals, setJournals] = useState([]); 
-    useEffect(() => {
+    const [journals, setJournals] = useState([]); //array of journal entries
+    
+    useFocusEffect(() => {
         getPastJournals();      
-      }, []);
+    }, []); //this is kinda confusing, i think i might have to reload the app for the journal i just submitted to show up in 'recent entries'
 
     const getPastJournals = async () => {
-      //console.log(`${process.env.EXPO_PUBLIC_SERVER_URL}/journals/getAllJournals`)
       const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/journals/getAllJournals`);
       setJournals(res.data);
-    };
+    }; //fetch all the journal entries and set the journals array accordingly
+
+
     const navigateToPastJournal = (text) => {
         navigation.navigate('Journal',{body: text, isHistory: true});
-    };
+    }; //navigate to the past journal entry, isHistory is set to true (uneditable text box with the corresponding prompt)
+
     const navigateToJournal = () => {
         navigation.navigate('Journal',{isHistory: false});
-    };
+    }; //navigate to today's journal prompt, isHistory is set to true (editable text box with today's prompt)
 
     return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
