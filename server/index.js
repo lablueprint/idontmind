@@ -7,7 +7,7 @@ const cors = require('cors');
 const jwtStrategy = require('passport-jwt').Strategy;
 const { ExtractJwt } = require('passport-jwt');
 const passport = require('./passport');
-const LoginUser = require('./models/UserSchema');
+const User = require('./models/UserSchema');
 
 const uri = process.env.MONGODB_URI;
 const port = process.env.PORT;
@@ -54,7 +54,7 @@ app.get('/', (req, res) => {
 passport.use(
   new jwtStrategy(jwtOptions, async (payload, done) => {
     try {
-      const user = await LoginUser.findById(payload.id);
+      const user = await User.findById(payload.id);
       if (!user) {
         return done(null, false);
       }

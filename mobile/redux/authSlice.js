@@ -2,7 +2,7 @@
 const { createSlice } = require('@reduxjs/toolkit');
 
 const initialState = {
-  username: null,
+  email: null,
 };
 
 const authSlice = createSlice({

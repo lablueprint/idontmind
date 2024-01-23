@@ -48,25 +48,19 @@ export default function Feed({ navigation }) {
         console.log(err);
       }
     };
-    // const currentdate = new Date();
-    // const datetime = `Last Sync: ${currentdate.getDate()}/${
-    //   currentdate.getMonth() + 1}/${
-    //   currentdate.getFullYear()} @ ${
-    //   currentdate.getHours()}:${
-    //   currentdate.getMinutes()}:${
-    //   currentdate.getSeconds()}`;
-    // console.log(currentdate);
-    // console.log(datetime);
+    
     foo();
   };
 
   const addPost = (e) => {
     e.preventDefault();
+    const timestamp = new Date();
     const tempPostList = postList;
     tempPostList.push({
       _id: postList.length + 1,
       username: postDraftUser,
       body: postDraftBody,
+      timestamp
     });
     setPostList(tempPostList);
     setPostDraftBody('');
@@ -74,6 +68,7 @@ export default function Feed({ navigation }) {
     pushPosts({
       username: postDraftUser,
       body: postDraftBody,
+      timestamp
     });
   };
 

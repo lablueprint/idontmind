@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const LoginUser = require('../models/UserSchema');
+const User = require('../models/UserSchema');
 const passport = require('../passport');
 
 // Example of creating a document in the database
@@ -7,7 +7,7 @@ const createUser = async (req, res) => {
   console.log('ran Create User');
   console.log(req.body);
 
-  const test = new LoginUser(req.body);
+  const test = new User(req.body);
   try {
     const data = await test.save(test);
     res.send(data);
@@ -20,9 +20,9 @@ const createUser = async (req, res) => {
 const signUpUser = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    const user = new LoginUser({ email, password });
+    const user = new User({ email, password });
     await user.save();
-    res.send('User created successfully');
+    res.json(user);
   } catch (error) {
     next(error);
   }
