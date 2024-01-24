@@ -6,23 +6,23 @@ const officialJournalSchema = new mongoose.Schema({
     type: String,
   },
   prompt: {
-    required: true,
+    default: '',
     type: String,
   },
   text: {
-    required: true,
+    default: '',
     type: String,
   },
   wordCount: {
-    required: true,
+    default: 0,
     type: Number,
   },
   creationTime: {
-    required: true,
+    default: new Date(),
     type: Date,
   },
   modifiedTime: {
-    required: true,
+    default: new Date(),
     type: Date,
   },
   guided: {

@@ -1,4 +1,4 @@
-const Journal = require('../models/JournalSchema');
+const Journal = require('../models/OfficialJournalSchema');
 
 const createJournal = async (req, res) => {
   const test = new Journal(req.body);
@@ -10,6 +10,7 @@ const createJournal = async (req, res) => {
   }
 };
 
+// get all journals (prolly only use for testing ?)
 const getAllJournals = async (req, res) => {
   try {
     const journals = await Journal.find({});
@@ -20,11 +21,11 @@ const getAllJournals = async (req, res) => {
   }
 };
 
-// query journal by id
-const getJournalById = async (req, res) => {
-  const { id } = req.body;
+// get journal by username (user who wrote it)
+const getJournalByUsername = async (req, res) => {
+  const { username } = req.body;
   try {
-    const journal = await Journal.findById(id);
+    const journal = await Journal.find({ username });
     if (!journal) {
       res.status(404).send({ message: 'Journal not found' });
     }
@@ -35,7 +36,7 @@ const getJournalById = async (req, res) => {
   }
 };
 
-// update journal entry
+// update journal entry, provide journal id + an object containing updated fields
 const updateJournal = async (req, res) => {
   const { id, updatedFields } = req.body;
   try {
@@ -45,7 +46,7 @@ const updateJournal = async (req, res) => {
       res.status(404).send({ message: 'Journal not found' });
     }
     // update the specified fields
-    Object.assign(existingJournal, updatedFields);
+    Object.assign(existingJournal, { modifiedTime: new Date(), ...updatedFields });
     // save the updated journal
     const updatedJournal = await existingJournal.save();
     res.send(updatedJournal);
@@ -71,5 +72,5 @@ const deleteJournalById = async (req, res) => {
 };
 
 module.exports = {
-  createJournal, getAllJournals, getJournalById, updateJournal, deleteJournalById,
+  createJournal, getAllJournals, getJournalByUsername, updateJournal, deleteJournalById,
 };
