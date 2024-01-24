@@ -52,11 +52,15 @@ const officialUserSchema = new mongoose.Schema({
     type: String,
   },
   banTags: {
-    default: undefined,
+    default: [],
     type: [String],
   },
   journalEntries: {
-    default: undefined,
+    default: [],
+    type: [String],
+  },
+  favorites: {
+    default: [],
     type: [String],
   },
   checkInPreferences: {
@@ -66,10 +70,6 @@ const officialUserSchema = new mongoose.Schema({
   notificationPreferences: {
     default: undefined,
     type: notificationPreferenceSchema,
-  },
-  favorites: {
-    default: [],
-    type: [String],
   },
 });
 
