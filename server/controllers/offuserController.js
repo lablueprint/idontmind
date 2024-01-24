@@ -12,7 +12,7 @@ const getAllUsers = async (req, res) => {
 };
 
 // get a user by id
-const getUserByID = async (req, res) => {
+const getUserById = async (req, res) => {
   const { id } = req.body;
   try {
     const user = await User.findById(id);
@@ -58,7 +58,7 @@ const updateUser = async (req, res) => {
 };
 
 // delete user by id
-const deleteUserByID = async (req, res) => {
+const deleteUserById = async (req, res) => {
   const { id } = req.body;
   try {
     const deletedUser = await User.findByIdAndRemove(id);
@@ -73,5 +73,5 @@ const deleteUserByID = async (req, res) => {
 };
 
 module.exports = {
-  createUser, getAllUsers, getUserByID, updateUser, deleteUserByID,
+  createUser, getAllUsers, getUserById, updateUser, deleteUserById,
 };

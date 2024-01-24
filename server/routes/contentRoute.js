@@ -8,6 +8,9 @@ contentRouter.get('/getAllArticles', contentController.getAllArticles);
 contentRouter.get('/getAllPrompts', contentController.getAllPrompts);
 contentRouter.get('/getAllQnas', contentController.getAllQnAs);
 contentRouter.post('/filterContentByTags', contentController.filterContentByTags);
+contentRouter.post('/searchArticleByTitle', contentController.searchArticleByTitle);
+contentRouter.post('/searchArticleByAuthor', contentController.searchArticleByAuthor);
+contentRouter.post('/searchArticleByDateRange', contentController.searchArticleByDateRange);
 contentRouter.post('/searchPromptByQuestion', contentController.searchPromptByQuestion);
 contentRouter.post('/searchQnA', contentController.searchQnA);
 

@@ -1,4 +1,5 @@
 // these are all read functions!
+
 const Article = require('../models/ArticleSchema');
 const Prompt = require('../models/PromptSchema');
 const QnA = require('../models/QnASchema');
@@ -39,7 +40,11 @@ const getAllQnAs = async (req, res) => {
 // get ALL content (all articles, qnas, prompts)
 const getAllContent = async (req, res) => {
   try {
-    const content = getAllArticles().concat(getAllPrompts(), getAllQnAs());
+    const content = [].concat(
+      await Article.find({}),
+      await Prompt.find({}),
+      await QnA.find({}),
+    );
     res.send(content);
   } catch (err) {
     console.error(err);
@@ -80,26 +85,41 @@ const filterContentByTags = async (req, res) => {
   }
 };
 
-// search articles by title, date, or author
-const searchArticle = async (req, res) => {
-  // type is either title/date/author, content is stuff you're searching for
-  const { type, content } = req.body;
+// search articles by title
+const searchArticleByTitle = async (req, res) => {
+  const { title } = req.body;
   // escape special characters when doing regex matching
-  const escapedContent = content.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const escaped = title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   try {
-    let articles = [];
-    switch (type) {
-      case 'date':
-        articles = await Article.find({ publishDate: escapedContent });
-        break;
-      case 'author':
-        // regex matching, case insensitive
-        articles = await Article.find({ author: { $regex: escapedContent, $options: 'i' } });
-        break;
-      default: // case 'title':
-        articles = await Prompt.find({ question: { $regex: escapedContent, $options: 'i' } });
-        break;
-    }
+    const articles = await Article.find({ question: { $regex: escaped, $options: 'i' } });
+    res.send(articles);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(err);
+  }
+};
+
+// search articles by author
+const searchArticleByAuthor = async (req, res) => {
+  const { author } = req.body;
+  // escape special characters when doing regex matching
+  const escaped = author.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  try {
+    const articles = await Article.find({ author: { $regex: escaped, $options: 'i' } });
+    res.send(articles);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(err);
+  }
+};
+
+// search articles by date range
+const searchArticleByDateRange = async (req, res) => {
+  const { startDate, endDate } = req.body;
+  try {
+    const articles = await Article.find({
+      date: { $gte: startDate, $lte: endDate },
+    });
     res.send(articles);
   } catch (err) {
     console.error(err);
@@ -131,16 +151,16 @@ const searchQnA = async (req, res) => {
     let qnas = [];
     switch (type) {
       case 'answered':
-        qnas = await Prompt.find({ answered: escapedContent });
+        qnas = await QnA.find({ answered: escapedContent });
         break;
       case 'whoAnswered':
-        qnas = await Article.find({ whoAnswered: { $regex: escapedContent, $options: 'i' } });
+        qnas = await QnA.find({ whoAnswered: { $regex: escapedContent, $options: 'i' } });
         break;
       case 'answer':
-        qnas = await Article.find({ answer: { $regex: escapedContent, $options: 'i' } });
+        qnas = await QnA.find({ answer: { $regex: escapedContent, $options: 'i' } });
         break;
       default: // case 'question':
-        qnas = await Article.find({ question: { $regex: escapedContent, $options: 'i' } });
+        qnas = await QnA.find({ question: { $regex: escapedContent, $options: 'i' } });
         break;
     }
     res.send(qnas);
@@ -156,7 +176,9 @@ module.exports = {
   getAllPrompts,
   getAllQnAs,
   filterContentByTags,
-  searchArticle,
+  searchArticleByTitle,
+  searchArticleByAuthor,
+  searchArticleByDateRange,
   searchPromptByQuestion,
   searchQnA,
 };

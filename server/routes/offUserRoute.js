@@ -5,12 +5,12 @@ const offUserController = require('../controllers/offUserController');
 
 offUserRouter.post('/createUser', offUserController.createUser);
 
-offUserRouter.get('/getUserByID', offUserController.getUserByID);
+offUserRouter.get('/getUserById', offUserController.getUserById);
 
 offUserRouter.get('/getAllUsers', offUserController.getAllUsers);
 
 offUserRouter.post('/updateUser', offUserController.updateUser);
 
-offUserRouter.post('/deleteUserByID', offUserController.deleteUserByID);
+offUserRouter.post('/deleteUserById', offUserController.deleteUserById);
 
 module.exports = offUserRouter;

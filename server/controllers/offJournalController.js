@@ -20,6 +20,21 @@ const getAllJournals = async (req, res) => {
   }
 };
 
+// query journal by id
+const getJournalById = async (req, res) => {
+  const { id } = req.body;
+  try {
+    const journal = await Journal.findById(id);
+    if (!journal) {
+      res.status(404).send({ message: 'Journal not found' });
+    }
+    res.send(journal);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(err);
+  }
+};
+
 // update journal entry
 const updateJournal = async (req, res) => {
   const { id, updatedFields } = req.body;
@@ -56,5 +71,5 @@ const deleteJournalById = async (req, res) => {
 };
 
 module.exports = {
-  createJournal, getAllJournals, updateJournal, deleteJournalById,
+  createJournal, getAllJournals, getJournalById, updateJournal, deleteJournalById,
 };
