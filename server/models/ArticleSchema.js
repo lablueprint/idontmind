@@ -1,11 +1,6 @@
 const mongoose = require('mongoose');
 
 const ArticleSchema = new mongoose.Schema({
-  // id of the content object it maps to
-  metadataID: {
-    required: true,
-    type: String,
-  },
   title: {
     required: true,
     type: String,
@@ -19,6 +14,10 @@ const ArticleSchema = new mongoose.Schema({
     type: String,
   },
   bodyExcerpts: {
+    default: [],
+    type: [String],
+  },
+  tags: {
     default: [],
     type: [String],
   },

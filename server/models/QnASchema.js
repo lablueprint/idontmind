@@ -1,11 +1,6 @@
 const mongoose = require('mongoose');
 
 const QnASchema = new mongoose.Schema({
-  // id of the content object it maps to
-  metadataID: {
-    required: true,
-    type: String,
-  },
   answered: {
     default: false,
     type: Boolean,
@@ -21,6 +16,10 @@ const QnASchema = new mongoose.Schema({
   whoAnswered: {
     default: '',
     type: String,
+  },
+  tags: {
+    default: [],
+    type: [String],
   },
 });
 
