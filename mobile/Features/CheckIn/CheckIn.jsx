@@ -22,7 +22,7 @@ function CheckIn({ navigation }) {
       <Text>welcome back, diya</Text>
       <Image
           source={require('../../assets/shape.png')}
-        />
+      />
       <View>
         <Pressable onPress={beginCheckIn}>
           <Text>BEGIN CHECK-IN</Text>
