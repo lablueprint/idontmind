@@ -1,10 +1,26 @@
 import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import NavigationBar from './NavigationBar';
+// import Filter from '../Features/Other/Screens/Filter';
+import CheckIn from '../Features/CheckIn/CheckIn';
+import Sleep from '../Features/CheckIn/Sleep'
 
+const Misc = () => {
+  return (<View>
+    Test
+  </View>)
+}
+
+const Stack = createStackNavigator();
 export default function AppNavigation() {
   return (
     <NavigationContainer>
-      <NavigationBar />
+      <Stack.Navigator>
+        <Stack.Screen name="NavigationBar" component={NavigationBar} options={{ headerShown: false }} />
+        <Stack.Screen name="CheckIn" component={CheckIn} options={{ headerShown: false }} />
+        <Stack.Screen name="Sleep" component={Sleep} options={{ headerShown: false }} />
+        {/* <Stack.Screen name="Filter" component={Filter} options={{ headerShown: false }} /> */}
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }
