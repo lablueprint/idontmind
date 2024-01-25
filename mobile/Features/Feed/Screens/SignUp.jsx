@@ -18,29 +18,32 @@ import {
     };
   
     const handleSignUp = async () => {
-      if (password != confirmPassword) {
-        console.error("Passwords do not match")
-      } else {
         try {
-            const userData = {
+          if (password !== confirmPassword) {
+            console.error("Passwords do not match");
+            return;
+          }
+      
+          const userData = {
             email,
             password,
-            };
-
-            const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/users/signup`, userData);
-            if (res.data.error) {
+          };
+      
+          const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/users/signup`, userData);
+      
+          if (res.data.error) {
             console.error(res.data.error);
-            } else {
+          } else {
             dispatch(login(res.data));
             setEmail('');
             setPassword('');
+            setConfirmPassword('');
             navigation.navigate('Feed');
-            }
+          }
         } catch (err) {
-            console.error(err.message);
+          console.error(err.message);
         }
-      }
-    };
+      };
   
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
