@@ -2,9 +2,9 @@ import {
   View, Text, TouchableOpacity, Button,
 } from 'react-native';
 import { useState } from 'react';
-import FilterStyle from './FilterStyle';
+import ContentRecsStyle from './ContentRecsStyle';
 
-export default function Filter({ navigation }) {
+export default function ContentRecs({ navigation }) {
   const tags = ['abuse', 'addiction', 'anger',
     'anger management', 'anxiety',
     'bipolar disorder', 'body dysmorphia',
@@ -24,37 +24,37 @@ export default function Filter({ navigation }) {
     setSelectedTags([]);
   };
 
-  const applyAll = () => {
-    setSelectedTags([...tags]);
-  };
-
   const getCheckboxColor = (selected) => (selected ? '#404040' : '#D9D9D9');
   const isTagSelected = (tag) => (selectedTags.includes(tag));
 
   return (
-    <View style={FilterStyle.container}>
-      <Text style={FilterStyle.title}> advanced filter </Text>
+    <View style={ContentRecsStyle.container}>
+      <Text style={ContentRecsStyle.title}> content recommendations </Text>
+      <Text>
+        select any tags that you would prefer to not have content
+        recommended to you for.
+      </Text>
       {tags.map((tag) => (
-        <View key={tag} style={FilterStyle.rowContainer}>
-          <View style={FilterStyle.tagContainer}>
-            <Text style={FilterStyle.text}>
+        <View key={tag} style={ContentRecsStyle.rowContainer}>
+          <View style={ContentRecsStyle.tagContainer}>
+            <Text style={ContentRecsStyle.text}>
               {tag}
             </Text>
           </View>
           <TouchableOpacity onPress={() => toggleTag(tag)}>
-            <View style={[FilterStyle.checkbox,
-              { backgroundColor: getCheckboxColor(isTagSelected(tag))}]}
+            <View style={[ContentRecsStyle.checkbox,
+              { backgroundColor: getCheckboxColor(isTagSelected(tag)) }]}
             />
           </TouchableOpacity>
         </View>
       ))}
 
-      <View style={FilterStyle.rowContainer}>
-        <TouchableOpacity style={[FilterStyle.buttons, { backgroundColor: '#D9D9D9' }]} onPress={() => clearAll()}>
-          <Text style={FilterStyle.text}> clear all </Text>
+      <View style={ContentRecsStyle.rowContainer}>
+        <TouchableOpacity style={[ContentRecsStyle.buttons, { backgroundColor: '#D9D9D9' }]} onPress={() => clearAll()}>
+          <Text style={ContentRecsStyle.text}> clear all </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[FilterStyle.buttons, { backgroundColor: '#404040' }]} onPress={() => applyAll()}>
-          <Text style={[FilterStyle.text, { color:'white'}]}> apply all filters </Text>
+        <TouchableOpacity style={[ContentRecsStyle.buttons, { backgroundColor: '#404040' }]}>
+          <Text style={[ContentRecsStyle.text, { color: 'white' }]}> save </Text>
         </TouchableOpacity>
       </View>
       <Button title="goBack" onPress={() => navigation.goBack()}> go Back </Button>

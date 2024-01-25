@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import {
-  View, Text, TextInput, Modal, Button,
+  View, Text, TextInput, Modal, Button, TouchableOpacity,
 } from 'react-native';
 import SearchBarStyle from './SearchBarStyle';
 
-export default function SearchBar({ visible, onClose, onSearch, recentSearches }) {
+export default function SearchBar({
+  visible, onClose, onSearch, recentSearches,
+}) {
   const [searchQuery, setSearchQuery] = useState('');
   const handleSearch = () => {
     onSearch(searchQuery);
@@ -20,21 +22,30 @@ export default function SearchBar({ visible, onClose, onSearch, recentSearches }
   return (
     <Modal visible={visible} animationType="slide" transparent={false}>
       <View style={SearchBarStyle.container}>
-        <TextInput
-          style={SearchBarStyle.searchbar}
-          placeholder="search..."
-          value={searchQuery}
-          onChangeText={(text) => setSearchQuery(text)}
-        />
-        <Button
-          title="Search"
-          onPress={handleSearch}
-        />
+        <View>
+          <TextInput
+            style={SearchBarStyle.searchbar}
+            placeholder="Search..."
+            placeholderTextColor="#000"
+            value={searchQuery}
+            onChangeText={(text) => setSearchQuery(text)}
+          />
+          <Button
+            title="Search"
+            onPress={handleSearch}
+          />
+        </View>
 
-        <Text> Recent Searches </Text>
-        {recentSearches.map((item) => (
-          <Text onPress={() => handleRecentSearch(item)}>{item}</Text>
-        ))}
+        <Text style={SearchBarStyle.text}> Recent Searches </Text>
+        <View style={SearchBarStyle.rowContainer}>
+          {recentSearches.map((item, index) => (
+            <View key={index+1}>
+              <TouchableOpacity style={SearchBarStyle.recentSearch} onPress={() => handleRecentSearch(item)} >
+                <Text style={SearchBarStyle.text}>{item}</Text>
+              </TouchableOpacity>
+            </View>
+          ))}
+        </View>
 
         <Button title="Close" onPress={onClose} />
       </View>

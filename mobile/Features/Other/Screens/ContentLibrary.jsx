@@ -130,6 +130,7 @@ export default function ContentLibrary({ navigation }) {
   const navigateToFilter = () => {
     navigation.navigate('Filter');
   };
+
   const openSearch = () => {
     setOpen(true);
   };
@@ -140,9 +141,10 @@ export default function ContentLibrary({ navigation }) {
   const handleSearch = (query) => {
     // search logic
     if (query.trim() !== '') {
-      setRecentSearches((prevSearches) => [query, ...prevSearches]);
+      if (!recentSearches.includes(query.toLowerCase())) {
+        setRecentSearches((prevSearches) => [query.toLowerCase(), ...prevSearches]);
+      }
     }
-    console.log('query: ', query);
   };
 
   return (

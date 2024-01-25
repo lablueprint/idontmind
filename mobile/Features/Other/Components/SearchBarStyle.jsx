@@ -3,20 +3,36 @@ import { StyleSheet } from 'react-native';
 const SearchBarStyle = StyleSheet.create({
   container: {
     height: 400,
+    marginTop: 30,
+    marginLeft: 40,
   },
+
+  rowContainer: {
+    flexDirection: 'row',
+  },
+
   searchbar: {
     height: 40,
-    borderColor: 'black',
-    borderWidth: 1,
-    marginTop: 30,
+    backgroundColor: '#D9D9D9',
+    color: 'black',
+    width: '80%',
+    borderRadius: 15,
+    padding: 10,
   },
-  flatlist: {
-    height: 200,
-    borderColor: 'black',
-    borderWidth: 1,
-    marginTop: 30,
-    backgroundColor: '#f0f0f0',
 
+  recentSearch: {
+    width: 149,
+    height: 29,
+    borderRadius: 20,
+    backgroundColor: '#D9D9D9',
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: 5,
+  },
+
+  text: {
+    fontSize: 20,
+    color: 'black',
   },
 });
 

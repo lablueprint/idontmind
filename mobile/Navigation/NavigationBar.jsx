@@ -10,6 +10,7 @@ import JournalPage from '../Features/Journal/Screens/JournalPage';
 import ContentLibrary from '../Features/Other/Screens/ContentLibrary';
 import PushNotifications from '../Features/Settings/Screens/PushNotifications';
 import FindHelp from '../Features/Other/Screens/FindHelp';
+import Options from '../Features/Other/Screens/Options';
 
 const Tab = createBottomTabNavigator();
 
@@ -25,6 +26,7 @@ export default function NavigationBar() {
         <Tab.Screen name="Notifs" component={PushNotifications} options={{ headerShown: false }} />
         <Tab.Screen name="Content Library" component={ContentLibrary} options={{ headerShown: false }} />
         <Tab.Screen name="Find Help" component={FindHelp} options={{ headerShown: false }} />
+        <Tab.Screen name="Options" component={Options} options={{ headerShown: false }} />
       </Tab.Navigator>
   );
 }

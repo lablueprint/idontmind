@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-const FilterStyle = StyleSheet.create({
+const ContentRecsStyle = StyleSheet.create({
   container: {
     marginTop: 100,
     alignItems: 'center',
@@ -39,4 +39,4 @@ const FilterStyle = StyleSheet.create({
 
 });
 
-export default FilterStyle;
+export default ContentRecsStyle;
