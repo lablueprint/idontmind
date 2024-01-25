@@ -16,13 +16,13 @@ export default function Login({ navigation }) {
     navigation.navigate('Feed');
   };
 
-  const handleEmail = async () => {
+  const handleLogin = async () => {
     try {
       const userData = {
         email,
         password,
       };
-      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/users/signup`, userData);
+      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/users/signin`, userData);
       if (res.data.error) {
         console.error(res.data.error);
       } else {
@@ -51,7 +51,7 @@ export default function Login({ navigation }) {
       />
       <Button
         title="Enter"
-        onPress={handleEmail}
+        onPress={handleLogin}
       />
       <Button
         title="To Feed"

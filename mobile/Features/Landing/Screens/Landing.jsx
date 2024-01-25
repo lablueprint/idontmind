@@ -8,11 +8,19 @@ export default function Landing({ navigation }) {
     navigation.navigate('Login');
   };
 
+  const navigateToSignUp = () => {
+    navigation.navigate('SignUp');
+  };
+
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>Landing Page</Text>
       <Button
-        title="To Login"
+        title="Get Started"
+        onPress={navigateToSignUp}
+      />
+      <Button
+        title="Already have an account?"
         onPress={navigateToLogin}
       />
     </View>

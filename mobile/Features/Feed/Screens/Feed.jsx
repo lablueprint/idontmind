@@ -85,7 +85,7 @@ export default function Feed({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>
-        Hi
+        Welcome
         {' '}
         {email}
       </Text>
@@ -121,7 +121,7 @@ export default function Feed({ navigation }) {
       </View>
 
       <Button
-        title="To Landing"
+        title="Logout"
         onPress={navigateToLanding}
       />
     </View>
