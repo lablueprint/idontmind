@@ -2,20 +2,6 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/UserSchema');
 const passport = require('../passport');
 
-// Example of creating a document in the database
-const createUser = async (req, res) => {
-  console.log('ran Create User');
-  console.log(req.body);
-
-  const test = new User(req.body);
-  try {
-    const data = await test.save(test);
-    res.send(data);
-  } catch (err) {
-    console.error(err);
-  }
-};
-
 // Creates user with given email and password to send to backend
 const signUpUser = async (req, res, next) => {
   try {
@@ -42,7 +28,7 @@ const signInUser = async (req, res, next) => {
       if (err) return next(err);
 
       // Generate JWT token
-      const token = jwt.sign({ id: user.id }, 'secret');
+      const token = jwt.sign({ email: user.email }, 'secret');
 
       return res.json({ user, token });
     });
@@ -56,7 +42,6 @@ const welcomeUser = (req, res) => {
 const authenticatePassport = passport.authenticate('jwt', { session: false });
 
 module.exports = {
-  createUser,
   signInUser,
   signUpUser,
   welcomeUser,

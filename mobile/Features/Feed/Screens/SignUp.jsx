@@ -16,6 +16,10 @@ import {
     const navigateToFeed = () => {
       navigation.navigate('Feed');
     };
+
+    const navigateToLanding = () => {
+        navigation.navigate('Landing');
+      }
   
     const handleSignUp = async () => {
         try {
@@ -48,6 +52,10 @@ import {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Text>SignUp Page</Text>
+        <Button
+          title="To Landing"
+          onPress={navigateToLanding}
+        />
         <TextInput
           placeholder="Email"
           value={email}

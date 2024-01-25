@@ -16,6 +16,10 @@ export default function Login({ navigation }) {
     navigation.navigate('Feed');
   };
 
+  const navigateToLanding = () => {
+    navigation.navigate('Landing');
+  }
+
   const handleLogin = async () => {
     try {
       const userData = {
@@ -29,7 +33,7 @@ export default function Login({ navigation }) {
         dispatch(login(res.data));
         setEmail('');
         setPassword('');
-        navigation.navigate('Feed');
+        navigateToFeed();
       }
     } catch (err) {
       console.error(err.message);
@@ -39,6 +43,10 @@ export default function Login({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>Login Page</Text>
+      <Button
+        title="To Landing"
+        onPress={navigateToLanding}
+      />
       <TextInput
         placeholder="Email"
         value={email}

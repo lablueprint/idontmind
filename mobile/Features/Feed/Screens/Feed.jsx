@@ -2,19 +2,26 @@ import { useState, useEffect } from 'react';
 import {
   Button, Text, View, TextInput,
 } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import Post from '../Components/Post';
+import { logout } from '../../../redux/authSlice';
 
 export default function Feed({ navigation }) {
   const [postDraftBody, setPostDraftBody] = useState('');
   const [postDraftUser, setPostDraftUser] = useState('');
   const { email } = useSelector((state) => state.auth); // grabs the email from the backend
+  const dispatch = useDispatch()
 
   const [postList, setPostList] = useState([]);
   const navigateToLanding = () => {
     navigation.navigate('Landing');
+  };
+
+  const handleLogout = async () => {
+    dispatch(logout());
+    navigateToLanding();
   };
 
   useEffect(() => {
@@ -122,7 +129,7 @@ export default function Feed({ navigation }) {
 
       <Button
         title="Logout"
-        onPress={navigateToLanding}
+        onPress={handleLogout}
       />
     </View>
   );
