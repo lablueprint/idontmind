@@ -127,7 +127,7 @@ export default function ContentLibrary({ navigation }) {
       style={[style.container, { paddingLeft: 25 }]}
     >
       <View style={[style.row, { paddingTop: 75, flexBasis: 125, backgroundColor: 'white' }]}>
-        <Text style={{ fontSize: 30, flex: 3, paddingLeft: 5, }}>content</Text>
+        <Text style={{ fontSize: 30, flex: 3, paddingLeft: 5 }}>content</Text>
         <View
           style={[style.container, { flex: 3 }]}
         >
