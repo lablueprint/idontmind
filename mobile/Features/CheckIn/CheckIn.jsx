@@ -10,7 +10,8 @@ function CheckIn({ navigation }) {
 
   const beginCheckIn = () => {
     console.log('hey');
-    navigation.navigate('Sleep');
+    navigation.navigate('Mood');
+    // navigation.navigate('Sleep');
   };
 
   const continueToDashBoard = () => {

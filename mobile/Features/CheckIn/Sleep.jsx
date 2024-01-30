@@ -15,26 +15,48 @@ function Sleep() {
   const onSliderChange = (sliderValue) => {
     setSlider(sliderValue);
   };
+
+  const continueButton = () => {
+    console.log('continue');
+  };
+
+  const skipButton = () => {
+    console.log('skip');
+  };
   
   return (
     <View style={styles.container}>
+      <View style={styles.heading}>
+        <Text>
+          rate your sleep quality last night.
+        </Text>
+      </View>
       <View style={styles.content}>
         <View style={styles.rating}>
-          <Text>Penis</Text>
+          <Text style={styles.singularRating}>10 excellent</Text>
+          <Text style={styles.singularRating}>9</Text>
+          <Text style={styles.singularRating}>8</Text>
+          <Text style={styles.singularRating}>7</Text>
+          <Text style={styles.singularRating}>6</Text>
+          <Text style={styles.singularRating}>5 average</Text>
+          <Text style={styles.singularRating}>4</Text>
+          <Text style={styles.singularRating}>3</Text>
+          <Text style={styles.singularRating}>2</Text>
+          <Text style={styles.singularRating}>1 very poor</Text>
         </View>
         <View style={styles.slider}>
           <View style={{transform:[{rotate: "-90deg"}]}}>
             <Slider
               style={{ width: 600, height: 40, alignSelf: 'center' }}
               minimumValue={1}
-              maximumValue={7}
+              maximumValue={12}
               minimumTrackTintColor="#000000"
               maximumTrackTintColor="#000000"
               onValueChange={onSliderChange}
               step={1}
               vertical={true}
               lowerLimit={2}
-              upperLimit={6}
+              upperLimit={11}
             />
           </View>
         </View>
@@ -65,6 +87,14 @@ function Sleep() {
             />
           </View>
         </View>
+      </View>
+      <View style={styles.buttons}>
+        <Pressable onPress={continueButton}>
+          <Text>CONTINUE</Text>
+        </Pressable>
+        <Pressable onPress={skipButton}>
+          <Text>SKIP</Text>
+        </Pressable>
       </View>
     </View>
   );
