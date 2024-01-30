@@ -1,7 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import NavigationBar from './NavigationBar';
-import Favorites from '../Features/Other/Screens/Favorites';
+import Favorites from '../Features/ContentLibrary/Screens/Favorites';
 
 export default function AppNavigation() {
   const Stack = createNativeStackNavigator();

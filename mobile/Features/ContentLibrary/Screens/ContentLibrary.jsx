@@ -1,78 +1,13 @@
 import {
-  Text, View, StyleSheet, TouchableOpacity, FlatList, Image, Button,
+  Text, View, TouchableOpacity, FlatList, Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
-
-/* Style Sheet */
-const style = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    backgroundColor: 'white',
-  },
-  row: {
-    flexDirection: 'row',
-  },
-  button: {
-    backgroundColor: 'white',
-    borderRadius: 20,
-  },
-  horizontalCard: {
-    padding: 10, marginVertical: 8, marginRight: 16, backgroundColor: 'lightgrey', borderRadius: 10, width: 122, flex: 1,
-  },
-  star: {
-    width: 20, height: 20, opacity: 0.4,
-  },
-  horizontalCardInfo: {
-    flexDirection: 'row', flex: 1, width: 70,
-  },
-  horizontalText: {
-    color: 'black', alignSelf: 'flex-end', marginBottom: 20, flexWrap: 'wrap', flex: 1, fontSize: 16, marginLeft: 5,
-  },
-  verticalCard: {
-    padding: 10, marginVertical: 8, marginRight: 16, backgroundColor: 'lightgrey', borderRadius: 10, flex: 1, flexDirection: 'column',
-  },
-  shape: {
-    width: 95, height: 85, marginRight: 15,
-  },
-  verticalCardInfo: {
-    flex: 1, flexDirection: 'row-reverse',
-  },
-  verticalText: {
-    fontSize: 25,
-  },
-  whiteBox: {
-    backgroundColor: 'white', width: 100, height: 25, borderRadius: 8, marginBottom: 5, marginLeft: 5,
-  },
-});
-
-/* Fake Data */
-const DATA = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'resource name',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'resource name',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'resource name',
-  },
-  {
-    id: 'bd7acbea-c1b1-42c2-aed5-3ad53abb28ba',
-    title: 'resource name',
-  },
-  {
-    id: '3ac68afc-c605-46d3-a4f8-fbd91aa97f63',
-    title: 'resource name',
-  },
-  {
-    id: '58694a0f-3da2-471f-bd96-145571e29d72',
-    title: 'resource name',
-  },
-];
+import style from '../Components/ContentStyle';
+import starImage from '../../../assets/star.png';
+import filterImage from '../../../assets/filter.png';
+import searchImage from '../../../assets/search.png';
+import shapeImage from '../../../assets/shape.png';
+import fakeData from '../Components/ContentFakeData';
 
 export default function ContentLibrary({ navigation }) {
   const navigateToLanding = () => {
@@ -87,7 +22,7 @@ export default function ContentLibrary({ navigation }) {
         style={[style.star,
           { alignSelf: 'flex-end' },
         ]}
-        source={require('../../../assets/star.png')}
+        source={starImage}
       />
       <View
         style={[style.horizontalCardInfo]}
@@ -113,7 +48,7 @@ export default function ContentLibrary({ navigation }) {
       <View style={[style.verticalCardInfo]}>
         <Image
           style={[style.shape]}
-          source={require('../../../assets/shape.png')}
+          source={shapeImage}
         />
       </View>
       <View
@@ -141,7 +76,7 @@ export default function ContentLibrary({ navigation }) {
               style={{
                 width: 20, height: 20, marginTop: 7, marginRight: 3, opacity: 0.4,
               }}
-              source={require('../../../assets/star.png')}
+              source={starImage}
             />
             <Text
               onPress={() => navigation.navigate('Favorites')}
@@ -157,11 +92,11 @@ export default function ContentLibrary({ navigation }) {
         <View style={{ flex: 2, flexDirection: 'row', marginTop: 5 }}>
           <Image
             style={{ width: 20, height: 31, marginRight: 15 }}
-            source={require('../../../assets/search.png')}
+            source={searchImage}
           />
           <Image
             style={{ width: 20, height: 31 }}
-            source={require('../../../assets/filter.png')}
+            source={filterImage}
           />
         </View>
       </View>
@@ -171,7 +106,7 @@ export default function ContentLibrary({ navigation }) {
       <View style={[style.row, { flex: 1 }]}>
         <FlatList
           horizontal
-          data={DATA}
+          data={fakeData}
           renderItem={horizontalRenderItem}
           showsHorizontalScrollIndicator={false}
         />
@@ -181,7 +116,7 @@ export default function ContentLibrary({ navigation }) {
       />
       <View style={[style.row, { flex: 2, paddingTop: 25 }]}>
         <FlatList
-          data={DATA}
+          data={fakeData}
           renderItem={verticalRenderItem}
           showsVerticalScrollIndicator={false}
         />

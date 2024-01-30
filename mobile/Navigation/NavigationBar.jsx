@@ -5,7 +5,7 @@ import Login from '../Features/Login/Screens/Login';
 import CheckIn from '../Features/Other/Screens/CheckIn';
 import Trends from '../Features/Other/Screens/Trends';
 import JournalPage from '../Features/Journal/Screens/JournalPage';
-import ContentLibrary from '../Features/Other/Screens/ContentLibrary';
+import ContentLibrary from '../Features/ContentLibrary/Screens/ContentLibrary';
 import PushNotifications from '../Features/Settings/Screens/PushNotifications';
 import FindHelp from '../Features/Other/Screens/FindHelp';
 
