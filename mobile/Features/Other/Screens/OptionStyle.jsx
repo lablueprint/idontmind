@@ -26,6 +26,7 @@ const OptionStyle = StyleSheet.create({
     height: 20,
     backgroundColor: '#D9D9D9',
     marginRight: 20,
+    marginTop: 8,
   },
 
   optionContainer: {

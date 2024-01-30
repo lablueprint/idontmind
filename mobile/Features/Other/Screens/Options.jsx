@@ -6,13 +6,13 @@ export default function Options({ navigation }) {
 
   const navigateFunctions = (key) => {
     if (key === 5) {
-      navigation.navigate('ContentRecs');
+      navigation.navigate('BannedTags');
     }
   };
 
   return (
     <View style={OptionStyle.container}>
-        <Text style={OptionStyle.title}> options </Text>
+      <Text style={OptionStyle.title}> options </Text>
       <Text style={OptionStyle.personalData}> personal data </Text>
       {options.map((option, index) => (
         <View key={index + 1}>

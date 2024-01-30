@@ -1,30 +1,26 @@
 import { StyleSheet } from 'react-native';
 
-const ContentRecsStyle = StyleSheet.create({
+const FilterStyle = StyleSheet.create({
   container: {
-    marginTop: 100,
+    width: '100%',
     alignItems: 'center',
   },
 
-  title: {
-    fontSize: 36,
-  },
-
   rowContainer: {
-    margin: 10,
+    margin: 8,
     flexDirection: 'row',
   },
 
   tagContainer: {
-    width: 175,
+    width: 200,
   },
 
   text: {
-    fontSize: 20,
+    fontSize: 15,
   },
 
   checkbox: {
-    marginLeft: 300,
+    marginLeft: 5,
     width: 20,
     height: 20,
   },
@@ -39,4 +35,4 @@ const ContentRecsStyle = StyleSheet.create({
 
 });
 
-export default ContentRecsStyle;
+export default FilterStyle;

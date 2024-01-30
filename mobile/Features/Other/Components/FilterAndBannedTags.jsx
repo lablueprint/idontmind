@@ -2,13 +2,20 @@ import {
   View, Text, TouchableOpacity, Button,
 } from 'react-native';
 import { useState } from 'react';
-import ContentRecsStyle from './ContentRecsStyle';
+import FilterAndBannedTagsStyle from './FilterAndBannedTagsStyle';
 
-export default function ContentRecs({ navigation }) {
+export default function FilterAndBannedTags({ navigation, screenOption }) {
   const tags = ['abuse', 'addiction', 'anger',
     'anger management', 'anxiety',
     'bipolar disorder', 'body dysmorphia',
     'body image', 'breakups', 'burnout'];
+
+  const getButtonString = (option) => {
+    if (option === 1) {
+      return 'apply all';
+    }
+    return 'save';
+  };
 
   const [selectedTags, setSelectedTags] = useState([]);
 
@@ -24,37 +31,38 @@ export default function ContentRecs({ navigation }) {
     setSelectedTags([]);
   };
 
+  const applyAll = () => {
+    setSelectedTags([...tags]);
+  };
+
   const getCheckboxColor = (selected) => (selected ? '#404040' : '#D9D9D9');
   const isTagSelected = (tag) => (selectedTags.includes(tag));
 
   return (
-    <View style={ContentRecsStyle.container}>
-      <Text style={ContentRecsStyle.title}> content recommendations </Text>
-      <Text>
-        select any tags that you would prefer to not have content
-        recommended to you for.
-      </Text>
+    <View style={FilterAndBannedTagsStyle.container}>
       {tags.map((tag) => (
-        <View key={tag} style={ContentRecsStyle.rowContainer}>
-          <View style={ContentRecsStyle.tagContainer}>
-            <Text style={ContentRecsStyle.text}>
+        <View key={tag} style={FilterAndBannedTagsStyle.rowContainer}>
+          <View style={FilterAndBannedTagsStyle.tagContainer}>
+            <Text style={FilterAndBannedTagsStyle.text}>
               {tag}
             </Text>
           </View>
           <TouchableOpacity onPress={() => toggleTag(tag)}>
-            <View style={[ContentRecsStyle.checkbox,
+            <View style={[FilterAndBannedTagsStyle.checkbox,
               { backgroundColor: getCheckboxColor(isTagSelected(tag)) }]}
             />
           </TouchableOpacity>
         </View>
       ))}
 
-      <View style={ContentRecsStyle.rowContainer}>
-        <TouchableOpacity style={[ContentRecsStyle.buttons, { backgroundColor: '#D9D9D9' }]} onPress={() => clearAll()}>
-          <Text style={ContentRecsStyle.text}> clear all </Text>
+      <View style={FilterAndBannedTagsStyle.rowContainer}>
+        <TouchableOpacity style={[FilterAndBannedTagsStyle.buttons, { backgroundColor: '#D9D9D9' }]} onPress={() => clearAll()}>
+          <Text style={FilterAndBannedTagsStyle.text}> clear all </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[ContentRecsStyle.buttons, { backgroundColor: '#404040' }]}>
-          <Text style={[ContentRecsStyle.text, { color: 'white' }]}> save </Text>
+        <TouchableOpacity style={[FilterAndBannedTagsStyle.buttons, { backgroundColor: '#404040' }]} onPress={() => (screenOption === 1 ? applyAll() : null)}>
+          <Text style={[FilterAndBannedTagsStyle.text, { color: 'white' }]}>
+            {getButtonString(screenOption)}
+          </Text>
         </TouchableOpacity>
       </View>
       <Button title="goBack" onPress={() => navigation.goBack()}> go Back </Button>
