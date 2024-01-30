@@ -10,13 +10,6 @@ export default function FilterAndBannedTags({ navigation, screenOption }) {
     'bipolar disorder', 'body dysmorphia',
     'body image', 'breakups', 'burnout'];
 
-  const getButtonString = (option) => {
-    if (option === 1) {
-      return 'apply all';
-    }
-    return 'save';
-  };
-
   const [selectedTags, setSelectedTags] = useState([]);
 
   const toggleTag = (tag) => {
@@ -61,7 +54,7 @@ export default function FilterAndBannedTags({ navigation, screenOption }) {
         </TouchableOpacity>
         <TouchableOpacity style={[FilterAndBannedTagsStyle.buttons, { backgroundColor: '#404040' }]} onPress={() => (screenOption === 1 ? applyAll() : null)}>
           <Text style={[FilterAndBannedTagsStyle.text, { color: 'white' }]}>
-            {getButtonString(screenOption)}
+            {(screenOption === 1 ? 'apply all' : 'save')}
           </Text>
         </TouchableOpacity>
       </View>
