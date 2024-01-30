@@ -23,6 +23,10 @@ export default function Feed({ navigation }) {
     dispatch(logout());
     navigateToLanding();
   };
+  
+  const getUserData = async () => {
+    console.log("Getting user data")
+  }
 
   useEffect(() => {
     const foo = async () => {
@@ -131,6 +135,15 @@ export default function Feed({ navigation }) {
         title="Logout"
         onPress={handleLogout}
       />
+      <Button
+        title="Get Correct User Data"
+        onPress={getUserData}
+      />
+      <Button
+        title="Get Incorrect User Data"
+        onPress={getUserData}
+      />
+
     </View>
   );
 }

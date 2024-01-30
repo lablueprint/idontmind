@@ -5,6 +5,8 @@ const userController = require('../controllers/userController');
 
 userRouter.post('/signin', userController.signInUser);
 userRouter.post('/signup', userController.signUpUser);
+userRouter.post('/getData', userController.getUserData);
+userRouter.use(userController.authenticatePassport)
 
 userRouter.get('/get', (req, res) => {
   res.send('Get API');

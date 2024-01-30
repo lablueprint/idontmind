@@ -39,6 +39,10 @@ const welcomeUser = (req, res) => {
   res.send(`Welcome, ${req.user.email}!`);
 };
 
+const getUserData = async (req, res, next) => {
+  console.log("Get user data here");
+};
+
 const authenticatePassport = passport.authenticate('jwt', { session: false });
 
 module.exports = {
@@ -46,4 +50,5 @@ module.exports = {
   signUpUser,
   welcomeUser,
   authenticatePassport,
+  getUserData
 };
