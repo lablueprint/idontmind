@@ -51,7 +51,6 @@ const OptionStyle = StyleSheet.create({
     color: '#00000080',
   },
 
-
 });
 
 export default OptionStyle;
