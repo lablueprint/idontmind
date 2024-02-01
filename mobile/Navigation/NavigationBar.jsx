@@ -11,6 +11,7 @@ import ContentLibrary from '../Features/Other/Screens/ContentLibrary';
 import PushNotifications from '../Features/Settings/Screens/PushNotifications';
 import FindHelp from '../Features/Other/Screens/FindHelp';
 import Options from '../Features/Other/Screens/Options';
+import Calendar from '../Features/Other/Screens/Calendar';
 
 const Tab = createBottomTabNavigator();
 
@@ -27,6 +28,7 @@ export default function NavigationBar() {
         <Tab.Screen name="Content Library" component={ContentLibrary} options={{ headerShown: false }} />
         <Tab.Screen name="Find Help" component={FindHelp} options={{ headerShown: false }} />
         <Tab.Screen name="Options" component={Options} options={{ headerShown: false }} />
+        <Tab.Screen name="Calendar" component={Calendar} options={{ headerShown: false }} />
       </Tab.Navigator>
   );
 }
