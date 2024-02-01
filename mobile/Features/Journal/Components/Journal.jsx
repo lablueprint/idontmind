@@ -20,7 +20,10 @@ export default function Journal() {
 
   const addNewJournal = async (newUsername, newPrompt, newText) => {
     const currentdate = new Date();
-    const timestamp = currentdate;
+    const pstDate = currentdate.toLocaleString('en-US', {
+      timeZone: 'America/Los_Angeles',
+    });
+    const timestamp = pstDate;
     const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/journals/createJournal`, {
       username: newUsername, prompt: newPrompt, text: newText, timestamp,
     });
