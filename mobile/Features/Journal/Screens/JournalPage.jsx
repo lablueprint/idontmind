@@ -14,19 +14,6 @@ export default function JournalPage({ navigation }) {
   const isHistory = route.params?.isHistory;/* retrieve the value of isHistory
   from the previous navigation page (JournalHistoryPage) */
 
-  /* an effort to make the journal reset to today's journal after
-  switching between screens (failed): */
-
-  // useFocusEffect(
-  //   React.useCallback(() => {
-  //     return() => {
-  //       isHistory = false
-  //       console.log("focus")
-  //       console.log(isHistory)
-  //     };
-  //   }, [])
-  // );
-
   const [text, setText] = useState(''); // state for the text the user types in
   const [confirmPopUp, setConfirmPopUp] = useState(false); /* state that tells if
   the confirm popup is showing or not */
@@ -46,13 +33,15 @@ export default function JournalPage({ navigation }) {
       username: newUsername, prompt: newPrompt, text: newText, timestamp,
     });
     // console.log(res);
-  }; // function that creates a new journal entry with username, prompt, text, and timestamp and sends it to the MongoDB
+  }; /* function that creates a new journal entry with username, prompt, text, and timestamp and
+  sends it to the MongoDB */
 
   const navigateToJournalHistory = () => {
     navigation.navigate('Journal History');
   }; // navigate to Journal History page
 
-  // render it in two different ways depending on if isHistory(if false, editable text box, if true, uneditable text box with previously written text)
+  /* render it in two different ways depending on if isHistory(if false, editable text box, if
+  true, uneditable text box with previously written text) */
   if (!isHistory) {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -71,7 +60,10 @@ export default function JournalPage({ navigation }) {
                 <TouchableOpacity onPressOut={handlePopUp} style={styles.modalView}>
                   <View style={styles.modalBox}>
                     <Text style={{ fontSize: 20 }}>confirm journal entry?</Text>
-                    <Pressable style={styles.modalSelections} onPress={() => addNewJournal(username, prompt, text)}>
+                    <Pressable
+                      style={styles.modalSelections}
+                      onPress={() => addNewJournal(username, prompt, text)}
+                    >
                       <Text>
                         yes
                       </Text>

@@ -40,12 +40,12 @@ export default StyleSheet.create({
     padding: 10,
     margin: 10,
     backgroundColor: '#D9D9D9',
-    alignItems: 'center'
+    alignItems: 'center',
   },
 
   modalBox: {
     padding: 20,
     borderRadius: 8,
-    backgroundColor: '#C1C1C1'
+    backgroundColor: '#C1C1C1',
   },
 });

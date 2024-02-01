@@ -35,4 +35,5 @@ JournalCard.propTypes = {
   username: PropTypes.string.isRequired,
   prompt: PropTypes.string.isRequired,
   text: PropTypes.string.isRequired,
+  onPress: PropTypes.func.isRequired,
 };
