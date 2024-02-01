@@ -3,7 +3,6 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
   journalCard: {
     width: 300,
-    height: 'fit-content',
     padding: 20,
     margin: 10,
     borderColor: 'black',
