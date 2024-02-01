@@ -32,13 +32,13 @@ import {
             email,
             password,
           };
-      
           const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/users/signup`, userData);
       
           if (res.data.error) {
             console.error(res.data.error);
           } else {
-            dispatch(login(res.data));
+            const res2 = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/users/signin`, userData);
+            dispatch(login(res2.data));
             setEmail('');
             setPassword('');
             setConfirmPassword('');

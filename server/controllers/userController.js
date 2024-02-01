@@ -28,7 +28,7 @@ const signInUser = async (req, res, next) => {
       if (err) return next(err);
 
       // Generate JWT token
-      const token = jwt.sign({ email: user.email }, 'secret');
+      const token = jwt.sign({ id: user._id }, 'secret');
 
       return res.json({ user, token });
     });
@@ -40,7 +40,17 @@ const welcomeUser = (req, res) => {
 };
 
 const getUserData = async (req, res, next) => {
-  console.log("Get user data here");
+  try {
+    const { email } = req.body;
+    const user = await User.find({ email: email })
+    if (!user || user.length === 0) {
+      return res.status(404).send({ message: 'User not found' });
+    }
+    return res.json(user)
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send(err);
+  }
 };
 
 const authenticatePassport = passport.authenticate('jwt', { session: false });

@@ -11,7 +11,7 @@ import { logout } from '../../../redux/authSlice';
 export default function Feed({ navigation }) {
   const [postDraftBody, setPostDraftBody] = useState('');
   const [postDraftUser, setPostDraftUser] = useState('');
-  const { email } = useSelector((state) => state.auth); // grabs the email from the backend
+  const { email, authHeader } = useSelector((state) => state.auth);
   const dispatch = useDispatch()
 
   const [postList, setPostList] = useState([]);
@@ -23,9 +23,22 @@ export default function Feed({ navigation }) {
     dispatch(logout());
     navigateToLanding();
   };
-  
-  const getUserData = async () => {
-    console.log("Getting user data")
+
+  const handleGetData = async () => {
+    try {
+      const userData = {
+        email,
+      };
+      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/users/getData`, userData, { headers: authHeader });
+      if (res.data.error) {
+        console.error(res.data.error);
+      } else {
+        console.log("This is the user data:")
+        console.log(res.data[0])
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
   }
 
   useEffect(() => {
@@ -137,13 +150,8 @@ export default function Feed({ navigation }) {
       />
       <Button
         title="Get Correct User Data"
-        onPress={getUserData}
+        onPress={handleGetData}
       />
-      <Button
-        title="Get Incorrect User Data"
-        onPress={getUserData}
-      />
-
     </View>
   );
 }
