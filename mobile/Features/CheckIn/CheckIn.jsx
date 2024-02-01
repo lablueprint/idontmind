@@ -9,9 +9,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 function CheckIn({ navigation }) {
 
   const beginCheckIn = () => {
-    console.log('hey');
     navigation.navigate('Mood');
-    // navigation.navigate('Sleep');
   };
 
   const continueToDashBoard = () => {

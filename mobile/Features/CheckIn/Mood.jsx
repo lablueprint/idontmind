@@ -24,85 +24,46 @@ function Mood({ navigation }) {
 
   const addMood = () => {
     console.log('addedMood');
+    navigation.navigate('AddMood');
   };
 
   const moodImages = [
-    nicole, nicole, nicole
+    [nicole, nicole, nicole],
+    [nicole, nicole, nicole],
+    [nicole, nicole, nicole]
   ];
   
   return (
     <View style={styles.container}>
-        {console.log(typeof moodImages[0])}
-        <Image
-            source={moodImages[0]}
-        />
       <View style={styles.heading}>
         <Text>
           how are you feeling today, really?
         </Text>
       </View>
-      <View>
+      <View style={styles.content}>
         {moodImages.map((moodImage) => (
-            <View>
+            <View style={styles.moodRow}>
+              <View style={styles.singularMood}>
                 <Image
-                    source={moodImage}
+                    source={moodImage[0]}
                 />
+                <Text>NEUTRAL</Text>
+              </View>
+              <View style={styles.singularMood}>
+                <Image
+                    source={moodImage[1]}
+                />
+                <Text>NEUTRAL</Text>
+              </View>
+              <View style={styles.singularMood}>
+                <Image
+                    source={moodImage[2]}
+                />
+                <Text>NEUTRAL</Text>
+              </View>
             </View>
         ))}
       </View>
-      {/* <View style={styles.content}>
-        <View style={styles.moodRow}>
-            <Pressable onPress={pressMood}>
-                <Image
-                    source={nicole}
-                />
-            </Pressable>
-            <Pressable onPress={pressMood}>
-                <Image
-                    source={(require('../../assets/sleepFace.png'))}
-                />
-            </Pressable>
-            <Pressable onPress={pressMood}>
-                <Image
-                    source={(require('../../assets/sleepFace.png'))}
-                />
-            </Pressable>
-        </View>
-        <View style={styles.moodRow}>
-            <Pressable onPress={pressMood}>
-                <Image
-                    source={(require('../../assets/sleepFace.png'))}
-                />
-            </Pressable>
-            <Pressable onPress={pressMood}>
-                <Image
-                    source={(require('../../assets/sleepFace.png'))}
-                />
-            </Pressable>
-            <Pressable onPress={pressMood}>
-                <Image
-                    source={(require('../../assets/sleepFace.png'))}
-                />
-            </Pressable>
-        </View>
-        <View style={styles.moodRow}>
-            <Pressable onPress={pressMood}>
-                <Image
-                    source={(require('../../assets/sleepFace.png'))}
-                />
-            </Pressable>
-            <Pressable onPress={pressMood}>
-                <Image
-                    source={(require('../../assets/sleepFace.png'))}
-                />
-            </Pressable>
-            <Pressable onPress={pressMood}>
-                <Image
-                    source={(require('../../assets/sleepFace.png'))}
-                />
-            </Pressable>
-        </View>
-      </View> */}
       <View>
         <Pressable onPress={addMood}>
             <Text>+</Text>

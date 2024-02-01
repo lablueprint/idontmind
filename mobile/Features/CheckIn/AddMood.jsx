@@ -1,104 +1,43 @@
-// import { useState } from 'react';
-// import { Dimensions } from 'react-native';
-// import {
-//   Text, View, TextInput, StyleSheet, Pressable, Image,
-// } from 'react-native';
-// import styles from './MoodStyle';
+import { useState } from 'react';
+import { Dimensions } from 'react-native';
+import {
+  Text, View, TextInput, StyleSheet, Pressable, Image, TouchableWithoutFeedback,
+  Keyboard
+} from 'react-native';
+import styles from './MoodStyle';
 
-// function AddMood({ navigation }) {
+function AddMood({ navigation }) {
+    const [text, setText] = useState('')
+    const goToAddColor = () => {
+        navigation.navigate('AddColor');
+    };
+    const handleInputChange = (input) => {
+        setText(input);
+    };
+  return (
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+    <View style={styles.container}>
+        <View style={styles.heading}>
+        <Text>
+          type out a custom emotion here!
+        </Text>
+      </View>
+      <View style={styles.content}>
+        <TextInput
+            placeholder="Start typing..."
+            style={{
+            height: 40, borderColor: 'gray', borderWidth: 1, marginTop: 8, width: '90%', alignSelf: 'center',
+            }}
+            onChangeText={handleInputChange}
+            value={text}
+        />
+        <Pressable onPress={goToAddColor}>
+            <Text>check</Text>
+        </Pressable>
+    </View>
+    </View>
+    </TouchableWithoutFeedback>
+  );
+}
 
-//   const continueButton = () => {
-//     console.log('continue');
-//     navigation.navigate('Sleep');
-//   };
-
-//   const skipButton = () => {
-//     console.log('skip');
-//   };
-
-//   const pressMood = () => {
-//     console.log('mood');
-//   };
-
-//   const addMood = () => {
-//     console.log('addedMood');
-//   };
-  
-//   return (
-//     <View style={styles.container}>
-//       <View style={styles.heading}>
-//         <Text>
-//           how are you feeling today, really?
-//         </Text>
-//       </View>
-//       <View style={styles.content}>
-//         <View style={styles.moodRow}>
-//             <Pressable onPress={pressMood}>
-//                 <Image
-//                     source={(require('../../assets/sleepFace.png'))}
-//                 />
-//             </Pressable>
-//             <Pressable onPress={pressMood}>
-//                 <Image
-//                     source={(require('../../assets/sleepFace.png'))}
-//                 />
-//             </Pressable>
-//             <Pressable onPress={pressMood}>
-//                 <Image
-//                     source={(require('../../assets/sleepFace.png'))}
-//                 />
-//             </Pressable>
-//         </View>
-//         <View style={styles.moodRow}>
-//             <Pressable onPress={pressMood}>
-//                 <Image
-//                     source={(require('../../assets/sleepFace.png'))}
-//                 />
-//             </Pressable>
-//             <Pressable onPress={pressMood}>
-//                 <Image
-//                     source={(require('../../assets/sleepFace.png'))}
-//                 />
-//             </Pressable>
-//             <Pressable onPress={pressMood}>
-//                 <Image
-//                     source={(require('../../assets/sleepFace.png'))}
-//                 />
-//             </Pressable>
-//         </View>
-//         <View style={styles.moodRow}>
-//             <Pressable onPress={pressMood}>
-//                 <Image
-//                     source={(require('../../assets/sleepFace.png'))}
-//                 />
-//             </Pressable>
-//             <Pressable onPress={pressMood}>
-//                 <Image
-//                     source={(require('../../assets/sleepFace.png'))}
-//                 />
-//             </Pressable>
-//             <Pressable onPress={pressMood}>
-//                 <Image
-//                     source={(require('../../assets/sleepFace.png'))}
-//                 />
-//             </Pressable>
-//         </View>
-//       </View>
-//       <View>
-//         <Pressable onPress={addMood}>
-//             +
-//         </Pressable>
-//       </View>
-//       <View style={styles.buttons}>
-//         <Pressable onPress={continueButton}>
-//           <Text>CONTINUE</Text>
-//         </Pressable>
-//         <Pressable onPress={skipButton}>
-//           <Text>SKIP</Text>
-//         </Pressable>
-//       </View>
-//     </View>
-//   );
-// }
-
-// export default Mood;
+export default AddMood;

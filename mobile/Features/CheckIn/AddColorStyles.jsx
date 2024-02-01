@@ -22,25 +22,20 @@ export default StyleSheet.create({
     flex: 1,
     alignItems: 'center', 
     justifyContent: 'center',
-
   },
-  buttons: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  moodRow: {
+  colorRow: {
     flexDirection: "row"
   },
-  singularMood: {
+  singularColor: {
     flexDirection: 'column',
     padding: 10,
     alignItems:'center',
-    transform: [{scale: 0.8}],
+    transform: [{scale: 0.6}],
   },
   buttons: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    bottomMargin: 10,
   },
 });
