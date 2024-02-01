@@ -1,10 +1,9 @@
 import {
-  ScrollView, Text, View, Button, TextInput, Keyboard, TouchableWithoutFeedback, Modal, TouchableOpacity, Pressable,
+  ScrollView, Text, View, Button,
 } from 'react-native';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import styles from '../../Journal/Components/JournalStyle';
 import JournalCard from '../../Journal/Components/JournalCard';
 
 export default function JournalHistoryPage({ navigation }) {
@@ -38,11 +37,13 @@ to show up in 'recent entries' */
         <ScrollView>
           {journals.map((x) => (
             <JournalCard
+              key={x._id}
               username={x.username}
               date={x.timestamp}
               prompt={x.prompt}
               text={x.text}
               onPress={navigateToPastJournal}
+
             />
           ))}
         </ScrollView>
@@ -54,3 +55,9 @@ to show up in 'recent entries' */
     </View>
   );
 }
+
+JournalHistoryPage.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+  }).isRequired,
+};

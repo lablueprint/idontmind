@@ -3,7 +3,7 @@ import {
   TouchableWithoutFeedback, Modal, TouchableOpacity, Pressable,
 } from 'react-native';
 import { useRoute } from '@react-navigation/native';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import axios from 'axios';
 import styles from '../Components/JournalStyle';
@@ -29,10 +29,9 @@ export default function JournalPage({ navigation }) {
     handlePopUp();
     const currentdate = new Date();
     const timestamp = currentdate;
-    const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/journals/createJournal`, {
+    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/journals/createJournal`, {
       username: newUsername, prompt: newPrompt, text: newText, timestamp,
     });
-    // console.log(res);
   }; /* function that creates a new journal entry with username, prompt, text, and timestamp and
   sends it to the MongoDB */
 
@@ -109,3 +108,9 @@ export default function JournalPage({ navigation }) {
 
   );
 }
+
+JournalPage.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+  }).isRequired,
+};
