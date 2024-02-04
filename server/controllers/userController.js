@@ -6,6 +6,13 @@ const passport = require('../passport');
 const signUpUser = async (req, res, next) => {
   try {
     const { email, password } = req.body;
+
+    const userAlreadyExists = await User.findOne({ email: email })
+
+    if (userAlreadyExists) {
+      return res.status(400).send({ message: 'This user already has an account' })
+    }
+
     const user = new User({ email, password });
     await user.save();
     res.json(user);

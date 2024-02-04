@@ -20,9 +20,23 @@ import {
     const navigateToLanding = () => {
         navigation.navigate('Landing');
       }
+
+    const isValidEmail = async () => {
+      const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+      if (!emailRegex.test(email)) {
+        return false;
+      }
+      return true;
+    }
   
     const handleSignUp = async () => {
         try {
+
+          if (!isValidEmail()) {
+            console.error("Invalid Email Address")
+            return;
+          }
+
           if (password !== confirmPassword) {
             console.error("Passwords do not match");
             return;
