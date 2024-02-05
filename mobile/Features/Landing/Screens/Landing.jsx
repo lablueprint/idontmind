@@ -14,7 +14,7 @@ export default function Landing({ navigation }) {
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Landing Page</Text>
+      <Text>IDONTMIND</Text>
       <Button
         title="Get Started"
         onPress={navigateToSignUp}
