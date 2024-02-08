@@ -11,6 +11,15 @@ const getAllTags = async (req, res) => {
   }
 };
 
+const getAllTagTitles = async (req, res) => {
+  try {
+    const tags = await Tag.find({}).select('tagName');
+    res.send(tags);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 const getTagByName = async (req, res) => {
   try {
     const tag = await Tag.find({ name: req.body.name });
@@ -59,7 +68,7 @@ const unfavoriteTag = async (req, res) => {
 const getFavorites = async (req, res) => {
   try {
     const { id } = req.body;
-    const favorites = await User.findById(id).select('favorites');
+    const favorites = await User.findById(id).select('-_id favorites');
 
     res.send(favorites);
   } catch (err) {
@@ -67,6 +76,23 @@ const getFavorites = async (req, res) => {
   }
 };
 
+// create a user
+const createTag = async (req, res) => {
+  const tag = new Tag(req.body);
+  try {
+    const data = await tag.save(tag);
+    const validationError = data.validateSync();
+    if (validationError) {
+    // user data does not meet the schema requirements
+      return res.status(400).send({ message: validationError.message });
+    }
+    return res.send(data);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send(err);
+  }
+};
+
 module.exports = {
-  getAllTags, getTagByName, favoriteTag, unfavoriteTag, getFavorites,
+  getAllTags, getTagByName, favoriteTag, unfavoriteTag, getFavorites, getAllTagTitles, createTag,
 };
