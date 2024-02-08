@@ -2,80 +2,34 @@ import {
   Text, View, TouchableOpacity, FlatList, Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import style from './ContentLibraryStyle';
-
-/* Fake Data */
-const DATA = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'resource name',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'resource name',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'resource name',
-  },
-  {
-    id: 'bd7acbea-c1b1-42c2-aed5-3ad53abb28ba',
-    title: 'resource name',
-  },
-  {
-    id: '3ac68afc-c605-46d3-a4f8-fbd91aa97f63',
-    title: 'resource name',
-  },
-  {
-    id: '58694a0f-3da2-471f-bd96-145571e29d72',
-    title: 'resource name',
-  },
-];
-
-const DATA2 = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'subtopic header',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'subtopic header',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'subtopic header',
-  },
-  {
-    id: 'bd7acbea-c1b1-42c2-aed5-3ad53abb28ba',
-    title: 'subtopic header',
-  },
-  {
-    id: '3ac68afc-c605-46d3-a4f8-fbd91aa97f63',
-    title: 'subtopic header',
-  },
-  {
-    id: '58694a0f-3da2-471f-bd96-145571e29d72',
-    title: 'subtopic header',
-  },
-];
+import axios from 'axios';
+import style from '../Components/ContentStyle';
+import starImage from '../../../assets/star.png';
+import filterImage from '../../../assets/filter.png';
+import searchImage from '../../../assets/search.png';
+import shapeImage from '../../../assets/shape.png';
+import fakeData from '../Components/ContentFakeData';
 
 export default function ContentLibrary({ navigation }) {
   const navigateToLanding = () => {
     navigation.navigate('Landing');
   };
 
+  const navigateToTag = (title) => {
+    navigation.navigate('ContentTag', { title });
+  };
+
   const horizontalRenderItem = ({ item }) => (
     <TouchableOpacity
       style={[style.horizontalCard]}
+      onPress={() => navigateToTag(item.title)}
     >
-      <TouchableOpacity>
-        <Image
-          style={[style.star,
-            { alignSelf: 'flex-end' },
-          ]}
-          source={require('../../../assets/star.png')}
-        />
-      </TouchableOpacity>
+      <Image
+        style={[style.star,
+          { alignSelf: 'flex-end' },
+        ]}
+        source={starImage}
+      />
       <View
         style={[style.horizontalCardInfo]}
       >
@@ -100,7 +54,7 @@ export default function ContentLibrary({ navigation }) {
       <View style={[style.verticalCardInfo]}>
         <Image
           style={[style.shape]}
-          source={require('../../../assets/shape.png')}
+          source={shapeImage}
         />
       </View>
       <View
@@ -119,7 +73,7 @@ export default function ContentLibrary({ navigation }) {
           style={[style.container, { flex: 3 }]}
         >
           <TouchableOpacity
-            onPress={() => navigateToLanding}
+            onPress={() => navigateToLanding()}
             style={[style.button, {
               flexBasis: 37, justifyContent: 'center', backgroundColor: 'lightgray', width: 110, flexDirection: 'row',
             }]}
@@ -128,11 +82,13 @@ export default function ContentLibrary({ navigation }) {
               style={{
                 width: 20, height: 20, marginTop: 7, marginRight: 3, opacity: 0.4,
               }}
-              source={require('../../../assets/star.png')}
+              source={starImage}
             />
-            <Text style={{
-              textAlign: 'center', fontSize: 16, marginTop: 9, marginRight: 2,
-            }}
+            <Text
+              onPress={() => navigation.navigate('Favorites')}
+              style={{
+                textAlign: 'center', fontSize: 16, marginTop: 9, marginRight: 2,
+              }}
             >
               favorites
             </Text>
@@ -142,11 +98,11 @@ export default function ContentLibrary({ navigation }) {
         <View style={{ flex: 2, flexDirection: 'row', marginTop: 5 }}>
           <Image
             style={{ width: 20, height: 31, marginRight: 15 }}
-            source={require('../../../assets/search.png')}
+            source={searchImage}
           />
           <Image
             style={{ width: 20, height: 31 }}
-            source={require('../../../assets/filter.png')}
+            source={filterImage}
           />
         </View>
       </View>
@@ -156,7 +112,7 @@ export default function ContentLibrary({ navigation }) {
       <View style={[style.row, { flex: 1 }]}>
         <FlatList
           horizontal
-          data={DATA}
+          data={fakeData}
           renderItem={horizontalRenderItem}
           showsHorizontalScrollIndicator={false}
         />
@@ -166,7 +122,7 @@ export default function ContentLibrary({ navigation }) {
       />
       <View style={[style.row, { flex: 2, paddingTop: 25 }]}>
         <FlatList
-          data={DATA2}
+          data={fakeData}
           renderItem={verticalRenderItem}
           showsVerticalScrollIndicator={false}
         />
