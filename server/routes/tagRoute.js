@@ -11,8 +11,6 @@ tagRouter.post('/favoriteTag', tagController.favoriteTag);
 
 tagRouter.post('/unfavoriteTag', tagController.unfavoriteTag);
 
-tagRouter.post('/getFavorites', tagController.getFavorites);
-
 tagRouter.post('/getAllTagTitles', tagController.getAllTagTitles);
 
 tagRouter.post('/createTag', tagController.createTag);

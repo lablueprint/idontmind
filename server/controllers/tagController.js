@@ -21,8 +21,10 @@ const getAllTagTitles = async (req, res) => {
 };
 
 const getTagByName = async (req, res) => {
+  const { tagName } = req.body;
   try {
-    const tag = await Tag.find({ name: req.body.name });
+    const tag = await Tag.findOne({ tagName });
+    // send first tag object in list
     res.send(tag);
   } catch (err) {
     console.error(err);
@@ -38,26 +40,45 @@ const getTagByName = async (req, res) => {
 //   }
 // };
 
-// req has tag:  tagName, userName
+// req has tag object, userName
 const favoriteTag = async (req, res) => {
   try {
-    const { tagName, username } = req.body;
-    const user = await User.findOneAndUpdate(
+    const { tag, username } = req.body;
+    console.log('HERERERJJ ', tag);
+    const user = await User.findOne({ username });
+
+    // check if user exists
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // check if the tag already exists in the favorites array
+    const tagExists = user.favorites.some((favorite) => favorite.id === tag.id);
+    if (tagExists) {
+      return res.status(400).json({ message: 'Tag already exists in favorites' });
+    }
+
+    // maybe add additional error checking for whether the requested tag id is valid?
+
+    // if error checking passes, add the new tag to the favorites array
+    const updatedUser = await User.findOneAndUpdate(
       { username },
-      { $push: { favorites: tagName } },
+      { $push: { favorites: tag } },
+      { new: true },
     );
-    res.send(user);
+    return res.status(200).json(updatedUser);
   } catch (err) {
     console.error(err);
+    return res.status(500).json({ message: 'Internal server error' });
   }
 };
 
 const unfavoriteTag = async (req, res) => {
   try {
-    const { tagName, username } = req.body;
+    const { tag, username } = req.body;
     const user = await User.findOneAndUpdate(
       { username },
-      { $pull: { favorites: tagName } },
+      { $pull: { favorites: tag } },
     );
     res.send(user);
   } catch (err) {
@@ -65,25 +86,13 @@ const unfavoriteTag = async (req, res) => {
   }
 };
 
-const getFavorites = async (req, res) => {
-  try {
-    const { id } = req.body;
-    const favorites = await User.findById(id).select('-_id favorites');
-
-    res.send(favorites);
-  } catch (err) {
-    console.error(err);
-  }
-};
-
-// create a user
+// create a tag, requires a tag object with tagName
 const createTag = async (req, res) => {
   const tag = new Tag(req.body);
   try {
     const data = await tag.save(tag);
     const validationError = data.validateSync();
     if (validationError) {
-    // user data does not meet the schema requirements
       return res.status(400).send({ message: validationError.message });
     }
     return res.send(data);
@@ -94,5 +103,5 @@ const createTag = async (req, res) => {
 };
 
 module.exports = {
-  getAllTags, getTagByName, favoriteTag, unfavoriteTag, getFavorites, getAllTagTitles, createTag,
+  getAllTags, getTagByName, favoriteTag, unfavoriteTag, getAllTagTitles, createTag,
 };

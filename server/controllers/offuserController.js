@@ -84,6 +84,16 @@ const deleteUserById = async (req, res) => {
   }
 };
 
+const getFavorites = async (req, res) => {
+  try {
+    const { username } = req.body;
+    const user = await User.find({ username });
+    res.send(user[0].favorites);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 module.exports = {
-  createUser, getAllUsers, getUserById, updateUser, deleteUserById,
+  createUser, getAllUsers, getUserById, updateUser, deleteUserById, getFavorites,
 };

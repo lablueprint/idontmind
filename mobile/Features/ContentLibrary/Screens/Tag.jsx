@@ -5,6 +5,11 @@ import PropTypes from 'prop-types';
 import Swiper from 'react-native-swiper';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
+import starImage from '../../../assets/star.png';
+import leftArrow from '../../../assets/left.png';
+import rightArrow from '../../../assets/right.png';
+import shapeImage from '../../../assets/shape.png';
+import cancelImage from '../../../assets/cancel.png';
 
 /* Style Sheet */
 const style = StyleSheet.create({
@@ -48,49 +53,29 @@ const style = StyleSheet.create({
   },
 });
 
-/* Fake Data */
-const DATA = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'resource name',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'resource name',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'resource name',
-  },
-  {
-    id: 'bd7acbea-c1b1-42c2-aed5-3ad53abb28ba',
-    title: 'resource name',
-  },
-  {
-    id: '3ac68afc-c605-46d3-a4f8-fbd91aa97f63',
-    title: 'resource name',
-  },
-  {
-    id: '58694a0f-3da2-471f-bd96-145571e29d72',
-    title: 'resource name',
-  },
-];
+export default function Tag({ navigation, route }) {
+  const { tagName } = route.params;
+  const [tag, setTag] = useState({});
 
-export default function Resources({ navigation, route }) {
   const navigateToLanding = () => {
     navigation.navigate('Landing');
   };
 
-  const { tagName } = route.params;
-  const [data, setData] = useState([]);
+  const favoriteTag = async () => {
+    await axios.post('http://localhost:4000/tag/favoriteTag', { tag: { id: tag._id, tagName }, username: 'hi' });
+  };
+
+  const unfavoriteTag = async () => {
+    await axios.post('http://localhost:4000/tag/unfavoriteTag', { tag: { id: tag._id, tagName }, username: 'hi' });
+  };
 
   useEffect(() => {
     const foo = async () => {
       try {
-        const res = await axios.post('http://localhost:4000/tag/getTagByName');
-        setData(res.data);
+        const res = await axios.post('http://localhost:4000/tag/getTagByName', { tagName });
+        setTag(res.data);
       } catch (err) {
-        console.log(err);
+        console.err(err);
       }
     };
     foo();
@@ -115,14 +100,14 @@ export default function Resources({ navigation, route }) {
               style={{
                 marginRight: 3, height: 38, width: 38,
               }}
-              source={require('../../../assets/cancel.png')}
+              source={cancelImage}
             />
           </TouchableOpacity>
           <View
             style={{ flex: 4 }}
           />
           <TouchableOpacity
-            onPress={() => navigateToLanding}
+            onPress={() => { if (tag.isFavorite) { favoriteTag(); } else unfavoriteTag(); }}
             style={[style.button, {
               flexBasis: 37, justifyContent: 'center', backgroundColor: 'lightgray', width: 110, flexDirection: 'row', flex: 1,
             }]}
@@ -131,15 +116,15 @@ export default function Resources({ navigation, route }) {
               style={{
                 width: 20, height: 20, marginTop: 7, marginRight: 3, opacity: 0.4,
               }}
-              source={require('../../../assets/star.png')}
+              source={starImage}
             />
             <Text style={{
               textAlign: 'center', fontSize: 16, marginTop: 9, marginRight: 2,
             }}
             >
-              Add
+              {tag.isFavorite && 'unadd'}
+              {!tag.isFavorite && 'add'}
             </Text>
-
           </TouchableOpacity>
         </View>
       </View>
@@ -151,7 +136,7 @@ export default function Resources({ navigation, route }) {
           style={{
             alignSelf: 'center', flexDirection: 'row', width: 200, flex: 3, resizeMode: 'contain',
           }}
-          source={require('../../../assets/shape.png')}
+          source={shapeImage}
         />
         <View
           style={{ height: 15 }}
@@ -176,7 +161,7 @@ export default function Resources({ navigation, route }) {
                 flex: 5, fontSize: 15, opacity: 0.75, marginTop: 5,
               }}
             >
-              {data.tagBrief}
+              {tag.tagBrief}
             </Text>
             <View
               style={{ flex: 1 }}
@@ -201,7 +186,7 @@ export default function Resources({ navigation, route }) {
                 style={{
                   width: 15, height: 15, marginTop: 7, marginRight: 3, opacity: 0.4,
                 }}
-                source={require('../../../assets/left.png')}
+                source={leftArrow}
               />
             </View>
           </View>
@@ -211,7 +196,6 @@ export default function Resources({ navigation, route }) {
           >
             <Text style={{ opacity: 0.5, fontSize: 22, paddingTop: 8 }}>
               explore.
-
             </Text>
           </View>
           <View
@@ -224,7 +208,7 @@ export default function Resources({ navigation, route }) {
                 style={{
                   width: 15, height: 15, marginTop: 7, marginRight: 3, opacity: 0.4,
                 }}
-                source={require('../../../assets/right.png')}
+                source={rightArrow}
               />
             </View>
           </View>
@@ -235,7 +219,8 @@ export default function Resources({ navigation, route }) {
           <Swiper
             loop={false}
           >
-            {DATA.map((item) => (
+            {/* eventually want to map the tag's content list */}
+            {[].map((key, item) => (
               <View style={{
                 flex: 1, padding: 10,
               }}
@@ -246,7 +231,6 @@ export default function Resources({ navigation, route }) {
                 >
                   <Text>
                     {item.tagName}
-
                   </Text>
                 </View>
                 <View style={{
@@ -263,7 +247,7 @@ export default function Resources({ navigation, route }) {
   );
 }
 
-Resources.propTypes = {
+Tag.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func,
   }).isRequired,

@@ -16,7 +16,7 @@ export default function ContentLibrary({ navigation }) {
   };
 
   const navigateToTag = (tagName) => {
-    navigation.navigate('Resources', { tagName });
+    navigation.navigate('Tag', { tagName });
   };
 
   const [data, setData] = useState([]);
@@ -25,7 +25,6 @@ export default function ContentLibrary({ navigation }) {
     const foo = async () => {
       try {
         const res = await axios.post('http://localhost:4000/tag/getAllTagTitles');
-        console.log(res);
         setData(res.data);
       } catch (err) {
         console.log(err);
@@ -123,13 +122,16 @@ export default function ContentLibrary({ navigation }) {
         </View>
       </View>
       <View style={[style.row, { flexBasis: 35 }]}>
-        <Text style={{ fontSize: 16, flex: 1, color: 'gray' }}>recommended for you</Text>
+        <Text style={{ fontSize: 16, flex: 1, color: 'gray' }}>
+          recommended for you
+        </Text>
       </View>
       <View style={[style.row, { flex: 1 }]}>
         <FlatList
           horizontal
           data={data}
           renderItem={horizontalRenderItem}
+          keyExtractor={(item) => item._id}
           showsHorizontalScrollIndicator={false}
         />
       </View>
@@ -140,6 +142,7 @@ export default function ContentLibrary({ navigation }) {
         <FlatList
           data={data}
           renderItem={verticalRenderItem}
+          keyExtractor={(item) => item._id}
           showsVerticalScrollIndicator={false}
         />
       </View>
