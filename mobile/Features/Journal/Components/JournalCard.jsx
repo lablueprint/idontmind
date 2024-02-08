@@ -38,5 +38,5 @@ JournalCard.propTypes = {
   prompt: PropTypes.string.isRequired,
   text: PropTypes.string.isRequired,
   onPress: PropTypes.func.isRequired,
-  date: PropTypes.instanceOf(Date).isRequired,
+  date: PropTypes.string.isRequired,
 };
