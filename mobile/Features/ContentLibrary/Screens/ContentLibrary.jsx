@@ -24,7 +24,7 @@ export default function ContentLibrary({ navigation }) {
   useEffect(() => {
     const foo = async () => {
       try {
-        const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/getAllTagTitles`);
+        const res = await axios.post('http://localhost:4000/tag/getAllTagTitles');
         console.log(res);
         setData(res.data);
       } catch (err) {

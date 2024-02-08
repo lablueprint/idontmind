@@ -3,6 +3,8 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Swiper from 'react-native-swiper';
+import axios from 'axios';
+import { useState, useEffect } from 'react';
 
 /* Style Sheet */
 const style = StyleSheet.create({
@@ -80,6 +82,19 @@ export default function Resources({ navigation, route }) {
   };
 
   const { tagName } = route.params;
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const foo = async () => {
+      try {
+        const res = await axios.post('http://localhost:4000/tag/getTagByName');
+        setData(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    foo();
+  }, []);
 
   return (
     <View
@@ -161,8 +176,7 @@ export default function Resources({ navigation, route }) {
                 flex: 5, fontSize: 15, opacity: 0.75, marginTop: 5,
               }}
             >
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              {data.tagBrief}
             </Text>
             <View
               style={{ flex: 1 }}
