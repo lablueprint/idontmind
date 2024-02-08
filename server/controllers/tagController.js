@@ -59,7 +59,7 @@ const unfavoriteTag = async (req, res) => {
 const getFavorites = async (req, res) => {
   try {
     const { id } = req.body;
-    const favorites = await User.find({ id }).select('favorites');
+    const favorites = await User.findById(id).select('favorites');
 
     res.send(favorites);
   } catch (err) {
