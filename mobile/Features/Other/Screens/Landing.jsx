@@ -17,6 +17,10 @@ export default function Landing({ navigation }) {
     navigation.navigate('Journal');
   };
 
+  const navigateToResources = () => {
+    navigation.navigate('Resources');
+  };
+
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>Landing Page</Text>
@@ -31,6 +35,10 @@ export default function Landing({ navigation }) {
       <Button
         title="To Journal"
         onPress={navigateToJournal}
+      />
+      <Button
+        title="To Resources"
+        onPress={navigateToResources}
       />
     </View>
   );
