@@ -74,10 +74,12 @@ const DATA = [
   },
 ];
 
-export default function Resources({ navigation }) {
+export default function Resources({ navigation, route }) {
   const navigateToLanding = () => {
     navigation.navigate('Landing');
   };
+
+  const { title } = route.params;
 
   return (
     <View
@@ -147,7 +149,7 @@ export default function Resources({ navigation }) {
           <Text
             style={{ fontSize: 32 }}
           >
-            subtopic header
+            {title}
           </Text>
           <ScrollView
             style={{ flex: 1 }}
@@ -160,7 +162,7 @@ export default function Resources({ navigation }) {
               }}
             >
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.              
+              dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
             </Text>
             <View
               style={{ flex: 1 }}
@@ -250,5 +252,10 @@ export default function Resources({ navigation }) {
 Resources.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func,
+  }).isRequired,
+  route: PropTypes.shape({
+    params: PropTypes.shape({
+      title: PropTypes.string,
+    }).isRequired,
   }).isRequired,
 };

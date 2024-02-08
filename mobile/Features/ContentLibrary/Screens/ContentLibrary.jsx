@@ -2,13 +2,13 @@ import {
   Text, View, TouchableOpacity, FlatList, Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import style from '../Components/ContentStyle';
 import starImage from '../../../assets/star.png';
 import filterImage from '../../../assets/filter.png';
 import searchImage from '../../../assets/search.png';
 import shapeImage from '../../../assets/shape.png';
-import fakeData from '../Components/ContentFakeData';
 
 export default function ContentLibrary({ navigation }) {
   const navigateToLanding = () => {
@@ -16,8 +16,22 @@ export default function ContentLibrary({ navigation }) {
   };
 
   const navigateToTag = (title) => {
-    navigation.navigate('ContentTag', { title });
+    navigation.navigate('Resources', { title });
   };
+
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const foo = async () => {
+      try {
+        const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/posts/fetchPosts`);
+        setData(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    foo();
+  }, []);
 
   const horizontalRenderItem = ({ item }) => (
     <TouchableOpacity
@@ -112,7 +126,7 @@ export default function ContentLibrary({ navigation }) {
       <View style={[style.row, { flex: 1 }]}>
         <FlatList
           horizontal
-          data={fakeData}
+          data={data}
           renderItem={horizontalRenderItem}
           showsHorizontalScrollIndicator={false}
         />
@@ -122,7 +136,7 @@ export default function ContentLibrary({ navigation }) {
       />
       <View style={[style.row, { flex: 2, paddingTop: 25 }]}>
         <FlatList
-          data={fakeData}
+          data={data}
           renderItem={verticalRenderItem}
           showsVerticalScrollIndicator={false}
         />
