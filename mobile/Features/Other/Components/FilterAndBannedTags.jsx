@@ -24,9 +24,9 @@ export default function FilterAndBannedTags({ navigation, screenOption }) {
     setSelectedTags([]);
   };
 
-  const applyAll = () => {
-    setSelectedTags([...tags]);
-  };
+  // const applyAll = () => {
+  //   setSelectedTags([...tags]);
+  // };
 
   const getCheckboxColor = (selected) => (selected ? '#404040' : '#D9D9D9');
   const isTagSelected = (tag) => (selectedTags.includes(tag));
@@ -52,9 +52,9 @@ export default function FilterAndBannedTags({ navigation, screenOption }) {
         <TouchableOpacity style={[FilterAndBannedTagsStyle.buttons, { backgroundColor: '#D9D9D9' }]} onPress={() => clearAll()}>
           <Text style={FilterAndBannedTagsStyle.text}> clear all </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[FilterAndBannedTagsStyle.buttons, { backgroundColor: '#404040' }]} onPress={() => (screenOption === 1 ? applyAll() : null)}>
+        <TouchableOpacity style={[FilterAndBannedTagsStyle.buttons, { backgroundColor: '#404040' }]} onPress={() => (navigation.goBack())}>
           <Text style={[FilterAndBannedTagsStyle.text, { color: 'white' }]}>
-            {(screenOption === 1 ? 'apply all' : 'save')}
+            {(screenOption === 1 ? 'apply all filters' : 'save')}
           </Text>
         </TouchableOpacity>
       </View>

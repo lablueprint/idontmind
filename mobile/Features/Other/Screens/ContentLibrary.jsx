@@ -142,7 +142,13 @@ export default function ContentLibrary({ navigation }) {
     // search logic
     if (query.trim() !== '') {
       if (!recentSearches.includes(query.toLowerCase())) {
-        setRecentSearches((prevSearches) => [query.toLowerCase(), ...prevSearches]);
+        setRecentSearches((prevSearches) => {
+          const updatedSearches = [query.toLowerCase(), ...prevSearches];
+          if (updatedSearches.length > 10) {
+            updatedSearches.pop(); // Remove the last element
+          }
+          return updatedSearches;
+        });
       }
     }
   };
