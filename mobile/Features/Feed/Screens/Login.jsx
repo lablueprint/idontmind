@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#E3F5F4',
   },
   arrowContainer: {
     position: 'absolute',
@@ -22,19 +23,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: 20,
+    fontSize: 40,
   },
   inputContainer: {
     marginTop: 20,
     alignItems: 'flex-start',
   },
-  input: {
+  inputBox: {
     height: 40,
     width: 200,
     borderColor: 'gray',
     borderWidth: 1,
     marginTop: 5,
     paddingLeft: 10,
+    backgroundColor: 'white',
   },
   buttonShape: {
     backgroundColor: '#C0C0C0',
@@ -94,7 +96,7 @@ export default function Login({ navigation }) {
       <View style={styles.inputContainer}>
         <Text>Email</Text>
         <TextInput
-          style={styles.input}
+          style={styles.inputBox}
           placeholder="jeff@idontmind.com"
           value={email}
           onChangeText={setEmail}
@@ -103,7 +105,7 @@ export default function Login({ navigation }) {
       <View style={styles.inputContainer}>
         <Text>Password</Text>
         <TextInput
-          style={styles.input}
+          style={styles.inputBox}
           placeholder="Password"
           value={password}
           onChangeText={setPassword}

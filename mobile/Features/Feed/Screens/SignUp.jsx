@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#E3F5F4',
   },
   arrowContainer: {
     position: 'absolute',
@@ -22,38 +23,56 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: 20,
+    fontSize: 40,
   },
   inputContainer: {
     marginTop: 20,
     alignItems: 'flex-start',
   },
-  input: {
-    height: 40,
-    width: 200,
+  inputWrapper: {
+    flexDirection: 'row', 
+    alignItems: 'center',
+    height: 63,
+    width: 350,
     borderColor: 'gray',
     borderWidth: 1,
     marginTop: 5,
     paddingLeft: 10,
+    backgroundColor: 'white',
+  },
+  inputBox: {
+    height: 40,
+    width: 300,
+    marginTop: 5,
+    paddingLeft: 10,
+    backgroundColor: 'white',
   },
   buttonShape: {
     backgroundColor: '#C0C0C0',
     borderRadius: 20,
     paddingVertical: 10,
     paddingHorizontal: 40,
-    marginTop: 20,
+    marginTop: 10,
+    width: 258,
+    height: 70,
   },
   buttonText: {
     color: 'black',
     textAlign: 'center',
-    fontSize: 16,
+    fontSize: 20,
+    marginTop: 12,
+  },
+  eyeIcon: {
+    marginTop: 5,
   },
 });
 
 export default function SignUp({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const dispatch = useDispatch();
 
   const navigateToFeed = () => {
@@ -103,38 +122,60 @@ export default function SignUp({ navigation }) {
       }
     };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
+
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={navigateToLanding} style={styles.arrowContainer}>
-        <Icon name="arrow-left" size={30} color="black" />
+        <Icon name="arrow-left" size={30} color="black"/>
       </TouchableOpacity>
       <Text style={styles.title}>Let's get started!</Text>
       <View style={styles.inputContainer}>
         <Text>Email</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="jeff@idontmind.com"
-          value={email}
-          onChangeText={setEmail}
-        />
+        <View style={styles.inputWrapper}>
+          <TextInput
+            style={styles.inputBox}
+            placeholder="jeff@idontmind.com"
+            value={email}
+            onChangeText={setEmail}
+          />
+        </View>
       </View>
       <View style={styles.inputContainer}>
         <Text>Password</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          value={password}
-          onChangeText={setPassword}
-        />
+        <View style={styles.inputWrapper}>
+          <TextInput
+            style={styles.inputBox}
+            placeholder="Password"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry={!showPassword}
+          />
+          <TouchableOpacity onPress={togglePasswordVisibility}>
+            <Icon name={showPassword ? 'eye-slash' : 'eye'} size={20} color="black" style={styles.eyeIcon} />
+          </TouchableOpacity>
+        </View>
       </View>
       <View style={styles.inputContainer}>
         <Text>Confirm Password</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Confirm"
-          value={confirmPassword}
-          onChangeText={setConfirmPassword}
-        />
+        <View style={styles.inputWrapper}>
+          <TextInput
+            style={styles.inputBox}
+            placeholder="Confirm"
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+            secureTextEntry={!showConfirmPassword}
+          />
+          <TouchableOpacity onPress={toggleConfirmPasswordVisibility}>
+            <Icon name={showConfirmPassword ? 'eye-slash' : 'eye'} size={20} color="black" style={styles.eyeIcon} />
+          </TouchableOpacity>
+        </View>
       </View>
       <View>
         <TouchableOpacity
