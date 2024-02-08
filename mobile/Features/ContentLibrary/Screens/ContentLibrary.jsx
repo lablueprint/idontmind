@@ -15,8 +15,8 @@ export default function ContentLibrary({ navigation }) {
     navigation.navigate('Landing');
   };
 
-  const navigateToTag = (title) => {
-    navigation.navigate('Resources', { title });
+  const navigateToTag = (tagName) => {
+    navigation.navigate('Resources', { tagName });
   };
 
   const [data, setData] = useState([]);
@@ -24,7 +24,8 @@ export default function ContentLibrary({ navigation }) {
   useEffect(() => {
     const foo = async () => {
       try {
-        const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/posts/fetchPosts`);
+        const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/getAllTagTitles`);
+        console.log(res);
         setData(res.data);
       } catch (err) {
         console.log(err);
@@ -36,7 +37,7 @@ export default function ContentLibrary({ navigation }) {
   const horizontalRenderItem = ({ item }) => (
     <TouchableOpacity
       style={[style.horizontalCard]}
-      onPress={() => navigateToTag(item.title)}
+      onPress={() => navigateToTag(item.tagName)}
     >
       <Image
         style={[style.star,
@@ -50,7 +51,7 @@ export default function ContentLibrary({ navigation }) {
         <Text
           style={[style.horizontalText]}
         >
-          {item.title}
+          {item.tagName}
         </Text>
       </View>
     </TouchableOpacity>
@@ -59,11 +60,12 @@ export default function ContentLibrary({ navigation }) {
   const verticalRenderItem = ({ item }) => (
     <TouchableOpacity
       style={[style.verticalCard]}
+      onPress={() => navigateToTag(item.tagName)}
     >
       <Text
         style={[style.verticalText]}
       >
-        {item.title}
+        {item.tagName}
       </Text>
       <View style={[style.verticalCardInfo]}>
         <Image

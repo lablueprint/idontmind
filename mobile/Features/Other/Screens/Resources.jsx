@@ -79,7 +79,7 @@ export default function Resources({ navigation, route }) {
     navigation.navigate('Landing');
   };
 
-  const { title } = route.params;
+  const { tagName } = route.params;
 
   return (
     <View
@@ -149,7 +149,7 @@ export default function Resources({ navigation, route }) {
           <Text
             style={{ fontSize: 32 }}
           >
-            {title}
+            {tagName}
           </Text>
           <ScrollView
             style={{ flex: 1 }}
@@ -231,7 +231,7 @@ export default function Resources({ navigation, route }) {
                 }}
                 >
                   <Text>
-                    {item.title}
+                    {item.tagName}
 
                   </Text>
                 </View>
@@ -255,7 +255,7 @@ Resources.propTypes = {
   }).isRequired,
   route: PropTypes.shape({
     params: PropTypes.shape({
-      title: PropTypes.string,
+      tagName: PropTypes.string,
     }).isRequired,
   }).isRequired,
 };
