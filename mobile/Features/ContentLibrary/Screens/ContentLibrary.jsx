@@ -2,6 +2,7 @@ import {
   Text, View, TouchableOpacity, FlatList, Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 import style from '../Components/ContentStyle';
 import starImage from '../../../assets/star.png';
 import filterImage from '../../../assets/filter.png';
@@ -14,9 +15,14 @@ export default function ContentLibrary({ navigation }) {
     navigation.navigate('Landing');
   };
 
+  const navigateToTag = (title) => {
+    navigation.navigate('ContentTag', { title });
+  };
+
   const horizontalRenderItem = ({ item }) => (
     <TouchableOpacity
       style={[style.horizontalCard]}
+      onPress={() => navigateToTag(item.title)}
     >
       <Image
         style={[style.star,
