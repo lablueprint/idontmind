@@ -61,24 +61,27 @@ export default function Tag({ navigation, route }) {
     navigation.navigate('Landing');
   };
 
+  const getTag = async () => {
+    try {
+      const res = await axios.post('http://localhost:4000/tag/getTagByName', { tagName });
+      setTag(res.data);
+    } catch (err) {
+      console.err(err);
+    }
+  };
+
   const favoriteTag = async () => {
     await axios.post('http://localhost:4000/tag/favoriteTag', { tag: { id: tag._id, tagName }, username: 'hi' });
+    await getTag();
   };
 
   const unfavoriteTag = async () => {
     await axios.post('http://localhost:4000/tag/unfavoriteTag', { tag: { id: tag._id, tagName }, username: 'hi' });
+    await getTag();
   };
 
   useEffect(() => {
-    const foo = async () => {
-      try {
-        const res = await axios.post('http://localhost:4000/tag/getTagByName', { tagName });
-        setTag(res.data);
-      } catch (err) {
-        console.err(err);
-      }
-    };
-    foo();
+    getTag();
   }, []);
 
   return (
@@ -107,7 +110,7 @@ export default function Tag({ navigation, route }) {
             style={{ flex: 4 }}
           />
           <TouchableOpacity
-            onPress={() => { if (tag.isFavorite) { favoriteTag(); } else unfavoriteTag(); }}
+            onPress={() => { if (tag.isFavorite) { unfavoriteTag(); } else favoriteTag(); }}
             style={[style.button, {
               flexBasis: 37, justifyContent: 'center', backgroundColor: 'lightgray', width: 110, flexDirection: 'row', flex: 1,
             }]}
@@ -122,8 +125,7 @@ export default function Tag({ navigation, route }) {
               textAlign: 'center', fontSize: 16, marginTop: 9, marginRight: 2,
             }}
             >
-              {tag.isFavorite && 'unadd'}
-              {!tag.isFavorite && 'add'}
+              {tag.isFavorite ? 'unadd' : 'add'}
             </Text>
           </TouchableOpacity>
         </View>

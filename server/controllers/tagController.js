@@ -44,7 +44,6 @@ const getTagByName = async (req, res) => {
 const favoriteTag = async (req, res) => {
   try {
     const { tag, username } = req.body;
-    console.log('HERERERJJ ', tag);
     const user = await User.findOne({ username });
 
     // check if user exists
@@ -66,7 +65,13 @@ const favoriteTag = async (req, res) => {
       { $push: { favorites: tag } },
       { new: true },
     );
-    return res.status(200).json(updatedUser);
+
+    // find the corresponding tag document and update its isFavorite field
+    const updatedTag = await Tag.findOneAndUpdate(
+      { _id: tag.id },
+      { $set: { isFavorite: !tag.isFavorite } }, // Toggle isFavorite
+    );
+    return res.status(200).json(updatedUser, updatedTag);
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: 'Internal server error' });
@@ -76,11 +81,16 @@ const favoriteTag = async (req, res) => {
 const unfavoriteTag = async (req, res) => {
   try {
     const { tag, username } = req.body;
-    const user = await User.findOneAndUpdate(
+    const updatedUser = await User.findOneAndUpdate(
       { username },
       { $pull: { favorites: tag } },
     );
-    res.send(user);
+    // find the corresponding tag document and update its isFavorite field
+    const updatedTag = await Tag.findOneAndUpdate(
+      { _id: tag.id },
+      { $set: { isFavorite: !tag.isFavorite } }, // Toggle isFavorite
+    );
+    res.send(updatedUser, updatedTag);
   } catch (err) {
     console.error(err);
   }
