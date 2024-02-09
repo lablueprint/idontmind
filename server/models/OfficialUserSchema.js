@@ -61,7 +61,7 @@ const officialUserSchema = new mongoose.Schema({
   },
   favorites: {
     default: [],
-    type: [String],
+    type: [Object],
   },
   checkInPreferences: {
     default: undefined,

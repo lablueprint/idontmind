@@ -2,27 +2,41 @@ import {
   Text, View, TouchableOpacity, FlatList, Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import style from '../Components/ContentStyle';
 import starImage from '../../../assets/star.png';
 import filterImage from '../../../assets/filter.png';
 import searchImage from '../../../assets/search.png';
 import shapeImage from '../../../assets/shape.png';
-import fakeData from '../Components/ContentFakeData';
 
 export default function ContentLibrary({ navigation }) {
   const navigateToLanding = () => {
     navigation.navigate('Landing');
   };
 
-  const navigateToTag = (title) => {
-    navigation.navigate('ContentTag', { title });
+  const navigateToTag = (tagName) => {
+    navigation.navigate('Tag', { tagName });
   };
+
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const foo = async () => {
+      try {
+        const res = await axios.post('http://localhost:4000/tag/getAllTagTitles');
+        setData(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    foo();
+  }, []);
 
   const horizontalRenderItem = ({ item }) => (
     <TouchableOpacity
       style={[style.horizontalCard]}
-      onPress={() => navigateToTag(item.title)}
+      onPress={() => navigateToTag(item.tagName)}
     >
       <Image
         style={[style.star,
@@ -36,7 +50,7 @@ export default function ContentLibrary({ navigation }) {
         <Text
           style={[style.horizontalText]}
         >
-          {item.title}
+          {item.tagName}
         </Text>
       </View>
     </TouchableOpacity>
@@ -45,11 +59,12 @@ export default function ContentLibrary({ navigation }) {
   const verticalRenderItem = ({ item }) => (
     <TouchableOpacity
       style={[style.verticalCard]}
+      onPress={() => navigateToTag(item.tagName)}
     >
       <Text
         style={[style.verticalText]}
       >
-        {item.title}
+        {item.tagName}
       </Text>
       <View style={[style.verticalCardInfo]}>
         <Image
@@ -107,13 +122,16 @@ export default function ContentLibrary({ navigation }) {
         </View>
       </View>
       <View style={[style.row, { flexBasis: 35 }]}>
-        <Text style={{ fontSize: 16, flex: 1, color: 'gray' }}>recommended for you</Text>
+        <Text style={{ fontSize: 16, flex: 1, color: 'gray' }}>
+          recommended for you
+        </Text>
       </View>
       <View style={[style.row, { flex: 1 }]}>
         <FlatList
           horizontal
-          data={fakeData}
+          data={data}
           renderItem={horizontalRenderItem}
+          keyExtractor={(item) => item._id}
           showsHorizontalScrollIndicator={false}
         />
       </View>
@@ -122,8 +140,9 @@ export default function ContentLibrary({ navigation }) {
       />
       <View style={[style.row, { flex: 2, paddingTop: 25 }]}>
         <FlatList
-          data={fakeData}
+          data={data}
           renderItem={verticalRenderItem}
+          keyExtractor={(item) => item._id}
           showsVerticalScrollIndicator={false}
         />
       </View>

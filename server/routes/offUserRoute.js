@@ -13,4 +13,6 @@ offUserRouter.post('/updateUser', offUserController.updateUser);
 
 offUserRouter.post('/deleteUserById', offUserController.deleteUserById);
 
+offUserRouter.post('/getFavorites', offUserController.getFavorites);
+
 module.exports = offUserRouter;

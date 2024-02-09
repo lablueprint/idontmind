@@ -14,7 +14,10 @@ const TagSchema = new mongoose.Schema({
     default: '',
     type: String,
   },
-
+  isFavorite: {
+    default: false,
+    type: Boolean,
+  },
 });
 
 module.exports = mongoose.model('Tag', TagSchema);
