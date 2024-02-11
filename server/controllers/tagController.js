@@ -45,12 +45,10 @@ const favoriteTag = async (req, res) => {
   try {
     const { tag, username } = req.body;
     const user = await User.findOne({ username });
-
     // check if user exists
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
-
     // check if the tag already exists in the favorites array
     const tagExists = user.favorites.some((favorite) => favorite.id === tag.id);
     if (tagExists) {
@@ -60,18 +58,16 @@ const favoriteTag = async (req, res) => {
     // maybe add additional error checking for whether the requested tag id is valid?
 
     // if error checking passes, add the new tag to the favorites array
-    const updatedUser = await User.findOneAndUpdate(
+    await User.findOneAndUpdate(
       { username },
       { $push: { favorites: tag } },
-      { new: true },
     );
-
     // find the corresponding tag document and update its isFavorite field
     const updatedTag = await Tag.findOneAndUpdate(
       { _id: tag.id },
-      { $set: { isFavorite: !tag.isFavorite } }, // Toggle isFavorite
+      { $set: { isFavorite: true } }, // Toggle isFavorite
     );
-    return res.status(200).json(updatedUser, updatedTag);
+    return res.status(200).json(updatedTag);
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: 'Internal server error' });
@@ -81,18 +77,19 @@ const favoriteTag = async (req, res) => {
 const unfavoriteTag = async (req, res) => {
   try {
     const { tag, username } = req.body;
-    const updatedUser = await User.findOneAndUpdate(
+    await User.findOneAndUpdate(
       { username },
       { $pull: { favorites: tag } },
     );
     // find the corresponding tag document and update its isFavorite field
     const updatedTag = await Tag.findOneAndUpdate(
       { _id: tag.id },
-      { $set: { isFavorite: !tag.isFavorite } }, // Toggle isFavorite
+      { $set: { isFavorite: false } }, // Toggle isFavorite
     );
-    res.send(updatedUser, updatedTag);
+    return res.status(200).json(updatedTag);
   } catch (err) {
     console.error(err);
+    return res.status(500).json({ message: 'Internal server error' });
   }
 };
 

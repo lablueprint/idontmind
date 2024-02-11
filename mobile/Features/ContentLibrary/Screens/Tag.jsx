@@ -63,20 +63,20 @@ export default function Tag({ navigation, route }) {
 
   const getTag = async () => {
     try {
-      const res = await axios.post('http://localhost:4000/tag/getTagByName', { tagName });
+      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/getTagByName`, { tagName });
       setTag(res.data);
     } catch (err) {
-      console.err(err);
+      console.error(err);
     }
   };
 
   const favoriteTag = async () => {
-    await axios.post('http://localhost:4000/tag/favoriteTag', { tag: { id: tag._id, tagName }, username: 'hi' });
+    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/favoriteTag`, { tag: { id: tag._id, tagName }, username: 'hi' });
     await getTag();
   };
 
   const unfavoriteTag = async () => {
-    await axios.post('http://localhost:4000/tag/unfavoriteTag', { tag: { id: tag._id, tagName }, username: 'hi' });
+    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/unfavoriteTag`, { tag: { id: tag._id, tagName }, username: 'hi' });
     await getTag();
   };
 

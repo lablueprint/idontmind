@@ -12,10 +12,10 @@ export default function Favorites() {
   useEffect(() => {
     const foo = async () => {
       try {
-        const res = await axios.post('http://localhost:4000/offUser/getFavorites', { username: 'hi' });
+        const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/getFavorites`, { username: 'hi' });
         setFavorites(res.data);
       } catch (err) {
-        console.err(err);
+        console.error(err);
       }
     };
     foo();
