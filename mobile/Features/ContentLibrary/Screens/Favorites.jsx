@@ -2,11 +2,12 @@ import { useState, useEffect } from 'react';
 import {
   Text, View, FlatList, TouchableOpacity, Image,
 } from 'react-native';
+import PropTypes from 'prop-types';
 import axios from 'axios';
 import style from '../Components/ContentStyle';
 import shapeImage from '../../../assets/shape.png';
 
-export default function Favorites() {
+export default function Favorites({ navigation }) {
   const [favorites, setFavorites] = useState({});
 
   useEffect(() => {
@@ -21,9 +22,14 @@ export default function Favorites() {
     foo();
   }, []);
 
+  const navigateToTag = (tagName) => {
+    navigation.navigate('Tag', { tagName });
+  };
+
   const verticalRenderItem = ({ item }) => (
     <TouchableOpacity
       style={[style.verticalCard]}
+      onPress={() => navigateToTag(item.tagName)}
     >
       <Text
         style={[style.verticalText]}
@@ -60,4 +66,7 @@ export default function Favorites() {
 }
 
 Favorites.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+  }).isRequired,
 };

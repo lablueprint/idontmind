@@ -11,10 +11,6 @@ import searchImage from '../../../assets/search.png';
 import shapeImage from '../../../assets/shape.png';
 
 export default function ContentLibrary({ navigation }) {
-  const navigateToLanding = () => {
-    navigation.navigate('Landing');
-  };
-
   const navigateToTag = (tagName) => {
     navigation.navigate('Tag', { tagName });
   };
@@ -88,7 +84,7 @@ export default function ContentLibrary({ navigation }) {
           style={[style.container, { flex: 3 }]}
         >
           <TouchableOpacity
-            onPress={() => navigateToLanding()}
+            onPress={() => navigation.navigate('Favorites')}
             style={[style.button, {
               flexBasis: 37, justifyContent: 'center', backgroundColor: 'lightgray', width: 110, flexDirection: 'row',
             }]}
