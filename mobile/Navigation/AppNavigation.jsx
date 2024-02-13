@@ -8,10 +8,12 @@ import Mood from '../Features/CheckIn/Mood';
 import AddMood from '../Features/CheckIn/AddMood';
 import AddColor from '../Features/CheckIn/AddColor';
 
-const Misc = () => {
-  return (<View>
-    Test
-  </View>)
+function Misc() {
+  return (
+    <View>
+      Test
+    </View>
+  );
 }
 
 const Stack = createStackNavigator();

@@ -2,7 +2,8 @@ import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   container: {
-    alignItems: 'center', 
+    top: '5%',
+    alignItems: 'center',
     justifyContent: 'center',
     height: '100%',
     width: '100%',
@@ -20,17 +21,17 @@ export default StyleSheet.create({
   },
   heading: {
     flex: 1,
-    alignItems: 'center', 
+    alignItems: 'center',
     justifyContent: 'center',
   },
   colorRow: {
-    flexDirection: "row"
+    flexDirection: 'row',
   },
   singularColor: {
     flexDirection: 'column',
     padding: 10,
-    alignItems:'center',
-    transform: [{scale: 0.6}],
+    alignItems: 'center',
+    transform: [{ scale: 0.6 }],
   },
   buttons: {
     flex: 1,

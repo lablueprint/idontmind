@@ -1,43 +1,66 @@
 import { useState } from 'react';
-import { Dimensions } from 'react-native';
 import {
-  Text, View, TextInput, StyleSheet, Pressable, Image, TouchableWithoutFeedback,
-  Keyboard
+  Text, View, TextInput, Pressable, TouchableWithoutFeedback,
+  Keyboard,
 } from 'react-native';
+import { useRoute } from '@react-navigation/native';
+import ProgressBar from 'react-native-progress/Bar';
+import PropTypes from 'prop-types';
 import styles from './MoodStyle';
 
 function AddMood({ navigation }) {
-    const [text, setText] = useState('')
-    const goToAddColor = () => {
-        navigation.navigate('AddColor');
-    };
-    const handleInputChange = (input) => {
-        setText(input);
-    };
+  // get parameters from route
+  const route = useRoute();
+  const setAddedMoods = route.params?.setAddedMoods;
+  const addedMoods = route.params?.addedMoods;
+
+  // set progress
+  const numPages = route.params?.numPages;
+  const progress = 1 / numPages;
+
+  // text for new mood
+  const [text, setText] = useState('');
+
+  // navigate to AddColor with setAddedMoods, addedMoods, the mood the user typed in, and numPages
+  const goToAddColor = () => {
+    navigation.navigate('AddColor', {
+      setAddedMoods, addedMoods, mood: text, numPages,
+    });
+  };
+  const handleInputChange = (input) => {
+    setText(input);
+  };
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-    <View style={styles.container}>
+      <View style={styles.container}>
+        <ProgressBar progress={progress} width={200} style={{ top: '5%' }} />
         <View style={styles.heading}>
-        <Text>
-          type out a custom emotion here!
-        </Text>
-      </View>
-      <View style={styles.content}>
-        <TextInput
+          <Text>
+            type out a custom emotion here!
+          </Text>
+        </View>
+        <View style={styles.content}>
+          <TextInput
             placeholder="Start typing..."
             style={{
-            height: 40, borderColor: 'gray', borderWidth: 1, marginTop: 8, width: '90%', alignSelf: 'center',
+              height: 40, borderColor: 'gray', borderWidth: 1, marginTop: 8, width: '90%', alignSelf: 'center',
             }}
             onChangeText={handleInputChange}
             value={text}
-        />
-        <Pressable onPress={goToAddColor}>
+          />
+          <Pressable onPress={goToAddColor}>
             <Text>check</Text>
-        </Pressable>
-    </View>
-    </View>
+          </Pressable>
+        </View>
+      </View>
     </TouchableWithoutFeedback>
   );
 }
 
 export default AddMood;
+
+AddMood.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+  }).isRequired,
+};

@@ -1,26 +1,24 @@
-import { useState } from 'react';
 import {
-  Text, View, TextInput, StyleSheet, Pressable, Image,
+  Text, View, Pressable, Image,
 } from 'react-native';
-import { CheckBox } from '@rneui/themed';
-import Slider from '@react-native-community/slider';
-import DropDownPicker from 'react-native-dropdown-picker';
+import PropTypes from 'prop-types';
 
 function CheckIn({ navigation }) {
+  const numPages = 3.0;
 
   const beginCheckIn = () => {
-    navigation.navigate('Mood');
+    navigation.navigate('Mood', { numPages });
   };
 
   const continueToDashBoard = () => {
-    console.log('heyy');
+    // console.log('heyy');
   };
-  
+
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>welcome back, diya</Text>
       <Image
-          source={require('../../assets/shape.png')}
+        source={require('../../assets/shape.png')}
       />
       <View>
         <Pressable onPress={beginCheckIn}>
@@ -35,3 +33,9 @@ function CheckIn({ navigation }) {
 }
 
 export default CheckIn;
+
+CheckIn.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+  }).isRequired,
+};

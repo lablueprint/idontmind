@@ -2,7 +2,8 @@ import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   container: {
-    alignItems: 'center', 
+    top: '5%',
+    alignItems: 'center',
     justifyContent: 'center',
     height: '100%',
     width: '100%',
@@ -17,13 +18,13 @@ export default StyleSheet.create({
     flex: 1,
     backgroundColor: 'red',
     height: '100%',
-    justifyContent:'center',
+    justifyContent: 'center',
     flexDirection: 'column',
   },
   singularRating: {
     flex: 1,
     backgroundColor: 'green',
-    justifyContent:'center',
+    justifyContent: 'center',
     marginLeft: '20%',
     marginRight: '20%',
     marginTop: '10%',
@@ -33,7 +34,7 @@ export default StyleSheet.create({
   },
   slider: {
     flex: 1,
-    justifyContent:'center',
+    justifyContent: 'center',
 
     backgroundColor: 'yellow',
     height: '100%',
@@ -44,18 +45,18 @@ export default StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'column',
     // transform: [{scale: 0.7}],
-    justifyContent:'center',
+    justifyContent: 'center',
   },
   singularFace: {
     flex: 1,
     // margin: '5px',
-    transform: [{scale: 0.5}],
-    alignItems: 'center', 
+    transform: [{ scale: 0.5 }],
+    alignItems: 'center',
     justifyContent: 'center',
   },
   heading: {
     flex: 1,
-    alignItems: 'center', 
+    alignItems: 'center',
     justifyContent: 'center',
 
   },
@@ -63,5 +64,6 @@ export default StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    bottom: '2.5%',
   },
 });

@@ -1,14 +1,17 @@
 import { useState } from 'react';
 import {
-  Text, View, TextInput, StyleSheet, Pressable, Image,
+  Text, View, Pressable, Image,
 } from 'react-native';
-import { CheckBox } from '@rneui/themed';
+import { useRoute } from '@react-navigation/native';
 import Slider from '@react-native-community/slider';
-import DropDownPicker from 'react-native-dropdown-picker';
+import ProgressBar from 'react-native-progress/Bar';
 import styles from './SleepStyle';
 
 function Sleep() {
-
+  const route = useRoute();
+  // update progress
+  const numPages = route.params?.numPages;
+  const progress = 2 / numPages;
   // slider state
   const [slider, setSlider] = useState(0);
 
@@ -17,15 +20,16 @@ function Sleep() {
   };
 
   const continueButton = () => {
-    console.log('continue');
+    // console.log('continue');
   };
 
   const skipButton = () => {
-    console.log('skip');
+    // console.log('skip');
   };
-  
+
   return (
     <View style={styles.container}>
+      <ProgressBar progress={progress} width={200} style={{ top: '5%' }} />
       <View style={styles.heading}>
         <Text>
           rate your sleep quality last night.
@@ -45,7 +49,7 @@ function Sleep() {
           <Text style={styles.singularRating}>1 very poor</Text>
         </View>
         <View style={styles.slider}>
-          <View style={{transform:[{rotate: "-90deg"}]}}>
+          <View style={{ transform: [{ rotate: '-90deg' }] }}>
             <Slider
               style={{ width: 600, height: 40, alignSelf: 'center' }}
               minimumValue={1}
@@ -54,7 +58,7 @@ function Sleep() {
               maximumTrackTintColor="#000000"
               onValueChange={onSliderChange}
               step={1}
-              vertical={true}
+              vertical
               lowerLimit={2}
               upperLimit={11}
             />
@@ -75,7 +79,7 @@ function Sleep() {
             <Image
               source={require('../../assets/sleepFace.png')}
             />
-          </View >
+          </View>
           <View style={styles.singularFace}>
             <Image
               source={require('../../assets/sleepFace.png')}
