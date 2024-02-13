@@ -29,11 +29,20 @@ const styles = StyleSheet.create({
     marginTop: 20,
     alignItems: 'flex-start',
   },
-  inputBox: {
-    height: 40,
-    width: 200,
+  inputWrapper: {
+    flexDirection: 'row', 
+    alignItems: 'center',
+    height: 63,
+    width: 350,
     borderColor: 'gray',
     borderWidth: 1,
+    marginTop: 5,
+    paddingLeft: 10,
+    backgroundColor: 'white',
+  },
+  inputBox: {
+    height: 40,
+    width: 300,
     marginTop: 5,
     paddingLeft: 10,
     backgroundColor: 'white',
@@ -43,18 +52,25 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     paddingVertical: 10,
     paddingHorizontal: 40,
-    marginTop: 20,
+    marginTop: 10,
+    width: 258,
+    height: 70,
   },
   buttonText: {
     color: 'black',
     textAlign: 'center',
-    fontSize: 16,
+    fontSize: 20,
+    marginTop: 12,
+  },
+  eyeIcon: {
+    marginTop: 5,
   },
 });
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
 
   const navigateToFeed = () => {
@@ -87,6 +103,10 @@ export default function Login({ navigation }) {
     }
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  }
+
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={navigateToLanding} style={styles.arrowContainer}>
@@ -95,21 +115,29 @@ export default function Login({ navigation }) {
       <Text style={styles.title}>Welcome back!</Text>
       <View style={styles.inputContainer}>
         <Text>Email</Text>
-        <TextInput
-          style={styles.inputBox}
-          placeholder="jeff@idontmind.com"
-          value={email}
-          onChangeText={setEmail}
-        />
+        <View style={styles.inputWrapper}>
+          <TextInput
+            style={styles.inputBox}
+            placeholder="jeff@idontmind.com"
+            value={email}
+            onChangeText={setEmail}
+          />
+        </View>
       </View>
       <View style={styles.inputContainer}>
         <Text>Password</Text>
-        <TextInput
-          style={styles.inputBox}
-          placeholder="Password"
-          value={password}
-          onChangeText={setPassword}
-        />
+        <View style={styles.inputWrapper}>
+          <TextInput
+            style={styles.inputBox}
+            placeholder="Password"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry={!showPassword}
+          />
+          <TouchableOpacity onPress={togglePasswordVisibility}>
+            <Icon name={showPassword ? 'eye-slash' : 'eye'} size={20} color="black" style={styles.eyeIcon}/>
+          </TouchableOpacity>
+        </View>
       </View>
       <TouchableOpacity
         onPress={handleLogin}
