@@ -24,10 +24,6 @@ export default function FilterAndBannedTags({ navigation, screenOption }) {
     setSelectedTags([]);
   };
 
-  // const applyAll = () => {
-  //   setSelectedTags([...tags]);
-  // };
-
   const getCheckboxColor = (selected) => (selected ? '#404040' : '#D9D9D9');
   const isTagSelected = (tag) => (selectedTags.includes(tag));
 
