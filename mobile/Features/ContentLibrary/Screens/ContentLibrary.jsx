@@ -17,6 +17,8 @@ export default function ContentLibrary({ navigation }) {
 
   const [tag, setTag] = useState({});
   const [data, setData] = useState([]);
+  const [imgArr, setimgArr] = useState([]);
+  const [map, setMap] = useState({});
 
   const getTag = async (tagName) => {
     try {
@@ -35,6 +37,14 @@ export default function ContentLibrary({ navigation }) {
   const unfavoriteTag = async (tagName) => {
     await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/unfavoriteTag`, { tag: { id: tag._id, tagName }, username: 'hi' });
     await getTag(tagName);
+  };
+
+  const keyExtract = (item) => {
+    setMap((prevMap) => ({
+      ...prevMap,
+      [item._id]: item.isFavorite,
+    }));
+    return item._id;
   };
 
   useEffect(() => {
@@ -60,7 +70,9 @@ export default function ContentLibrary({ navigation }) {
         style={[style.star,
           { alignSelf: 'flex-end' },
         ]}
-        source={starImage}
+        source={() => {
+
+        }}
       />
       <View
         style={[style.horizontalCardInfo]}
@@ -73,6 +85,7 @@ export default function ContentLibrary({ navigation }) {
       </View>
     </TouchableOpacity>
   );
+  console.log(map);
 
   const verticalRenderItem = ({ item }) => (
     <TouchableOpacity
@@ -160,7 +173,7 @@ export default function ContentLibrary({ navigation }) {
         <FlatList
           data={data}
           renderItem={verticalRenderItem}
-          keyExtractor={(item) => item._id}
+          keyExtractor={keyExtract}
           showsVerticalScrollIndicator={false}
         />
       </View>
