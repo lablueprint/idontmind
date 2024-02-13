@@ -10,7 +10,8 @@ export default StyleSheet.create({
 
   },
   prompt: {
-    fontSize: 26,
+    marginTop: 30,
+    fontSize: 20,
     fontWeight: 'bold',
   },
   textBox: {
@@ -19,9 +20,16 @@ export default StyleSheet.create({
     justifyContent: 'flex-start',
     borderWidth: 2,
     minWidth: '90%',
-    height: 500,
+    height: 350,
   },
-
+  attachmentBox: {
+    padding: 10,
+    marginTop: 20,
+    justifyContent: 'flex-start',
+    borderWidth: 2,
+    minWidth: '90%',
+    height: 100,
+  },
   modalView: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -36,5 +44,18 @@ export default StyleSheet.create({
     borderWidth: 1,
     width: 200,
     padding: 10,
+  },
+  rectangle: {
+    width: 200,
+    height: 150,
+    borderWidth: 2,
+    borderColor: 'black',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
   },
 });

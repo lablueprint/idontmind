@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import CalendarPicker from 'react-native-calendar-picker';
 import axios from 'axios';
 
@@ -41,9 +41,37 @@ export default function Calendar() {
     console.log(`filtered journals: ${filteredJournals}`);
   };
 
+  const customDayHeaderStyles = ({dayOfWeek, month, year}) => {
+    return {
+      style: {
+        borderRadius: 12,
+        backgroundColor: 'lightpurple',
+      },
+      textStyle: {
+        fontSize: 12,
+        fontWeight: 'bold',
+      }
+    };
+  };
+
+  const customDatesStyles = date => {
+    return {
+      style: {
+        backgroundColor: 'pink',
+      },
+      textStyle: {
+        color: 'blue',
+        fontWeight: 'bold',
+      }
+    };
+  };
+
   return (
-    <View style={{ marginTop: 40 }}>
+    <View style={styles.container}>
       <CalendarPicker
+        todayBackgroundColor={'white'}
+        customDatesStyles={customDatesStyles}
+        customDayHeaderStyles={customDayHeaderStyles}
         onDateChange={handleDateSelect}
       />
       {filteredJournals.map((x) => (
@@ -52,3 +80,11 @@ export default function Calendar() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "lightblue",
+    marginTop: 40,
+  },
+});
