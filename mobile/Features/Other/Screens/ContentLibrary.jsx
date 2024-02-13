@@ -16,7 +16,7 @@ const style = StyleSheet.create({
     flexDirection: 'row',
   },
   button: {
-    backgroundColor: 'white',
+    backgroundColor: 'white', 
     borderRadius: 20,
   },
   horizontalCard: {
