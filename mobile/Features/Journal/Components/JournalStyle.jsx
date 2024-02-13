@@ -40,22 +40,20 @@ export default StyleSheet.create({
     height: 100,
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
-    borderColor: '#ccc',
-    borderWidth: 1,
-    width: 200,
     padding: 10,
   },
-  rectangle: {
-    width: 200,
-    height: 150,
-    borderWidth: 2,
-    borderColor: 'black',
-    justifyContent: 'center',
+
+  modalSelections: {
+    borderRadius: 8,
+    padding: 10,
+    margin: 10,
+    backgroundColor: '#D9D9D9',
     alignItems: 'center',
   },
-  image: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
+
+  modalBox: {
+    padding: 20,
+    borderRadius: 8,
+    backgroundColor: '#C1C1C1',
   },
 });
