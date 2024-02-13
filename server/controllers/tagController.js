@@ -13,7 +13,7 @@ const getAllTags = async (req, res) => {
 
 const getAllTagTitles = async (req, res) => {
   try {
-    const tags = await Tag.find({}).select('tagName');
+    const tags = await Tag.find({}).select('tagName isFavorite');
     res.send(tags);
   } catch (err) {
     console.error(err);

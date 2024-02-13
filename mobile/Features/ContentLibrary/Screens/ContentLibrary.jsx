@@ -9,41 +9,39 @@ import starImage from '../../../assets/star.png';
 import filterImage from '../../../assets/filter.png';
 import searchImage from '../../../assets/search.png';
 import shapeImage from '../../../assets/shape.png';
+import goldStar from '../../../assets/goldStar.png';
 
 export default function ContentLibrary({ navigation }) {
   const navigateToTag = (tagName) => {
     navigation.navigate('Tag', { tagName });
   };
 
-  const [tag, setTag] = useState({});
   const [data, setData] = useState([]);
-  const [imgArr, setimgArr] = useState([]);
   const [map, setMap] = useState({});
 
-  const getTag = async (tagName) => {
-    try {
-      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/getTagByName`, { tagName });
-      setTag(res.data);
-    } catch (err) {
-      console.error(err);
-    }
+  const favoriteTag = async (tag) => {
+    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/favoriteTag`, { tag: { id: tag._id, tagName: tag.tagName }, username: 'hi' });
+    setMap((prevMap) => ({
+      ...prevMap,
+      [tag._id]: 'true',
+    }));
   };
 
-  const favoriteTag = async (tagName) => {
-    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/favoriteTag`, { tag: { id: tag._id, tagName }, username: 'hi' });
-    await getTag(tagName);
-  };
-
-  const unfavoriteTag = async (tagName) => {
-    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/unfavoriteTag`, { tag: { id: tag._id, tagName }, username: 'hi' });
-    await getTag(tagName);
+  const unfavoriteTag = async (tag) => {
+    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/unfavoriteTag`, { tag: { id: tag._id, tagName: tag.tagName }, username: 'hi' });
+    setMap((prevMap) => ({
+      ...prevMap,
+      [tag._id]: 'false',
+    }));
   };
 
   const keyExtract = (item) => {
-    setMap((prevMap) => ({
-      ...prevMap,
-      [item._id]: item.isFavorite,
-    }));
+    if (map[item._id] !== 'true' && map[item._id] !== 'false') {
+      setMap((prevMap) => ({
+        ...prevMap,
+        [item._id]: item.isFavorite ? 'true' : 'false',
+      }));
+    }
     return item._id;
   };
 
@@ -63,29 +61,27 @@ export default function ContentLibrary({ navigation }) {
     <TouchableOpacity
       style={[style.horizontalCard]}
       onPress={() => {
-        if (tag.isFavorite) { unfavoriteTag(item.tagName); } else favoriteTag(item.tagName);
+        if (map[item._id] === 'false') { favoriteTag(item); } else unfavoriteTag(item);
       }}
     >
       <Image
         style={[style.star,
           { alignSelf: 'flex-end' },
         ]}
-        source={() => {
-
-        }}
+        source={map[item._id] === 'false' ? starImage : goldStar}
       />
       <View
         style={[style.horizontalCardInfo]}
       >
         <Text
           style={[style.horizontalText]}
+          onPress={() => navigateToTag(item.tagName)}
         >
           {item.tagName}
         </Text>
       </View>
     </TouchableOpacity>
   );
-  console.log(map);
 
   const verticalRenderItem = ({ item }) => (
     <TouchableOpacity
