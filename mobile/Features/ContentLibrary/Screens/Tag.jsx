@@ -60,6 +60,10 @@ export default function Tag({ navigation, route }) {
   const navigateToLanding = () => {
     navigation.navigate('Landing');
   };
+  
+  const navigateToContentLibrary = () => {
+    
+  }
 
   const getTag = async () => {
     try {

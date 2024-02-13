@@ -18,7 +18,7 @@ export default function ContentLibrary({ navigation }) {
   const [tag, setTag] = useState({});
   const [data, setData] = useState([]);
 
-  const getTag = async () => {
+  const getTag = async (tagName) => {
     try {
       const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/getTagByName`, { tagName });
       setTag(res.data);
@@ -27,14 +27,14 @@ export default function ContentLibrary({ navigation }) {
     }
   };
 
-  const favoriteTag = async () => {
+  const favoriteTag = async (tagName) => {
     await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/favoriteTag`, { tag: { id: tag._id, tagName }, username: 'hi' });
-    await getTag();
+    await getTag(tagName);
   };
 
-  const unfavoriteTag = async () => {
+  const unfavoriteTag = async (tagName) => {
     await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/unfavoriteTag`, { tag: { id: tag._id, tagName }, username: 'hi' });
-    await getTag();
+    await getTag(tagName);
   };
 
   useEffect(() => {
@@ -52,7 +52,9 @@ export default function ContentLibrary({ navigation }) {
   const horizontalRenderItem = ({ item }) => (
     <TouchableOpacity
       style={[style.horizontalCard]}
-      onPress={() => { if (tag.isFavorite) { unfavoriteTag(); } else favoriteTag(); }}
+      onPress={() => {
+        if (tag.isFavorite) { unfavoriteTag(item.tagName); } else favoriteTag(item.tagName);
+      }}
     >
       <Image
         style={[style.star,
