@@ -20,19 +20,19 @@ export default function ContentLibrary({ navigation }) {
   const [map, setMap] = useState({});
 
   const favoriteTag = async (tag) => {
-    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/favoriteTag`, { tag: { id: tag._id, tagName: tag.tagName }, username: 'hi' });
     setMap((prevMap) => ({
       ...prevMap,
       [tag._id]: 'true',
     }));
+    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/favoriteTag`, { tag: { id: tag._id, tagName: tag.tagName }, username: 'hi' });
   };
 
   const unfavoriteTag = async (tag) => {
-    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/unfavoriteTag`, { tag: { id: tag._id, tagName: tag.tagName }, username: 'hi' });
     setMap((prevMap) => ({
       ...prevMap,
       [tag._id]: 'false',
     }));
+    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/unfavoriteTag`, { tag: { id: tag._id, tagName: tag.tagName }, username: 'hi' });
   };
 
   const keyExtract = (item) => {
@@ -60,22 +60,25 @@ export default function ContentLibrary({ navigation }) {
   const horizontalRenderItem = ({ item }) => (
     <TouchableOpacity
       style={[style.horizontalCard]}
-      onPress={() => {
-        if (map[item._id] === 'false') { favoriteTag(item); } else unfavoriteTag(item);
-      }}
+      onPress={() => navigateToTag(item.tagName)}
     >
-      <Image
-        style={[style.star,
-          { alignSelf: 'flex-end' },
-        ]}
-        source={map[item._id] === 'false' ? starImage : goldStar}
-      />
+      <TouchableOpacity
+        onPress={() => {
+          if (map[item._id] === 'false') { favoriteTag(item); } else unfavoriteTag(item);
+        }}
+      >
+        <Image
+          style={[style.star,
+            { alignSelf: 'flex-end' },
+          ]}
+          source={map[item._id] === 'false' ? starImage : goldStar}
+        />
+      </TouchableOpacity>
       <View
         style={[style.horizontalCardInfo]}
       >
         <Text
           style={[style.horizontalText]}
-          onPress={() => navigateToTag(item.tagName)}
         >
           {item.tagName}
         </Text>
