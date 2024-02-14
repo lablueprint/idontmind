@@ -57,13 +57,9 @@ export default function Tag({ navigation, route }) {
   const { tagName } = route.params;
   const [tag, setTag] = useState({});
 
-  const navigateToLanding = () => {
-    navigation.navigate('Landing');
-  };
-  
   const navigateToContentLibrary = () => {
-    
-  }
+    navigation.navigate('Content Library');
+  };
 
   const getTag = async () => {
     try {
@@ -98,7 +94,7 @@ export default function Tag({ navigation, route }) {
         }}
         >
           <TouchableOpacity
-            onPress={() => navigateToLanding}
+            onPress={navigateToContentLibrary}
             style={[style.button, {
               flexBasis: 37,
             }]}
