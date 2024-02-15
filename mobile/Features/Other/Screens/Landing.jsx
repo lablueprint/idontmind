@@ -21,6 +21,10 @@ export default function Landing({ navigation }) {
     navigation.navigate('CheckIn');
   };
 
+  const navigateToJournalHistory = () => {
+    navigation.navigate('Journal History');
+  };
+
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>Landing Page</Text>

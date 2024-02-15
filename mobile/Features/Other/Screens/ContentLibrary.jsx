@@ -1,7 +1,9 @@
 import {
-  Text, View, StyleSheet, TouchableOpacity, FlatList, Image,
+  Text, View, StyleSheet, TouchableOpacity, FlatList, Image, Button,
 } from 'react-native';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
+import SearchBar from '../Components/SearchBar';
 
 /* Style Sheet */
 const style = StyleSheet.create({
@@ -122,12 +124,41 @@ export default function ContentLibrary({ navigation }) {
     </TouchableOpacity>
   );
 
+  const [isOpen, setOpen] = useState(false);
+  const [recentSearches, setRecentSearches] = useState([]);
+
+  const navigateToFilter = () => {
+    navigation.navigate('Filter');
+  };
+
+  const openSearch = () => {
+    setOpen(true);
+  };
+  const closeSearch = () => {
+    setOpen(false);
+  };
+
+  const handleSearch = (query) => {
+    // search logic
+    if (query.trim() !== '') {
+      if (!recentSearches.includes(query.toLowerCase())) {
+        setRecentSearches((prevSearches) => {
+          const updatedSearches = [query.toLowerCase(), ...prevSearches];
+          if (updatedSearches.length > 10) {
+            updatedSearches.pop(); // Remove the last element
+          }
+          return updatedSearches;
+        });
+      }
+    }
+  };
+
   return (
     <View
       style={[style.container, { paddingLeft: 25 }]}
     >
       <View style={[style.row, { paddingTop: 75, flexBasis: 125, backgroundColor: 'white' }]}>
-        <Text style={{ fontSize: 30, flex: 3, paddingLeft: 5, }}>content</Text>
+        <Text style={{ fontSize: 30, flex: 3, paddingLeft: 5 }}>content</Text>
         <View
           style={[style.container, { flex: 3 }]}
         >
@@ -153,14 +184,25 @@ export default function ContentLibrary({ navigation }) {
           </TouchableOpacity>
         </View>
         <View style={{ flex: 2, flexDirection: 'row', marginTop: 5 }}>
-          <Image
-            style={{ width: 20, height: 31, marginRight: 15 }}
-            source={require('../../../assets/search.png')}
-          />
-          <Image
-            style={{ width: 20, height: 31 }}
-            source={require('../../../assets/filter.png')}
-          />
+          <TouchableOpacity onPress={openSearch}>
+            <Image
+              style={{ width: 20, height: 31, marginRight: 15 }}
+              source={require('../../../assets/search.png')}
+            />
+            <SearchBar
+              visible={isOpen}
+              onClose={closeSearch}
+              onSearch={handleSearch}
+              recentSearches={recentSearches}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={navigateToFilter}>
+            <Image
+              style={{ width: 20, height: 31 }}
+              source={require('../../../assets/filter.png')}
+            />
+          </TouchableOpacity>
+
         </View>
       </View>
       <View style={[style.row, { flexBasis: 35 }]}>
