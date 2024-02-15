@@ -4,8 +4,6 @@ import Landing from '../Features/Other/Screens/Landing';
 import Feed from '../Features/Other/Screens/Feed';
 import Login from '../Features/Login/Screens/Login';
 import CheckInTemplate from '../Features/Other/Screens/CheckInTemplate';
-import Trends from '../Features/Other/Screens/Trends';
-import CheckIn from '../Features/Other/Screens/CheckIn';
 import TrendsPage from '../Trends/Screens/TrendsPage';
 import JournalPage from '../Features/Journal/Screens/JournalPage';
 import ContentLibrary from '../Features/Other/Screens/ContentLibrary';
@@ -22,7 +20,7 @@ export default function NavigationBar() {
       <Tab.Screen name="Landing" component={Landing} options={{ headerShown: false }} />
       <Tab.Screen name="Feed" component={Feed} options={{ headerShown: false }} />
       <Tab.Screen name="Login" component={Login} options={{ headerShown: false }} />
-      <Tab.Screen name="CheckIn" component={CheckIn} options={{ headerShown: false }} />
+      <Tab.Screen name="CheckInTemplate" component={CheckInTemplate} options={{ headerShown: false }} />
       <Tab.Screen name="Trends" component={TrendsPage} options={{ headerShown: true }} />
       <Tab.Screen name="Journal" component={JournalPage} options={{ headerShown: false }} />
       <Tab.Screen name="Journal History" component={JournalHistoryPage} options={{ headerShown: false }} />
