@@ -13,9 +13,13 @@ export default StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
-  arrow: {
-    width: 20,
-    backgroundColor: 'pink',
+  titleButton: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  down: {
+    width: 50,
+    height: 50,
   },
   showIt: {
     display: 'flex',

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import {
   Text, View, TextInput, StyleSheet, Pressable, Image,
 } from 'react-native';
+import shape from '../../assets/shape.png';
 import styles from './WOYMStyle';
 
 function WOYM({ navigation }) {
@@ -44,7 +45,6 @@ function WOYM({ navigation }) {
 
   const toggleEWB = (term) => {
     let temp = {...selectedEWB};
-    console.log(temp[term]);
     if (temp[term] === false) {
       temp[term] = true;
     }
@@ -54,9 +54,23 @@ function WOYM({ navigation }) {
     setSelectedEWB(temp);
   };
 
-  useEffect(() => {
-    console.log(Object.entries(selectedEWB))
-  }, [selectedEWB]);
+  const displayCoping = () => {
+    if (showCoping === false) {
+      setShowCoping(true);
+    }
+    else if (showCoping === true) {
+      setShowCoping(false);
+    }
+  };
+
+  const displayEWB = () => {
+    if (showEWB === false) {
+      setShowEWB(true);
+    }
+    else if (showEWB === true) {
+      setShowEWB(false);
+    }
+  };
   
   return (
     <View style={styles.container}>
@@ -66,9 +80,11 @@ function WOYM({ navigation }) {
         </Text>
       </View>
       <View style={styles.heading}>
-        <View>
+        <View style={styles.titleButton}>
           <Text>Coping</Text>
-          <Pressable style={styles.arrow} onPress={() => setShowCoping(!showCoping)} />
+          <Pressable style={styles.arrow} onPress={displayCoping}>
+            <Image source={shape} style={styles.down} />
+          </Pressable>
         </View>
         <View style={[styles.pills, showCoping ? styles.showIt : styles.dontShowIt]}>
         {Object.entries(selectedCoping).map((cope) => (
@@ -81,10 +97,13 @@ function WOYM({ navigation }) {
         </View>
       </View>
       <View style={styles.heading}>
-        <Text>
-          Emotional Well-Being
-        </Text>
-        <View style={styles.pills}>
+        <View style={styles.titleButton}>
+          <Text>Emotional Well-Being</Text>
+          <Pressable style={styles.arrow} onPress={displayEWB}>
+            <Image source={shape} style={styles.down} />
+          </Pressable>
+        </View>
+        <View style={[styles.pills, showEWB ? styles.showIt : styles.dontShowIt]}>
         {Object.entries(selectedEWB).map((cope) => (
             <View key={cope[0]} style={[styles.pill, cope[1] ? styles.selectedPill : styles.nonselectedPill]}>
               <Pressable onPress={() => toggleEWB(cope[0])}>
