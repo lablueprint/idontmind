@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import CalendarPicker from 'react-native-calendar-picker';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
+// import CalendarPicker from 'react-native-calendar-picker';
+import {Calendar, LocaleConfig} from 'react-native-calendars';
 import axios from 'axios';
+import JournalCard from '../../Journal/Components/JournalCard';
 
-export default function Calendar() {
-  const [selectedDate, setSelectedDate] = useState(null);
+export default function CalendarPage({ navigation }) {
+  const [selectedDate, setSelectedDate] = useState('');
   const [allJournals, setAllJournals] = useState([]);
   const [filteredJournals, setFilteredJournals] = useState([]);
 
@@ -44,12 +46,13 @@ export default function Calendar() {
   const customDayHeaderStyles = ({dayOfWeek, month, year}) => {
     return {
       style: {
-        borderRadius: 12,
+        borderRadius: 6,
+        borderWidth: 1,
         backgroundColor: 'lightpurple',
       },
       textStyle: {
         fontSize: 12,
-        fontWeight: 'bold',
+        fontWeight: 'light',
       }
     };
   };
@@ -57,26 +60,82 @@ export default function Calendar() {
   const customDatesStyles = date => {
     return {
       style: {
-        backgroundColor: 'pink',
+        backgroundColor: '#55637F',
       },
       textStyle: {
-        color: 'blue',
-        fontWeight: 'bold',
+        color: 'white',
+        fontWeight: 'light',
       }
     };
   };
+  const headerWrapperStyle = () => {
+    return {
+      textStyle: {
+        fontSize: 1,
+        borderWidth: 11,
+      }
+
+    };
+  };
+  const dayLabelsWrapper = () => {
+    return{
+      textStyle: {
+        borderWidth: 0,
+        
+      }
+    }
+  }
+
+  const navigateToPastJournal = (text) => {
+    navigation.navigate('Journal', { body: text, isHistory: true });
+  }; /* navigate to the past journal entry, isHistory
+   is set to true (uneditable text box with the corresponding prompt) */
 
   return (
     <View style={styles.container}>
-      <CalendarPicker
-        todayBackgroundColor={'white'}
-        customDatesStyles={customDatesStyles}
-        customDayHeaderStyles={customDayHeaderStyles}
-        onDateChange={handleDateSelect}
-      />
-      {filteredJournals.map((x) => (
-        <Text> {x.text}</Text>
-      ))}
+      <View style={{backgroundColor:'#91A8D1', margin: 10}}>
+        {/* <CalendarPicker
+          todayBackgroundColor={'blue'}
+          customDatesStyles={customDatesStyles}
+          customDayHeaderStyles={customDayHeaderStyles}
+          onDateChange={handleDateSelect}
+          headerWrapperStyle={headerWrapperStyle}
+          dayLabelsWrapper={dayLabelsWrapper}
+        /> */}
+          <Calendar
+      onDayPress={day => {
+        
+        setSelectedDate(day.dateString);
+      }}
+      markedDates={{
+        [selectedDate]: {selected: true, disableTouchEvent: true, selectedDotColor: 'orange'}
+      }}
+      theme={{
+        calendarBackground: '#91A8D1',
+        backgroundColor: '#91A8D1',
+        textMonthFontSize: 24,
+        textMonthFontWeight: 'bold',
+        arrowColor: 'white',
+
+
+      }}
+    />
+      </View>
+      
+      <ScrollView>
+        {filteredJournals.map((x) => (
+          <JournalCard
+            key={x._id}
+            username={x.username}
+            date={x.timestamp}
+            prompt={x.prompt}
+            text={x.text}
+            onPress={navigateToPastJournal}
+
+          />
+        ))}
+      </ScrollView>
+
     </View>
   );
 }
@@ -84,7 +143,7 @@ export default function Calendar() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "lightblue",
+    backgroundColor: "bl",
     marginTop: 40,
   },
 });
