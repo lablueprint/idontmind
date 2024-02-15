@@ -10,6 +10,7 @@ import leftArrow from '../../../assets/left.png';
 import rightArrow from '../../../assets/right.png';
 import shapeImage from '../../../assets/shape.png';
 import cancelImage from '../../../assets/cancel.png';
+import goldStar from '../../../assets/goldStar.png';
 import style from '../Components/ContentStyle';
 
 export default function Tag({ navigation, route }) {
@@ -78,7 +79,7 @@ export default function Tag({ navigation, route }) {
               style={{
                 width: 20, height: 20, marginTop: 7, marginRight: 3, opacity: 0.4,
               }}
-              source={starImage}
+              source={tag.isFavorite ? goldStar : starImage}
             />
             <Text style={{
               textAlign: 'center', fontSize: 16, marginTop: 9, marginRight: 2,
