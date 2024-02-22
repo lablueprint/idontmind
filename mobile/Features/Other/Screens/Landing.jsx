@@ -21,6 +21,10 @@ export default function Landing({ navigation }) {
     navigation.navigate('Journal History');
   };
 
+  const navigateToSplash = () => {
+    navigation.navigate('Splash');
+  }
+
   const navigateToWOYM = () => {
     navigation.navigate('WOYM');
   };
@@ -43,6 +47,10 @@ export default function Landing({ navigation }) {
       <Button
         title="To Journal History"
         onPress={navigateToJournalHistory}
+      />
+      <Button
+        title="To Splash"
+        onPress={navigateToSplash}
       />
       <Button
         title="To WOYM"
