@@ -23,6 +23,10 @@ export default function Landing({ navigation }) {
 
   const navigateToSplash = () => {
     navigation.navigate('Splash');
+  }
+
+  const navigateToWOYM = () => {
+    navigation.navigate('WOYM');
   };
 
   return (
@@ -47,6 +51,10 @@ export default function Landing({ navigation }) {
       <Button
         title="To Splash"
         onPress={navigateToSplash}
+      />
+      <Button
+        title="To WOYM"
+        onPress={navigateToWOYM}
       />
     </View>
   );
