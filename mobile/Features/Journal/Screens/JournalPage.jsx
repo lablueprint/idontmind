@@ -1,10 +1,10 @@
 import {
   ScrollView, Text, View, Button, TextInput, Keyboard,
-  TouchableWithoutFeedback, Modal, TouchableOpacity, Pressable,
+  TouchableWithoutFeedback, Modal, TouchableOpacity, Pressable, Image,
 } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import styles from '../Components/JournalStyle';
 
@@ -13,6 +13,7 @@ export default function JournalPage({ navigation }) {
   const body = route.params?.body;
   const isHistory = route.params?.isHistory;/* retrieve the value of isHistory
   from the previous navigation page (JournalHistoryPage) */
+  const [img, setImg] = useState('');
 
   const [text, setText] = useState(''); // state for the text the user types in
   const [confirmPopUp, setConfirmPopUp] = useState(false); /* state that tells if
@@ -48,12 +49,17 @@ export default function JournalPage({ navigation }) {
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <View style={styles.container}>
               <Text style={styles.prompt}>{prompt}</Text>
+              <View>
+                <Image source={{ uri: img }} style={{ width: 200, height: 200 }} />
+              </View>
               <View style={styles.textBox}>
                 <ScrollView automaticallyAdjustKeyboardInsets>
                   <TextInput multiline placeholder="Type your response" onChangeText={setText} value={text} />
                   <View style={{ height: 40 }} />
                 </ScrollView>
               </View>
+
+              {/* <Text>{img}</Text> */}
               <Button title="Submit" onPress={handlePopUp} />
               <Modal visible={confirmPopUp}>
                 <TouchableOpacity onPressOut={handlePopUp} style={styles.modalView}>
