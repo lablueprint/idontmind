@@ -21,6 +21,10 @@ export default function Landing({ navigation }) {
     navigation.navigate('Journal History');
   };
 
+  const navigateToWOYM = () => {
+    navigation.navigate('WOYM');
+  };
+
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>Landing Page</Text>
@@ -39,6 +43,10 @@ export default function Landing({ navigation }) {
       <Button
         title="To Journal History"
         onPress={navigateToJournalHistory}
+      />
+      <Button
+        title="To WOYM"
+        onPress={navigateToWOYM}
       />
     </View>
   );
