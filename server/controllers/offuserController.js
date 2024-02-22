@@ -94,7 +94,7 @@ const sendEmail = async (req, res) => {
     secure: false,
     auth: {
       user: 'kennethzwan@gmail.com',
-      pass: 'qzxm wgev owhj ufci',
+      pass: process.env.GMAIL_PASSWORD,
     },
   });
 
