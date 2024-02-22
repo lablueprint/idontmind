@@ -1,9 +1,10 @@
 import {
-  Text, View, StyleSheet, TouchableOpacity, FlatList, Image, Button,
+  Text, View, StyleSheet, TouchableOpacity, FlatList, Image,
 } from 'react-native';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import SearchBar from '../Components/SearchBar';
+import Recommendation from '../Components/Recommendation';
 
 /* Style Sheet */
 const style = StyleSheet.create({
@@ -209,12 +210,7 @@ export default function ContentLibrary({ navigation }) {
         <Text style={{ fontSize: 16, flex: 1, color: 'gray' }}>recommended for you</Text>
       </View>
       <View style={[style.row, { flex: 1 }]}>
-        <FlatList
-          horizontal
-          data={DATA}
-          renderItem={horizontalRenderItem}
-          showsHorizontalScrollIndicator={false}
-        />
+        <Recommendation />
       </View>
       <View
         style={{ borderBottomColor: 'grey', borderBottomWidth: 0.75, opacity: 0.25 }}
