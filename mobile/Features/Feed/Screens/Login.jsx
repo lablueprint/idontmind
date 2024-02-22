@@ -135,7 +135,7 @@ export default function Login({ navigation }) {
             secureTextEntry={!showPassword}
           />
           <TouchableOpacity onPress={togglePasswordVisibility}>
-            <Icon name={showPassword ? 'eye-slash' : 'eye'} size={20} color="black" style={styles.eyeIcon}/>
+            <Icon name={showPassword ? 'eye' : 'eye-slash'} size={20} color="black" style={styles.eyeIcon}/>
           </TouchableOpacity>
         </View>
       </View>
