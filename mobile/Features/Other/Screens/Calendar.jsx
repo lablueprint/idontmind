@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import {
+  View, Text, StyleSheet, ScrollView,
+} from 'react-native';
 // import CalendarPicker from 'react-native-calendar-picker';
-import {Calendar, LocaleConfig} from 'react-native-calendars';
+import { Calendar, LocaleConfig } from 'react-native-calendars';
 import axios from 'axios';
 import JournalCard from '../../Journal/Components/JournalCard';
 
@@ -70,48 +72,40 @@ export default function CalendarPage({ navigation }) {
     console.log(`filtered journals: ${filteredJournals}`);
   };
 
-  const customDayHeaderStyles = ({dayOfWeek, month, year}) => {
-    return {
-      style: {
-        borderRadius: 6,
-        borderWidth: 1,
-        backgroundColor: 'lightpurple',
-      },
-      textStyle: {
-        fontSize: 12,
-        fontWeight: 'light',
-      }
-    };
-  };
+  const customDayHeaderStyles = ({ dayOfWeek, month, year }) => ({
+    style: {
+      borderRadius: 6,
+      borderWidth: 1,
+      backgroundColor: 'lightpurple',
+    },
+    textStyle: {
+      fontSize: 12,
+      fontWeight: 'light',
+    },
+  });
 
-  const customDatesStyles = date => {
-    return {
-      style: {
-        backgroundColor: '#55637F',
-      },
-      textStyle: {
-        color: 'white',
-        fontWeight: 'light',
-      }
-    };
-  };
-  const headerWrapperStyle = () => {
-    return {
-      textStyle: {
-        fontSize: 1,
-        borderWidth: 11,
-      }
+  const customDatesStyles = (date) => ({
+    style: {
+      backgroundColor: '#55637F',
+    },
+    textStyle: {
+      color: 'white',
+      fontWeight: 'light',
+    },
+  });
+  const headerWrapperStyle = () => ({
+    textStyle: {
+      fontSize: 1,
+      borderWidth: 11,
+    },
 
-    };
-  };
-  const dayLabelsWrapper = () => {
-    return{
-      textStyle: {
-        borderWidth: 0,
-        
-      }
-    }
-  }
+  });
+  const dayLabelsWrapper = () => ({
+    textStyle: {
+      borderWidth: 0,
+
+    },
+  });
 
   const navigateToPastJournal = (text) => {
     navigation.navigate('Journal', { body: text, isHistory: true });
@@ -120,7 +114,7 @@ export default function CalendarPage({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <View style={{backgroundColor:'#91A8D1', margin: 10}}>
+      <View style={{ backgroundColor: '#91A8D1', margin: 10 }}>
         {/* <CalendarPicker
           todayBackgroundColor={'blue'}
           customDatesStyles={customDatesStyles}
@@ -266,7 +260,7 @@ export default function CalendarPage({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "bl",
+    backgroundColor: 'bl',
     marginTop: 40,
   },
 });

@@ -1,7 +1,8 @@
 import {
   ScrollView, Text, View, Button, TextInput, Keyboard,
-  TouchableWithoutFeedback, Modal, TouchableOpacity, Pressable,
+  TouchableWithoutFeedback, Modal, TouchableOpacity, Pressable, Image,
 } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 import { useRoute } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
@@ -9,11 +10,14 @@ import axios from 'axios';
 import styles from '../Components/JournalStyle';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
-export default function JournalPage({ navigation }) {
+export function JournalPage({ navigation, tab }) {
   const route = useRoute();
   const body = route.params?.body;
   const isHistory = route.params?.isHistory;/* retrieve the value of isHistory
   from the previous navigation page (JournalHistoryPage) */
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [viewImage, setViewImage] = useState(false);
+  const [title, setTitle] = useState('');
 
   const [text, setText] = useState(''); // state for the text the user types in
   const [confirmPopUp, setConfirmPopUp] = useState(false); /* state that tells if
@@ -23,23 +27,39 @@ export default function JournalPage({ navigation }) {
     setConfirmPopUp(!confirmPopUp);
   }; // toggles confirmPopUp
 
-  // const Tab = createMaterialTopTabNavigator();
-  // function MyTabs() {
-  //   return (
-  //     <Tab.Navigator>
-  //       <Tab.Screen name="Guided Prompt" component={JournalPage} />
-  //       <Tab.Screen name="Free Write" component={FreeWritePage} />
-  //     </Tab.Navigator>
-  //   );
-  // }
+  const pickImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
 
-  const prompt = 'Create a journal post!';
+    if (!result.canceled) {
+      setSelectedImage(result.assets[0].uri);
+    }
+  };
+
+  const getPrompt = (tag) =>{
+    if (tag == 1){
+      return <Text style={styles.prompt}>I am grateful for...</Text>;
+    } else if (tag == 2){
+      return <TextInput multiline placeholder="Add Title..." onChangeText={setTitle} value={title} />
+    }
+  }
+
+  const currDate = new Date();
+
+  //const prompt = 'Create a journal post!';
   const username = 'Nicole'; // set prompt and username to constants at the moment, but should be able to get that info dynamically
 
   const addNewJournal = async (newUsername, newPrompt, newText) => {
     handlePopUp();
     const currentdate = new Date();
-    const timestamp = currentdate;
+    const pstDate = currentdate.toLocaleString('en-US', {
+      timeZone: 'America/Los_Angeles',
+    });
+    const timestamp = pstDate;
     await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/journals/createJournal`, {
       username: newUsername, prompt: newPrompt, text: newText, timestamp,
     });
@@ -50,6 +70,27 @@ export default function JournalPage({ navigation }) {
     navigation.navigate('Journal History');
   }; // navigate to Journal History page
 
+  const getFilenameFromUri = (uri) => {
+    if (uri) {
+      const uriParts = uri.split('/');
+      return uriParts[uriParts.length - 1];
+    }
+    return '';
+  };
+
+  const handleFilenamePress = () => {
+    setViewImage(!viewImage);
+  };
+
+  const wordsLen = (str) => {
+    const array = str.match(/\S+/g);
+    if (array== null){
+      return 0
+    }else{
+      return array.length;
+    }
+  }
+
   /* render it in two different ways depending on if isHistory(if false, editable text box, if
   true, uneditable text box with previously written text) */
   if (!isHistory) {
@@ -58,21 +99,22 @@ export default function JournalPage({ navigation }) {
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <View style={styles.container}>
-              <Text style={styles.prompt}>{prompt}</Text>
+              <Text>{currDate.toDateString()}</Text>
+              {getPrompt(tab)}
               <View style={styles.textBox}>
                 <ScrollView automaticallyAdjustKeyboardInsets>
                   <TextInput multiline placeholder="Type your response" onChangeText={setText} value={text} />
                   <View style={{ height: 40 }} />
                 </ScrollView>
               </View>
-              <Button title="Submit" onPress={handlePopUp} />
+
               <Modal visible={confirmPopUp}>
                 <TouchableOpacity onPressOut={handlePopUp} style={styles.modalView}>
                   <View style={styles.modalBox}>
                     <Text style={{ fontSize: 20 }}>confirm journal entry?</Text>
                     <Pressable
                       style={styles.modalSelections}
-                      onPress={() => addNewJournal(username, prompt, text)}
+                      onPress={() => addNewJournal(username, title, text)}
                     >
                       <Text>
                         yes
@@ -89,6 +131,21 @@ export default function JournalPage({ navigation }) {
             </View>
           </View>
         </TouchableWithoutFeedback>
+        <Text>{wordsLen(text)}</Text>
+        <TouchableOpacity style={styles.imageContainer} onPress={pickImage}>
+          <Text>+ add attachment</Text>
+          {selectedImage !== '' ? (
+            <>
+              <TouchableOpacity onPress={handleFilenamePress}>
+                <Text>{getFilenameFromUri(selectedImage)}</Text>
+              </TouchableOpacity>
+              {viewImage && (
+              <Image source={{ uri: selectedImage }} style={{ width: 200, height: 200 }} />
+              )}
+            </>
+          ) : null}
+        </TouchableOpacity>
+        <Button title="Submit" onPress={handlePopUp} />
 
         <Button
           title="To Past Journal Entries"
@@ -102,7 +159,7 @@ export default function JournalPage({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <View style={styles.container}>
-        <Text style={styles.prompt}>{prompt}</Text>
+        {getPrompt(tab)}
         <View style={styles.textBox}>
           <ScrollView automaticallyAdjustKeyboardInsets>
             <Text>{body}</Text>
@@ -126,19 +183,19 @@ JournalPage.propTypes = {
   }).isRequired,
 };
 
-// function GuidedPrompt() {
-//   return <JournalPage prompt="guided prompt" />;
-// }
-// function FreeWrite() {
-//   return <JournalPage prompt="free write" />;
-// }
-// export default function Trends() {
-//   const Tab = createMaterialTopTabNavigator();
-//   return (
-//     <Tab.Navigator>
-//       <Tab.Screen name="Week" component={WeekTab} />
-//       <Tab.Screen name="Month" component={MonthTab} />
-//       <Tab.Screen name="Year" component={YearTab} />
-//     </Tab.Navigator>
-//   );
-// }
+function GuidedPrompt({navigation}) {
+  return <JournalPage navigation={navigation} tab={1} />;
+}
+function FreeWrite({navigation}) {
+  return <JournalPage navigation={navigation} tab={2} />;
+}
+
+export default function JournalTabs() {
+  const Tab = createMaterialTopTabNavigator();
+  return (
+    <Tab.Navigator>
+      <Tab.Screen name="Guided Prompt" component={GuidedPrompt} />
+      <Tab.Screen name="Free Write" component={FreeWrite} />
+    </Tab.Navigator>
+  );
+}
