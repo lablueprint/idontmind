@@ -44,12 +44,10 @@ export default StyleSheet.create({
     backgroundColor: 'blue',
     alignItems: 'center',
     flexDirection: 'column',
-    // transform: [{scale: 0.7}],
     justifyContent: 'center',
   },
   singularFace: {
     flex: 1,
-    // margin: '5px',
     transform: [{ scale: 0.5 }],
     alignItems: 'center',
     justifyContent: 'center',

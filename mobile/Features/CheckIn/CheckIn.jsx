@@ -11,7 +11,6 @@ function CheckIn({ navigation }) {
   };
 
   const continueToDashBoard = () => {
-    // console.log('heyy');
   };
 
   return (

@@ -27,9 +27,9 @@ function Mood({ navigation }) {
 
   // later implement functionality for pressing on a mood button:
 
-  // const pressMood = () => {
-  //   console.log('mood');
-  // };
+  const pressMood = (mood) => {
+    console.log(mood);
+  };
 
   /* pressing the plus button takes user to AddMood screen, passes in setAddedMoods
   and addedMoods so user can edit the addedMoods array */
@@ -65,11 +65,8 @@ function Mood({ navigation }) {
   if (addedMoods.length === 1) {
     bottomRow = (
       <View style={styles.moodRow}>
-        <Pressable style={styles.addedMood}>
-          <Image
-            source={require('../../assets/colorSquare.png')}
-            style={{ transform: [{ scale: 0.85 }] }}
-          />
+        <Pressable style={styles.addedMood} onPress={() => pressMood(addedMoods[0][0])}>
+          <View style={{ width: 120, height: 120, backgroundColor: addedMoods[0][1] }} />
           <Text>{addedMoods[0][0]}</Text>
         </Pressable>
         <Pressable onPress={addMood} styles={styles.addeMood}>
@@ -85,11 +82,8 @@ function Mood({ navigation }) {
   } else if (addedMoods.length === 2) {
     bottomRow = (
       <View style={styles.moodRow}>
-        <Pressable style={styles.singularMood}>
-          <Image
-            source={require('../../assets/colorSquare.png')}
-            style={{ transform: [{ scale: 0.85 }] }}
-          />
+        <Pressable style={styles.singularMood} onPress={() => pressMood(addedMoods[0][0])}>
+          <View style={{ width: 120, height: 120, backgroundColor: addedMoods[0][1] }} />
           <Text>{addedMoods[0][0]}</Text>
         </Pressable>
         <Pressable onPress={addMood} styles={styles.singularMood}>
@@ -100,11 +94,8 @@ function Mood({ navigation }) {
             +
           </Text>
         </Pressable>
-        <Pressable style={styles.singularMood}>
-          <Image
-            source={require('../../assets/colorSquare.png')}
-            style={{ transform: [{ scale: 0.85 }] }}
-          />
+        <Pressable style={styles.singularMood} onPress={() => pressMood(addedMoods[1][0])}>
+          <View style={{ width: 120, height: 120, backgroundColor: addedMoods[1][1] }} />
           <Text>{addedMoods[1][0]}</Text>
         </Pressable>
       </View>
@@ -112,25 +103,16 @@ function Mood({ navigation }) {
   } else if (addedMoods.length === 3) {
     bottomRow = (
       <View style={styles.moodRow}>
-        <Pressable style={styles.singularMood}>
-          <Image
-            source={require('../../assets/colorSquare.png')}
-            style={{ transform: [{ scale: 0.85 }] }}
-          />
+        <Pressable style={styles.singularMood} onPress={() => pressMood(addedMoods[0][0])}>
+          <View style={{ width: 120, height: 120, backgroundColor: addedMoods[0][1] }} />
           <Text>{addedMoods[0][0]}</Text>
         </Pressable>
-        <Pressable style={styles.singularMood}>
-          <Image
-            source={require('../../assets/colorSquare.png')}
-            style={{ transform: [{ scale: 0.85 }] }}
-          />
+        <Pressable style={styles.singularMood} onPress={() => pressMood(addedMoods[1][0])}>
+          <View style={{ width: 120, height: 120, backgroundColor: addedMoods[1][1] }} />
           <Text>{addedMoods[1][0]}</Text>
         </Pressable>
-        <Pressable style={styles.singularMood}>
-          <Image
-            source={require('../../assets/colorSquare.png')}
-            style={{ transform: [{ scale: 0.85 }] }}
-          />
+        <Pressable style={styles.singularMood} onPress={() => pressMood(addedMoods[2][0])}>
+          <View style={{ width: 120, height: 120, backgroundColor: addedMoods[2][1] }} />
           <Text>{addedMoods[2][0]}</Text>
         </Pressable>
       </View>
@@ -146,30 +128,20 @@ function Mood({ navigation }) {
         </Text>
       </View>
       <View style={styles.content}>
-        {moodImages.map((moodImage) => (
-          <View key={moodImage[0][0]} style={styles.moodRow}>
-            <Pressable style={styles.singularMood}>
-              <Image
-                source={moodImage[0][1]}
-              />
-              <Text>{moodImage[0][0]}</Text>
-            </Pressable>
-            <Pressable style={styles.singularMood}>
-              <Image
-                source={moodImage[1][1]}
-              />
-              <Text>{moodImage[1][0]}</Text>
-            </Pressable>
-            <Pressable style={styles.singularMood}>
-              <Image
-                source={moodImage[2][1]}
-              />
-              <Text>{moodImage[2][0]}</Text>
-            </Pressable>
+        {moodImages.map((row) => (
+          <View style={styles.moodRow}>
+            {row.map((pair) => (
+              <Pressable style={styles.singularMood} onPress={() => pressMood(pair[0])}>
+                <Image
+                  source={pair[1]}
+                />
+                <Text>{pair[0]}</Text>
+              </Pressable>
+            ))}
           </View>
         ))}
+        {bottomRow}
       </View>
-      {bottomRow}
       <View style={styles.buttons}>
         <Pressable onPress={continueButton}>
           <Text>CONTINUE</Text>

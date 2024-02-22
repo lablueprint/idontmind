@@ -22,9 +22,9 @@ function AddColor({ navigation }) {
   // array of rows
   // each row contains color, image pairs
   const colorToPicture = [
-    [['red', tempColor], ['blue', tempColor], ['47', tempColor]],
-    [['dog', tempColor], ['Nicole', tempColor], ['no', tempColor]],
-    [['skeeeeyee', tempColor], ['help', tempColor], ['how', tempColor]],
+    [['red', '#ff0000'], ['blue', '#0000ff'], ['green', '#3cb371']],
+    [['pink', '#ee82ee'], ['yellow', '#FFF8C6'], ['purple', '#6a5acd']],
+    [['sky', '#aec6cf'], ['orange', '#ffb347'], ['gray', '#808080']],
   ];
 
   // state to keep track of which color the user chose
@@ -48,26 +48,14 @@ function AddColor({ navigation }) {
         </Text>
       </View>
       <View style={styles.content}>
-        {colorToPicture.map((pairs) => (
-          <View key={pairs[0]} style={styles.colorRow}>
-            <Pressable style={styles.singularColor} onPress={() => setColorChosen(pairs[0][0])}>
-              <Image
-                source={pairs[0][1]}
-              />
-              <Text>{pairs[0][0]}</Text>
-            </Pressable>
-            <Pressable style={styles.singularColor} onPress={() => setColorChosen(pairs[1][0])}>
-              <Image
-                source={pairs[1][1]}
-              />
-              <Text>{pairs[1][0]}</Text>
-            </Pressable>
-            <Pressable style={styles.singularColor} onPress={() => setColorChosen(pairs[2][0])}>
-              <Image
-                source={pairs[2][1]}
-              />
-              <Text>{pairs[2][0]}</Text>
-            </Pressable>
+        {colorToPicture.map((row) => (
+          <View style={styles.colorRow}>
+            {row.map((pair) => (
+              <Pressable style={styles.singularColor} onPress={() => setColorChosen(pair[1])}>
+                <View style={{ width: 120, height: 120, backgroundColor: pair[1] }} />
+                <Text>{pair[0]}</Text>
+              </Pressable>
+            ))}
           </View>
         ))}
       </View>

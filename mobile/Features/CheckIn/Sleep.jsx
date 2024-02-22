@@ -5,9 +5,10 @@ import {
 import { useRoute } from '@react-navigation/native';
 import Slider from '@react-native-community/slider';
 import ProgressBar from 'react-native-progress/Bar';
+import PropTypes from 'prop-types';
 import styles from './SleepStyle';
 
-function Sleep() {
+function Sleep({ navigation }) {
   const route = useRoute();
   // update progress
   const numPages = route.params?.numPages;
@@ -20,11 +21,11 @@ function Sleep() {
   };
 
   const continueButton = () => {
-    // console.log('continue');
+    navigation.navigate('EndCheckIn');
   };
 
   const skipButton = () => {
-    // console.log('skip');
+    navigation.navigate('EndCheckIn');
   };
 
   return (
@@ -105,3 +106,9 @@ function Sleep() {
 }
 
 export default Sleep;
+
+Sleep.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+  }).isRequired,
+};

@@ -2,11 +2,16 @@ import { useState } from 'react';
 import {
   Text, View, TextInput, Pressable, TouchableWithoutFeedback,
   Keyboard,
+  LogBox,
 } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import ProgressBar from 'react-native-progress/Bar';
 import PropTypes from 'prop-types';
 import styles from './MoodStyle';
+
+LogBox.ignoreLogs([
+  'Non-serializable values were found in the navigation state',
+]);
 
 function AddMood({ navigation }) {
   // get parameters from route
