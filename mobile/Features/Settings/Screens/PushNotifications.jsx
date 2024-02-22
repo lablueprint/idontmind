@@ -1,7 +1,7 @@
 import {
   Pressable, Text, View, TouchableOpacity,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Divider } from '@rneui/themed';
 import { Switch } from 'react-native-switch';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -48,6 +48,9 @@ function PushNotifications() {
 
   const [showPicker, setShowPicker] = useState(false);
   const [alarmString, setAlarmString] = useState(null);
+  useEffect(() => {
+    console.log(notifEnabled);
+  }, [notifEnabled]);
 
   return (
     <View>
