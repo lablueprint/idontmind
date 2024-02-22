@@ -71,6 +71,10 @@ const officialUserSchema = new mongoose.Schema({
     default: undefined,
     type: notificationPreferenceSchema,
   },
+  code: {
+    type: String,
+    required: false,
+  },
 });
 
 module.exports = mongoose.model('OfficialUser', officialUserSchema);

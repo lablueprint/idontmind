@@ -10,7 +10,10 @@ import JournalPage from '../Features/Journal/Screens/JournalPage';
 import ContentLibrary from '../Features/Other/Screens/ContentLibrary';
 import PushNotifications from '../Features/Settings/Screens/PushNotifications';
 import FindHelp from '../Features/Other/Screens/FindHelp';
+import ForgotPassword from '../Features/Login/Screens/ForgotPassword';
 import JournalHistoryPage from '../Features/Other/Screens/JournalHistoryPage';
+import TokenInput from '../Features/Login/Screens/TokenInput';
+import ResetPassword from '../Features/Login/Screens/ResetPassword';
 
 const Tab = createBottomTabNavigator();
 
@@ -28,6 +31,9 @@ export default function NavigationBar() {
         <Tab.Screen name="Notifs" component={PushNotifications} options={{ headerShown: false }} />
         <Tab.Screen name="Content Library" component={ContentLibrary} options={{ headerShown: false }} />
         <Tab.Screen name="Find Help" component={FindHelp} options={{ headerShown: false }} />
+        <Tab.Screen name="Forgot Password" component={ForgotPassword} options={{ headerShown: false }} />
+        <Tab.Screen name="Token Input" component={TokenInput} options={{ headerShown: false }} />
+        <Tab.Screen name="Reset Password" component={ResetPassword} options={{ headerShown: false }} />
       </Tab.Navigator>
     </NavigationContainer>
   );

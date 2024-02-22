@@ -1,3 +1,5 @@
+const nodemailer = require('nodemailer');
+const bcrypt = require('react-native-bcrypt');
 const User = require('../models/OfficialUserSchema');
 
 // get all users in the database
@@ -84,6 +86,77 @@ const deleteUserById = async (req, res) => {
   }
 };
 
+const sendEmail = async (req, res) => {
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false,
+    auth: {
+      user: 'kennethzwan@gmail.com',
+      pass: 'qzxm wgev owhj ufci',
+    },
+  });
+
+  const mailOptions = {
+    from: 'kennethzwan@gmail.com',
+    to: req.body.email,
+    subject: 'Password Reset Token',
+    text: `Your password reset token is: ${req.body.token}`,
+  };
+
+  try {
+    const info = await transporter.sendMail(mailOptions);
+    res.send(true);
+  } catch (error) {
+    console.error('Error sending email:', error);
+    return false;
+  }
+};
+
+const checkUserByEmail = async (req, res) => {
+  try {
+    let email = req.body.email;
+    email = email.toLowerCase();
+    const existingUser = await User.findOne({ email });
+
+    if (!existingUser) {
+      console.error('User not found');
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+    return res.status(200).json({ success: true, user: existingUser });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+};
+
+const resetPassword = async (req, res) => {
+  try {
+    const newPassword = req.body.password;
+    const userID = req.body.id;
+
+    // const salt = await bcrypt.genSalt(10);
+    // const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    const updatedUser = await User.findByIdAndUpdate(userID, { password: newPassword });
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    return res.status(200).json({ message: 'Password reset successfully', success: true });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+};
+
 module.exports = {
-  createUser, getAllUsers, getUserById, updateUser, deleteUserById,
+  createUser,
+  getAllUsers,
+  getUserById,
+  updateUser,
+  deleteUserById,
+  checkUserByEmail,
+  sendEmail,
+  resetPassword,
 };
