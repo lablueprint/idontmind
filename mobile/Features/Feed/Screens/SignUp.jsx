@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     paddingVertical: 10,
     paddingHorizontal: 40,
-    marginTop: 10,
+    marginTop: 20,
     width: 258,
     height: 70,
   },
@@ -65,6 +65,26 @@ const styles = StyleSheet.create({
   eyeIcon: {
     marginTop: 5,
   },
+  paginationContainer: {
+    flexDirection: 'row',
+    marginTop: 20,
+    width: 62,
+    justifyContent: 'center',
+  },
+  activePaginationDot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    marginHorizontal: 8,
+    backgroundColor: 'black',
+  },
+  inactivePaginationDot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    marginHorizontal: 8,
+    backgroundColor: 'gray',
+  }
 });
 
 export default function SignUp({ navigation }) {
@@ -75,9 +95,13 @@ export default function SignUp({ navigation }) {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const dispatch = useDispatch();
 
-  const navigateToFeed = () => {
-    navigation.navigate('Feed');
+  const navigateToPersonalInfo = () => {
+    navigation.navigate('PersonalInfo');
   };
+
+  const handleNextButton = () => {
+    navigateToPersonalInfo();
+  }
 
   const navigateToLanding = () => {
       navigation.navigate('Landing');
@@ -115,7 +139,7 @@ export default function SignUp({ navigation }) {
           setEmail('');
           setPassword('');
           setConfirmPassword('');
-          navigateToFeed();
+          handleNextButton()
         }
       } catch (err) {
         console.error(err.message);
@@ -158,7 +182,7 @@ export default function SignUp({ navigation }) {
             secureTextEntry={!showPassword}
           />
           <TouchableOpacity onPress={togglePasswordVisibility}>
-            <Icon name={showPassword ? 'eye-slash' : 'eye'} size={20} color="black" style={styles.eyeIcon} />
+            <Icon name={showPassword ? 'eye' : 'eye-slash'} size={20} color="black" style={styles.eyeIcon} />
           </TouchableOpacity>
         </View>
       </View>
@@ -173,14 +197,18 @@ export default function SignUp({ navigation }) {
             secureTextEntry={!showConfirmPassword}
           />
           <TouchableOpacity onPress={toggleConfirmPasswordVisibility}>
-            <Icon name={showConfirmPassword ? 'eye-slash' : 'eye'} size={20} color="black" style={styles.eyeIcon} />
+            <Icon name={showConfirmPassword ? 'eye' : 'eye-slash'} size={20} color="black" style={styles.eyeIcon} />
           </TouchableOpacity>
         </View>
       </View>
-      <View>
+      <View style={styles.paginationContainer}>
+        <View style={[styles.activePaginationDot]} />
+        <View style={[styles.inactivePaginationDot]} />
+        <View style={[styles.inactivePaginationDot]} />
+      </View>
+      <View style={styles.buttonShape}>
         <TouchableOpacity
           onPress={handleSignUp}
-          style={styles.buttonShape}
         >
           <Text style={styles.buttonText}>Next</Text>
         </TouchableOpacity>
