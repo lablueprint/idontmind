@@ -1,7 +1,7 @@
 import {
   Pressable, Text, View, StyleSheet,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Divider } from '@rneui/themed';
 import { Switch } from 'react-native-switch';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -9,11 +9,13 @@ import { Dropdown } from 'react-native-element-dropdown';
 import styles from './PushNotificationsStyle';
 
 function PushNotifications() {
+  const [notifEnabled, setNotifEnabled] = useState(false);
   const [isEnabled, setIsEnabled] = useState(false);
   const [isEnabled2, setIsEnabled2] = useState(false);
   const [isEnabled3, setIsEnabled3] = useState(false);
   const [isEnabled4, setIsEnabled4] = useState(false);
 
+  const toggleNotif = () => setNotifEnabled(previousState => !previousState);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
   const toggleSwitch2 = () => setIsEnabled2(previousState => !previousState);
   const toggleSwitch3 = () => setIsEnabled3(previousState => !previousState);
@@ -29,6 +31,10 @@ function PushNotifications() {
     { label: 'monthly', value: 'monthly' },
   ]);
 
+  useEffect (() => {
+    console.log(notifEnabled);
+  }, [notifEnabled]);
+
   return (
     <View>
       <Text style={styles.header}>
@@ -37,7 +43,30 @@ function PushNotifications() {
       <View style={styles.container}>
         <Divider
           width={1}
+          marginBottom={25}
         />
+        <Text style={[styles.category, { marginTop: '5%', marginBottom: '4%' }]}>
+          DAILY CHECK-IN
+        </Text>
+        <View>
+          <View style={[styles.timeOfDayContainer, { marginBottom: 25 }]}>
+            <Text style={styles.timeOfDayText}>
+              morning, _:__ AM
+            </Text>
+            <Switch
+              backgroundActive="#404040"
+              backgroundInactive="lightgray"
+              activeText=""
+              inActiveText=""
+              value={notifEnabled}
+              onValueChange={toggleNotif}
+              barHeight={24}
+              circleSize={22}
+              switchWidthMultiplier={2.3}
+              circleBorderWidth={0}
+            />
+          </View>
+        </View>
         <Text style={[styles.category, { marginTop: '5%', marginBottom: '4%' }]}>
           CATEGORY
         </Text>

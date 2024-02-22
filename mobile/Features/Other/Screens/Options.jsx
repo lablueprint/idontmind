@@ -5,6 +5,9 @@ export default function Options({ navigation }) {
   const options = ['personal info(name, etc)', 'account info (email, pass)', 'mental health info', 'push notifications', 'content recommendations', 'check-ins'];
 
   const navigateFunctions = (key) => {
+    if (key === 4) {
+      navigation.navigate('PushNotifications');
+    }
     if (key === 5) {
       navigation.navigate('BannedTags');
     }
