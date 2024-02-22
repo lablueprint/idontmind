@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import axios from 'axios';
 import styles from '../Components/JournalStyle';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 export default function JournalPage({ navigation }) {
   const route = useRoute();
@@ -21,6 +22,16 @@ export default function JournalPage({ navigation }) {
   const handlePopUp = () => {
     setConfirmPopUp(!confirmPopUp);
   }; // toggles confirmPopUp
+
+  // const Tab = createMaterialTopTabNavigator();
+  // function MyTabs() {
+  //   return (
+  //     <Tab.Navigator>
+  //       <Tab.Screen name="Guided Prompt" component={JournalPage} />
+  //       <Tab.Screen name="Free Write" component={FreeWritePage} />
+  //     </Tab.Navigator>
+  //   );
+  // }
 
   const prompt = 'Create a journal post!';
   const username = 'Nicole'; // set prompt and username to constants at the moment, but should be able to get that info dynamically
@@ -114,3 +125,20 @@ JournalPage.propTypes = {
     navigate: PropTypes.func,
   }).isRequired,
 };
+
+// function GuidedPrompt() {
+//   return <JournalPage prompt="guided prompt" />;
+// }
+// function FreeWrite() {
+//   return <JournalPage prompt="free write" />;
+// }
+// export default function Trends() {
+//   const Tab = createMaterialTopTabNavigator();
+//   return (
+//     <Tab.Navigator>
+//       <Tab.Screen name="Week" component={WeekTab} />
+//       <Tab.Screen name="Month" component={MonthTab} />
+//       <Tab.Screen name="Year" component={YearTab} />
+//     </Tab.Navigator>
+//   );
+// }

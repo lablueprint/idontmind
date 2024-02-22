@@ -6,12 +6,10 @@ import {
 import React, { useState } from 'react';
 import axios from 'axios';
 import styles from './JournalStyle';
-import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
 
 export default function Journal() {
   const [text, setText] = useState('');
   const [confirmPopUp, setConfirmPopUp] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
 
 
   const handlePopUp = () => {
@@ -34,53 +32,6 @@ export default function Journal() {
     console.log(res);
   };
 
-  const openImagePicker = () => {
-    const options = {
-      title: 'Select Image',
-      mediaType: 'photo',
-      includeBase64: false,
-      maxHeight: 2000,
-      maxWidth: 2000,
-    };
-    launchImageLibrary(options, (response) => {
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.error) {
-        console.log('Image picker error: ', response.error);
-      } else {
-        let imageUri = response.uri || response.assets?.[0]?.uri;
-        setSelectedImage(imageUri);
-      }
-    }).catch((error) => {
-      console.log('Error selecting image: ', error);
-    });
-  };
-
-  handleCameraLaunch = () => {
-    const options = {
-      mediaType: 'photo',
-      includeBase64: false,
-      maxHeight: 2000,
-      maxWidth: 2000,
-    };
-  
-    launchCamera(options, response => {
-      console.log('Response = ', response);
-      if (response.didCancel) {
-        console.log('User cancelled camera');
-      } else if (response.error) {
-        console.log('Camera Error: ', response.error);
-      } else {
-        // Process the captured image
-        let imageUri = response.uri || response.assets?.[0]?.uri;
-        setSelectedImage(imageUri);
-        console.log(imageUri);
-      }
-    }).catch((error) => {
-      console.log('Error launching camera: ', error);
-    });
-  }
-
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -97,15 +48,8 @@ export default function Journal() {
               <View style={{ height: 40 }} />
             </ScrollView>
           </View>
-          <View style={styles.container}>
-            <View style={{ marginTop: 20 }}>
-              <Button title="Choose from Device" onPress={openImagePicker} />
-            </View>
-            <View style={{ marginTop: 20,marginBottom: 50 }}>
-              <Button title="Open Camera" onPress={handleCameraLaunch} />
-            </View> 
-          </View>
-          <Button title="Submit" onPress={handlePopUp} />
+
+          <Button title="Submit!" onPress={handlePopUp} />
           <Modal visible={confirmPopUp} transparent>
             <TouchableOpacity onPressOut={handlePopUp} style={styles.modalView}>
               <View style={styles.modal}>
