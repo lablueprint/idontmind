@@ -28,7 +28,7 @@ export default function NavigationBar() {
       <Tab.Screen name="Notifs" component={PushNotifications} options={{ headerShown: false }} />
       <Tab.Screen name="Content Library" component={ContentLibrary} options={{ headerShown: false }} />
       <Tab.Screen name="Find Help" component={FindHelp} options={{ headerShown: false }} />
-      <Tab.Screen name="Options" component={Options} options={{ headerShown: false }} />        
+      <Tab.Screen name="Options" component={Options} options={{ headerShown: false }} />
       <Tab.Screen name="WOYM" component={WOYM} options={{ headerShown: false }} />
     </Tab.Navigator>
   );
