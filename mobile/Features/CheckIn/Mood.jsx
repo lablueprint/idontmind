@@ -129,9 +129,9 @@ function Mood({ navigation }) {
       </View>
       <View style={styles.content}>
         {moodImages.map((row) => (
-          <View style={styles.moodRow}>
+          <View key={row} style={styles.moodRow}>
             {row.map((pair) => (
-              <Pressable style={styles.singularMood} onPress={() => pressMood(pair[0])}>
+              <Pressable key={pair} style={styles.singularMood} onPress={() => pressMood(pair[0])}>
                 <Image
                   source={pair[1]}
                 />

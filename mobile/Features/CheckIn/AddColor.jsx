@@ -49,9 +49,13 @@ function AddColor({ navigation }) {
       </View>
       <View style={styles.content}>
         {colorToPicture.map((row) => (
-          <View style={styles.colorRow}>
+          <View key={row} style={styles.colorRow}>
             {row.map((pair) => (
-              <Pressable style={styles.singularColor} onPress={() => setColorChosen(pair[1])}>
+              <Pressable
+                id={pair}
+                style={styles.singularColor}
+                onPress={() => setColorChosen(pair[1])}
+              >
                 <View style={{ width: 120, height: 120, backgroundColor: pair[1] }} />
                 <Text>{pair[0]}</Text>
               </Pressable>
