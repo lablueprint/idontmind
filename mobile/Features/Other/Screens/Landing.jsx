@@ -15,7 +15,7 @@ export default function Landing({ navigation }) {
     navigation.navigate('SignUp');
   };
   const navigateToFeed = () => {
-    navigation.navigate('Feed');
+    navigation.navigate('NavigationBar');
   }
   
   const dispatch = useDispatch();
@@ -38,18 +38,6 @@ export default function Landing({ navigation }) {
     }
   };
 
-  const navigateToJournal = () => {
-    navigation.navigate('Journal');
-  };
-
-  const navigateToJournalHistory = () => {
-    navigation.navigate('Journal History');
-  };
-
-  const navigateToWOYM = () => {
-    navigation.navigate('WOYM');
-  };
-
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>IDONTMIND</Text>
@@ -64,18 +52,6 @@ export default function Landing({ navigation }) {
       <Button
         title="Hardcoded Sign In"
         onPress={handleHardcodedLogin}
-      />
-      <Button
-        title="To Journal"
-        onPress={navigateToJournal}
-      />
-      <Button
-        title="To Journal History"
-        onPress={navigateToJournalHistory}
-      />
-      <Button
-        title="To WOYM"
-        onPress={navigateToWOYM}
       />
     </View>
   );
