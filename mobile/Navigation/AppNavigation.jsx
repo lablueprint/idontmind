@@ -1,7 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
-import Landing from '../Features/Landing/Screens/Landing';
-import Feed from '../Features/Feed/Screens/Feed';
-import Login from '../Features/Feed/Screens/Login';
+import Landing from '../Features/Other/Screens/Landing';
+import Feed from '../Features/Other/Screens/Feed';
+import Login from '../Features/Login/Screens/Login';
 import SignUp from '../Features/Feed/Screens/SignUp';
 import PersonalInfo from '../Features/Feed/Screens/PersonalInfo';
 import Customization from '../Features/Feed/Screens/Customization';
