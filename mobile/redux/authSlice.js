@@ -10,7 +10,8 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     login: (state, action) => {
-      state.email = action.payload.user.email;  // keep track of a state.id = action.payload.user._id
+      // keep track of a state.id = action.payload.user._id
+      state.email = action.payload.user.email;
       state.token = action.payload.token;
       state.authHeader = {
         Authorization: `Bearer ${action.payload.token}`

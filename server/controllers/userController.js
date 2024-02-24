@@ -46,6 +46,7 @@ const welcomeUser = (req, res) => {
   res.send(`Welcome, ${req.user.email}!`);
 };
 
+// Sample of returning given user information from backend
 const getUserData = async (req, res, next) => {
   try {
     const { email } = req.body;

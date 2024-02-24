@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
 export default function PersonInfo({ navigation }) {
   const [country, setCountry] = useState('');
   const [gender, setGender] = useState('');
-  const countryItems = [
+  const countryItems = [  // will be replaced with all countries dataset
     { label: 'Albania', value: 'albania' },
     { label: 'Korea', value: 'korea' },
     { label: 'Japan', value: 'japan' },
@@ -174,7 +174,7 @@ export default function PersonInfo({ navigation }) {
             <TextInput
               style={styles.ageInputBox}
               placeholder="Age"
-              // keyboardType="numeric"
+              // keyboardType="numeric" (fix exiting numberpad bug)
               maxLength={2}
             />
           </View>

@@ -20,7 +20,8 @@ export default function Landing({ navigation }) {
   
   const dispatch = useDispatch();
 
-  const handleHardcodedLogin = async () => {
+  // Handles a hardcoded login for testing
+  const handleHardcodedLogin = async () => {  
     try {
       const userData = {
         email: 'poop@gmail.com',

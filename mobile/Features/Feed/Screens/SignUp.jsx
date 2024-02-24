@@ -93,6 +93,8 @@ export default function SignUp({ navigation }) {
   const [showPassword, setShowPassword] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  // Used to connect with redux (current state)
   const dispatch = useDispatch();
 
   const navigateToPersonalInfo = () => {
@@ -107,8 +109,9 @@ export default function SignUp({ navigation }) {
       navigation.navigate('Landing');
     }
 
+  // Checks {email}@{site}.{top-level domain}
   const isValidEmail = () => {
-    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;  
     return (emailRegex.test(email));
   }
 
@@ -119,12 +122,14 @@ export default function SignUp({ navigation }) {
           return;
         }
 
+        // Confirms matching passwords
         if (password !== confirmPassword) {
           console.error("Passwords do not match");
           return;
         }
         
-        const userEmail = email.toLowerCase();
+        // Ensures all emails are lowercase when stored in backend
+        const userEmail = email.toLowerCase();  
         const userData = {
           email: userEmail,
           password,
@@ -133,8 +138,9 @@ export default function SignUp({ navigation }) {
     
         if (res.data.error) {
           console.error(res.data.error);
-        } else {
+        } else {  // If sign up is successful
           const res2 = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/users/signin`, userData);
+          // Sets current state variables for session
           dispatch(login(res2.data));
           setEmail('');
           setPassword('');
@@ -146,10 +152,12 @@ export default function SignUp({ navigation }) {
       }
     };
 
-  const togglePasswordVisibility = () => {
+  // Handles pagination dots visibility for password
+  const togglePasswordVisibility = () => {  
     setShowPassword(!showPassword);
   };
 
+  // Handles pagination dots visibility for confirm password
   const toggleConfirmPasswordVisibility = () => {
     setShowConfirmPassword(!showConfirmPassword);
   };

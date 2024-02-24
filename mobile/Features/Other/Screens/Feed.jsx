@@ -11,6 +11,8 @@ import { logout } from '../../../redux/authSlice';
 export default function Feed({ navigation }) {
   const [postDraftBody, setPostDraftBody] = useState('');
   const [postDraftUser, setPostDraftUser] = useState('');
+
+  // Grabs user email and authentication token for current user session
   const { email, authHeader } = useSelector((state) => state.auth);
   const dispatch = useDispatch()
 
@@ -19,16 +21,20 @@ export default function Feed({ navigation }) {
     navigation.navigate('Landing');
   };
 
+  // Resets current session state
   const handleLogout = async () => {
     dispatch(logout());
     navigateToLanding();
   };
 
+  // Handles receiving user data ensuring authorization from middleware
   const handleGetData = async () => {
     try {
       const userData = {
         email,
       };
+
+      // Authorization header ensures signed in user
       const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/users/getData`, userData, { headers: authHeader });
       if (res.data.error) {
         console.error(res.data.error);

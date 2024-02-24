@@ -83,7 +83,7 @@ export default function Login({ navigation }) {
 
   const handleLogin = async () => {
     try {
-
+      // Ensures valid case-sensitive email
       const userEmail = email.toLowerCase();
       const userData = {
         email: userEmail,
@@ -93,6 +93,7 @@ export default function Login({ navigation }) {
       if (res.data.error) {
         console.error(res.data.error);
       } else {
+        // Sets current state variables for session
         dispatch(login(res.data));
         setEmail('');
         setPassword('');
@@ -103,6 +104,7 @@ export default function Login({ navigation }) {
     }
   };
 
+  // Handles pagination dots visibility for password
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   }
