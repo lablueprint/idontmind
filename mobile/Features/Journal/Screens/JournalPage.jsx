@@ -4,8 +4,8 @@ import {
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { useRoute } from '@react-navigation/native';
-import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import PropTypes, { checkPropTypes } from 'prop-types';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import styles from '../Components/JournalStyle';
@@ -18,6 +18,7 @@ export function JournalPage({ navigation, tab }) {
   const [selectedImage, setSelectedImage] = useState(null);
   const [viewImage, setViewImage] = useState(false);
   const [title, setTitle] = useState('');
+  const [prompts, setPrompts] = useState([]);
 
   const [text, setText] = useState(''); // state for the text the user types in
   const [confirmPopUp, setConfirmPopUp] = useState(false); /* state that tells if
@@ -26,6 +27,31 @@ export function JournalPage({ navigation, tab }) {
   const handlePopUp = () => {
     setConfirmPopUp(!confirmPopUp);
   }; // toggles confirmPopUp
+
+  useEffect(() => {
+    const getPrompts = async () => {
+      try {
+        const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/content/getAllPrompts`);
+        console.log(res.data);
+        setPrompts(res.data);
+        // console.log("prompts: ", prompts);
+      } catch (err) {
+        console.err(err);
+        return err;
+      }
+    };
+    getPrompts();
+    console.log('PROMPTS IN USE EFFECT: ', prompts);
+  }, []);
+
+  const generateRandomPrompt = () => {
+    if (prompts.length > 0) {
+      const randomIndex = Math.floor(Math.random() * prompts.length);
+      console.log(randomIndex);
+      const randomPrompt = prompts[randomIndex].question;
+      setTitle(randomPrompt);
+    }
+  };
 
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -42,10 +68,9 @@ export function JournalPage({ navigation, tab }) {
 
   const getPrompt = (tag) => {
     if (tag === 1) {
-      return <Text style={styles.prompt}>I am grateful for...</Text>;
-    } if (tag === 2) {
-      return <TextInput multiline placeholder="Add Title..." onChangeText={setTitle} value={title} />;
+      return <Text style={styles.prompt}>{title}</Text>;
     }
+    return <TextInput multiline placeholder="Add Title..." onChangeText={setTitle} value={title} />;
   };
 
   const currDate = new Date();
@@ -69,7 +94,6 @@ export function JournalPage({ navigation, tab }) {
   const navigateToJournalHistory = () => {
     navigation.navigate('Journal History');
   }; // navigate to Journal History page
-
 
   const getFilenameFromUri = (uri) => {
     if (uri) {
@@ -95,19 +119,44 @@ export function JournalPage({ navigation, tab }) {
   true, uneditable text box with previously written text) */
   if (!isHistory) {
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <ScrollView contentContainerStylestyle={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <View style={styles.container}>
-              <Text style={{ marginTop: 40 }}>{currDate.toDateString()}</Text>
+              <Text style={{ marginTop: 150}}>{currDate.toDateString()}</Text>
               {getPrompt(tab)}
+              {tab === 1 && <Button title="Generate Random Prompt" onPress={generateRandomPrompt} />}
               <View style={styles.textBox}>
                 <ScrollView automaticallyAdjustKeyboardInsets>
                   <TextInput multiline placeholder="Type your response" onChangeText={setText} value={text} />
                   <View style={{ height: 40 }} />
                 </ScrollView>
               </View>
+              <Text>
+          word count:
+          {' '}
+          {wordsLen(text)}
+        </Text>
+      
+        <TouchableOpacity style={styles.imageContainer} onPress={pickImage}>
+        <Text>+ add attachment</Text>
+         </TouchableOpacity>
+          {selectedImage !== '' ? (
+            <>
+              <TouchableOpacity onPress={handleFilenamePress}>
+                <Text>{getFilenameFromUri(selectedImage)}</Text>
+              </TouchableOpacity>
+              {viewImage && (
+              <Image source={{ uri: selectedImage }} style={{ width: 200, height: 200 }} />
+              )}
+            </>
+          ) : null}
+ <Button title="Submit" onPress={handlePopUp} />
 
+<Button
+  title="To Past Journal Entries"
+  onPress={navigateToJournalHistory}
+/>
               <Modal visible={confirmPopUp}>
                 <TouchableOpacity onPressOut={handlePopUp} style={styles.modalView}>
                   <View style={styles.modalBox}>
@@ -131,31 +180,10 @@ export function JournalPage({ navigation, tab }) {
             </View>
           </View>
         </TouchableWithoutFeedback>
-        <Text>
-          word count:
-          {' '}
-          {wordsLen(text)}
-        </Text>
-        <TouchableOpacity style={styles.imageContainer} onPress={pickImage}>
-          <Text>+ add attachment</Text>
-          {selectedImage !== '' ? (
-            <>
-              <TouchableOpacity onPress={handleFilenamePress}>
-                <Text>{getFilenameFromUri(selectedImage)}</Text>
-              </TouchableOpacity>
-              {viewImage && (
-              <Image source={{ uri: selectedImage }} style={{ width: 200, height: 200 }} />
-              )}
-            </>
-          ) : null}
-        </TouchableOpacity>
-        <Button title="Submit" onPress={handlePopUp} />
-
-        <Button
-          title="To Past Journal Entries"
-          onPress={navigateToJournalHistory}
-        />
-      </View>
+       
+   
+       
+      </ScrollView>
 
     );
   }
@@ -194,7 +222,7 @@ function FreeWrite({ navigation }) {
   return <JournalPage navigation={navigation} tab={2} />;
 }
 
-export default function JournalTabs({navigation}) {
+export default function JournalTabs({ navigation }) {
   const navigateToCalendar = () => {
     navigation.navigate('Calendar');
   };
@@ -202,7 +230,7 @@ export default function JournalTabs({navigation}) {
   const Tab = createMaterialTopTabNavigator();
   return (
     <>
-      <View style={{ flexDirection: 'row', alignSelf: 'flex-end', marginTop: 10 }}>
+      <View style={{ flexDirection: 'row', alignSelf: 'flex-end', marginTop: 40}}>
         <TouchableOpacity style={{ margin: 10 }} onPress={navigateToCalendar}>
           <Image
             style={{ width: 30, height: 31 }}
@@ -211,7 +239,7 @@ export default function JournalTabs({navigation}) {
         </TouchableOpacity>
         <TouchableOpacity style={{ margin: 10 }}>
           <Image
-            style={{ width: 20, height: 31}}
+            style={{ width: 20, height: 31 }}
             source={require('../../../assets/search.png')}
           />
         </TouchableOpacity>
@@ -223,7 +251,8 @@ export default function JournalTabs({navigation}) {
         </TouchableOpacity>
 
       </View>
-      <Tab.Navigator style={{ marginTop: 10 }}>
+
+      <Tab.Navigator style={{ marginTop: 10}}>
         <Tab.Screen name="Guided Prompt" component={GuidedPrompt} />
         <Tab.Screen name="Free Write" component={FreeWrite} />
       </Tab.Navigator>

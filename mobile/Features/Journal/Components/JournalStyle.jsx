@@ -17,11 +17,11 @@ export default StyleSheet.create({
   textBox: {
     padding: 10,
     marginTop: 20,
-    marginBottom: 40,
+    marginBottom: 20,
     justifyContent: 'flex-start',
     borderWidth: 2,
     minWidth: '90%',
-    height: '80%',
+    height: '60%',
   },
   attachmentBox: {
     padding: 10,
@@ -64,6 +64,5 @@ export default StyleSheet.create({
     backgroundColor: 'lightgrey',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 16,
   },
 });
