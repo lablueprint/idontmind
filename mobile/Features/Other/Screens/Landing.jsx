@@ -1,3 +1,4 @@
+// to be deleted after this round of PR's finish.
 import {
   Button, Text, View,
 } from 'react-native';
@@ -37,6 +38,18 @@ export default function Landing({ navigation }) {
     }
   };
 
+  const navigateToJournal = () => {
+    navigation.navigate('Journal');
+  };
+
+  const navigateToJournalHistory = () => {
+    navigation.navigate('Journal History');
+  };
+
+  const navigateToWOYM = () => {
+    navigation.navigate('WOYM');
+  };
+
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>IDONTMIND</Text>
@@ -51,6 +64,18 @@ export default function Landing({ navigation }) {
       <Button
         title="Hardcoded Sign In"
         onPress={handleHardcodedLogin}
+      />
+      <Button
+        title="To Journal"
+        onPress={navigateToJournal}
+      />
+      <Button
+        title="To Journal History"
+        onPress={navigateToJournalHistory}
+      />
+      <Button
+        title="To WOYM"
+        onPress={navigateToWOYM}
       />
     </View>
   );

@@ -1,3 +1,6 @@
+// This file and all of the Post related files are temporary and primarily used as examples
+// Currently, they also act as a quick way to visually check for successful MongoDB connection.
+// Addpost is still not good sorry!
 import {
   StyleSheet, Text, View,
 } from 'react-native';
@@ -22,10 +25,9 @@ const styles = StyleSheet.create({
 });
 
 export default function Post({
-  username, body, timestamp, navigation,
+  username, body, timestamp,
 }) {
   const formatDate = (date) => {
-    console.log(date);
     const testDate = new Date(date);
     const datestring = `Posted On: ${testDate.getDate()}/${
       testDate.getMonth() + 1}/${
@@ -41,11 +43,6 @@ export default function Post({
       <Text style={styles.username}>{username}</Text>
       <Text style={styles.body}>{body}</Text>
       <Text style={styles.body}>{formatDate(timestamp)}</Text>
-      {/* <Text style={styles.body}>{body}</Text> */}
-      {/* <Button
-        title="To Landing"
-        onPress={navigateToDetails}
-      /> */}
     </View>
   );
 }
