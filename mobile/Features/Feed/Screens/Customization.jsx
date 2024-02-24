@@ -90,7 +90,7 @@ export default function Customization({ navigation }) {
   };
 
   const navigateToFeed = () => {
-    navigation.navigate('Feed');
+    navigation.navigate('NavigationBar');
   };
 
   return (
