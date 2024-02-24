@@ -5,10 +5,11 @@ import {
 import * as ImagePicker from 'expo-image-picker';
 import { useRoute } from '@react-navigation/native';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from '../Components/JournalStyle';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { checkPropTypes } from 'prop-types';
 
 export function JournalPage({ navigation, tab }) {
   const route = useRoute();
@@ -18,6 +19,7 @@ export function JournalPage({ navigation, tab }) {
   const [selectedImage, setSelectedImage] = useState(null);
   const [viewImage, setViewImage] = useState(false);
   const [title, setTitle] = useState('');
+  const [prompts, setPrompts] = useState([]);
 
   const [text, setText] = useState(''); // state for the text the user types in
   const [confirmPopUp, setConfirmPopUp] = useState(false); /* state that tells if
@@ -26,6 +28,32 @@ export function JournalPage({ navigation, tab }) {
   const handlePopUp = () => {
     setConfirmPopUp(!confirmPopUp);
   }; // toggles confirmPopUp
+
+
+  useEffect(() => {
+    const getPrompts = async () => {
+      try{
+        const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/content/getAllPrompts`);
+        console.log(res.data);
+        setPrompts(res.data);
+        // console.log("prompts: ", prompts);
+      }catch (err) {
+        console.err(err);
+        return err;
+      }
+    }; 
+    getPrompts();
+    console.log("PROMPTS IN USE EFFECT: ", prompts);
+  }, []);
+
+  const generateRandomPrompt = () => {
+    if (prompts.length > 0){
+      randomIndex = Math.floor(Math.random()*prompts.length);
+      console.log(randomIndex);
+      const randomPrompt = prompts[randomIndex].question;
+      setTitle(randomPrompt);
+    }
+  }
 
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -42,7 +70,7 @@ export function JournalPage({ navigation, tab }) {
 
   const getPrompt = (tag) =>{
     if (tag == 1){
-      return <Text style={styles.prompt}>I am grateful for...</Text>;
+      return <Text style={styles.prompt}>{title}</Text>;
     } else if (tag == 2){
       return <TextInput multiline placeholder="Add Title..." onChangeText={setTitle} value={title} />
     }
@@ -101,6 +129,7 @@ export function JournalPage({ navigation, tab }) {
             <View style={styles.container}>
               <Text>{currDate.toDateString()}</Text>
               {getPrompt(tab)}
+              <Button title="Generate Random Prompt" onPress={generateRandomPrompt} />
               <View style={styles.textBox}>
                 <ScrollView automaticallyAdjustKeyboardInsets>
                   <TextInput multiline placeholder="Type your response" onChangeText={setText} value={text} />
