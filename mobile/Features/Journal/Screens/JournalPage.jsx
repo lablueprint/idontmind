@@ -7,8 +7,8 @@ import { useRoute } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import axios from 'axios';
-import styles from '../Components/JournalStyle';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import styles from '../Components/JournalStyle';
 
 export function JournalPage({ navigation, tab }) {
   const route = useRoute();
@@ -40,17 +40,17 @@ export function JournalPage({ navigation, tab }) {
     }
   };
 
-  const getPrompt = (tag) =>{
-    if (tag == 1){
+  const getPrompt = (tag) => {
+    if (tag === 1) {
       return <Text style={styles.prompt}>I am grateful for...</Text>;
-    } else if (tag == 2){
-      return <TextInput multiline placeholder="Add Title..." onChangeText={setTitle} value={title} />
+    } if (tag === 2) {
+      return <TextInput multiline placeholder="Add Title..." onChangeText={setTitle} value={title} />;
     }
-  }
+  };
 
   const currDate = new Date();
 
-  //const prompt = 'Create a journal post!';
+  // const prompt = 'Create a journal post!';
   const username = 'Nicole'; // set prompt and username to constants at the moment, but should be able to get that info dynamically
 
   const addNewJournal = async (newUsername, newPrompt, newText) => {
@@ -70,6 +70,7 @@ export function JournalPage({ navigation, tab }) {
     navigation.navigate('Journal History');
   }; // navigate to Journal History page
 
+
   const getFilenameFromUri = (uri) => {
     if (uri) {
       const uriParts = uri.split('/');
@@ -84,12 +85,11 @@ export function JournalPage({ navigation, tab }) {
 
   const wordsLen = (str) => {
     const array = str.match(/\S+/g);
-    if (array== null){
-      return 0
-    }else{
-      return array.length;
+    if (array == null) {
+      return 0;
     }
-  }
+    return array.length;
+  };
 
   /* render it in two different ways depending on if isHistory(if false, editable text box, if
   true, uneditable text box with previously written text) */
@@ -99,7 +99,7 @@ export function JournalPage({ navigation, tab }) {
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <View style={styles.container}>
-              <Text>{currDate.toDateString()}</Text>
+              <Text style={{ marginTop: 40 }}>{currDate.toDateString()}</Text>
               {getPrompt(tab)}
               <View style={styles.textBox}>
                 <ScrollView automaticallyAdjustKeyboardInsets>
@@ -131,7 +131,11 @@ export function JournalPage({ navigation, tab }) {
             </View>
           </View>
         </TouchableWithoutFeedback>
-        <Text>{wordsLen(text)}</Text>
+        <Text>
+          word count:
+          {' '}
+          {wordsLen(text)}
+        </Text>
         <TouchableOpacity style={styles.imageContainer} onPress={pickImage}>
           <Text>+ add attachment</Text>
           {selectedImage !== '' ? (
@@ -183,19 +187,46 @@ JournalPage.propTypes = {
   }).isRequired,
 };
 
-function GuidedPrompt({navigation}) {
+function GuidedPrompt({ navigation }) {
   return <JournalPage navigation={navigation} tab={1} />;
 }
-function FreeWrite({navigation}) {
+function FreeWrite({ navigation }) {
   return <JournalPage navigation={navigation} tab={2} />;
 }
 
-export default function JournalTabs() {
+export default function JournalTabs({navigation}) {
+  const navigateToCalendar = () => {
+    navigation.navigate('Calendar');
+  };
+
   const Tab = createMaterialTopTabNavigator();
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="Guided Prompt" component={GuidedPrompt} />
-      <Tab.Screen name="Free Write" component={FreeWrite} />
-    </Tab.Navigator>
+    <>
+      <View style={{ flexDirection: 'row', alignSelf: 'flex-end', marginTop: 10 }}>
+        <TouchableOpacity style={{ margin: 10 }} onPress={navigateToCalendar}>
+          <Image
+            style={{ width: 30, height: 31 }}
+            source={require('../../../assets/calendar.png')}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity style={{ margin: 10 }}>
+          <Image
+            style={{ width: 20, height: 31}}
+            source={require('../../../assets/search.png')}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity style={{ marginRight: 40, margin: 10 }}>
+          <Image
+            style={{ width: 20, height: 31 }}
+            source={require('../../../assets/filter.png')}
+          />
+        </TouchableOpacity>
+
+      </View>
+      <Tab.Navigator style={{ marginTop: 10 }}>
+        <Tab.Screen name="Guided Prompt" component={GuidedPrompt} />
+        <Tab.Screen name="Free Write" component={FreeWrite} />
+      </Tab.Navigator>
+    </>
   );
 }

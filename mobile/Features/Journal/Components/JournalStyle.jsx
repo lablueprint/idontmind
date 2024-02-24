@@ -10,13 +10,14 @@ export default StyleSheet.create({
 
   },
   prompt: {
-    marginTop: 30,
+    marginTop: 20,
     fontSize: 20,
     fontWeight: 'bold',
   },
   textBox: {
     padding: 10,
     marginTop: 20,
+    marginBottom: 40,
     justifyContent: 'flex-start',
     borderWidth: 2,
     minWidth: '90%',

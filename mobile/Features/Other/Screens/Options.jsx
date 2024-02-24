@@ -13,7 +13,6 @@ export default function Options({ navigation }) {
       navigation.navigate('BannedTags');
     }
   };
-  const [image, setImage] = useState(null);
 
   const uploadPhotoStyles = StyleSheet.create({
     container: {
@@ -66,10 +65,6 @@ export default function Options({ navigation }) {
           </View>
         </View>
       ))}
-      {/* <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Button title="Pick an image from camera roll" onPress={pickImage} />
-        {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
-      </View> */}
       {selectedImage !== '' ? (
         <Image
           source={{ uri: selectedImage }}
