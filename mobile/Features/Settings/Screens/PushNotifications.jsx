@@ -1,11 +1,13 @@
 import {
-  Pressable, Text, View, StyleSheet,
+  Pressable, Text, View, StyleSheet, TouchableOpacity,
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { Divider } from '@rneui/themed';
 import { Switch } from 'react-native-switch';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Dropdown } from 'react-native-element-dropdown';
+import { TimerPickerModal } from "react-native-timer-picker";
+import { LinearGradient } from "expo-linear-gradient";
 import styles from './PushNotificationsStyle';
 
 function PushNotifications() {
@@ -30,6 +32,9 @@ function PushNotifications() {
     { label: 'daily', value: 'daily' },
     { label: 'monthly', value: 'monthly' },
   ]);
+
+  const [showPicker, setShowPicker] = useState(false);
+  const [alarmString, setAlarmString] = useState(null);
 
   useEffect (() => {
     console.log(notifEnabled);
@@ -66,6 +71,58 @@ function PushNotifications() {
               circleBorderWidth={0}
             />
           </View>
+        </View>
+        <View style={{backgroundColor: "#F1F1F1", alignItems: "center", justifyContent: "center"}}>
+          <Text style={{fontSize: 18, color: "#202020"}}>
+              {alarmString !== null
+                  ? "Alarm set for"
+                  : "No alarm set"}
+          </Text>
+          <TouchableOpacity
+              activeOpacity={0.7}
+              onPress={() => setShowPicker(true)}>
+              <View style={{alignItems: "center"}}>
+                  {alarmString !== null ? (
+                      <Text style={{color: "#202020", fontSize: 48}}>
+                          {alarmString}
+                      </Text>
+                  ) : null}
+                  <TouchableOpacity
+                      activeOpacity={0.7}
+                      onPress={() => setShowPicker(true)}>
+                      <View style={{marginTop: 30}}>
+                          <Text
+                              style={{paddingVertical: 10,
+                              paddingHorizontal: 18,
+                              borderWidth: 1,
+                              borderRadius: 10,
+                              fontSize: 16,
+                              overflow: "hidden",
+                              borderColor: "#8C8C8C",
+                              color: "#8C8C8C"
+                              }}>
+                              Set Alarm 🔔
+                          </Text>
+                      </View>
+                  </TouchableOpacity>
+              </View>
+          </TouchableOpacity>
+          <TimerPickerModal
+              visible={showPicker}
+              setIsVisible={setShowPicker}
+              onConfirm={(pickedDuration) => {
+                  setAlarmString(formatTime(pickedDuration));
+                  setShowPicker(false);
+              }}
+              modalTitle="Set Alarm"
+              onCancel={() => setShowPicker(false)}
+              closeOnOverlayPress
+              use12HourPicker
+              LinearGradient={LinearGradient}
+              styles={{
+                  theme: "light",
+              }}
+          />
         </View>
         <Text style={[styles.category, { marginTop: '5%', marginBottom: '4%' }]}>
           CATEGORY
