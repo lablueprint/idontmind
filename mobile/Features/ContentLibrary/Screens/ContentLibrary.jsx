@@ -2,90 +2,66 @@ import {
   Text, View, TouchableOpacity, FlatList, Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import style from '../Components/ContentStyle';
 import starImage from '../../../assets/star.png';
 import filterImage from '../../../assets/filter.png';
 import searchImage from '../../../assets/search.png';
 import shapeImage from '../../../assets/shape.png';
-import goldStar from '../../../assets/goldStar.png';
+import Card from '../Components/Card';
+import TagContext from '../Context/TagContext';
 
 export default function ContentLibrary({ navigation }) {
-  const navigateToTag = (tagName) => {
-    navigation.navigate('Tag', { tagName });
+
+  const { initTags, initFavorites } = useContext(TagContext);
+
+  const navigateToTag = (index) => {
+    navigation.navigate('Tag', { index, routeName: 'Content Library'});
   };
 
+  const navigateToFavorites = () => {
+    navigation.navigate('Favorites');
+  }
+
+  /* List of Tags */
   const [data, setData] = useState([]);
-  const [map, setMap] = useState({});
-
-  const favoriteTag = async (tag) => {
-    setMap((prevMap) => ({
-      ...prevMap,
-      [tag._id]: 'true',
-    }));
-    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/favoriteTag`, { tag: { id: tag._id, tagName: tag.tagName }, username: 'hi' });
-  };
-
-  const unfavoriteTag = async (tag) => {
-    setMap((prevMap) => ({
-      ...prevMap,
-      [tag._id]: 'false',
-    }));
-    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/unfavoriteTag`, { tag: { id: tag._id, tagName: tag.tagName }, username: 'hi' });
-  };
-
-  const keyExtract = (item) => {
-    if (map[item._id] !== 'true' && map[item._id] !== 'false') {
-      setMap((prevMap) => ({
-        ...prevMap,
-        [item._id]: item.isFavorite ? 'true' : 'false',
-      }));
-    }
-    return item._id;
-  };
 
   useEffect(() => {
-    const foo = async () => {
+    /* Grab all Tags and initalize the Tag List State Variable */
+    const getAllTags = async () => {
       try {
         const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/getAllTagTitles`);
+
+        // const res_favorites = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/getFavorites`, { username: 'hi' });
+
+        /* Set Context Set for Favorites */
+        // initFavorites(res_favorites.data);
+
+        /* Set Context List for Tags*/
+        initTags(res.data);        
+        
+        /* Set Initial Data for Render Functions */
         setData(res.data);
+
       } catch (err) {
         console.error(err);
       }
     };
-    foo();
+    getAllTags();
   }, []);
 
-  const horizontalRenderItem = ({ item }) => (
-    <TouchableOpacity
-      style={[style.horizontalCard]}
-      onPress={() => navigateToTag(item.tagName)}
-    >
-      <TouchableOpacity
-        onPress={() => {
-          if (map[item._id] === 'false') { favoriteTag(item); } else unfavoriteTag(item);
-        }}
-      >
-        <Image
-          style={[style.star,
-            { alignSelf: 'flex-end' },
-          ]}
-          source={map[item._id] === 'false' ? starImage : goldStar}
-        />
-      </TouchableOpacity>
-      <View
-        style={[style.horizontalCardInfo]}
-      >
-        <Text
-          style={[style.horizontalText]}
-        >
-          {item.tagName}
-        </Text>
-      </View>
-    </TouchableOpacity>
-  );
+  /* RenderItem function for Horizontal Card Carousel */
+  const horizontalRenderItem = ({ item, index }) => {
+    return (
+      <Card
+        navigateToTag = {navigateToTag}      
+        index = {index}
+      />
+    );
+  };
 
+  /* RenderItem function for Vertical Card Carousel */
   const verticalRenderItem = ({ item }) => (
     <TouchableOpacity
       style={[style.verticalCard]}
@@ -118,7 +94,7 @@ export default function ContentLibrary({ navigation }) {
           style={[style.container, { flex: 3 }]}
         >
           <TouchableOpacity
-            onPress={() => navigation.navigate('Favorites')}
+            onPress={() => navigateToFavorites()}
             style={[style.button, {
               flexBasis: 37, justifyContent: 'center', backgroundColor: 'lightgray', width: 110, flexDirection: 'row',
             }]}
@@ -130,7 +106,6 @@ export default function ContentLibrary({ navigation }) {
               source={starImage}
             />
             <Text
-              onPress={() => navigation.navigate('Favorites')}
               style={{
                 textAlign: 'center', fontSize: 16, marginTop: 9, marginRight: 2,
               }}
@@ -172,11 +147,11 @@ export default function ContentLibrary({ navigation }) {
         <FlatList
           data={data}
           renderItem={verticalRenderItem}
-          keyExtractor={keyExtract}
+          keyExtractor={(item) => item._id}
           showsVerticalScrollIndicator={false}
         />
       </View>
-    </View>
+    </View>   
   );
 }
 

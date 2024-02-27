@@ -12,37 +12,62 @@ import shapeImage from '../../../assets/shape.png';
 import cancelImage from '../../../assets/cancel.png';
 import goldStar from '../../../assets/goldStar.png';
 import style from '../Components/ContentStyle';
+import { useContext } from 'react';
+import TagContext from '../Context/TagContext';
 
 export default function Tag({ navigation, route }) {
-  const { tagName } = route.params;
-  const [tag, setTag] = useState({});
 
-  const navigateToContentLibrary = () => {
-    navigation.navigate('Content Library');
+  /* index of corresponding Tag*/
+  const { index, routeName } = route.params;
+
+  const { updateTag, Tags } = useContext(TagContext);
+
+  const tag = Tags[index];
+
+  const { _id, tagName, isFavorite, tagBrief } = tag;
+
+  const navigateToPreviousRoute = () => {
+    navigation.navigate(routeName);
   };
 
-  const getTag = async () => {
-    try {
-      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/getTagByName`, { tagName });
-      setTag(res.data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  // const getTag = async () => {
+  //   try {
+  //     const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/getTagByName`, { tagName });
+  //     setTag(res.data);
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
 
   const favoriteTag = async () => {
-    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/favoriteTag`, { tag: { id: tag._id, tagName }, username: 'hi' });
-    await getTag();
+    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/favoriteTag`, { tag: { id: _id, tagName: tagName }, username: 'hi' });
+    // await getTag();
   };
 
   const unfavoriteTag = async () => {
-    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/unfavoriteTag`, { tag: { id: tag._id, tagName }, username: 'hi' });
-    await getTag();
+    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/unfavoriteTag`, { tag: { id: _id, tagName: tagName }, username: 'hi' });
+    // await getTag();
   };
 
-  useEffect(() => {
-    getTag();
-  }, []);
+  /* Handles Favorite Change */
+  const handleFavoriteChange = () => {
+
+    /* Updates old tag with new favorite */
+    const newTag = {
+      ...tag,
+      isFavorite: !isFavorite,
+    }
+  
+    /* Updates tag list state variable */
+    updateTag(index, newTag);
+  
+    /* Updates Users favorite list in Database */
+    if (newTag.isFavorite == true) {
+      favoriteTag();
+    } else {
+      unfavoriteTag();    
+    } 
+  }
 
   return (
     <View
@@ -54,7 +79,7 @@ export default function Tag({ navigation, route }) {
         }}
         >
           <TouchableOpacity
-            onPress={navigateToContentLibrary}
+            onPress={navigateToPreviousRoute}
             style={[style.button, {
               flexBasis: 37,
             }]}
@@ -70,7 +95,7 @@ export default function Tag({ navigation, route }) {
             style={{ flex: 4 }}
           />
           <TouchableOpacity
-            onPress={() => { if (tag.isFavorite) { unfavoriteTag(); } else favoriteTag(); }}
+            onPress={() => handleFavoriteChange()}
             style={[style.button, {
               flexBasis: 37, justifyContent: 'center', backgroundColor: 'lightgray', width: 110, flexDirection: 'row', flex: 1,
             }]}
@@ -79,13 +104,13 @@ export default function Tag({ navigation, route }) {
               style={{
                 width: 20, height: 20, marginTop: 7, marginRight: 3, opacity: 0.4,
               }}
-              source={tag.isFavorite ? goldStar : starImage}
+              source={isFavorite ? goldStar : starImage}
             />
             <Text style={{
               textAlign: 'center', fontSize: 16, marginTop: 9, marginRight: 2,
             }}
             >
-              {tag.isFavorite ? 'unadd' : 'add'}
+              {isFavorite ? 'unadd' : 'add'}
             </Text>
           </TouchableOpacity>
         </View>
@@ -123,7 +148,7 @@ export default function Tag({ navigation, route }) {
                 flex: 5, fontSize: 15, opacity: 0.75, marginTop: 5,
               }}
             >
-              {tag.tagBrief}
+              {tagBrief}
             </Text>
             <View
               style={{ flex: 1 }}
@@ -215,7 +240,7 @@ Tag.propTypes = {
   }).isRequired,
   route: PropTypes.shape({
     params: PropTypes.shape({
-      tagName: PropTypes.string,
+      index: PropTypes.number,
     }).isRequired,
   }).isRequired,
 };

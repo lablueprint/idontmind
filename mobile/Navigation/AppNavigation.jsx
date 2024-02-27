@@ -3,12 +3,14 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import NavigationBar from './NavigationBar';
 import Favorites from '../Features/ContentLibrary/Screens/Favorites';
 import Tag from '../Features/ContentLibrary/Screens/Tag';
+import { TagProvider } from '../Features/ContentLibrary/Context/TagContext';
 
 export default function AppNavigation() {
   const Stack = createNativeStackNavigator();
 
   return (
     <NavigationContainer>
+      <TagProvider>
       <Stack.Navigator>
         <Stack.Screen
           name="NavigationBar"
@@ -26,6 +28,7 @@ export default function AppNavigation() {
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
+      </TagProvider>      
     </NavigationContainer>
   );
 }
