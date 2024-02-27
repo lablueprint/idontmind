@@ -1,5 +1,5 @@
 import {
-    Text, View, TextInput, TouchableOpacity, StyleSheet,
+    Text, View, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard
   } from 'react-native';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
@@ -85,65 +85,68 @@ export default function SignUp({ navigation }) {
   };
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity onPress={navigateToLanding} style={styles.arrowContainer}>
-        <Icon name="arrow-left" size={30} color="black"/>
-      </TouchableOpacity>
-      <Text style={styles.title}>Let's get started!</Text>
-      <View style={styles.inputContainer}>
-        <Text>Email</Text>
-        <View style={styles.inputWrapper}>
-          <TextInput
-            style={styles.inputBox}
-            placeholder="jeff@idontmind.com"
-            value={email}
-            onChangeText={setEmail}
-          />
-        </View>
-      </View>
-      <View style={styles.inputContainer}>
-        <Text>Password</Text>
-        <View style={styles.inputWrapper}>
-          <TextInput
-            style={styles.inputBox}
-            placeholder="Password"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry={!showPassword}
-          />
-          <TouchableOpacity onPress={togglePasswordVisibility}>
-            <Icon name={showPassword ? 'eye' : 'eye-slash'} size={20} color="black" style={styles.eyeIcon} />
-          </TouchableOpacity>
-        </View>
-      </View>
-      <View style={styles.inputContainer}>
-        <Text>Confirm Password</Text>
-        <View style={styles.inputWrapper}>
-          <TextInput
-            style={styles.inputBox}
-            placeholder="Confirm"
-            value={confirmPassword}
-            onChangeText={setConfirmPassword}
-            secureTextEntry={!showConfirmPassword}
-          />
-          <TouchableOpacity onPress={toggleConfirmPasswordVisibility}>
-            <Icon name={showConfirmPassword ? 'eye' : 'eye-slash'} size={20} color="black" style={styles.eyeIcon} />
-          </TouchableOpacity>
-        </View>
-      </View>
-      <View style={styles.paginationContainer}>
-        <View style={[styles.activePaginationDot]} />
-        <View style={[styles.inactivePaginationDot]} />
-        <View style={[styles.inactivePaginationDot]} />
-      </View>
-      <View style={styles.buttonShape}>
-        <TouchableOpacity
-          onPress={handleSignUp}
-        >
-          <Text style={styles.buttonText}>Next</Text>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
+        <TouchableOpacity onPress={navigateToLanding} style={styles.arrowContainer}>
+          <Icon name="arrow-left" size={30} color="black"/>
         </TouchableOpacity>
+        <Text style={styles.title}>Let's get started!</Text>
+        <View style={styles.inputContainer}>
+          <Text>Email</Text>
+          <View style={styles.inputWrapper}>
+            <TextInput
+              style={styles.inputBox}
+              placeholder="jeff@idontmind.com"
+              value={email}
+              onChangeText={setEmail}
+            />
+          </View>
+        </View>
+        <View style={styles.inputContainer}>
+          <Text>Password</Text>
+          <View style={styles.inputWrapper}>
+            <TextInput
+              style={styles.inputBox}
+              placeholder="Password"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry={!showPassword}
+            />
+            <TouchableOpacity onPress={togglePasswordVisibility}>
+              <Icon name={showPassword ? 'eye' : 'eye-slash'} size={20} color="black" style={styles.eyeIcon} />
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={styles.inputContainer}>
+          <Text>Confirm Password</Text>
+          <View style={styles.inputWrapper}>
+            <TextInput
+              style={styles.inputBox}
+              placeholder="Confirm"
+              value={confirmPassword}
+              onChangeText={setConfirmPassword}
+              secureTextEntry={!showConfirmPassword}
+            />
+            <TouchableOpacity onPress={toggleConfirmPasswordVisibility}>
+              <Icon name={showConfirmPassword ? 'eye' : 'eye-slash'} size={20} color="black" style={styles.eyeIcon} />
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={styles.paginationContainer}>
+          <View style={[styles.activePaginationDot]} />
+          <View style={[styles.inactivePaginationDot]} />
+          <View style={[styles.inactivePaginationDot]} />
+        </View>
+        <View style={styles.buttonShape}>
+          <TouchableOpacity
+            // onPress={handleSignUp}
+            onPress={handleNextButton}
+          >
+            <Text style={styles.buttonText}>Next</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 }
 

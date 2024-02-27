@@ -1,5 +1,5 @@
 import {
-    Text, View, TextInput, TouchableOpacity, StyleSheet,
+    Text, View, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard
   } from 'react-native';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
@@ -8,6 +8,8 @@ import { DropdownSelect } from 'react-native-input-select';
 import styles from '../Components/OnboardingStyling';
 
 export default function PersonInfo({ navigation }) {
+  const [firstName, setFirstName] = useState('');
+  const [age, setAge] = useState(0);
   const [country, setCountry] = useState('');
   const [gender, setGender] = useState('');
   const countryItems = [  // will be replaced with all countries dataset
@@ -32,69 +34,75 @@ export default function PersonInfo({ navigation }) {
   }
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity onPress={navigateToSignUp} style={styles.arrowContainer}>
-        <Icon name="arrow-left" size={30} color="black"/>
-      </TouchableOpacity>
-      <Text style={styles.title}>Tell us a bit about yourself!</Text>
-      <View style={styles.inputContainer}>
-        <Text>First Name</Text>
-        <View style={styles.inputWrapper}>
-          <TextInput
-            style={styles.inputBox}
-            placeholder="Jeff"
-          />
-        </View>
-      </View>
-      <View style={styles.inputContainer}>
-        <View style={styles.ageGenderContainer}>
-          <Text>Age</Text>
-          <Text style={styles.genderTitle}>Gender</Text>
-        </View>
-        <View style={styles.ageGenderContainer}>
-          <View style={styles.ageWrapper}>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
+        <TouchableOpacity onPress={navigateToSignUp} style={styles.arrowContainer}>
+          <Icon name="arrow-left" size={30} color="black"/>
+        </TouchableOpacity>
+        <Text style={styles.title}>Tell us a bit about yourself!</Text>
+        <View style={styles.inputContainer}>
+          <Text>First Name</Text>
+          <View style={styles.inputWrapper}>
             <TextInput
-              style={styles.ageInputBox}
-              placeholder="Age"
-              // keyboardType="numeric" (fix exiting numberpad bug)
-              maxLength={2}
+              style={styles.inputBox}
+              placeholder="Jeff"
+              value={firstName}
+              onChangeText={setFirstName}
             />
           </View>
-          <View style={styles.genderWrapper}>
+        </View>
+        <View style={styles.inputContainer}>
+          <View style={styles.ageGenderContainer}>
+            <Text>Age</Text>
+            <Text style={styles.genderTitle}>Gender</Text>
+          </View>
+          <View style={styles.ageGenderContainer}>
+            <View style={styles.ageWrapper}>
+              <TextInput
+                style={styles.ageInputBox}
+                placeholder="Age"
+                keyboardType="numeric"
+                maxLength={2}
+                value={age}
+                onChangeText={setAge}
+              />
+            </View>
+            <View style={styles.genderWrapper}>
+              <DropdownSelect
+                placeholder='Select...'
+                options={genderItems}
+                selectedValue={gender}
+                onValueChange={(value) => setGender(value)}
+              />
+            </View>
+          </View>
+        </View>
+        <View style={styles.inputContainer}>
+          <Text>Country</Text>
+          <View style={styles.countryDropdown}>
             <DropdownSelect
               placeholder='Select...'
-              options={genderItems}
-              selectedValue={gender}
-              onValueChange={(value) => setGender(value)}
+              options={countryItems}
+              selectedValue={country}
+              onValueChange={(value) => setCountry(value)}
+              isSearchable
             />
           </View>
         </View>
-      </View>
-      <View style={styles.inputContainer}>
-        <Text>Country</Text>
-        <View style={styles.countryDropdown}>
-          <DropdownSelect
-            placeholder='Select...'
-            options={countryItems}
-            selectedValue={country}
-            onValueChange={(value) => setCountry(value)}
-            isSearchable
-          />
+        <View style={styles.paginationContainer}>
+          <View style={[styles.inactivePaginationDot]} />
+          <View style={[styles.activePaginationDot]} />
+          <View style={[styles.inactivePaginationDot]} />
+        </View>
+        <View style={styles.buttonShape}>
+          <TouchableOpacity
+            onPress={navigateToCustomization}
+          >
+            <Text style={styles.buttonText}>Next</Text>
+          </TouchableOpacity>
         </View>
       </View>
-      <View style={styles.paginationContainer}>
-        <View style={[styles.inactivePaginationDot]} />
-        <View style={[styles.activePaginationDot]} />
-        <View style={[styles.inactivePaginationDot]} />
-      </View>
-      <View style={styles.buttonShape}>
-        <TouchableOpacity
-          onPress={navigateToCustomization}
-        >
-          <Text style={styles.buttonText}>Next</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+    </TouchableWithoutFeedback>
   )
 }
 
