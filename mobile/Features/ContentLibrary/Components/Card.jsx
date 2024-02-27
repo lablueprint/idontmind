@@ -16,10 +16,10 @@ export default function Card({
     deleteFavorite, addFavorite, findFavorite,
   } = useContext(TagContext);
 
-  // const tag = Tags[index];
-
+  /* Grab item fields */
   const { _id, tagName } = item;
 
+  /* Check if current tag is favorited */
   const favorited = findFavorite(_id);
 
   /* Adds Tag to Users Favorites List */
@@ -36,6 +36,7 @@ export default function Card({
 
   /* Handles Favorite Change */
   const handleFavoriteChange = () => {
+    /* checks if the tag is not not in the user's favorite list */
     if (findFavorite(_id) === false) {
       favoriteTag();
     } else {

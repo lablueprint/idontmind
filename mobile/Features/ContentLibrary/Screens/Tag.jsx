@@ -22,12 +22,14 @@ export default function Tag({ navigation, route }) {
     Tags, deleteFavorite, addFavorite, findFavorite,
   } = useContext(TagContext);
 
+  /* Grabs current tag */
   const tag = Tags[index];
 
   const {
     _id, tagName, tagBrief,
   } = tag;
 
+  /* Checks if current tag is in users favorite list */
   const favorited = findFavorite(_id);
 
   const navigateToPreviousRoute = () => {
@@ -48,6 +50,7 @@ export default function Tag({ navigation, route }) {
 
   /* Handles Favorite Change */
   const handleFavoriteChange = () => {
+    /* checks if the tag is not not in the user's favorite list */
     if (findFavorite(_id) === false) {
       favoriteTag();
     } else {

@@ -32,15 +32,6 @@ const getTagByName = async (req, res) => {
   }
 };
 
-// const getContentObjects = async (req, res) => {
-//   try {
-//     const tag = await Tag.find({ name: req.body.name });
-//     res.send(tag);
-//   } catch (err) {
-//     console.error(err);
-//   }
-// };
-
 // req has tag object, userName
 const favoriteTag = async (req, res) => {
   try {

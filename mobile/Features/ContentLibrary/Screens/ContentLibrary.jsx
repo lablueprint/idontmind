@@ -10,7 +10,6 @@ import filterImage from '../../../assets/filter.png';
 import searchImage from '../../../assets/search.png';
 import shapeImage from '../../../assets/shape.png';
 import Card from '../Components/Card';
-
 import TagContext from '../Context/TagContext';
 
 export default function ContentLibrary({ navigation }) {
@@ -31,8 +30,10 @@ export default function ContentLibrary({ navigation }) {
     /* Grab all Tags and initalize the Tag List State Variable */
     const getAllTags = async () => {
       try {
+        /* Grab all tags */
         const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/getAllTagTitles`);
 
+        /* Grab user's favorite list */
         const resFavorites = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/getFavorites`, { username: 'hi' });
 
         /* Set Context Set for Favorites */

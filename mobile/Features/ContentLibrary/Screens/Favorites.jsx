@@ -18,6 +18,7 @@ export default function FavoritesList({ navigation }) {
   useEffect(() => {
     const foo = async () => {
       try {
+        /* Filling favorites list */
         const newFavorites = [];
         Favorites.forEach((id) => {
           const index = findTag(id);
