@@ -10,7 +10,7 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     login: (state, action) => {
-      // keep track of a state.id = action.payload.user._id
+      state.id = action.payload.user._id
       state.email = action.payload.user.email;
       state.firstName = action.payload.user.firstName;
       state.token = action.payload.token;
@@ -19,6 +19,7 @@ const authSlice = createSlice({
       };
     },
     logout: (state) => {
+      state.id = null;
       state.email = null;
       state.firstName = null;
       state.token = null;
