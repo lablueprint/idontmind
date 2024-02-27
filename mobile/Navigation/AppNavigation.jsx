@@ -1,10 +1,10 @@
 import { NavigationContainer } from '@react-navigation/native';
 import Landing from '../Features/Other/Screens/Landing';
 import Feed from '../Features/Other/Screens/Feed';
-import Login from '../Features/Login/Screens/Login';
-import SignUp from '../Features/Feed/Screens/SignUp';
-import PersonalInfo from '../Features/Feed/Screens/PersonalInfo';
-import Customization from '../Features/Feed/Screens/Customization';
+import Login from '../Features/Onboarding/Screens/Login';
+import SignUp from '../Features/Onboarding/Screens/SignUp';
+import PersonalInfo from '../Features/Onboarding/Screens/PersonalInfo';
+import Customization from '../Features/Onboarding/Screens/Customization';
 import { createStackNavigator } from '@react-navigation/stack';
 import NavigationBar from './NavigationBar';
 import Filter from '../Features/Other/Screens/Filter';
