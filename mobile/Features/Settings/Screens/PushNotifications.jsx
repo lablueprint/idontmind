@@ -23,6 +23,19 @@ function PushNotifications() {
   const toggleSwitch3 = () => setIsEnabled3(previousState => !previousState);
   const toggleSwitch4 = () => setIsEnabled4(previousState => !previousState);
 
+  const formatTime = (pickedDuration) => {
+    let { hours, minutes, seconds } = pickedDuration;
+    let part = "AM";
+    if (hours > 12) {
+      hours -= 12;
+      part = 'PM';
+    }
+    if (minutes === 0) {
+      return `${hours}:00${part}`
+    }
+    return `${hours}:${minutes}${part}`
+  }
+
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [open2, setOpen2] = useState(false);
@@ -35,10 +48,7 @@ function PushNotifications() {
 
   const [showPicker, setShowPicker] = useState(false);
   const [alarmString, setAlarmString] = useState(null);
-
-  useEffect (() => {
-    console.log(notifEnabled);
-  }, [notifEnabled]);
+  const [displayString, setDisplayString] = useState(null);
 
   return (
     <View>
@@ -55,38 +65,31 @@ function PushNotifications() {
         </Text>
         <View>
           <View style={[styles.timeOfDayContainer, { marginBottom: 25 }]}>
-            <Text style={styles.timeOfDayText}>
-              morning, _:__ AM
+            <Text style={[styles.timeOfDayText, notifEnabled ? styles.timeOfDayText : styles.unselected]}>
+              {alarmString !== null
+                  ? alarmString
+                  : "No alarm set"}
             </Text>
             <Switch
-              backgroundActive="#404040"
-              backgroundInactive="lightgray"
-              activeText=""
-              inActiveText=""
-              value={notifEnabled}
-              onValueChange={toggleNotif}
-              barHeight={24}
-              circleSize={22}
-              switchWidthMultiplier={2.3}
-              circleBorderWidth={0}
+                backgroundActive="#404040"
+                backgroundInactive="lightgray"
+                activeText=""
+                inActiveText=""
+                value={notifEnabled}
+                onValueChange={toggleNotif}
+                barHeight={24}
+                circleSize={22}
+                switchWidthMultiplier={2.3}
+                circleBorderWidth={0}
             />
           </View>
         </View>
-        <View style={{backgroundColor: "#F1F1F1", alignItems: "center", justifyContent: "center"}}>
-          <Text style={{fontSize: 18, color: "#202020"}}>
-              {alarmString !== null
-                  ? "Alarm set for"
-                  : "No alarm set"}
-          </Text>
+        <View style={[{backgroundColor: "#F1F1F1", alignItems: "center", justifyContent: "center"},
+      notifEnabled ? styles.showIt : styles.dontShowIt]}>
           <TouchableOpacity
               activeOpacity={0.7}
               onPress={() => setShowPicker(true)}>
               <View style={{alignItems: "center"}}>
-                  {alarmString !== null ? (
-                      <Text style={{color: "#202020", fontSize: 48}}>
-                          {alarmString}
-                      </Text>
-                  ) : null}
                   <TouchableOpacity
                       activeOpacity={0.7}
                       onPress={() => setShowPicker(true)}>
@@ -101,7 +104,7 @@ function PushNotifications() {
                               borderColor: "#8C8C8C",
                               color: "#8C8C8C"
                               }}>
-                              Set Alarm 🔔
+                              edit
                           </Text>
                       </View>
                   </TouchableOpacity>
@@ -111,14 +114,16 @@ function PushNotifications() {
               visible={showPicker}
               setIsVisible={setShowPicker}
               onConfirm={(pickedDuration) => {
+                  console.log(pickedDuration);
                   setAlarmString(formatTime(pickedDuration));
                   setShowPicker(false);
               }}
               modalTitle="Set Alarm"
               onCancel={() => setShowPicker(false)}
               closeOnOverlayPress
-              use12HourPicker
+              use12HourPicker={true}
               LinearGradient={LinearGradient}
+              hideSeconds={true}
               styles={{
                   theme: "light",
               }}
