@@ -25,6 +25,10 @@ export default function Landing({ navigation }) {
     navigation.navigate('WOYM');
   };
 
+  const navigateToLoading = () => {
+    navigation.navigate('Loading');
+  };
+
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>Landing Page</Text>
@@ -47,6 +51,10 @@ export default function Landing({ navigation }) {
       <Button
         title="To WOYM"
         onPress={navigateToWOYM}
+      />
+      <Button
+        title="To Loading"
+        onPress={navigateToLoading}
       />
     </View>
   );
