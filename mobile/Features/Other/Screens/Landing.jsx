@@ -16,7 +16,7 @@ export default function Landing({ navigation }) {
   const navigateToJournal = () => {
     navigation.navigate('Journal');
   };
-  
+
   const navigateToCheckIn = () => {
     navigation.navigate('CheckIn');
   };
