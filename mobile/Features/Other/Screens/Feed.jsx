@@ -2,18 +2,50 @@ import { useState, useEffect } from 'react';
 import {
   Button, Text, View, TextInput,
 } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import Post from '../Components/Post';
+import { logout } from '../../../redux/authSlice';
 
 export default function Feed({ navigation }) {
   const [postDraftBody, setPostDraftBody] = useState('');
   const [postDraftUser, setPostDraftUser] = useState('');
 
+  // Grabs user email and authentication token for current user session
+  const { email, authHeader } = useSelector((state) => state.auth);
+  const dispatch = useDispatch()
+
   const [postList, setPostList] = useState([]);
   const navigateToLanding = () => {
     navigation.navigate('Landing');
   };
+
+  // Resets current session state
+  const handleLogout = async () => {
+    dispatch(logout());
+    navigateToLanding();
+  };
+
+  // Handles receiving user data ensuring authorization from middleware
+  const handleGetData = async () => {
+    try {
+      const userData = {
+        email,
+      };
+
+      // Authorization header ensures signed in user
+      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/users/getData`, userData, { headers: authHeader });
+      if (res.data.error) {
+        console.error(res.data.error);
+      } else {
+        console.log("This is the user data:")
+        console.log(res.data[0])
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
 
   useEffect(() => {
     const foo = async () => {
@@ -45,6 +77,7 @@ export default function Feed({ navigation }) {
       _id: postList.length + 1,
       username: postDraftUser,
       body: postDraftBody,
+      timestamp
     });
     setPostList(tempPostList);
     setPostDraftBody('');
@@ -54,7 +87,6 @@ export default function Feed({ navigation }) {
     pushPosts({
       username: postDraftUser,
       body: postDraftBody,
-      timestamp,
     });
   };
 
@@ -68,6 +100,11 @@ export default function Feed({ navigation }) {
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>
+        Welcome
+        {' '}
+        {email}
+      </Text>
       {postList.map(
         (p) => (
           <Post
@@ -100,8 +137,12 @@ export default function Feed({ navigation }) {
       </View>
 
       <Button
-        title="To Landing"
-        onPress={navigateToLanding}
+        title="Logout"
+        onPress={handleLogout}
+      />
+      <Button
+        title="Get Correct User Data"
+        onPress={handleGetData}
       />
     </View>
   );

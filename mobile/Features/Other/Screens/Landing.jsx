@@ -3,37 +3,55 @@ import {
   Button, Text, View,
 } from 'react-native';
 import PropTypes from 'prop-types';
+import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { login } from '../../../redux/authSlice';
 
 export default function Landing({ navigation }) {
-  const navigateToFeed = () => {
-    navigation.navigate('Feed');
-  };
-
   const navigateToLogin = () => {
     navigation.navigate('Login');
   };
-
-  const navigateToJournal = () => {
-    navigation.navigate('Journal');
+  const navigateToSignUp = () => {
+    navigation.navigate('SignUp');
   };
   
   const navigateToCheckIn = () => {
     navigation.navigate('CheckIn');
   };
+  const navigateToFeed = () => {
+    navigation.navigate('NavigationBar');
+  }
+  
+  const dispatch = useDispatch();
 
-  const navigateToJournalHistory = () => {
-    navigation.navigate('Journal History');
+  // Handles a hardcoded login for testing
+  const handleHardcodedLogin = async () => {  
+    try {
+      const userData = {
+        email: 'poop@gmail.com',
+        password: 'poop',
+      };
+      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/users/signin`, userData);
+      if (res.data.error) {
+        console.error(res.data.error);
+      } else {
+        dispatch(login(res.data));
+        navigateToFeed();
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
   };
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Landing Page</Text>
+      <Text>IDONTMIND</Text>
       <Button
-        title="To Feed"
-        onPress={navigateToFeed}
+        title="Get Started"
+        onPress={navigateToSignUp}
       />
       <Button
-        title="To Login"
+        title="Already have an account?"
         onPress={navigateToLogin}
       />
       <Button
@@ -43,6 +61,10 @@ export default function Landing({ navigation }) {
       <Button
         title="To CheckIn"
         onPress={navigateToCheckIn}
+      />
+      <Button
+        title="Hardcoded Sign In"
+        onPress={handleHardcodedLogin}
       />
     </View>
   );
