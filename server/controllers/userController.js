@@ -2,10 +2,10 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/UserSchema');
 const passport = require('../passport');
 
-// Creates user with given email and password to send to backend
+// Creates user with given email, password, and to send to backend
 const signUpUser = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, firstName } = req.body;
 
     const userAlreadyExists = await User.findOne({ email: email })
 
@@ -13,7 +13,7 @@ const signUpUser = async (req, res, next) => {
       return res.status(400).send({ message: 'This user already has an account' })
     }
 
-    const user = new User({ email, password });
+    const user = new User({ email, password, firstName });
     await user.save();
     res.json(user);
   } catch (error) {

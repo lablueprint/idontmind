@@ -24,8 +24,8 @@ export default function Landing({ navigation }) {
   const handleHardcodedLogin = async () => {  
     try {
       const userData = {
-        email: 'poop@gmail.com',
-        password: 'poop',
+        email: 'sample@gmail.com',
+        password: 'sample',
       };
       const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/users/signin`, userData);
       if (res.data.error) {

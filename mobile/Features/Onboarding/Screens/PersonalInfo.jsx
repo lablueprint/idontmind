@@ -1,15 +1,17 @@
 import {
     Text, View, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard
   } from 'react-native';
+import { useRoute } from '@react-navigation/native';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { DropdownSelect } from 'react-native-input-select';
 import styles from '../Components/OnboardingStyling';
 
-export default function PersonInfo({ navigation }) {
+export default function PersonalInfo({ navigation }) {
+  const route = useRoute();
   const [firstName, setFirstName] = useState('');
-  const [age, setAge] = useState(0);
+  const [age, setAge] = useState('');
   const [country, setCountry] = useState('');
   const [gender, setGender] = useState('');
   const countryItems = [  // will be replaced with all countries dataset
@@ -30,7 +32,7 @@ export default function PersonInfo({ navigation }) {
   }
 
   const navigateToCustomization = () => {
-    navigation.navigate('Customization');
+    navigation.navigate('Customization', { loginInfo: route.params, firstName });
   }
 
   return (
@@ -106,7 +108,7 @@ export default function PersonInfo({ navigation }) {
   )
 }
 
-PersonInfo.propTypes = {
+PersonalInfo.propTypes = {
     navigation: PropTypes.shape({
         navigate: PropTypes.func,
     }).isRequired,
