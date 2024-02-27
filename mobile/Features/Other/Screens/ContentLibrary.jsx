@@ -1,5 +1,5 @@
 import {
-  Text, View, StyleSheet, TouchableOpacity, FlatList, Image, Button,
+  Text, View, StyleSheet, TouchableOpacity, FlatList, Image,
 } from 'react-native';
 import { useState } from 'react';
 import PropTypes from 'prop-types';

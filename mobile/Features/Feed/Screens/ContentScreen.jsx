@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { View, Button } from 'react-native';
-import SearchBar from '../Components/SearchBar';
+import SearchBar from '../../Other/Components/SearchBar';
 
-export default function ContentScreen({navigation}) {
+export default function ContentScreen({ navigation }) {
   const [isOpen, setOpen] = useState(false);
   const [recentSearches, setRecentSearches] = useState([]);
 

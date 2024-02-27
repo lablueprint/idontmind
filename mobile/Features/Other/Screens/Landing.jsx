@@ -16,12 +16,12 @@ export default function Landing({ navigation }) {
   };
   const navigateToFeed = () => {
     navigation.navigate('NavigationBar');
-  }
-  
+  };
+
   const dispatch = useDispatch();
 
   // Handles a hardcoded login for testing
-  const handleHardcodedLogin = async () => {  
+  const handleHardcodedLogin = async () => {
     try {
       const userData = {
         email: 'poop@gmail.com',

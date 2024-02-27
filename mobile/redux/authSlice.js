@@ -14,14 +14,14 @@ const authSlice = createSlice({
       state.email = action.payload.user.email;
       state.token = action.payload.token;
       state.authHeader = {
-        Authorization: `Bearer ${action.payload.token}`
+        Authorization: `Bearer ${action.payload.token}`,
       };
     },
     logout: (state) => {
       state.email = null;
       state.token = null;
       state.authHeader = null;
-    }
+    },
   },
 });
 

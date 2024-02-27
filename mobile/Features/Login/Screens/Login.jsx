@@ -5,8 +5,8 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { login } from '../../../redux/authSlice';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { login } from '../../../redux/authSlice';
 
 const styles = StyleSheet.create({
   container: {
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   inputWrapper: {
-    flexDirection: 'row', 
+    flexDirection: 'row',
     alignItems: 'center',
     height: 63,
     width: 350,
@@ -79,7 +79,7 @@ export default function Login({ navigation }) {
 
   const navigateToLanding = () => {
     navigation.navigate('Landing');
-  }
+  };
 
   const handleLogin = async () => {
     try {
@@ -107,7 +107,7 @@ export default function Login({ navigation }) {
   // Handles pagination dots visibility for password
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -137,7 +137,7 @@ export default function Login({ navigation }) {
             secureTextEntry={!showPassword}
           />
           <TouchableOpacity onPress={togglePasswordVisibility}>
-            <Icon name={showPassword ? 'eye' : 'eye-slash'} size={20} color="black" style={styles.eyeIcon}/>
+            <Icon name={showPassword ? 'eye' : 'eye-slash'} size={20} color="black" style={styles.eyeIcon} />
           </TouchableOpacity>
         </View>
       </View>

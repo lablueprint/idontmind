@@ -38,9 +38,9 @@ export default function SearchBar({
 
         <Text style={SearchBarStyle.text}> Recent Searches </Text>
         <View style={SearchBarStyle.rowContainer}>
-          {recentSearches.slice(0,3).map((item, index) => (
-            <View key={index+1}>
-              <TouchableOpacity style={SearchBarStyle.recentSearch} onPress={() => handleRecentSearch(item)} >
+          {recentSearches.slice(0, 3).map((item, index) => (
+            <View key={index + 1}>
+              <TouchableOpacity style={SearchBarStyle.recentSearch} onPress={() => handleRecentSearch(item)}>
                 <Text style={SearchBarStyle.text}>{item}</Text>
               </TouchableOpacity>
             </View>

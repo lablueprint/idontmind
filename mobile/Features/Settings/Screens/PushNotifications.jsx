@@ -1,11 +1,10 @@
 import {
-  Pressable, Text, View, StyleSheet,
+  Pressable, Text, View,
 } from 'react-native';
 import React, { useState } from 'react';
 import { Divider } from '@rneui/themed';
 import { Switch } from 'react-native-switch';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { Dropdown } from 'react-native-element-dropdown';
 import styles from './PushNotificationsStyle';
 
 function PushNotifications() {
@@ -14,10 +13,10 @@ function PushNotifications() {
   const [isEnabled3, setIsEnabled3] = useState(false);
   const [isEnabled4, setIsEnabled4] = useState(false);
 
-  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
-  const toggleSwitch2 = () => setIsEnabled2(previousState => !previousState);
-  const toggleSwitch3 = () => setIsEnabled3(previousState => !previousState);
-  const toggleSwitch4 = () => setIsEnabled4(previousState => !previousState);
+  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
+  const toggleSwitch2 = () => setIsEnabled2((previousState) => !previousState);
+  const toggleSwitch3 = () => setIsEnabled3((previousState) => !previousState);
+  const toggleSwitch4 = () => setIsEnabled4((previousState) => !previousState);
 
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
@@ -151,7 +150,7 @@ function PushNotifications() {
               showArrowIcon
               style={{ width: 105, backgroundColor: 'transparent', borderWidth: 0 }}
               containerStyle={{ width: 105, borderTopWidth: 0 }}
-              dropDownContainerStyle={{ borderTopWidth: 0, backgroundColor: 'white'}}
+              dropDownContainerStyle={{ borderTopWidth: 0, backgroundColor: 'white' }}
             />
           </View>
           <View style={[styles.timeOfDayContainer, { marginTop: '7%' }]}>
