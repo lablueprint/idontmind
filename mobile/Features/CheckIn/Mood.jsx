@@ -17,12 +17,11 @@ function Mood({ navigation }) {
   const [addedMoods, setAddedMoods] = useState([]);
 
   const continueButton = () => {
-    // console.log('continue');
     navigation.navigate('Sleep', { numPages });
   };
 
   const skipButton = () => {
-    // console.log('skip');
+    navigation.navigate('Sleep', { numPages });
   };
 
   // later implement functionality for pressing on a mood button:

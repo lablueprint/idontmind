@@ -52,7 +52,7 @@ function AddColor({ navigation }) {
           <View key={row} style={styles.colorRow}>
             {row.map((pair) => (
               <Pressable
-                id={pair}
+                key={pair}
                 style={styles.singularColor}
                 onPress={() => setColorChosen(pair[1])}
               >

@@ -60,8 +60,6 @@ function Sleep({ navigation }) {
               onValueChange={onSliderChange}
               step={1}
               vertical
-              lowerLimit={2}
-              upperLimit={11}
             />
           </View>
         </View>
