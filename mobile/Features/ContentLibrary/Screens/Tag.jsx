@@ -4,7 +4,7 @@ import {
 import PropTypes from 'prop-types';
 import Swiper from 'react-native-swiper';
 import axios from 'axios';
-import { useState, useEffect } from 'react';
+import { useContext } from 'react';
 import starImage from '../../../assets/star.png';
 import leftArrow from '../../../assets/left.png';
 import rightArrow from '../../../assets/right.png';
@@ -12,62 +12,48 @@ import shapeImage from '../../../assets/shape.png';
 import cancelImage from '../../../assets/cancel.png';
 import goldStar from '../../../assets/goldStar.png';
 import style from '../Components/ContentStyle';
-import { useContext } from 'react';
 import TagContext from '../Context/TagContext';
 
 export default function Tag({ navigation, route }) {
-
-  /* index of corresponding Tag*/
+  /* index of corresponding Tag */
   const { index, routeName } = route.params;
 
-  const { updateTag, Tags } = useContext(TagContext);
+  const {
+    Tags, deleteFavorite, addFavorite, findFavorite,
+  } = useContext(TagContext);
 
   const tag = Tags[index];
 
-  const { _id, tagName, isFavorite, tagBrief } = tag;
+  const {
+    _id, tagName, tagBrief,
+  } = tag;
+
+  const favorited = findFavorite(_id);
 
   const navigateToPreviousRoute = () => {
     navigation.navigate(routeName);
   };
 
-  // const getTag = async () => {
-  //   try {
-  //     const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/getTagByName`, { tagName });
-  //     setTag(res.data);
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // };
-
+  /* Adds Tag to Users Favorites List */
   const favoriteTag = async () => {
-    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/favoriteTag`, { tag: { id: _id, tagName: tagName }, username: 'hi' });
-    // await getTag();
+    addFavorite(_id);
+    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/favoriteTag`, { tag: { id: _id, tagName }, username: 'hi' });
   };
 
+  /* Remove Tag from Users Favorites List */
   const unfavoriteTag = async () => {
-    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/unfavoriteTag`, { tag: { id: _id, tagName: tagName }, username: 'hi' });
-    // await getTag();
+    deleteFavorite(_id);
+    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/unfavoriteTag`, { tag: { id: _id, tagName }, username: 'hi' });
   };
 
   /* Handles Favorite Change */
   const handleFavoriteChange = () => {
-
-    /* Updates old tag with new favorite */
-    const newTag = {
-      ...tag,
-      isFavorite: !isFavorite,
-    }
-  
-    /* Updates tag list state variable */
-    updateTag(index, newTag);
-  
-    /* Updates Users favorite list in Database */
-    if (newTag.isFavorite == true) {
+    if (findFavorite(_id) === false) {
       favoriteTag();
     } else {
-      unfavoriteTag();    
-    } 
-  }
+      unfavoriteTag();
+    }
+  };
 
   return (
     <View
@@ -104,13 +90,13 @@ export default function Tag({ navigation, route }) {
               style={{
                 width: 20, height: 20, marginTop: 7, marginRight: 3, opacity: 0.4,
               }}
-              source={isFavorite ? goldStar : starImage}
+              source={favorited ? goldStar : starImage}
             />
             <Text style={{
               textAlign: 'center', fontSize: 16, marginTop: 9, marginRight: 2,
             }}
             >
-              {isFavorite ? 'unadd' : 'add'}
+              {favorited ? 'unadd' : 'add'}
             </Text>
           </TouchableOpacity>
         </View>
@@ -241,6 +227,7 @@ Tag.propTypes = {
   route: PropTypes.shape({
     params: PropTypes.shape({
       index: PropTypes.number,
+      routeName: PropTypes.string,
     }).isRequired,
   }).isRequired,
 };

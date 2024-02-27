@@ -1,7 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import NavigationBar from './NavigationBar';
-import Favorites from '../Features/ContentLibrary/Screens/Favorites';
+import FavoritesList from '../Features/ContentLibrary/Screens/Favorites';
 import Tag from '../Features/ContentLibrary/Screens/Tag';
 import { TagProvider } from '../Features/ContentLibrary/Context/TagContext';
 
@@ -19,7 +19,7 @@ export default function AppNavigation() {
         />
         <Stack.Screen
           name="Favorites"
-          component={Favorites}
+          component={FavoritesList}
           options={{ headerShown: false }}
         />
         <Stack.Screen

@@ -10,19 +10,19 @@ import filterImage from '../../../assets/filter.png';
 import searchImage from '../../../assets/search.png';
 import shapeImage from '../../../assets/shape.png';
 import Card from '../Components/Card';
+
 import TagContext from '../Context/TagContext';
 
 export default function ContentLibrary({ navigation }) {
-
   const { initTags, initFavorites } = useContext(TagContext);
 
   const navigateToTag = (index) => {
-    navigation.navigate('Tag', { index, routeName: 'Content Library'});
+    navigation.navigate('Tag', { index, routeName: 'Content Library' });
   };
 
   const navigateToFavorites = () => {
     navigation.navigate('Favorites');
-  }
+  };
 
   /* List of Tags */
   const [data, setData] = useState([]);
@@ -33,17 +33,16 @@ export default function ContentLibrary({ navigation }) {
       try {
         const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/getAllTagTitles`);
 
-        // const res_favorites = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/getFavorites`, { username: 'hi' });
+        const resFavorites = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/getFavorites`, { username: 'hi' });
 
         /* Set Context Set for Favorites */
-        // initFavorites(res_favorites.data);
+        initFavorites(resFavorites.data);
 
-        /* Set Context List for Tags*/
-        initTags(res.data);        
-        
+        /* Set Context List for Tags */
+        initTags(res.data);
+
         /* Set Initial Data for Render Functions */
         setData(res.data);
-
       } catch (err) {
         console.error(err);
       }
@@ -52,14 +51,12 @@ export default function ContentLibrary({ navigation }) {
   }, []);
 
   /* RenderItem function for Horizontal Card Carousel */
-  const horizontalRenderItem = ({ item, index }) => {
-    return (
-      <Card
-        navigateToTag = {navigateToTag}      
-        index = {index}
-      />
-    );
-  };
+  const horizontalRenderItem = ({ item, index }) => (
+    <Card
+      navigateToTag={navigateToTag}
+      index={index}
+    />
+  );
 
   /* RenderItem function for Vertical Card Carousel */
   const verticalRenderItem = ({ item }) => (
@@ -151,7 +148,7 @@ export default function ContentLibrary({ navigation }) {
           showsVerticalScrollIndicator={false}
         />
       </View>
-    </View>   
+    </View>
   );
 }
 

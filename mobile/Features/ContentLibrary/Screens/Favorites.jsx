@@ -3,28 +3,33 @@ import {
   Text, View, FlatList, TouchableOpacity, Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import axios from 'axios';
 import style from '../Components/ContentStyle';
 import shapeImage from '../../../assets/shape.png';
 import TagContext from '../Context/TagContext';
 import cancelImage from '../../../assets/cancel.png';
 
-export default function Favorites({ navigation }) {
+export default function FavoritesList({ navigation }) {
   const [favorites, setFavorites] = useState([]);
 
-  const { findTag } = useContext(TagContext);
+  const {
+    Favorites, findTag, Tags,
+  } = useContext(TagContext);
 
   useEffect(() => {
     const foo = async () => {
       try {
-        const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/getFavorites`, { username: 'hi' });
-        setFavorites(res.data);
+        const newFavorites = [];
+        Favorites.forEach((id) => {
+          const index = findTag(id);
+          newFavorites.push(Tags[index]);
+        });
+        setFavorites(newFavorites);
       } catch (err) {
         console.error(err);
       }
     };
     foo();
-  }, []);
+  }, [Favorites]);
 
   const navigateToTag = (_id) => {
     const index = findTag(_id);
@@ -38,7 +43,7 @@ export default function Favorites({ navigation }) {
   const verticalRenderItem = ({ item }) => (
     <TouchableOpacity
       style={[style.verticalCard]}
-      onPress={() => navigateToTag(item.id)}
+      onPress={() => navigateToTag(item._id)}
     >
       <Text
         style={[style.verticalText]}
@@ -69,12 +74,12 @@ export default function Favorites({ navigation }) {
             flexBasis: 37,
             marginLeft: 15,
             flex: 1,
-            backgroundColor: 'transparent'
+            backgroundColor: 'transparent',
           }]}
         >
           <Image
             style={{
-              marginRight: 3, height: 38, width: 38, alignSelf: 'flex-start'
+              marginRight: 3, height: 38, width: 38, alignSelf: 'flex-start',
             }}
             source={cancelImage}
           />
@@ -101,7 +106,7 @@ export default function Favorites({ navigation }) {
   );
 }
 
-Favorites.propTypes = {
+FavoritesList.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func,
   }).isRequired,
