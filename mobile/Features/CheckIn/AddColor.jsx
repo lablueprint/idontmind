@@ -1,18 +1,15 @@
 import { useState } from 'react';
 import {
-  Text, View, Pressable, Image,
+  Text, View, Pressable,
 } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import ProgressBar from 'react-native-progress/Bar';
 import PropTypes from 'prop-types';
-import tempColor from '../../assets/colorSquare.png';
 import styles from './AddColorStyles';
 
 function AddColor({ navigation }) {
-  // get parameters from route (setAddedMoods, addedMoods, moodPassedIn)
+  // get parameters from route (moodPassedIn and numPages)
   const route = useRoute();
-  const setAddedMoods = route.params?.setAddedMoods;
-  const addedMoods = route.params?.addedMoods;
   const moodPassedIn = route.params?.mood;
 
   // set progress
@@ -30,13 +27,9 @@ function AddColor({ navigation }) {
   // state to keep track of which color the user chose
   const [colorChosen, setColorChosen] = useState('');
 
-  // update the addedMoods array from the original mood screen with the mood/color the user chose
-  // also navigate back to the original mood screen
+  // also navigate back to the original mood screen and pass the mood and color chosen
   const continueButton = () => {
-    const newAddedMoods = [...addedMoods];
-    newAddedMoods.push([moodPassedIn, colorChosen]);
-    setAddedMoods(newAddedMoods);
-    navigation.navigate('Mood', { numPages });
+    navigation.navigate('Mood', { numPages, moodPassedIn, colorChosen });
   };
 
   return (

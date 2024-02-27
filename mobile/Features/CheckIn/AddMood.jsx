@@ -16,11 +16,8 @@ LogBox.ignoreLogs([
 function AddMood({ navigation }) {
   // get parameters from route
   const route = useRoute();
-  const setAddedMoods = route.params?.setAddedMoods;
-  const addedMoods = route.params?.addedMoods;
-
-  // set progress
   const numPages = route.params?.numPages;
+  // set progress
   const progress = 1 / numPages;
 
   // text for new mood
@@ -29,7 +26,7 @@ function AddMood({ navigation }) {
   // navigate to AddColor with setAddedMoods, addedMoods, the mood the user typed in, and numPages
   const goToAddColor = () => {
     navigation.navigate('AddColor', {
-      setAddedMoods, addedMoods, mood: text, numPages,
+      mood: text, numPages,
     });
   };
   const handleInputChange = (input) => {

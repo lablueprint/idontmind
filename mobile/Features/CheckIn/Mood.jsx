@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Text, View, Pressable, Image,
 } from 'react-native';
@@ -12,9 +12,21 @@ function Mood({ navigation }) {
   // get numPages from route, set progress to 1 / numpages
   const route = useRoute();
   const numPages = route.params?.numPages;
+  const newMood = route.params?.moodPassedIn;
+  const newColor = route.params?.colorChosen;
+
   const progress = 1 / numPages;
   // addedMoods array to keep track of the new moods the user has added
   const [addedMoods, setAddedMoods] = useState([]);
+
+  useEffect(() => {
+    // update addedMoods with the route parameters from the AddColor screen (mood and color)
+    if (newMood) {
+      const newAddedMoods = [...addedMoods];
+      newAddedMoods.push([newMood, newColor]);
+      setAddedMoods(newAddedMoods);
+    }
+  }, [newMood, newColor]);
 
   const continueButton = () => {
     navigation.navigate('Sleep', { numPages });
@@ -33,8 +45,7 @@ function Mood({ navigation }) {
   /* pressing the plus button takes user to AddMood screen, passes in setAddedMoods
   and addedMoods so user can edit the addedMoods array */
   const addMood = () => {
-    // console.log('addedMood');
-    navigation.navigate('AddMood', { setAddedMoods, addedMoods, numPages });
+    navigation.navigate('AddMood', { numPages });
   };
 
   // moodImages is an array of each of the rows
