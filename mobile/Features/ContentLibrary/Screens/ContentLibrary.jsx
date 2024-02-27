@@ -55,6 +55,7 @@ export default function ContentLibrary({ navigation }) {
     <Card
       navigateToTag={navigateToTag}
       index={index}
+      item={item}
     />
   );
 

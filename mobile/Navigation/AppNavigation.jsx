@@ -11,24 +11,24 @@ export default function AppNavigation() {
   return (
     <NavigationContainer>
       <TagProvider>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="NavigationBar"
-          component={NavigationBar}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Favorites"
-          component={FavoritesList}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Tag"
-          component={Tag}
-          options={{ headerShown: false }}
-        />
-      </Stack.Navigator>
-      </TagProvider>      
+        <Stack.Navigator>
+          <Stack.Screen
+            name="NavigationBar"
+            component={NavigationBar}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Favorites"
+            component={FavoritesList}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Tag"
+            component={Tag}
+            options={{ headerShown: false }}
+          />
+        </Stack.Navigator>
+      </TagProvider>
     </NavigationContainer>
   );
 }

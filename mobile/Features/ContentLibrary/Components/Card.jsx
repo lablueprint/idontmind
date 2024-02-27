@@ -10,15 +10,15 @@ import goldStar from '../../../assets/goldStar.png';
 import TagContext from '../Context/TagContext';
 
 export default function Card({
-  navigateToTag, index,
+  navigateToTag, index, item,
 }) {
   const {
-    Tags, deleteFavorite, addFavorite, findFavorite,
+    deleteFavorite, addFavorite, findFavorite,
   } = useContext(TagContext);
 
-  const tag = Tags[index];
+  // const tag = Tags[index];
 
-  const { _id, tagName } = tag;
+  const { _id, tagName } = item;
 
   const favorited = findFavorite(_id);
 
@@ -74,4 +74,8 @@ export default function Card({
 Card.propTypes = {
   navigateToTag: PropTypes.func.isRequired,
   index: PropTypes.number.isRequired,
+  item: PropTypes.shape({
+    _id: PropTypes.string,
+    tagName: PropTypes.string,
+  }).isRequired,
 };
