@@ -1,5 +1,6 @@
+/* eslint-disable global-require */
 import {
-  Text, View, StyleSheet, TouchableOpacity, FlatList, Image, Button,
+  Text, View, StyleSheet, TouchableOpacity, FlatList, Image,
 } from 'react-native';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
@@ -78,7 +79,7 @@ const DATA = [
 
 export default function ContentLibrary({ navigation }) {
   const navigateToLanding = () => {
-    navigation.navigate('Landing');
+    navigation.navigate('PostSignInLanding'); // will be changed by chance PR
   };
 
   const horizontalRenderItem = ({ item }) => (

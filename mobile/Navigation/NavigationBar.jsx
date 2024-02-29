@@ -15,7 +15,7 @@ const Tab = createBottomTabNavigator();
 
 export default function NavigationBar() {
   return (
-    <Tab.Navigator initialRouteName='Feed'>
+    <Tab.Navigator initialRouteName="Feed">
       <Tab.Screen name="PostSignInLanding" component={PostSignInLanding} options={{ headerShown: false }} />
       <Tab.Screen name="Feed" component={Feed} options={{ headerShown: false }} />
       <Tab.Screen name="CheckIn" component={CheckIn} options={{ headerShown: false }} />
