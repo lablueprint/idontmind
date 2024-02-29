@@ -1,12 +1,12 @@
 import {
-    Text, View, TextInput, TouchableOpacity, StyleSheet,
-  } from 'react-native';
+  Text, View, TextInput, TouchableOpacity, StyleSheet,
+} from 'react-native';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { login } from '../../../redux/authSlice';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { login } from '../../../redux/authSlice';
 
 const styles = StyleSheet.create({
   container: {
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   inputWrapper: {
-    flexDirection: 'row', 
+    flexDirection: 'row',
     alignItems: 'center',
     height: 63,
     width: 350,
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginHorizontal: 8,
     backgroundColor: 'gray',
-  }
+  },
 });
 
 export default function SignUp({ navigation }) {
@@ -103,57 +103,57 @@ export default function SignUp({ navigation }) {
 
   const handleNextButton = () => {
     navigateToPersonalInfo();
-  }
+  };
 
   const navigateToLanding = () => {
-      navigation.navigate('Landing');
-    }
+    navigation.navigate('Landing');
+  };
 
   // Checks {email}@{site}.{top-level domain}
   const isValidEmail = () => {
-    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;  
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     return (emailRegex.test(email));
-  }
+  };
 
   const handleSignUp = async () => {
-      try {
-        if (!isValidEmail()) {
-          console.error("Invalid Email Address")
-          return;
-        }
-
-        // Confirms matching passwords
-        if (password !== confirmPassword) {
-          console.error("Passwords do not match");
-          return;
-        }
-        
-        // Ensures all emails are lowercase when stored in backend
-        const userEmail = email.toLowerCase();  
-        const userData = {
-          email: userEmail,
-          password,
-        };
-        const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/users/signup`, userData);
-    
-        if (res.data.error) {
-          console.error(res.data.error);
-        } else {  // If sign up is successful
-          const res2 = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/users/signin`, userData);
-          // Sets current state variables for session
-          dispatch(login(res2.data));
-          setEmail('');
-          setPassword('');
-          setConfirmPassword('');
-          handleNextButton()
-        }
-      } catch (err) {
-        console.error(err.message);
+    try {
+      if (!isValidEmail()) {
+        console.error('Invalid Email Address');
+        return;
       }
-    };
+
+      // Confirms matching passwords
+      if (password !== confirmPassword) {
+        console.error('Passwords do not match');
+        return;
+      }
+
+      // Ensures all emails are lowercase when stored in backend
+      const userEmail = email.toLowerCase();
+      const userData = {
+        email: userEmail,
+        password,
+      };
+      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/users/signup`, userData);
+
+      if (res.data.error) {
+        console.error(res.data.error);
+      } else { // If sign up is successful
+        const res2 = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/users/signin`, userData);
+        // Sets current state variables for session
+        dispatch(login(res2.data));
+        setEmail('');
+        setPassword('');
+        setConfirmPassword('');
+        handleNextButton();
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
 
   // Handles pagination dots visibility for password
-  const togglePasswordVisibility = () => {  
+  const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
@@ -165,9 +165,9 @@ export default function SignUp({ navigation }) {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={navigateToLanding} style={styles.arrowContainer}>
-        <Icon name="arrow-left" size={30} color="black"/>
+        <Icon name="arrow-left" size={30} color="black" />
       </TouchableOpacity>
-      <Text style={styles.title}>Let's get started!</Text>
+      <Text style={styles.title}>Let&apos;s get started!</Text>
       <View style={styles.inputContainer}>
         <Text>Email</Text>
         <View style={styles.inputWrapper}>

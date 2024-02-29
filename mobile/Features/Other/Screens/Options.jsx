@@ -1,4 +1,5 @@
 import { View, Text, TouchableOpacity } from 'react-native';
+import PropTypes from 'prop-types';
 import OptionStyle from './OptionStyle';
 
 export default function Options({ navigation }) {
@@ -15,7 +16,7 @@ export default function Options({ navigation }) {
       <Text style={OptionStyle.title}> options </Text>
       <Text style={OptionStyle.personalData}> personal data </Text>
       {options.map((option, index) => (
-        <View key={index + 1}>
+        <View key={option}>
           {index === 3 && <Text style={OptionStyle.customize}> customize </Text>}
           <View style={OptionStyle.optionContainer}>
             <View style={OptionStyle.box} />
@@ -32,3 +33,9 @@ export default function Options({ navigation }) {
 
   );
 }
+
+Options.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+  }).isRequired,
+};

@@ -1,44 +1,43 @@
 // to be deleted after this round of PR's finish.
 import {
-    Button, Text, View,
-  } from 'react-native';
+  Button, Text, View,
+} from 'react-native';
 import PropTypes from 'prop-types';
-  
+
 export default function PostSignInLanding({ navigation }) {
-const navigateToJournal = () => {
+  const navigateToJournal = () => {
     navigation.navigate('Journal');
-};
+  };
 
-const navigateToJournalHistory = () => {
+  const navigateToJournalHistory = () => {
     navigation.navigate('Journal History');
-};
+  };
 
-const navigateToWOYM = () => {
+  const navigateToWOYM = () => {
     navigation.navigate('WOYM');
-};
+  };
 
-return (
+  return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-    <Text>IDONTMIND</Text>
-    <Button
+      <Text>IDONTMIND</Text>
+      <Button
         title="To Journal"
         onPress={navigateToJournal}
-    />
-    <Button
+      />
+      <Button
         title="To Journal History"
         onPress={navigateToJournalHistory}
-    />
-    <Button
+      />
+      <Button
         title="To WOYM"
         onPress={navigateToWOYM}
-    />
+      />
     </View>
-);
+  );
 }
 
 PostSignInLanding.propTypes = {
-navigation: PropTypes.shape({
+  navigation: PropTypes.shape({
     navigate: PropTypes.func,
-}).isRequired,
+  }).isRequired,
 };
-  

@@ -1,4 +1,5 @@
 import { View, Text } from 'react-native';
+import PropTypes from 'prop-types';
 import FilterAndBannedTags from '../Components/FilterAndBannedTags';
 
 export default function Filter({ navigation }) {
@@ -9,3 +10,10 @@ export default function Filter({ navigation }) {
     </View>
   );
 }
+
+Filter.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+    goBack: PropTypes.func,
+  }).isRequired,
+};
