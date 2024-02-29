@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import PostSignInLanding from '../Features/Other/Screens/PostSignInLanding';
 import Feed from '../Features/Other/Screens/Feed';
 import CheckIn from '../Features/Other/Screens/CheckIn';
-import TrendsPage from '../Trends/Screens/TrendsPage';
+import TrendsPage from '../Features/Trends/Screens/TrendsPage';
 import JournalPage from '../Features/Journal/Screens/JournalPage';
 import ContentLibrary from '../Features/Other/Screens/ContentLibrary';
 import FindHelp from '../Features/Other/Screens/FindHelp';
