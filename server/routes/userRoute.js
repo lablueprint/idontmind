@@ -7,7 +7,7 @@ userRouter.post('/signin', userController.signInUser);
 userRouter.post('/signup', userController.signUpUser);
 
 // Protects the routes below with middleware (requires authorization header aka signed in user)
-userRouter.use(userController.authenticatePassport); 
+userRouter.use(userController.authenticatePassport);
 userRouter.post('/getData', userController.getUserData);
 
 userRouter.get('/get', (req, res) => {

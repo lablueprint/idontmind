@@ -1,7 +1,7 @@
 const express = require('express');
 
 const offUserRouter = express.Router();
-const offUserController = require('../controllers/offUserController');
+const offUserController = require('../controllers/offuserController');
 
 offUserRouter.post('/createUser', offUserController.createUser);
 
