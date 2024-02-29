@@ -2,8 +2,6 @@ import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   container: {
-    width: '90%',
-    height: '90%',
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
@@ -20,8 +18,8 @@ export default StyleSheet.create({
     marginBottom: 20,
     justifyContent: 'flex-start',
     borderWidth: 2,
-    minWidth: '90%',
-    height: '60%',
+    width: '80%',
+   height: '80%',
   },
   attachmentBox: {
     padding: 10,

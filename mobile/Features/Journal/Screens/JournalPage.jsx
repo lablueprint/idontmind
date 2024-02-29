@@ -8,6 +8,7 @@ import PropTypes, { checkPropTypes } from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import SafeAreaView from 'react-native-safe-area-view';
 import styles from '../Components/JournalStyle';
 
 export function JournalPage({ navigation, tab }) {
@@ -17,7 +18,7 @@ export function JournalPage({ navigation, tab }) {
   from the previous navigation page (JournalHistoryPage) */
   const [selectedImage, setSelectedImage] = useState(null);
   const [viewImage, setViewImage] = useState(false);
-  const [title, setTitle] = useState('');
+  const [title, setTitle] = useState();
   const [prompts, setPrompts] = useState([]);
 
   const [text, setText] = useState(''); // state for the text the user types in
@@ -52,6 +53,7 @@ export function JournalPage({ navigation, tab }) {
       setTitle(randomPrompt);
     }
   };
+  useEffect(() => { generateRandomPrompt(); }, []);
 
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -115,51 +117,62 @@ export function JournalPage({ navigation, tab }) {
     return array.length;
   };
 
+  const timeHours = currDate.getHours();
+  const timeMinutes = currDate.getMinutes();
+
+  const militaryToStandard = (hours) => {
+    if (hours > '12') {
+      return (hours - '12');
+    }
+    return hours;
+  };
+
   /* render it in two different ways depending on if isHistory(if false, editable text box, if
   true, uneditable text box with previously written text) */
   if (!isHistory) {
     return (
-      <ScrollView contentContainerStylestyle={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <View style={styles.container}>
-              <Text style={{ marginTop: 150}}>{currDate.toDateString()}</Text>
-              {getPrompt(tab)}
-              {tab === 1 && <Button title="Generate Random Prompt" onPress={generateRandomPrompt} />}
-              <View style={styles.textBox}>
-                <ScrollView automaticallyAdjustKeyboardInsets>
-                  <TextInput multiline placeholder="Type your response" onChangeText={setText} value={text} />
-                  <View style={{ height: 40 }} />
-                </ScrollView>
-              </View>
-              <Text>
-          word count:
-          {' '}
-          {wordsLen(text)}
-        </Text>
-      
-        <TouchableOpacity style={styles.imageContainer} onPress={pickImage}>
-        <Text>+ add attachment</Text>
-         </TouchableOpacity>
-          {selectedImage !== '' ? (
-            <>
-              <TouchableOpacity onPress={handleFilenamePress}>
-                <Text>{getFilenameFromUri(selectedImage)}</Text>
-              </TouchableOpacity>
-              {viewImage && (
-              <Image source={{ uri: selectedImage }} style={{ width: 200, height: 200 }} />
-              )}
-            </>
-          ) : null}
- <Button title="Submit" onPress={handlePopUp} />
+      <ScrollView>
 
-<Button
-  title="To Past Journal Entries"
-  onPress={navigateToJournalHistory}
-/>
+        {/* <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}> */}
+          <SafeAreaView>
+            <SafeAreaView style={styles.container}>
+              <Text style={{ marginTop: 150 }}>{`${currDate.toDateString()}, ${militaryToStandard(timeHours)}:${timeMinutes}` }</Text>
+              <SafeAreaView>
+                {getPrompt(tab)}
+              </SafeAreaView>
+              {tab === 1 && <Button title="Generate Random Prompt" onPress={generateRandomPrompt} />}
+              <SafeAreaView style={styles.textBox}>
+                <ScrollView automaticallyAdjustKeyboardInsets>
+                  <View>
+                    <TextInput multiline placeholder="Type your response" onChangeText={setText} value={text} />
+                  </View>
+                </ScrollView>
+              </SafeAreaView>
+              <Text>
+                word count:
+                {' '}
+                {wordsLen(text)}
+              </Text>
+              <TouchableOpacity style={styles.imageContainer} onPress={pickImage}>
+                <Text>+ add attachment</Text>
+              </TouchableOpacity>
+              {selectedImage !== '' ? (
+                <>
+                  <TouchableOpacity onPress={handleFilenamePress}>
+                    <Text>{getFilenameFromUri(selectedImage)}</Text>
+                  </TouchableOpacity>
+                  {viewImage && (
+                  <Image source={{ uri: selectedImage }} style={{ width: 200, height: 200 }} />
+                  )}
+                </>
+              ) : null}
+
+              <SafeAreaView>
+           
+
               <Modal visible={confirmPopUp}>
                 <TouchableOpacity onPressOut={handlePopUp} style={styles.modalView}>
-                  <View style={styles.modalBox}>
+                  <SafeAreaView style={styles.modalBox}>
                     <Text style={{ fontSize: 20 }}>confirm journal entry?</Text>
                     <Pressable
                       style={styles.modalSelections}
@@ -174,28 +187,51 @@ export function JournalPage({ navigation, tab }) {
                         no
                       </Text>
                     </Pressable>
-                  </View>
+                  </SafeAreaView>
                 </TouchableOpacity>
               </Modal>
-            </View>
-          </View>
-        </TouchableWithoutFeedback>
-       
-   
-       
-      </ScrollView>
+              </SafeAreaView>
+          
 
+            </SafeAreaView>
+          </SafeAreaView>
+        {/* </TouchableWithoutFeedback> */}
+        
+          <Text>hi</Text>
+          <Text>hi</Text>     
+          <Text>hi</Text>
+          <Text>hi</Text>    
+          <Text>hi</Text>
+          <Text>hi</Text>
+          <Text>hi</Text>
+          <Text>hi</Text>
+          <Text>hi</Text>
+          <Text>hi</Text>
+          <Text>hi</Text>
+          <Text>hi</Text>
+          <Text>hi</Text>
+          <Text>hi</Text>
+          <Text>hi</Text>
+          <Text>hi</Text>
+          <View>
+          <Button title="Submit" onPress={handlePopUp} />
+              <Button
+                title="To Past Journal Entries"
+                onPress={navigateToJournalHistory}
+              />
+              </View>
+
+      </ScrollView>
     );
   }
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <ScrollView style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <View style={styles.container}>
         {getPrompt(tab)}
         <View style={styles.textBox}>
           <ScrollView automaticallyAdjustKeyboardInsets>
             <Text>{body}</Text>
-            <View style={{ height: 40 }} />
           </ScrollView>
         </View>
       </View>
@@ -204,7 +240,7 @@ export function JournalPage({ navigation, tab }) {
         title="To Past Journal Entries"
         onPress={navigateToJournalHistory}
       />
-    </View>
+    </ScrollView>
 
   );
 }
@@ -216,7 +252,9 @@ JournalPage.propTypes = {
 };
 
 function GuidedPrompt({ navigation }) {
-  return <JournalPage navigation={navigation} tab={1} />;
+  return (
+      <JournalPage navigation={navigation} tab={1} />
+  );
 }
 function FreeWrite({ navigation }) {
   return <JournalPage navigation={navigation} tab={2} />;
@@ -229,8 +267,8 @@ export default function JournalTabs({ navigation }) {
 
   const Tab = createMaterialTopTabNavigator();
   return (
-    <>
-      <View style={{ flexDirection: 'row', alignSelf: 'flex-end', marginTop: 40}}>
+    <View style={{ flex: 1}}>
+      <View style={{ flexDirection: 'row', alignSelf: 'flex-end', marginTop: 40 }}>
         <TouchableOpacity style={{ margin: 10 }} onPress={navigateToCalendar}>
           <Image
             style={{ width: 30, height: 31 }}
@@ -249,13 +287,12 @@ export default function JournalTabs({ navigation }) {
             source={require('../../../assets/filter.png')}
           />
         </TouchableOpacity>
-
       </View>
 
-      <Tab.Navigator style={{ marginTop: 10}}>
+      <Tab.Navigator style={{ marginTop: 10 }}>
         <Tab.Screen name="Guided Prompt" component={GuidedPrompt} />
         <Tab.Screen name="Free Write" component={FreeWrite} />
       </Tab.Navigator>
-    </>
+    </View>
   );
 }
