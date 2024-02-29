@@ -1,8 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
-import Landing from '../Features/Other/Screens/Landing';
+import PostSignInLanding from '../Features/Other/Screens/PostSignInLanding';
 import Feed from '../Features/Other/Screens/Feed';
-import Login from '../Features/Login/Screens/Login';
 import CheckIn from '../Features/Other/Screens/CheckIn';
 import TrendsPage from '../Trends/Screens/TrendsPage';
 import JournalPage from '../Features/Journal/Screens/JournalPage';
@@ -16,10 +14,9 @@ const Tab = createBottomTabNavigator();
 
 export default function NavigationBar() {
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="Landing" component={Landing} options={{ headerShown: false }} />
+    <Tab.Navigator initialRouteName="Feed">
+      <Tab.Screen name="PostSignInLanding" component={PostSignInLanding} options={{ headerShown: false }} />
       <Tab.Screen name="Feed" component={Feed} options={{ headerShown: false }} />
-      <Tab.Screen name="Login" component={Login} options={{ headerShown: false }} />
       <Tab.Screen name="CheckIn" component={CheckIn} options={{ headerShown: false }} />
       <Tab.Screen name="Trends" component={TrendsPage} options={{ headerShown: true }} />
       <Tab.Screen name="Journal" component={JournalPage} options={{ headerShown: false }} />
