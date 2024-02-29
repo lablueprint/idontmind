@@ -1,7 +1,7 @@
 import {
     Text, View, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard
   } from 'react-native';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from '../Components/OnboardingStyling'
@@ -12,6 +12,7 @@ export default function SignUp({ navigation }) {
   const [showPassword, setShowPassword] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [passwordConditionsMet, setPasswordConditionsMet] = useState(new Set());
 
   const navigateToPersonalInfo = () => {
     navigation.navigate('PersonalInfo', { email, password });
@@ -31,6 +32,53 @@ export default function SignUp({ navigation }) {
     return (emailRegex.test(email));
   }
 
+  // Checks if passwords are the same
+  const isSamePassword = () => {
+    return(password === confirmPassword);
+  }
+
+  // adds condition to passwordConditionsMet
+  const addPasswordCondition = async (condition) => {
+    const newSet = new Set(passwordConditionsMet);
+    newSet.add(condition);
+    setPasswordConditionsMet(newSet);
+  }
+
+  // deletes condition to passwordConditionsMet
+  const deletePasswordCondition = async (condition) => {
+    if (passwordConditionsMet.has(condition)) {
+      const newSet = new Set(passwordConditionsMet);
+      newSet.delete(condition);
+      setPasswordConditionsMet(newSet);
+    }
+  }
+
+  // Checks if password meets all conditions needed
+  const isValidPassword = () => {
+    const lowercaseRegex = /[a-z]/;
+    const uppercaseRegex = /[A-Z]/;
+    const numberOrSymbolRegex = /[0-9]|[^\w\s]/;
+
+    const newSet = new Set();
+
+    lowercaseRegex.test(password) ? newSet.add("lower") : newSet.delete("lower");
+    uppercaseRegex.test(password) ? newSet.add("upper") : newSet.delete("upper");
+    numberOrSymbolRegex.test(password) ? newSet.add("numsym") : newSet.delete("numsym");
+    password.length >= 8 ? newSet.add("length") : newSet.delete("length");
+
+    setPasswordConditionsMet(newSet)
+
+    return (newSet.size == 4);
+  };
+
+  useEffect(() => {
+    isValidPassword();
+  }, [password, setPassword]);
+
+  useEffect(() => {
+    console.log(passwordConditionsMet);
+  }, [passwordConditionsMet]);
+
   const handleSignUp = async () => {
       try {
         if (!isValidEmail()) {
@@ -38,11 +86,16 @@ export default function SignUp({ navigation }) {
           return;
         }
 
-        // Confirms matching passwords
-        if (password !== confirmPassword) {
+        if (!isSamePassword()) {
           console.error("Passwords do not match");
           return;
         }
+
+        if (!isValidPassword()) {
+          console.error("Password conditions not met");
+          return;
+        }
+
         handleNextButton()
       } catch (err) {
         console.error(err.message);
