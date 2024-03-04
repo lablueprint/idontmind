@@ -29,6 +29,10 @@ function PushNotifications() {
     { label: 'monthly', value: 'monthly' },
   ]);
 
+  function onDisplayNotification() {
+    console.log(2);
+  }
+
   return (
     <View>
       <Text style={styles.header}>
@@ -164,6 +168,7 @@ function PushNotifications() {
             <Pressable
               title="save"
               style={styles.saveButton}
+              onPressIn={onDisplayNotification}
             >
               <Text style={styles.saveText}>save</Text>
             </Pressable>
