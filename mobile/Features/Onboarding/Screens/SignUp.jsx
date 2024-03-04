@@ -4,7 +4,9 @@ import {
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import styles from '../Components/OnboardingStyling'
+import styles from '../Components/OnboardingStyling';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 export default function SignUp({ navigation }) {
   const [email, setEmail] = useState('');
@@ -158,6 +160,32 @@ export default function SignUp({ navigation }) {
             <TouchableOpacity onPress={toggleConfirmPasswordVisibility}>
               <Icon name={showConfirmPassword ? 'eye' : 'eye-slash'} size={20} color="black" style={styles.eyeIcon} />
             </TouchableOpacity>
+          </View>
+        </View>
+        <View style={styles.allPasswordConditionsContainer}>
+          <View style={styles.passwordConditionRow}>
+            <FontAwesomeIcon
+              icon={passwordConditionsMet.has('lower') ? faCheck : faTimes}
+              style={[styles.lowerCondition, { color: passwordConditionsMet.has('lower') ? 'green' : 'red' }]}
+            />
+            <Text style={styles.passwordConditionText}>A lowercase letter</Text>
+            <FontAwesomeIcon
+              icon={passwordConditionsMet.has('upper') ? faCheck : faTimes}
+              style={[styles.upperCondition, { color: passwordConditionsMet.has('upper') ? 'green' : 'red' }]}
+            />
+            <Text style={styles.passwordConditionText}>An uppercase letter</Text>
+          </View>
+          <View style={styles.passwordConditionRow}>
+          <FontAwesomeIcon
+              icon={passwordConditionsMet.has('numsym') ? faCheck : faTimes}
+              style={[styles.numsymCondition, { color: passwordConditionsMet.has('numsym') ? 'green' : 'red' }]}
+            />
+            <Text style={styles.passwordConditionText}>A number or symbol</Text>
+            <FontAwesomeIcon
+              icon={passwordConditionsMet.has('length') ? faCheck : faTimes}
+              style={[styles.lengthCondition, { color: passwordConditionsMet.has('length') ? 'green' : 'red' }]}
+            />
+            <Text style={styles.passwordConditionText}>At least 8 characters</Text>
           </View>
         </View>
         <View style={styles.paginationContainer}>

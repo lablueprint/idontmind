@@ -117,4 +117,29 @@ export default StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
     },
+    allPasswordConditionsContainer: {
+        alignitems: 'flex-start',
+        marginTop: 5,
+    },
+    passwordConditionRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    passwordConditionText: {
+        fontSize: 14,
+    },
+    lowerCondition: {
+        marginRight: 3,
+    },
+    upperCondition: {
+        marginLeft: 30,
+        marginRight: 3,
+    },
+    numsymCondition: {
+        marginRight: 3,
+    },
+    lengthCondition: {
+        marginLeft: 15.5,
+        marginRight: 3
+    }
 });
