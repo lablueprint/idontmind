@@ -197,7 +197,7 @@ export function JournalPage({ navigation, tab }) {
           </SafeAreaView>
         {/* </TouchableWithoutFeedback> */}
         
-          {/* <Text></Text>
+          <Text></Text>
           <Text></Text>     
           <Text></Text>
           <Text></Text>    
@@ -212,7 +212,7 @@ export function JournalPage({ navigation, tab }) {
           <Text></Text>
           <Text></Text>
           <Text></Text>
-          <Text></Text> */}
+          <Text></Text>
           <View>
           <Button title="Submit" onPress={handlePopUp} />
               <Button
