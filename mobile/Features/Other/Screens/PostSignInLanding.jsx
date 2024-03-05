@@ -13,8 +13,8 @@ export default function PostSignInLanding({ navigation }) {
     navigation.navigate('Journal History');
   };
 
-  const navigateToWOYM = () => {
-    navigation.navigate('WOYM');
+  const navigateToFeeling = () => {
+    navigation.navigate('Feeling');
   };
 
   return (
@@ -29,8 +29,8 @@ export default function PostSignInLanding({ navigation }) {
         onPress={navigateToJournalHistory}
       />
       <Button
-        title="To WOYM"
-        onPress={navigateToWOYM}
+        title="To Feeling"
+        onPress={navigateToFeeling}
       />
     </View>
   );
