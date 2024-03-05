@@ -17,6 +17,7 @@ export default function SignUp({ navigation }) {
   const [passwordConditionsMet, setPasswordConditionsMet] = useState(new Set());
   const [showPasswordRequirements, setShowPasswordRequirements] = useState(false);
   const [showPasswordMatch, setShowPasswordMatch] = useState(false);
+  const [buttonEnabled, setButtonEnabled] = useState(false);
 
   const navigateToPersonalInfo = () => {
     navigation.navigate('PersonalInfo', { email, password });
@@ -77,15 +78,23 @@ export default function SignUp({ navigation }) {
     }
   }
 
+  const notAllConditionsMet = () => {
+    if (!isValidEmail() || !isSamePassword() || !isValidPassword()) {
+      setButtonEnabled(false);
+    } else {
+      setButtonEnabled(true);
+    }
+  }
+
   useEffect(() => {
     isValidPassword();
     isShowingPasswordRequirements();
     isShowingPasswordMatch();
+    notAllConditionsMet();
   }, [password, confirmPassword, setPassword]);
 
   useEffect(() => {
-    
-  }, [passwordConditionsMet, setShowPasswordRequirements, setShowPasswordMatch]);
+  }, [passwordConditionsMet, setShowPasswordRequirements, setShowPasswordMatch, setButtonEnabled]);
 
   const handleSignUp = async () => {
       try {
@@ -211,6 +220,7 @@ export default function SignUp({ navigation }) {
         <View style={styles.buttonShape}>
           <TouchableOpacity
             onPress={handleSignUp}
+            disabled={!buttonEnabled}
           >
             <Text style={styles.buttonText}>Next</Text>
           </TouchableOpacity>

@@ -2,7 +2,7 @@ import {
     Text, View, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard
   } from 'react-native';
 import { useRoute } from '@react-navigation/native';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { DropdownSelect } from 'react-native-input-select';
@@ -14,6 +14,7 @@ export default function PersonalInfo({ navigation }) {
   const [age, setAge] = useState('');
   const [country, setCountry] = useState('');
   const [gender, setGender] = useState('');
+  const [buttonEnabled, setButtonEnabled] = useState(false);
   const countryItems = [  // will be replaced with all countries dataset
     { label: 'Albania', value: 'albania' },
     { label: 'Korea', value: 'korea' },
@@ -39,6 +40,14 @@ export default function PersonalInfo({ navigation }) {
     return (firstName === '' || age === '' || country === '' || gender === '');
   }
 
+  const notAllConditionsMet = () => {
+    if (areStatesDefaulted()) {
+      setButtonEnabled(false);
+    } else {
+      setButtonEnabled(true);
+    }
+  }
+
   const handleNextButton = () => {
     if (!areStatesDefaulted()) {
       navigateToCustomization();
@@ -46,6 +55,10 @@ export default function PersonalInfo({ navigation }) {
       console.error("Not all information selected");
     }
   }
+
+  useEffect(() => {
+    notAllConditionsMet();
+  }, [firstName, age, country, gender]);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -111,6 +124,7 @@ export default function PersonalInfo({ navigation }) {
         <View style={styles.buttonShape}>
           <TouchableOpacity
             onPress={handleNextButton}
+            disabled={!buttonEnabled}
           >
             <Text style={styles.buttonText}>Next</Text>
           </TouchableOpacity>
