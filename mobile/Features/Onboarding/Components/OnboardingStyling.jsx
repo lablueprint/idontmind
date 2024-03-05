@@ -125,6 +125,11 @@ export default StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
     },
+    passwordConditionLastRow: {
+        marginRight: 180,
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
     passwordConditionText: {
         fontSize: 14,
     },
@@ -140,6 +145,9 @@ export default StyleSheet.create({
     },
     lengthCondition: {
         marginLeft: 15.5,
+        marginRight: 3
+    },
+    matchPassCondition: {
         marginRight: 3
     }
 });

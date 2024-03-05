@@ -35,6 +35,18 @@ export default function PersonalInfo({ navigation }) {
     navigation.navigate('Customization', { loginInfo: route.params, firstName });
   }
 
+  const areStatesDefaulted = () => {
+    return (firstName === '' || age === '' || country === '' || gender === '');
+  }
+
+  const handleNextButton = () => {
+    if (!areStatesDefaulted()) {
+      navigateToCustomization();
+    } else {
+      console.error("Not all information selected");
+    }
+  }
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
@@ -98,7 +110,7 @@ export default function PersonalInfo({ navigation }) {
         </View>
         <View style={styles.buttonShape}>
           <TouchableOpacity
-            onPress={navigateToCustomization}
+            onPress={handleNextButton}
           >
             <Text style={styles.buttonText}>Next</Text>
           </TouchableOpacity>

@@ -15,6 +15,8 @@ export default function SignUp({ navigation }) {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [passwordConditionsMet, setPasswordConditionsMet] = useState(new Set());
+  const [showPasswordRequirements, setShowPasswordRequirements] = useState(false);
+  const [showPasswordMatch, setShowPasswordMatch] = useState(false);
 
   const navigateToPersonalInfo = () => {
     navigation.navigate('PersonalInfo', { email, password });
@@ -57,13 +59,33 @@ export default function SignUp({ navigation }) {
     return (newSet.size == 4);
   };
 
-  useEffect(() => {
-    isValidPassword();
-  }, [password, setPassword]);
+  // Toggles showing password requirements under password
+  const isShowingPasswordRequirements = () => {
+    if (!showPasswordRequirements) {
+      if (password.length > 0) {
+        setShowPasswordRequirements(true);
+      }
+    }
+  }
+
+  // Toggles showing password matched requirement under confirm password
+  const isShowingPasswordMatch = () => {
+    if (!showPasswordMatch) {
+      if (confirmPassword.length > 0) {
+        setShowPasswordMatch(true);
+      }
+    }
+  }
 
   useEffect(() => {
-    console.log(passwordConditionsMet);
-  }, [passwordConditionsMet]);
+    isValidPassword();
+    isShowingPasswordRequirements();
+    isShowingPasswordMatch();
+  }, [password, confirmPassword, setPassword]);
+
+  useEffect(() => {
+    
+  }, [passwordConditionsMet, setShowPasswordRequirements, setShowPasswordMatch]);
 
   const handleSignUp = async () => {
       try {
@@ -131,22 +153,7 @@ export default function SignUp({ navigation }) {
             </TouchableOpacity>
           </View>
         </View>
-        <View style={styles.inputContainer}>
-          <Text>Confirm Password</Text>
-          <View style={styles.inputWrapper}>
-            <TextInput
-              style={styles.inputBox}
-              placeholder="Confirm"
-              value={confirmPassword}
-              onChangeText={setConfirmPassword}
-              secureTextEntry={!showConfirmPassword}
-            />
-            <TouchableOpacity onPress={toggleConfirmPasswordVisibility}>
-              <Icon name={showConfirmPassword ? 'eye' : 'eye-slash'} size={20} color="black" style={styles.eyeIcon} />
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View style={styles.allPasswordConditionsContainer}>
+        {showPasswordRequirements && (<View style={styles.allPasswordConditionsContainer}>
           <View style={styles.passwordConditionRow}>
             <FontAwesomeIcon
               icon={passwordConditionsMet.has('lower') ? faCheck : faTimes}
@@ -171,7 +178,31 @@ export default function SignUp({ navigation }) {
             />
             <Text style={styles.passwordConditionText}>At least 8 characters</Text>
           </View>
+        </View>)}
+        <View style={styles.inputContainer}>
+          <Text>Confirm Password</Text>
+          <View style={styles.inputWrapper}>
+            <TextInput
+              style={styles.inputBox}
+              placeholder="Confirm"
+              value={confirmPassword}
+              onChangeText={setConfirmPassword}
+              secureTextEntry={!showConfirmPassword}
+            />
+            <TouchableOpacity onPress={toggleConfirmPasswordVisibility}>
+              <Icon name={showConfirmPassword ? 'eye' : 'eye-slash'} size={20} color="black" style={styles.eyeIcon} />
+            </TouchableOpacity>
+          </View>
         </View>
+        {showPasswordMatch && (<View style={styles.allPasswordConditionsContainer}>
+          <View style={styles.passwordConditionLastRow}>
+            <FontAwesomeIcon
+              icon={isSamePassword() ? faCheck : faTimes}
+              style={[styles.matchPassCondition, { color: isSamePassword() ? 'green' : 'red' }]}
+            />
+            <Text style={styles.passwordConditionText}>Passwords match</Text>
+          </View>
+        </View>)}
         <View style={styles.paginationContainer}>
           <View style={[styles.activePaginationDot]} />
           <View style={[styles.inactivePaginationDot]} />
