@@ -18,6 +18,7 @@ function Mood({ navigation }) {
   const progress = 1 / numPages;
   // addedMoods array to keep track of the new moods the user has added
   const [addedMoods, setAddedMoods] = useState([]);
+  const [moodChosen, setMoodChosen] = useState('');
 
   useEffect(() => {
     // update addedMoods with the route parameters from the AddColor screen (mood and color)
@@ -29,7 +30,7 @@ function Mood({ navigation }) {
   }, [newMood, newColor]);
 
   const continueButton = () => {
-    navigation.navigate('Sleep', { numPages });
+    navigation.navigate('Sleep', { numPages, moodChosen });
   };
 
   const skipButton = () => {
@@ -39,6 +40,7 @@ function Mood({ navigation }) {
   // later implement functionality for pressing on a mood button:
 
   const pressMood = (mood) => {
+    setMoodChosen(mood);
     console.log(mood);
   };
 

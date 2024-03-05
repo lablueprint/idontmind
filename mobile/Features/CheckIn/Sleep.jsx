@@ -10,6 +10,7 @@ import styles from './SleepStyle';
 
 function Sleep({ navigation }) {
   const route = useRoute();
+  const moodChosen = route.params?.moodChosen;
   // update progress
   const numPages = route.params?.numPages;
   const progress = 2 / numPages;
@@ -21,7 +22,7 @@ function Sleep({ navigation }) {
   };
 
   const continueButton = () => {
-    navigation.navigate('EndCheckIn');
+    navigation.navigate('EndCheckIn', { moodChosen, sleepScore: slider });
   };
 
   const skipButton = () => {
