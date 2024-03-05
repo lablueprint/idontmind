@@ -8,13 +8,13 @@ load_dotenv()
 MONGODB_URI = os.getenv("MONGODB_URI")
 
 #Read in Master Tag List
-df0 = pd.read_excel("idontmind/script/Master-Tag-List.xlsx", header=None)
+df0 = pd.read_excel("./Master-Tag-List.xlsx", header=None)
 for i, word in df0.items():
     master_tag_list = [x.lower() for x in word.tolist()]
 master_tag = set(master_tag_list)
 
 #Journal Entries
-df1 = pd.read_excel("idontmind/script/Journal-Articles.xlsx", header=0)
+df1 = pd.read_excel("./Journal-Articles.xlsx", header=0)
 df1.columns = df1.iloc[0]
 df1 = df1[1:]
 
@@ -54,8 +54,8 @@ if tag_not_found:
 
 #Connect to MongoDB and Update
 connection = pymongo.MongoClient(MONGODB_URI)
-db = connection['idm-cluster']
-collection_name = db['test.journal-articles']
+db = connection['test']
+collection_name = db['articles']
 collection_name.drop()
 
 records = df1.to_dict(orient='records')
