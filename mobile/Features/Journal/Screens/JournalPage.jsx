@@ -133,10 +133,10 @@ export function JournalPage({ navigation, tab }) {
     return (
       <ScrollView>
 
-        {/* <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}> */}
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
           <SafeAreaView>
             <SafeAreaView style={styles.container}>
-              <Text style={{ marginTop: 150 }}>{`${currDate.toDateString()}, ${militaryToStandard(timeHours)}:${timeMinutes}` }</Text>
+              <Text style={{ marginTop: 180 }}>{`${currDate.toDateString()}, ${militaryToStandard(timeHours)}:${timeMinutes}` }</Text>
               <SafeAreaView>
                 {getPrompt(tab)}
               </SafeAreaView>
@@ -153,19 +153,7 @@ export function JournalPage({ navigation, tab }) {
                 {' '}
                 {wordsLen(text)}
               </Text>
-              <TouchableOpacity style={styles.imageContainer} onPress={pickImage}>
-                <Text>+ add attachment</Text>
-              </TouchableOpacity>
-              {selectedImage !== '' ? (
-                <>
-                  <TouchableOpacity onPress={handleFilenamePress}>
-                    <Text>{getFilenameFromUri(selectedImage)}</Text>
-                  </TouchableOpacity>
-                  {viewImage && (
-                  <Image source={{ uri: selectedImage }} style={{ width: 200, height: 200 }} />
-                  )}
-                </>
-              ) : null}
+           
 
               <SafeAreaView>
            
@@ -195,24 +183,31 @@ export function JournalPage({ navigation, tab }) {
 
             </SafeAreaView>
           </SafeAreaView>
-        {/* </TouchableWithoutFeedback> */}
+        </TouchableWithoutFeedback>
+        <Text>{' '}</Text>
+          <Text>{' '}</Text>
+          <Text>{' '}</Text>
+          <Text>{' '}</Text>
+          <Text>{' '}</Text>
+          <Text>{' '}</Text>
+          <Text>{' '}</Text>
+          <Text>{' '}</Text>
+      
+        <TouchableOpacity style={styles.imageContainer} onPress={pickImage}>
+                <Text>+ add attachment</Text>
+              </TouchableOpacity>
+              {selectedImage !== '' ? (
+                <>
+                  <TouchableOpacity onPress={handleFilenamePress}>
+                    <Text>{getFilenameFromUri(selectedImage)}</Text>
+                  </TouchableOpacity>
+                  {viewImage && (
+                  <Image source={{ uri: selectedImage }} style={{ width: 200, height: 200 }} />
+                  )}
+                </>
+              ) : null}
         
-          <Text>hi</Text>
-          <Text>hi</Text>     
-          <Text>hi</Text>
-          <Text>hi</Text>    
-          <Text>hi</Text>
-          <Text>hi</Text>
-          <Text>hi</Text>
-          <Text>hi</Text>
-          <Text>hi</Text>
-          <Text>hi</Text>
-          <Text>hi</Text>
-          <Text>hi</Text>
-          <Text>hi</Text>
-          <Text>hi</Text>
-          <Text>hi</Text>
-          <Text>hi</Text>
+      
           <View>
           <Button title="Submit" onPress={handlePopUp} />
               <Button
