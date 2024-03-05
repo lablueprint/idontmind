@@ -29,7 +29,7 @@ const timeSeriesCreation = async () => {
     };
 
     // Make sure to delete the collection in MongoDB if it exists already
-    // await db.createCollection(collectionName, collectionOptions);
+    await db.createCollection(collectionName, collectionOptions);
 
     console.log(`Collection '${collectionName}' created with options:`, collectionOptions);
 
@@ -55,7 +55,7 @@ const timeSeriesCreation = async () => {
     // console.log(response_read);
   } finally {
     // Closes the connection when done
-    // await client.close();
+    await client.close();
     console.log('Connection closed');
   }
 };
