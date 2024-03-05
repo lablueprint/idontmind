@@ -197,29 +197,29 @@ export function JournalPage({ navigation, tab }) {
           </SafeAreaView>
         {/* </TouchableWithoutFeedback> */}
         
-          <Text>hi</Text>
-          <Text>hi</Text>     
-          <Text>hi</Text>
-          <Text>hi</Text>    
-          <Text>hi</Text>
-          <Text>hi</Text>
-          <Text>hi</Text>
-          <Text>hi</Text>
-          <Text>hi</Text>
-          <Text>hi</Text>
-          <Text>hi</Text>
-          <Text>hi</Text>
-          <Text>hi</Text>
-          <Text>hi</Text>
-          <Text>hi</Text>
-          <Text>hi</Text>
+          {/* <Text></Text>
+          <Text></Text>     
+          <Text></Text>
+          <Text></Text>    
+          <Text></Text>
+          <Text></Text>
+          <Text></Text>
+          <Text></Text>
+          <Text></Text>
+          <Text></Text>
+          <Text></Text>
+          <Text></Text>
+          <Text></Text>
+          <Text></Text>
+          <Text></Text>
+          <Text></Text> */}
           <View>
           <Button title="Submit" onPress={handlePopUp} />
               <Button
                 title="To Past Journal Entries"
                 onPress={navigateToJournalHistory}
               />
-              </View>
+           </View>
 
       </ScrollView>
     );
