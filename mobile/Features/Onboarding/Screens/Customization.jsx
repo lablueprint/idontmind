@@ -15,7 +15,6 @@ export default function Customization({ navigation }) {
   // Used to connect with redux (current state)
   const dispatch = useDispatch();
   
-
   const navigateToPersonalInfo = () => {
     navigation.navigate('PersonalInfo');
   };

@@ -39,22 +39,6 @@ export default function SignUp({ navigation }) {
     return(password === confirmPassword);
   }
 
-  // adds condition to passwordConditionsMet
-  const addPasswordCondition = async (condition) => {
-    const newSet = new Set(passwordConditionsMet);
-    newSet.add(condition);
-    setPasswordConditionsMet(newSet);
-  }
-
-  // deletes condition to passwordConditionsMet
-  const deletePasswordCondition = async (condition) => {
-    if (passwordConditionsMet.has(condition)) {
-      const newSet = new Set(passwordConditionsMet);
-      newSet.delete(condition);
-      setPasswordConditionsMet(newSet);
-    }
-  }
-
   // Checks if password meets all conditions needed
   const isValidPassword = () => {
     const lowercaseRegex = /[a-z]/;
