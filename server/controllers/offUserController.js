@@ -58,8 +58,21 @@ const updateUser = async (req, res) => {
     if (hasRestricted) {
       return res.status(403).send({ message: 'No permission to update certain fields' });
     }
-    // update the specified fields
-    Object.assign(existingUser, updatedFields);
+
+    // update pushNotifs field
+    if (updatedFields.pushNotifs) {
+      // update nested fields within pushNotifs if provided
+      if (updatedFields.pushNotifs.time) {
+        existingUser.pushNotifs.time = updatedFields.pushNotifs.time;
+      }
+      if (updatedFields.pushNotifs.reminders) {
+        existingUser.pushNotifs.reminders = updatedFields.pushNotifs.reminders;
+      }
+    } else {
+      // update the specified fields
+      Object.assign(existingUser, updatedFields);
+    }
+
     // save the updated user
     const updatedUser = await existingUser.save();
     return res.send(updatedUser);
@@ -84,6 +97,26 @@ const deleteUserById = async (req, res) => {
   }
 };
 
+const readSpecifiedFields = async (req, res) => {
+  const { id, fields } = req.body;
+  try {
+    const existingUser = await User.findById(id);
+    if (!existingUser) {
+      return res.status(404).send({ message: 'User not found' });
+    }
+    const user = {};
+    fields.forEach((field) => {
+      if (existingUser[field] !== undefined) {
+        user[field] = existingUser[field];
+      }
+    });
+    return res.send(user);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send(err);
+  }
+};
+
 module.exports = {
-  createUser, getAllUsers, getUserById, updateUser, deleteUserById,
+  createUser, getAllUsers, getUserById, updateUser, deleteUserById, readSpecifiedFields,
 };

@@ -1,12 +1,12 @@
 import {
-  Pressable, Text, View, TouchableOpacity,
+  Text, View, TouchableOpacity,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Divider } from '@rneui/themed';
 import { Switch } from 'react-native-switch';
-import DropDownPicker from 'react-native-dropdown-picker';
 import { TimerPickerModal } from 'react-native-timer-picker';
 import { LinearGradient } from 'expo-linear-gradient';
+import axios from 'axios';
 import styles from './PushNotificationsStyle';
 
 function PushNotifications() {
@@ -22,6 +22,19 @@ function PushNotifications() {
   const toggleSwitch3 = () => setIsEnabled3((previousState) => !previousState);
   const toggleSwitch4 = () => setIsEnabled4((previousState) => !previousState);
 
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
+  const [open2, setOpen2] = useState(false);
+  const [value2, setValue2] = useState(null);
+  const [items, setItems] = useState([
+    { label: 'weekly', value: 'weekly' },
+    { label: 'daily', value: 'daily' },
+    { label: 'monthly', value: 'monthly' },
+  ]);
+
+  const [showPicker, setShowPicker] = useState(false);
+  const [alarmString, setAlarmString] = useState(null);
+
   const formatTime = (pickedDuration) => {
     let { hours } = pickedDuration;
     const { minutes } = pickedDuration;
@@ -36,18 +49,25 @@ function PushNotifications() {
     return `${hours}:${minutes}${part}`;
   };
 
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
-  const [open2, setOpen2] = useState(false);
-  const [value2, setValue2] = useState(null);
-  const [items, setItems] = useState([
-    { label: 'weekly', value: 'weekly' },
-    { label: 'daily', value: 'daily' },
-    { label: 'monthly', value: 'monthly' },
-  ]);
+  const setDailyNotif = (pickedDuration) => {
+    setAlarmString(formatTime(pickedDuration));
+    setShowPicker(false);
+    // set the alarm
+    axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/updateUser`, { pushNotifs: { time: pickedDuration } }).then((res) => res);
+  };
 
-  const [showPicker, setShowPicker] = useState(false);
-  const [alarmString, setAlarmString] = useState(null);
+  const fetchDailyNotif = async () => {
+    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/readSpecifiedFields`, { id:  });
+  };
+
+  const fetchReminders = async () => {
+
+  };
+
+  useEffect(async () => {
+    await fetchDailyNotif();
+    await fetchReminders();
+  }, []);
 
   return (
     <View>
@@ -60,7 +80,10 @@ function PushNotifications() {
           marginBottom={25}
         />
         <Text style={[styles.category, { marginTop: '5%', marginBottom: '4%' }]}>
-          DAILY CHECK-IN
+          Daily Check-In
+        </Text>
+        <Text style={{ marginBottom: 25 }}>
+          When should we ask you about your day?
         </Text>
         <View>
           <View style={[styles.timeOfDayContainer, { marginBottom: 25 }]}>
@@ -120,10 +143,7 @@ function PushNotifications() {
           <TimerPickerModal
             visible={showPicker}
             setIsVisible={setShowPicker}
-            onConfirm={(pickedDuration) => {
-              setAlarmString(formatTime(pickedDuration));
-              setShowPicker(false);
-            }}
+            onConfirm={(pickedDuration) => setDailyNotif(pickedDuration)}
             modalTitle="Set Alarm"
             onCancel={() => setShowPicker(false)}
             closeOnOverlayPress
@@ -136,12 +156,16 @@ function PushNotifications() {
           />
         </View>
         <Text style={[styles.category, { marginTop: '5%', marginBottom: '4%' }]}>
-          CATEGORY
+          Daily Reminders
+        </Text>
+        <Text style={{ marginBottom: 25 }}>
+          Feel free to toggle the option for us to randomly send a notification
+          throughout the day to help remind you of certain activities.
         </Text>
         <View>
           <View style={[styles.timeOfDayContainer, { marginBottom: 25 }]}>
             <Text style={styles.timeOfDayText}>
-              time of day
+              Water Intake
             </Text>
             <Switch
               backgroundActive="#404040"
@@ -156,9 +180,9 @@ function PushNotifications() {
               circleBorderWidth={0}
             />
           </View>
-          <View style={styles.timeOfDayContainer}>
+          <View style={[styles.timeOfDayContainer, { marginBottom: 25 }]}>
             <Text style={styles.timeOfDayText}>
-              time of day
+              Full Meal
             </Text>
             <Switch
               backgroundActive="#404040"
@@ -174,13 +198,10 @@ function PushNotifications() {
             />
           </View>
         </View>
-        <Text style={[styles.category, { marginTop: '9%', marginBottom: '4%' }]}>
-          CATEGORY
-        </Text>
         <View>
           <View style={[styles.timeOfDayContainer, { marginBottom: 25 }]}>
             <Text style={styles.timeOfDayText}>
-              time of day
+              Physical Actiity
             </Text>
             <Switch
               backgroundActive="#404040"
@@ -195,9 +216,9 @@ function PushNotifications() {
               circleBorderWidth={0}
             />
           </View>
-          <View style={styles.timeOfDayContainer}>
+          <View style={[styles.timeOfDayContainer, { marginBottom: 25 }]}>
             <Text style={styles.timeOfDayText}>
-              time of day
+              Mood-Boosting Activity
             </Text>
             <Switch
               backgroundActive="#404040"
@@ -212,58 +233,39 @@ function PushNotifications() {
               circleBorderWidth={0}
             />
           </View>
-          <Text style={[styles.category, { marginTop: '9%', marginBottom: '1%' }]}>
-            CATEGORY
-          </Text>
-          <View style={[styles.timeOfDayContainer, { zIndex: 2 }]}>
+          <View style={[styles.timeOfDayContainer, { marginBottom: 25 }]}>
             <Text style={styles.timeOfDayText}>
-              category of reminder
+              Wellness-Boosting Activity
             </Text>
-            <DropDownPicker
-              open={open}
-              value={value}
-              items={items}
-              setOpen={setOpen}
-              setValue={setValue}
-              setItems={setItems}
-              placeholder="weekly"
-              showArrowIcon
-              style={{ width: 105, backgroundColor: 'transparent', borderWidth: 0 }}
-              containerStyle={{ width: 105, borderTopWidth: 0 }}
-              dropDownContainerStyle={{ borderTopWidth: 0, backgroundColor: 'white' }}
+            <Switch
+              backgroundActive="#404040"
+              backgroundInactive="lightgray"
+              activeText=""
+              inActiveText=""
+              value={isEnabled4}
+              onValueChange={toggleSwitch4}
+              barHeight={24}
+              circleSize={22}
+              switchWidthMultiplier={2.3}
+              circleBorderWidth={0}
             />
           </View>
-          <View style={[styles.timeOfDayContainer, { zIndex: 1 }]}>
+          <View style={[styles.timeOfDayContainer, { marginBottom: 25 }]}>
             <Text style={styles.timeOfDayText}>
-              category of reminder
+              Thirty Day Detox
             </Text>
-            <DropDownPicker
-              open={open2}
-              value={value2}
-              items={items}
-              setOpen={setOpen2}
-              setValue={setValue2}
-              setItems={setItems}
-              placeholder="weekly"
-              showArrowIcon
-              style={{ width: 105, backgroundColor: 'transparent', borderWidth: 0 }}
-              containerStyle={{ width: 105, borderTopWidth: 0 }}
-              dropDownContainerStyle={{ borderTopWidth: 0, backgroundColor: 'white' }}
+            <Switch
+              backgroundActive="#404040"
+              backgroundInactive="lightgray"
+              activeText=""
+              inActiveText=""
+              value={isEnabled4}
+              onValueChange={toggleSwitch4}
+              barHeight={24}
+              circleSize={22}
+              switchWidthMultiplier={2.3}
+              circleBorderWidth={0}
             />
-          </View>
-          <View style={[styles.timeOfDayContainer, { marginTop: '7%' }]}>
-            <Pressable
-              title="set default"
-              style={styles.setDefaultButton}
-            >
-              <Text style={styles.setDefaultText}>set default</Text>
-            </Pressable>
-            <Pressable
-              title="save"
-              style={styles.saveButton}
-            >
-              <Text style={styles.saveText}>save</Text>
-            </Pressable>
           </View>
         </View>
       </View>

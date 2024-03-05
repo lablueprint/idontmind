@@ -13,19 +13,6 @@ const checkInPreferenceSchema = new mongoose.Schema({
   },
 });
 
-const notificationPreferenceSchema = new mongoose.Schema({
-  timeOfDay: {
-    type: String,
-    enum: ['morning', 'afternoon', 'evening', 'night'],
-    default: 'morning',
-  },
-  recurrence: {
-    type: String,
-    enum: ['daily', 'weekly', 'monthly'],
-    default: 'daily',
-  },
-});
-
 const officialUserSchema = new mongoose.Schema({
   firstName: {
     required: true,
@@ -64,12 +51,15 @@ const officialUserSchema = new mongoose.Schema({
     type: [String],
   },
   checkInPreferences: {
-    default: undefined,
+    default: {},
     type: checkInPreferenceSchema,
   },
-  notificationPreferences: {
-    default: undefined,
-    type: notificationPreferenceSchema,
+  pushNotifs: {
+    default: {
+      time: null,
+      reminders: [],
+    },
+    type: Object,
   },
 });
 
