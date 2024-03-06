@@ -19,7 +19,8 @@
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
     "mongodb": "^6.3.0",
-    "mongoose": "^7.6.3"
+    "mongoose": "^7.6.3",
+    "react-native-timer-picker": "^1.5.3"
   },
   "devDependencies": {
     "eslint": "^8.52.0",

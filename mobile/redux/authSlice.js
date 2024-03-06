@@ -15,7 +15,7 @@ const authSlice = createSlice({
       state.firstName = action.payload.user.firstName;
       state.token = action.payload.token;
       state.authHeader = {
-        Authorization: `Bearer ${action.payload.token}`
+        Authorization: `Bearer ${action.payload.token}`,
       };
     },
     logout: (state) => {
@@ -24,7 +24,7 @@ const authSlice = createSlice({
       state.firstName = null;
       state.token = null;
       state.authHeader = null;
-    }
+    },
   },
 });
 

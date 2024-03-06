@@ -12,9 +12,15 @@ export default function Feed({ navigation }) {
   const [postDraftBody, setPostDraftBody] = useState('');
   const [postDraftUser, setPostDraftUser] = useState('');
 
+<<<<<<< HEAD
   // Grabs user firstName and authentication token for current user session
   const { email, firstName , authHeader } = useSelector((state) => state.auth);
   const dispatch = useDispatch()
+=======
+  // Grabs user email and authentication token for current user session
+  const { email, authHeader } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+>>>>>>> e8b7d9dac4d4c90a1c02036ce8bb6072bc73587e
 
   const [postList, setPostList] = useState([]);
   const navigateToLanding = () => {
@@ -39,13 +45,13 @@ export default function Feed({ navigation }) {
       if (res.data.error) {
         console.error(res.data.error);
       } else {
-        console.log("This is the user data:")
-        console.log(res.data[0])
+        console.log('This is the user data:');
+        console.log(res.data[0]);
       }
     } catch (err) {
       console.error(err.message);
     }
-  }
+  };
 
   useEffect(() => {
     const foo = async () => {
@@ -72,18 +78,18 @@ export default function Feed({ navigation }) {
 
   const addPost = (e) => {
     e.preventDefault();
+    const currentDate = new Date();
+    const timestamp = currentDate.getTime();
     const tempPostList = postList;
     tempPostList.push({
       _id: postList.length + 1,
       username: postDraftUser,
       body: postDraftBody,
-      timestamp
+      timestamp,
     });
     setPostList(tempPostList);
     setPostDraftBody('');
     setPostDraftUser('');
-    const currentDate = new Date();
-    const timestamp = currentDate.getTime();
     pushPosts({
       username: postDraftUser,
       body: postDraftBody,

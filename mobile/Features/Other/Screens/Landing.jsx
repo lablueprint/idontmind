@@ -16,12 +16,12 @@ export default function Landing({ navigation }) {
   };
   const navigateToFeed = () => {
     navigation.navigate('NavigationBar');
-  }
-  
+  };
+
   const dispatch = useDispatch();
 
   // Handles a hardcoded login for testing
-  const handleHardcodedLogin = async () => {  
+  const handleHardcodedLogin = async () => {
     try {
       const userData = {
         email: 'sample@gmail.com',
@@ -39,6 +39,10 @@ export default function Landing({ navigation }) {
     }
   };
 
+  const navigateToLoading = () => {
+    navigation.navigate('Loading');
+  };
+
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>IDONTMIND</Text>
@@ -53,6 +57,10 @@ export default function Landing({ navigation }) {
       <Button
         title="Hardcoded Sign In"
         onPress={handleHardcodedLogin}
+      />
+      <Button
+        title="To Loading"
+        onPress={navigateToLoading}
       />
     </View>
   );

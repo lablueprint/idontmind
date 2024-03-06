@@ -5,9 +5,8 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { login } from '../../../redux/authSlice';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import styles from '../Components/OnboardingStyling'
+import { login } from '../../../redux/authSlice';
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState('');
@@ -21,7 +20,7 @@ export default function Login({ navigation }) {
 
   const navigateToLanding = () => {
     navigation.navigate('Landing');
-  }
+  };
 
   const handleLogin = async () => {
     try {
@@ -49,7 +48,7 @@ export default function Login({ navigation }) {
   // Handles pagination dots visibility for password
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -79,7 +78,7 @@ export default function Login({ navigation }) {
             secureTextEntry={!showPassword}
           />
           <TouchableOpacity onPress={togglePasswordVisibility}>
-            <Icon name={showPassword ? 'eye' : 'eye-slash'} size={20} color="black" style={styles.eyeIcon}/>
+            <Icon name={showPassword ? 'eye' : 'eye-slash'} size={20} color="black" style={styles.eyeIcon} />
           </TouchableOpacity>
         </View>
       </View>
