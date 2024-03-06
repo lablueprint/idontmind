@@ -1,18 +1,5 @@
 const mongoose = require('mongoose');
 
-const checkInPreferenceSchema = new mongoose.Schema({
-  category1: {
-    type: [String],
-    default: [],
-  },
-  category2: {
-    type: String,
-  },
-  category3: {
-    type: String,
-  },
-});
-
 const officialUserSchema = new mongoose.Schema({
   firstName: {
     required: true,
@@ -52,7 +39,7 @@ const officialUserSchema = new mongoose.Schema({
   },
   checkInPreferences: {
     default: {},
-    type: checkInPreferenceSchema,
+    type: Object,
   },
   pushNotifs: {
     default: {

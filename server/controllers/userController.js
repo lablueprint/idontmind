@@ -37,6 +37,8 @@ const signInUser = async (req, res, next) => {
       // Generate JWT token
       const token = jwt.sign({ id: user._id }, 'secret');
 
+      console.log(user);
+
       return res.json({ user, token });
     });
   })(req, res, next);

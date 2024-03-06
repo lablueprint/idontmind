@@ -1,20 +1,20 @@
 import {
-    Text, View, TouchableOpacity, TouchableWithoutFeedback, Keyboard
-  } from 'react-native';
+  Text, View, TouchableOpacity, TouchableWithoutFeedback, Keyboard,
+} from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { login } from '../../../redux/authSlice';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import styles from '../Components/OnboardingStyling'
+import { login } from '../../../redux/authSlice';
+import styles from '../Components/OnboardingStyling';
 
 export default function Customization({ navigation }) {
   const route = useRoute();
 
   // Used to connect with redux (current state)
   const dispatch = useDispatch();
-  
+
   const navigateToPersonalInfo = () => {
     navigation.navigate('PersonalInfo');
   };
@@ -36,14 +36,14 @@ export default function Customization({ navigation }) {
         firstName,
       };
       const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/users/signup`, userData);
-  
+
       if (res.data.error) {
         console.error(res.data.error);
-      } else {  // If sign up is successful
+      } else { // If sign up is successful
         const res2 = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/users/signin`, userData);
         // Sets current state variables for session
         dispatch(login(res2.data));
-        navigateToFeed()
+        navigateToFeed();
       }
     } catch (err) {
       console.error(err.message);
@@ -54,7 +54,7 @@ export default function Customization({ navigation }) {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         <TouchableOpacity onPress={navigateToPersonalInfo} style={styles.arrowContainer}>
-          <Icon name="arrow-left" size={30} color="black"/>
+          <Icon name="arrow-left" size={30} color="black" />
         </TouchableOpacity>
         <Text style={styles.title}>What's on your mind?</Text>
         <View style={styles.paginationContainer}>
@@ -71,11 +71,11 @@ export default function Customization({ navigation }) {
         </View>
       </View>
     </TouchableWithoutFeedback>
-  )
+  );
 }
 
 Customization.propTypes = {
-    navigation: PropTypes.shape({
-        navigate: PropTypes.func,
-    }).isRequired,
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+  }).isRequired,
 };

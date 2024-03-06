@@ -7,33 +7,30 @@ import { Switch } from 'react-native-switch';
 import { TimerPickerModal } from 'react-native-timer-picker';
 import { LinearGradient } from 'expo-linear-gradient';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 import styles from './PushNotificationsStyle';
+import ToggleSwitch from '../Components/ToggleSwitch';
 
 function PushNotifications() {
   const [notifEnabled, setNotifEnabled] = useState(false);
-  const [isEnabled, setIsEnabled] = useState(false);
-  const [isEnabled2, setIsEnabled2] = useState(false);
-  const [isEnabled3, setIsEnabled3] = useState(false);
-  const [isEnabled4, setIsEnabled4] = useState(false);
-
-  const toggleNotif = () => setNotifEnabled((previousState) => !previousState);
-  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
-  const toggleSwitch2 = () => setIsEnabled2((previousState) => !previousState);
-  const toggleSwitch3 = () => setIsEnabled3((previousState) => !previousState);
-  const toggleSwitch4 = () => setIsEnabled4((previousState) => !previousState);
-
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
-  const [open2, setOpen2] = useState(false);
-  const [value2, setValue2] = useState(null);
-  const [items, setItems] = useState([
-    { label: 'weekly', value: 'weekly' },
-    { label: 'daily', value: 'daily' },
-    { label: 'monthly', value: 'monthly' },
-  ]);
-
+  const { id } = useSelector((state) => state.auth);
+  const [reminderSet, setReminderSet] = useState(new Set());
   const [showPicker, setShowPicker] = useState(false);
   const [alarmString, setAlarmString] = useState(null);
+
+  const toggleNotif = () => setNotifEnabled((previousState) => !previousState);
+  const toggleSwitch = async (label) => {
+    const temp = new Set(reminderSet);
+    if (reminderSet.has(label)) {
+      temp.delete(label);
+      setReminderSet(temp);
+    } else {
+      temp.add(label);
+      setReminderSet(temp);
+    }
+    const reminderArray = Array.from(temp);
+    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/updateUser`, { id, updatedFields: { 'pushNotifs.reminders': reminderArray } });
+  };
 
   const formatTime = (pickedDuration) => {
     let { hours } = pickedDuration;
@@ -56,17 +53,17 @@ function PushNotifications() {
     axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/updateUser`, { pushNotifs: { time: pickedDuration } }).then((res) => res);
   };
 
-  const fetchDailyNotif = async () => {
-    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/readSpecifiedFields`, { id:  });
+  const fetchData = async () => {
+    const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/readSpecifiedFields`, { id, fields: ['pushNotifs'] });
+    return res;
   };
 
-  const fetchReminders = async () => {
-
-  };
-
-  useEffect(async () => {
-    await fetchDailyNotif();
-    await fetchReminders();
+  useEffect(() => {
+    fetchData().then((res) => {
+      const { pushNotifs } = res.data;
+      const temp = new Set(pushNotifs.reminders);
+      setReminderSet(temp);
+    });
   }, []);
 
   return (
@@ -163,110 +160,12 @@ function PushNotifications() {
           throughout the day to help remind you of certain activities.
         </Text>
         <View>
-          <View style={[styles.timeOfDayContainer, { marginBottom: 25 }]}>
-            <Text style={styles.timeOfDayText}>
-              Water Intake
-            </Text>
-            <Switch
-              backgroundActive="#404040"
-              backgroundInactive="lightgray"
-              activeText=""
-              inActiveText=""
-              value={isEnabled}
-              onValueChange={toggleSwitch}
-              barHeight={24}
-              circleSize={22}
-              switchWidthMultiplier={2.3}
-              circleBorderWidth={0}
-            />
-          </View>
-          <View style={[styles.timeOfDayContainer, { marginBottom: 25 }]}>
-            <Text style={styles.timeOfDayText}>
-              Full Meal
-            </Text>
-            <Switch
-              backgroundActive="#404040"
-              backgroundInactive="lightgray"
-              activeText=""
-              inActiveText=""
-              value={isEnabled2}
-              onValueChange={toggleSwitch2}
-              barHeight={24}
-              circleSize={22}
-              switchWidthMultiplier={2.3}
-              circleBorderWidth={0}
-            />
-          </View>
-        </View>
-        <View>
-          <View style={[styles.timeOfDayContainer, { marginBottom: 25 }]}>
-            <Text style={styles.timeOfDayText}>
-              Physical Actiity
-            </Text>
-            <Switch
-              backgroundActive="#404040"
-              backgroundInactive="lightgray"
-              activeText=""
-              inActiveText=""
-              value={isEnabled3}
-              onValueChange={toggleSwitch3}
-              barHeight={24}
-              circleSize={22}
-              switchWidthMultiplier={2.3}
-              circleBorderWidth={0}
-            />
-          </View>
-          <View style={[styles.timeOfDayContainer, { marginBottom: 25 }]}>
-            <Text style={styles.timeOfDayText}>
-              Mood-Boosting Activity
-            </Text>
-            <Switch
-              backgroundActive="#404040"
-              backgroundInactive="lightgray"
-              activeText=""
-              inActiveText=""
-              value={isEnabled4}
-              onValueChange={toggleSwitch4}
-              barHeight={24}
-              circleSize={22}
-              switchWidthMultiplier={2.3}
-              circleBorderWidth={0}
-            />
-          </View>
-          <View style={[styles.timeOfDayContainer, { marginBottom: 25 }]}>
-            <Text style={styles.timeOfDayText}>
-              Wellness-Boosting Activity
-            </Text>
-            <Switch
-              backgroundActive="#404040"
-              backgroundInactive="lightgray"
-              activeText=""
-              inActiveText=""
-              value={isEnabled4}
-              onValueChange={toggleSwitch4}
-              barHeight={24}
-              circleSize={22}
-              switchWidthMultiplier={2.3}
-              circleBorderWidth={0}
-            />
-          </View>
-          <View style={[styles.timeOfDayContainer, { marginBottom: 25 }]}>
-            <Text style={styles.timeOfDayText}>
-              Thirty Day Detox
-            </Text>
-            <Switch
-              backgroundActive="#404040"
-              backgroundInactive="lightgray"
-              activeText=""
-              inActiveText=""
-              value={isEnabled4}
-              onValueChange={toggleSwitch4}
-              barHeight={24}
-              circleSize={22}
-              switchWidthMultiplier={2.3}
-              circleBorderWidth={0}
-            />
-          </View>
+          <ToggleSwitch label="Water Intake" value={reminderSet.has('Water Intake')} onValueChange={toggleSwitch} />
+          <ToggleSwitch label="Full Meal" value={reminderSet.has('Full Meal')} onValueChange={toggleSwitch} />
+          <ToggleSwitch label="Physical Activity" value={reminderSet.has('Physical Activity')} onValueChange={toggleSwitch} />
+          <ToggleSwitch label="Mood-Boosting Activity" value={reminderSet.has('Mood-Boosting Activity')} onValueChange={toggleSwitch} />
+          <ToggleSwitch label="Wellness-Boosting Activity" value={reminderSet.has('Wellness-Boosting Activity')} onValueChange={toggleSwitch} />
+          <ToggleSwitch label="Thirty Day Detox" value={reminderSet.has('Thirty Day Detox')} onValueChange={toggleSwitch} />
         </View>
       </View>
     </View>

@@ -6,7 +6,6 @@ import Login from '../Features/Onboarding/Screens/Login';
 import SignUp from '../Features/Onboarding/Screens/SignUp';
 import PersonalInfo from '../Features/Onboarding/Screens/PersonalInfo';
 import Customization from '../Features/Onboarding/Screens/Customization';
-import { createStackNavigator } from '@react-navigation/stack';
 import NavigationBar from './NavigationBar';
 import Filter from '../Features/Other/Screens/Filter';
 import BannedTags from '../Features/Other/Screens/BannedTags';
