@@ -8,7 +8,7 @@ import JournalCard from '../../Journal/Components/JournalCard';
 
 export default function JournalHistoryPage({ navigation }) {
   const [journals, setJournals] = useState([]); // array of journal entries
-  const [img, setImg] = useState('');
+  const [img, setImg] = useState(null);
 
   const getPastJournals = async () => {
     const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/journals/getAllJournals`);
@@ -16,7 +16,7 @@ export default function JournalHistoryPage({ navigation }) {
   }; // fetch all the journal entries and set the journals array accordingly
 
   const retrieveImg = async () => {
-    const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/test/getImg`);
+    const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/test/getImage`);
     setImg(res.data);
   };
   useEffect(() => {

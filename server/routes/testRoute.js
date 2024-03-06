@@ -10,7 +10,7 @@ testRouter.get('/get', (req, res) => {
   res.send('Get API');
 });
 
-testRouter.get('/getImg', awsController.retrieveImage);
+testRouter.get('/getImage', awsController.getImage);
 
 testRouter.post('/uploadImage', awsController.uploadImage);
 
