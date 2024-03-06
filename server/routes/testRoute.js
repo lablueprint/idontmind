@@ -12,4 +12,6 @@ testRouter.get('/get', (req, res) => {
 
 testRouter.get('/getImg', awsController.retrieveImage);
 
+testRouter.post('/uploadImage', awsController.uploadImage);
+
 module.exports = testRouter;

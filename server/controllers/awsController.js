@@ -24,15 +24,16 @@ const retrieveImage = async (req, res) => {
 };
 
 const uploadImage = async (req, res) => {
+  const { file } = req.body;
   try {
     const params = {
       Bucket: process.env.S3_BUCKET,
-      Key: 'uploaded_image.jpeg', // Key is the name of the file in the bucket
-      Body: req.body.imageData, // Assuming imageData contains the image data
-      ContentType: 'image/jpeg', // Set the content type according to your image type
+      Key: file.name,
+      Body: file.buffer,
+      ContentType: file.mimetype,
     };
 
-    await s3.putObject(params).promise(); // Use promise() to make the call asynchronous
+    await s3.putObject(params).promise();
 
     res.send('Image uploaded successfully');
   } catch (err) {

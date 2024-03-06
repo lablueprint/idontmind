@@ -1,5 +1,5 @@
 import {
-  ScrollView, View, Text, TouchableOpacity, Image, Button, StyleSheet,
+  ScrollView, View, Text, TouchableOpacity, Image, StyleSheet,
 } from 'react-native';
 import { useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
@@ -17,7 +17,6 @@ export default function Options({ navigation }) {
       navigation.navigate('BannedTags');
     }
   };
-  const [image, setImage] = useState(null);
 
   const uploadPhotoStyles = StyleSheet.create({
     container: {
