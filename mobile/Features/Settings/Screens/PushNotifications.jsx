@@ -1,5 +1,5 @@
 import {
-  Text, View, TouchableOpacity,
+  ScrollView, Text, View, TouchableOpacity,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Divider } from '@rneui/themed';
@@ -34,15 +34,17 @@ function PushNotifications() {
     if (pickedDuration === undefined) return '';
     let { hours } = pickedDuration;
     const { minutes } = pickedDuration;
+    let relativeTime = 'Morning, ';
     let part = 'AM';
     if (hours > 12) {
       hours -= 12;
       part = 'PM';
+      relativeTime = 'Evening, ';
     }
     if (minutes === 0) {
-      return `${hours}:00${part}`;
+      return `${relativeTime}${hours}:00${part}`;
     }
-    return `${hours}:${minutes}${part}`;
+    return `${relativeTime}${hours}:${minutes}${part}`;
   };
 
   const setDailyNotif = async (pickedDuration) => {
@@ -68,7 +70,7 @@ function PushNotifications() {
   }, []);
 
   return (
-    <View>
+    <ScrollView automaticallyAdjustKeyboardInsets>
       <Text style={styles.header}>
         Push Notifications
       </Text>
@@ -77,46 +79,29 @@ function PushNotifications() {
           width={1}
           marginBottom={25}
         />
+
         <Text style={[styles.category, { marginTop: '5%', marginBottom: '4%' }]}>
           Daily Check-In
         </Text>
         <Text style={{ marginBottom: 25 }}>
           When should we ask you about your day?
         </Text>
-        <View>
-          <View style={[styles.timeOfDayContainer, { marginBottom: 25 }]}>
-            <Text
-              style={[styles.timeOfDayText, styles.timeOfDayText]}
-            >
-              {alarmString !== ''
-                ? alarmString
-                : 'No alarm set'}
-            </Text>
-          </View>
-        </View>
-        <View style={[{ backgroundColor: '#F1F1F1', alignItems: 'center', justifyContent: 'center' },
-          styles.showIt]}
-        >
+
+        <View style={[styles.timeOfDayContainer, { marginBottom: 25 }]}>
+          <Text
+            style={[styles.timeOfDayText, styles.timeOfDayText]}
+          >
+            {alarmString !== ''
+              ? alarmString
+              : 'No alarm set'}
+          </Text>
           <TouchableOpacity
             activeOpacity={0.7}
             onPress={() => setShowPicker(true)}
           >
-            <View>
-              <Text
-                style={{
-                  paddingVertical: 10,
-                  paddingHorizontal: 18,
-                  borderWidth: 1,
-                  borderRadius: 10,
-                  fontSize: 16,
-                  overflow: 'hidden',
-                  borderColor: '#8C8C8C',
-                  color: '#8C8C8C',
-                }}
-              >
-                edit
-              </Text>
-            </View>
+            <Text style={styles.editButton}>
+              edit
+            </Text>
           </TouchableOpacity>
           <TimerPickerModal
             visible={showPicker}
@@ -141,6 +126,7 @@ function PushNotifications() {
           Feel free to toggle the option for us to randomly send a notification
           throughout the day to help remind you of certain activities.
         </Text>
+
         <View>
           <ToggleSwitch label="Water Intake" value={reminderSet.has('Water Intake')} onValueChange={toggleSwitch} />
           <ToggleSwitch label="Full Meal" value={reminderSet.has('Full Meal')} onValueChange={toggleSwitch} />
@@ -150,7 +136,7 @@ function PushNotifications() {
           <ToggleSwitch label="Thirty Day Detox" value={reminderSet.has('Thirty Day Detox')} onValueChange={toggleSwitch} />
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 

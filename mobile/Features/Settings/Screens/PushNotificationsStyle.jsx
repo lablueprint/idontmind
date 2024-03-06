@@ -14,9 +14,21 @@ export default StyleSheet.create({
   category: {
     marginBottom: 18,
     marginTop: 12,
-    fontSize: 15,
+    fontSize: 23,
+    fontWeight: 600,
+  },
+  editButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 18,
+    borderWidth: 1,
+    borderRadius: 10,
+    fontSize: 16,
+    overflow: 'hidden',
+    borderColor: '#8C8C8C',
+    color: '#8C8C8C',
   },
   timeOfDayContainer: {
+    display: 'flex',
     flexDirection: 'row',
     width: '97%',
     justifyContent: 'space-between',
@@ -50,13 +62,6 @@ export default StyleSheet.create({
   saveText: {
     fontSize: 18,
     color: 'white',
-  },
-  showIt: {
-    display: 'flex',
-  },
-  dontShowIt: {
-    display: 'none',
-    backgroundColor: 'blue',
   },
   unselected: {
     color: 'lightgray',
