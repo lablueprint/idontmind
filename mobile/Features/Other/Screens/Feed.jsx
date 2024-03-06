@@ -12,15 +12,9 @@ export default function Feed({ navigation }) {
   const [postDraftBody, setPostDraftBody] = useState('');
   const [postDraftUser, setPostDraftUser] = useState('');
 
-<<<<<<< HEAD
   // Grabs user firstName and authentication token for current user session
   const { email, firstName , authHeader } = useSelector((state) => state.auth);
   const dispatch = useDispatch()
-=======
-  // Grabs user email and authentication token for current user session
-  const { email, authHeader } = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
->>>>>>> e8b7d9dac4d4c90a1c02036ce8bb6072bc73587e
 
   const [postList, setPostList] = useState([]);
   const navigateToLanding = () => {
