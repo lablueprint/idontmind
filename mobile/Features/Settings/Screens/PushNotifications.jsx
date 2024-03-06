@@ -3,7 +3,6 @@ import {
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Divider } from '@rneui/themed';
-import { Switch } from 'react-native-switch';
 import { TimerPickerModal } from 'react-native-timer-picker';
 import { LinearGradient } from 'expo-linear-gradient';
 import axios from 'axios';
@@ -12,13 +11,12 @@ import styles from './PushNotificationsStyle';
 import ToggleSwitch from '../Components/ToggleSwitch';
 
 function PushNotifications() {
-  const [notifEnabled, setNotifEnabled] = useState(false);
   const { id } = useSelector((state) => state.auth);
+  // to track reminders that are toggled on
   const [reminderSet, setReminderSet] = useState(new Set());
   const [showPicker, setShowPicker] = useState(false);
-  const [alarmString, setAlarmString] = useState(null);
+  const [alarmString, setAlarmString] = useState('');
 
-  const toggleNotif = () => setNotifEnabled((previousState) => !previousState);
   const toggleSwitch = async (label) => {
     const temp = new Set(reminderSet);
     if (reminderSet.has(label)) {
@@ -33,6 +31,7 @@ function PushNotifications() {
   };
 
   const formatTime = (pickedDuration) => {
+    if (pickedDuration === undefined) return '';
     let { hours } = pickedDuration;
     const { minutes } = pickedDuration;
     let part = 'AM';
@@ -46,13 +45,14 @@ function PushNotifications() {
     return `${hours}:${minutes}${part}`;
   };
 
-  const setDailyNotif = (pickedDuration) => {
+  const setDailyNotif = async (pickedDuration) => {
     setAlarmString(formatTime(pickedDuration));
     setShowPicker(false);
     // set the alarm
-    axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/updateUser`, { pushNotifs: { time: pickedDuration } }).then((res) => res);
+    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/updateUser`, { id, updatedFields: { 'pushNotifs.time': pickedDuration } });
   };
 
+  // get push notification data from user
   const fetchData = async () => {
     const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/readSpecifiedFields`, { id, fields: ['pushNotifs'] });
     return res;
@@ -61,6 +61,7 @@ function PushNotifications() {
   useEffect(() => {
     fetchData().then((res) => {
       const { pushNotifs } = res.data;
+      setAlarmString(formatTime(pushNotifs.time));
       const temp = new Set(pushNotifs.reminders);
       setReminderSet(temp);
     });
@@ -85,56 +86,36 @@ function PushNotifications() {
         <View>
           <View style={[styles.timeOfDayContainer, { marginBottom: 25 }]}>
             <Text
-              style={[styles.timeOfDayText, notifEnabled
-                ? styles.timeOfDayText : styles.unselected]}
+              style={[styles.timeOfDayText, styles.timeOfDayText]}
             >
-              {alarmString !== null
+              {alarmString !== ''
                 ? alarmString
                 : 'No alarm set'}
             </Text>
-            <Switch
-              backgroundActive="#404040"
-              backgroundInactive="lightgray"
-              activeText=""
-              inActiveText=""
-              value={notifEnabled}
-              onValueChange={toggleNotif}
-              barHeight={24}
-              circleSize={22}
-              switchWidthMultiplier={2.3}
-              circleBorderWidth={0}
-            />
           </View>
         </View>
         <View style={[{ backgroundColor: '#F1F1F1', alignItems: 'center', justifyContent: 'center' },
-          notifEnabled ? styles.showIt : styles.dontShowIt]}
+          styles.showIt]}
         >
           <TouchableOpacity
             activeOpacity={0.7}
             onPress={() => setShowPicker(true)}
           >
-            <View style={{ alignItems: 'center' }}>
-              <TouchableOpacity
-                activeOpacity={0.7}
-                onPress={() => setShowPicker(true)}
+            <View>
+              <Text
+                style={{
+                  paddingVertical: 10,
+                  paddingHorizontal: 18,
+                  borderWidth: 1,
+                  borderRadius: 10,
+                  fontSize: 16,
+                  overflow: 'hidden',
+                  borderColor: '#8C8C8C',
+                  color: '#8C8C8C',
+                }}
               >
-                <View style={{ marginTop: 30 }}>
-                  <Text
-                    style={{
-                      paddingVertical: 10,
-                      paddingHorizontal: 18,
-                      borderWidth: 1,
-                      borderRadius: 10,
-                      fontSize: 16,
-                      overflow: 'hidden',
-                      borderColor: '#8C8C8C',
-                      color: '#8C8C8C',
-                    }}
-                  >
-                    edit
-                  </Text>
-                </View>
-              </TouchableOpacity>
+                edit
+              </Text>
             </View>
           </TouchableOpacity>
           <TimerPickerModal
@@ -152,6 +133,7 @@ function PushNotifications() {
             }}
           />
         </View>
+
         <Text style={[styles.category, { marginTop: '5%', marginBottom: '4%' }]}>
           Daily Reminders
         </Text>
