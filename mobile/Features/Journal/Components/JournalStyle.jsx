@@ -19,7 +19,15 @@ export default StyleSheet.create({
     justifyContent: 'flex-start',
     borderWidth: 2,
     minWidth: '90%',
-    height: 500,
+    height: '80%',
+  },
+  attachmentBox: {
+    padding: 10,
+    marginTop: 20,
+    justifyContent: 'flex-start',
+    borderWidth: 2,
+    minWidth: '90%',
+    height: 100,
   },
 
   modalView: {
@@ -47,5 +55,14 @@ export default StyleSheet.create({
     padding: 20,
     borderRadius: 8,
     backgroundColor: '#C1C1C1',
+  },
+  imageContainer: {
+    height: '10%',
+    width: '80%',
+    borderRadius: 10,
+    backgroundColor: 'lightgrey',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 16,
   },
 });

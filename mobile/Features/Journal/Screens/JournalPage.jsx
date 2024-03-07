@@ -1,7 +1,8 @@
 import {
   ScrollView, Text, View, Button, TextInput, Keyboard,
-  TouchableWithoutFeedback, Modal, TouchableOpacity, Pressable,
+  TouchableWithoutFeedback, Modal, TouchableOpacity, Pressable, Image,
 } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 import { useRoute } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
@@ -13,6 +14,8 @@ export default function JournalPage({ navigation }) {
   const body = route.params?.body;
   const isHistory = route.params?.isHistory;/* retrieve the value of isHistory
   from the previous navigation page (JournalHistoryPage) */
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [viewImage, setViewImage] = useState(false);
 
   const [text, setText] = useState(''); // state for the text the user types in
   const [confirmPopUp, setConfirmPopUp] = useState(false); /* state that tells if
@@ -22,13 +25,29 @@ export default function JournalPage({ navigation }) {
     setConfirmPopUp(!confirmPopUp);
   }; // toggles confirmPopUp
 
+  const pickImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setSelectedImage(result.assets[0].uri);
+    }
+  };
+
   const prompt = 'Create a journal post!';
   const username = 'Nicole'; // set prompt and username to constants at the moment, but should be able to get that info dynamically
 
   const addNewJournal = async (newUsername, newPrompt, newText) => {
     handlePopUp();
     const currentdate = new Date();
-    const timestamp = currentdate;
+    const pstDate = currentdate.toLocaleString('en-US', {
+      timeZone: 'America/Los_Angeles',
+    });
+    const timestamp = pstDate;
     await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/journals/createJournal`, {
       username: newUsername, prompt: newPrompt, text: newText, timestamp,
     });
@@ -38,6 +57,18 @@ export default function JournalPage({ navigation }) {
   const navigateToJournalHistory = () => {
     navigation.navigate('Journal History');
   }; // navigate to Journal History page
+
+  const getFilenameFromUri = (uri) => {
+    if (uri) {
+      const uriParts = uri.split('/');
+      return uriParts[uriParts.length - 1];
+    }
+    return '';
+  };
+
+  const handleFilenamePress = () => {
+    setViewImage(!viewImage);
+  };
 
   /* render it in two different ways depending on if isHistory(if false, editable text box, if
   true, uneditable text box with previously written text) */
@@ -54,7 +85,7 @@ export default function JournalPage({ navigation }) {
                   <View style={{ height: 40 }} />
                 </ScrollView>
               </View>
-              <Button title="Submit" onPress={handlePopUp} />
+
               <Modal visible={confirmPopUp}>
                 <TouchableOpacity onPressOut={handlePopUp} style={styles.modalView}>
                   <View style={styles.modalBox}>
@@ -78,6 +109,20 @@ export default function JournalPage({ navigation }) {
             </View>
           </View>
         </TouchableWithoutFeedback>
+        <TouchableOpacity style={styles.imageContainer} onPress={pickImage}>
+          <Text>+ add attachment</Text>
+          {selectedImage !== '' ? (
+            <>
+              <TouchableOpacity onPress={handleFilenamePress}>
+                <Text>{getFilenameFromUri(selectedImage)}</Text>
+              </TouchableOpacity>
+              {viewImage && (
+              <Image source={{ uri: selectedImage }} style={{ width: 200, height: 200 }} />
+              )}
+            </>
+          ) : null}
+        </TouchableOpacity>
+        <Button title="Submit" onPress={handlePopUp} />
 
         <Button
           title="To Past Journal Entries"
