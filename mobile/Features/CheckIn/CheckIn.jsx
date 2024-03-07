@@ -4,7 +4,7 @@ import {
 import PropTypes from 'prop-types';
 
 function CheckIn({ navigation }) {
-  const numPages = 3.0;
+  const numPages = 4.0;
 
   const beginCheckIn = () => {
     navigation.navigate('Mood', { numPages });

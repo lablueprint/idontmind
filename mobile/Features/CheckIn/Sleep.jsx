@@ -11,9 +11,10 @@ import styles from './SleepStyle';
 function Sleep({ navigation }) {
   const route = useRoute();
   const moodChosen = route.params?.moodChosen;
+  const activityChosen = route.params?.activityChosen;
   // update progress
   const numPages = route.params?.numPages;
-  const progress = 2 / numPages;
+  const progress = 3 / numPages;
   // slider state
   const [slider, setSlider] = useState(0);
 
@@ -22,7 +23,7 @@ function Sleep({ navigation }) {
   };
 
   const continueButton = () => {
-    navigation.navigate('EndCheckIn', { moodChosen, sleepScore: slider });
+    navigation.navigate('EndCheckIn', { moodChosen, activityChosen, sleepScore: slider });
   };
 
   const skipButton = () => {

@@ -7,10 +7,10 @@ const signUpUser = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
-    const userAlreadyExists = await User.findOne({ email: email })
+    const userAlreadyExists = await User.findOne({ email });
 
     if (userAlreadyExists) {
-      return res.status(400).send({ message: 'This user already has an account' })
+      return res.status(400).send({ message: 'This user already has an account' });
     }
 
     const user = new User({ email, password });
@@ -31,8 +31,8 @@ const signInUser = async (req, res, next) => {
       });
     }
 
-    req.login(user, { session: false }, (err) => {
-      if (err) return next(err);
+    req.login(user, { session: false }, (loginErr) => {
+      if (loginErr) return next(loginErr);
 
       // Generate JWT token
       const token = jwt.sign({ id: user._id }, 'secret');
@@ -50,11 +50,11 @@ const welcomeUser = (req, res) => {
 const getUserData = async (req, res, next) => {
   try {
     const { email } = req.body;
-    const user = await User.find({ email: email })
+    const user = await User.find({ email });
     if (!user || user.length === 0) {
       return res.status(404).send({ message: 'User not found' });
     }
-    return res.json(user)
+    return res.json(user);
   } catch (err) {
     console.error(err);
     return res.status(500).send(err);
@@ -68,5 +68,5 @@ module.exports = {
   signUpUser,
   welcomeUser,
   authenticatePassport,
-  getUserData
+  getUserData,
 };

@@ -39,7 +39,6 @@ const connectToDatabaseTimeSeries = async () => {
 };
 
 const createCheckIn = async (data) => {
-  console.log(data.body);
   try {
     const db = await connectToDatabaseTimeSeries();
     const collection = db.collection('checkin_time_series');
@@ -48,6 +47,7 @@ const createCheckIn = async (data) => {
         metadata: { userId: 'booop', email: 'booooooop' },
         timestamp: new Date(),
         mood: data.body.moodText,
+        activity: data.body.activityText,
         sleep: data.body.sleep,
       },
     ]);

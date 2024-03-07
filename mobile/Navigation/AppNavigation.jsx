@@ -1,11 +1,11 @@
 import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import Landing from '../Features/Other/Screens/Landing';
 import Feed from '../Features/Other/Screens/Feed';
 import Login from '../Features/Login/Screens/Login';
 import SignUp from '../Features/Feed/Screens/SignUp';
 import PersonalInfo from '../Features/Feed/Screens/PersonalInfo';
 import Customization from '../Features/Feed/Screens/Customization';
-import { createStackNavigator } from '@react-navigation/stack';
 import NavigationBar from './NavigationBar';
 import CheckIn from '../Features/CheckIn/CheckIn';
 import Sleep from '../Features/CheckIn/Sleep';
@@ -15,6 +15,12 @@ import AddColor from '../Features/CheckIn/AddColor';
 import Filter from '../Features/Other/Screens/Filter';
 import BannedTags from '../Features/Other/Screens/BannedTags';
 import EndCheckIn from '../Features/CheckIn/EndCheckIn';
+import PushNotifications from '../Features/Settings/Screens/PushNotifications';
+import Loading from '../Features/Register/Loading';
+import JournalPage from '../Features/Journal/Screens/JournalPage';
+import Activity from '../Features/CheckIn/Activity';
+import AddActivity from '../Features/CheckIn/AddActivity';
+import AddIcon from '../Features/CheckIn/AddIcon';
 
 function Misc() {
   return (
@@ -41,9 +47,16 @@ export default function AppNavigation() {
         <Stack.Screen name="Mood" component={Mood} options={{ headerShown: false }} />
         <Stack.Screen name="AddMood" component={AddMood} options={{ headerShown: false }} />
         <Stack.Screen name="AddColor" component={AddColor} options={{ headerShown: false }} />
+        <Stack.Screen name="Activity" component={Activity} options={{ headerShown: false }} />
+        <Stack.Screen name="AddActivity" component={AddActivity} options={{ headerShown: false }} />
+        <Stack.Screen name="AddIcon" component={AddIcon} options={{ headerShown: false }} />
         <Stack.Screen name="EndCheckIn" component={EndCheckIn} options={{ headerShown: false }} />
         <Stack.Screen name="Filter" component={Filter} options={{ headerShown: false }} />
         <Stack.Screen name="BannedTags" component={BannedTags} options={{ headerShown: false }} />
+        <Stack.Screen name="PushNotifications" component={PushNotifications} options={{ headerShown: false }} />
+        <Stack.Screen name="Loading" component={Loading} options={{ headerShown: false }} />
+        <Stack.Screen name="Journal" component={JournalPage} options={{ headerShown: false }} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );

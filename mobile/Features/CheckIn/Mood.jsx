@@ -30,11 +30,11 @@ function Mood({ navigation }) {
   }, [newMood, newColor]);
 
   const continueButton = () => {
-    navigation.navigate('Sleep', { numPages, moodChosen });
+    navigation.navigate('Activity', { numPages, moodChosen });
   };
 
   const skipButton = () => {
-    navigation.navigate('Sleep', { numPages });
+    navigation.navigate('Activity', { numPages });
   };
 
   // later implement functionality for pressing on a mood button:
