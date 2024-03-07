@@ -7,7 +7,7 @@ function CheckIn({ navigation }) {
   const numPages = 4.0;
 
   const beginCheckIn = () => {
-    navigation.navigate('Mood', { numPages });
+    navigation.navigate('Feeling', { numPages });
   };
 
   const continueToDashBoard = () => {

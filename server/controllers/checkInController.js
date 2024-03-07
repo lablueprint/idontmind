@@ -46,7 +46,7 @@ const createCheckIn = async (data) => {
       {
         metadata: { userId: 'booop', email: 'booooooop' },
         timestamp: new Date(),
-        mood: data.body.moodText,
+        moods: data.body.moodsText,
         activity: data.body.activityText,
         sleep: data.body.sleep,
       },

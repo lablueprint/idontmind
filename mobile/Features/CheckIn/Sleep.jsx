@@ -10,7 +10,7 @@ import styles from './SleepStyle';
 
 function Sleep({ navigation }) {
   const route = useRoute();
-  const moodChosen = route.params?.moodChosen;
+  const moodsChosen = route.params?.moodsChosen;
   const activityChosen = route.params?.activityChosen;
   // update progress
   const numPages = route.params?.numPages;
@@ -23,11 +23,11 @@ function Sleep({ navigation }) {
   };
 
   const continueButton = () => {
-    navigation.navigate('EndCheckIn', { moodChosen, activityChosen, sleepScore: slider });
+    navigation.navigate('EndCheckIn', { moodsChosen, activityChosen, sleepScore: slider });
   };
 
   const skipButton = () => {
-    navigation.navigate('EndCheckIn');
+    navigation.navigate('EndCheckIn', { moodsChosen, activityChosen });
   };
 
   return (

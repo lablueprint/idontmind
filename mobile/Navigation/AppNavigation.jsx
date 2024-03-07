@@ -21,14 +21,7 @@ import JournalPage from '../Features/Journal/Screens/JournalPage';
 import Activity from '../Features/CheckIn/Activity';
 import AddActivity from '../Features/CheckIn/AddActivity';
 import AddIcon from '../Features/CheckIn/AddIcon';
-
-function Misc() {
-  return (
-    <View>
-      Test
-    </View>
-  );
-}
+import Feeling from '../Features/CheckIn/Feeling';
 
 const Stack = createStackNavigator();
 export default function AppNavigation() {
@@ -44,6 +37,7 @@ export default function AppNavigation() {
         <Stack.Screen name="NavigationBar" component={NavigationBar} options={{ headerShown: false }} />
         <Stack.Screen name="CheckIn" component={CheckIn} options={{ headerShown: false }} />
         <Stack.Screen name="Sleep" component={Sleep} options={{ headerShown: false }} />
+        <Stack.Screen name="Feeling" component={Feeling} options={{ headerShown: false }} />
         <Stack.Screen name="Mood" component={Mood} options={{ headerShown: false }} />
         <Stack.Screen name="AddMood" component={AddMood} options={{ headerShown: false }} />
         <Stack.Screen name="AddColor" component={AddColor} options={{ headerShown: false }} />

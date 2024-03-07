@@ -14,7 +14,7 @@ function Activity({ navigation }) {
   const numPages = route.params?.numPages;
   const newActivity = route.params?.activityPassedIn;
   const newIcon = route.params?.iconChosen;
-  const moodChosen = route.params?.moodChosen;
+  const moodsChosen = route.params?.moodsChosen;
 
   const progress = 2 / numPages;
   // addedActivities array to keep track of the new activities the user has added
@@ -32,12 +32,12 @@ function Activity({ navigation }) {
 
   const continueButton = () => {
     navigation.navigate('Sleep', {
-      numPages, moodChosen, activityChosen,
+      numPages, moodsChosen, activityChosen,
     });
   };
 
   const skipButton = () => {
-    navigation.navigate('Sleep', { numPages });
+    navigation.navigate('Sleep', { numPages, moodsChosen });
   };
 
   // later implement functionality for pressing on a activity button:
