@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
   },
 });
 
-function CheckIn() {
+function CheckInTemplate() {
   // short answer state
   const [shortAnswerText, setShortAnswerText] = useState('');
 
@@ -130,4 +130,4 @@ function CheckIn() {
   );
 }
 
-export default CheckIn;
+export default CheckInTemplate;

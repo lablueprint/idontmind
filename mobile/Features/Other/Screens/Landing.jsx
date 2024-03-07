@@ -14,8 +14,16 @@ export default function Landing({ navigation }) {
   const navigateToSignUp = () => {
     navigation.navigate('SignUp');
   };
+
+  const navigateToCheckIn = () => {
+    navigation.navigate('CheckIn');
+  };
   const navigateToFeed = () => {
     navigation.navigate('NavigationBar');
+  };
+
+  const navigateToJournal = () => {
+    navigation.navigate('Journal');
   };
 
   const dispatch = useDispatch();
@@ -53,6 +61,14 @@ export default function Landing({ navigation }) {
       <Button
         title="Already have an account?"
         onPress={navigateToLogin}
+      />
+      <Button
+        title="To Journal"
+        onPress={navigateToJournal}
+      />
+      <Button
+        title="To CheckIn"
+        onPress={navigateToCheckIn}
       />
       <Button
         title="Hardcoded Sign In"
