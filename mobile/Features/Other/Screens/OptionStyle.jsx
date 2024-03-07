@@ -17,7 +17,7 @@ const OptionStyle = StyleSheet.create({
 
   arrow: {
     fontSize: 20,
-    marginLeft: 40,
+    marginLeft: '40%',
 
   },
 
