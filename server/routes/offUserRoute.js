@@ -13,4 +13,6 @@ offUserRouter.post('/updateUser', offUserController.updateUser);
 
 offUserRouter.post('/deleteUserById', offUserController.deleteUserById);
 
+offUserRouter.post('/readSpecifiedFields', offUserController.readSpecifiedFields);
+
 module.exports = offUserRouter;

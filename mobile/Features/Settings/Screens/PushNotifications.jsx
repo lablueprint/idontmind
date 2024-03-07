@@ -1,56 +1,76 @@
 import {
-  Pressable, Text, View, TouchableOpacity,
+  ScrollView, Text, View, TouchableOpacity,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Divider } from '@rneui/themed';
-import { Switch } from 'react-native-switch';
-import DropDownPicker from 'react-native-dropdown-picker';
 import { TimerPickerModal } from 'react-native-timer-picker';
 import { LinearGradient } from 'expo-linear-gradient';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
 import styles from './PushNotificationsStyle';
+import ToggleSwitch from '../Components/ToggleSwitch';
 
 function PushNotifications() {
-  const [notifEnabled, setNotifEnabled] = useState(false);
-  const [isEnabled, setIsEnabled] = useState(false);
-  const [isEnabled2, setIsEnabled2] = useState(false);
-  const [isEnabled3, setIsEnabled3] = useState(false);
-  const [isEnabled4, setIsEnabled4] = useState(false);
+  const { id } = useSelector((state) => state.auth);
+  // to track reminders that are toggled on
+  const [reminderSet, setReminderSet] = useState(new Set());
+  const [showPicker, setShowPicker] = useState(false);
+  const [alarmString, setAlarmString] = useState('');
 
-  const toggleNotif = () => setNotifEnabled((previousState) => !previousState);
-  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
-  const toggleSwitch2 = () => setIsEnabled2((previousState) => !previousState);
-  const toggleSwitch3 = () => setIsEnabled3((previousState) => !previousState);
-  const toggleSwitch4 = () => setIsEnabled4((previousState) => !previousState);
+  const toggleSwitch = async (label) => {
+    const temp = new Set(reminderSet);
+    if (reminderSet.has(label)) {
+      temp.delete(label);
+      setReminderSet(temp);
+    } else {
+      temp.add(label);
+      setReminderSet(temp);
+    }
+    const reminderArray = Array.from(temp);
+    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/updateUser`, { id, updatedFields: { 'pushNotifs.reminders': reminderArray } });
+  };
 
   const formatTime = (pickedDuration) => {
+    if (pickedDuration === undefined) return '';
     let { hours } = pickedDuration;
     const { minutes } = pickedDuration;
+    let relativeTime = 'Morning, ';
     let part = 'AM';
     if (hours > 12) {
       hours -= 12;
       part = 'PM';
+      relativeTime = 'Evening, ';
     }
     if (minutes === 0) {
-      return `${hours}:00${part}`;
+      return `${relativeTime}${hours}:00${part}`;
     }
-    return `${hours}:${minutes}${part}`;
+    return `${relativeTime}${hours}:${minutes}${part}`;
   };
 
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
-  const [open2, setOpen2] = useState(false);
-  const [value2, setValue2] = useState(null);
-  const [items, setItems] = useState([
-    { label: 'weekly', value: 'weekly' },
-    { label: 'daily', value: 'daily' },
-    { label: 'monthly', value: 'monthly' },
-  ]);
+  const setDailyNotif = async (pickedDuration) => {
+    setAlarmString(formatTime(pickedDuration));
+    setShowPicker(false);
+    // set the alarm
+    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/updateUser`, { id, updatedFields: { 'pushNotifs.time': pickedDuration } });
+  };
 
-  const [showPicker, setShowPicker] = useState(false);
-  const [alarmString, setAlarmString] = useState(null);
+  // get push notification data from user
+  const fetchData = async () => {
+    const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/readSpecifiedFields`, { id, fields: ['pushNotifs'] });
+    return res;
+  };
+
+  useEffect(() => {
+    fetchData().then((res) => {
+      const { pushNotifs } = res.data;
+      setAlarmString(formatTime(pushNotifs.time));
+      const temp = new Set(pushNotifs.reminders);
+      setReminderSet(temp);
+    });
+  }, []);
 
   return (
-    <View>
+    <ScrollView automaticallyAdjustKeyboardInsets>
       <Text style={styles.header}>
         Push Notifications
       </Text>
@@ -59,71 +79,34 @@ function PushNotifications() {
           width={1}
           marginBottom={25}
         />
+
         <Text style={[styles.category, { marginTop: '5%', marginBottom: '4%' }]}>
-          DAILY CHECK-IN
+          Daily Check-In
         </Text>
-        <View>
-          <View style={[styles.timeOfDayContainer, { marginBottom: 25 }]}>
-            <Text
-              style={[styles.timeOfDayText, notifEnabled
-                ? styles.timeOfDayText : styles.unselected]}
-            >
-              {alarmString !== null
-                ? alarmString
-                : 'No alarm set'}
-            </Text>
-            <Switch
-              backgroundActive="#404040"
-              backgroundInactive="lightgray"
-              activeText=""
-              inActiveText=""
-              value={notifEnabled}
-              onValueChange={toggleNotif}
-              barHeight={24}
-              circleSize={22}
-              switchWidthMultiplier={2.3}
-              circleBorderWidth={0}
-            />
-          </View>
-        </View>
-        <View style={[{ backgroundColor: '#F1F1F1', alignItems: 'center', justifyContent: 'center' },
-          notifEnabled ? styles.showIt : styles.dontShowIt]}
-        >
+        <Text style={{ marginBottom: 25 }}>
+          When should we ask you about your day?
+        </Text>
+
+        <View style={[styles.timeOfDayContainer, { marginBottom: 25 }]}>
+          <Text
+            style={[styles.timeOfDayText, styles.timeOfDayText]}
+          >
+            {alarmString !== ''
+              ? alarmString
+              : 'No alarm set'}
+          </Text>
           <TouchableOpacity
             activeOpacity={0.7}
             onPress={() => setShowPicker(true)}
           >
-            <View style={{ alignItems: 'center' }}>
-              <TouchableOpacity
-                activeOpacity={0.7}
-                onPress={() => setShowPicker(true)}
-              >
-                <View style={{ marginTop: 30 }}>
-                  <Text
-                    style={{
-                      paddingVertical: 10,
-                      paddingHorizontal: 18,
-                      borderWidth: 1,
-                      borderRadius: 10,
-                      fontSize: 16,
-                      overflow: 'hidden',
-                      borderColor: '#8C8C8C',
-                      color: '#8C8C8C',
-                    }}
-                  >
-                    edit
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            </View>
+            <Text style={styles.editButton}>
+              edit
+            </Text>
           </TouchableOpacity>
           <TimerPickerModal
             visible={showPicker}
             setIsVisible={setShowPicker}
-            onConfirm={(pickedDuration) => {
-              setAlarmString(formatTime(pickedDuration));
-              setShowPicker(false);
-            }}
+            onConfirm={(pickedDuration) => setDailyNotif(pickedDuration)}
             modalTitle="Set Alarm"
             onCancel={() => setShowPicker(false)}
             closeOnOverlayPress
@@ -135,139 +118,25 @@ function PushNotifications() {
             }}
           />
         </View>
+
         <Text style={[styles.category, { marginTop: '5%', marginBottom: '4%' }]}>
-          CATEGORY
+          Daily Reminders
         </Text>
-        <View>
-          <View style={[styles.timeOfDayContainer, { marginBottom: 25 }]}>
-            <Text style={styles.timeOfDayText}>
-              time of day
-            </Text>
-            <Switch
-              backgroundActive="#404040"
-              backgroundInactive="lightgray"
-              activeText=""
-              inActiveText=""
-              value={isEnabled}
-              onValueChange={toggleSwitch}
-              barHeight={24}
-              circleSize={22}
-              switchWidthMultiplier={2.3}
-              circleBorderWidth={0}
-            />
-          </View>
-          <View style={styles.timeOfDayContainer}>
-            <Text style={styles.timeOfDayText}>
-              time of day
-            </Text>
-            <Switch
-              backgroundActive="#404040"
-              backgroundInactive="lightgray"
-              activeText=""
-              inActiveText=""
-              value={isEnabled2}
-              onValueChange={toggleSwitch2}
-              barHeight={24}
-              circleSize={22}
-              switchWidthMultiplier={2.3}
-              circleBorderWidth={0}
-            />
-          </View>
-        </View>
-        <Text style={[styles.category, { marginTop: '9%', marginBottom: '4%' }]}>
-          CATEGORY
+        <Text style={{ marginBottom: 25 }}>
+          Feel free to toggle the option for us to randomly send a notification
+          throughout the day to help remind you of certain activities.
         </Text>
+
         <View>
-          <View style={[styles.timeOfDayContainer, { marginBottom: 25 }]}>
-            <Text style={styles.timeOfDayText}>
-              time of day
-            </Text>
-            <Switch
-              backgroundActive="#404040"
-              backgroundInactive="lightgray"
-              activeText=""
-              inActiveText=""
-              value={isEnabled3}
-              onValueChange={toggleSwitch3}
-              barHeight={24}
-              circleSize={22}
-              switchWidthMultiplier={2.3}
-              circleBorderWidth={0}
-            />
-          </View>
-          <View style={styles.timeOfDayContainer}>
-            <Text style={styles.timeOfDayText}>
-              time of day
-            </Text>
-            <Switch
-              backgroundActive="#404040"
-              backgroundInactive="lightgray"
-              activeText=""
-              inActiveText=""
-              value={isEnabled4}
-              onValueChange={toggleSwitch4}
-              barHeight={24}
-              circleSize={22}
-              switchWidthMultiplier={2.3}
-              circleBorderWidth={0}
-            />
-          </View>
-          <Text style={[styles.category, { marginTop: '9%', marginBottom: '1%' }]}>
-            CATEGORY
-          </Text>
-          <View style={[styles.timeOfDayContainer, { zIndex: 2 }]}>
-            <Text style={styles.timeOfDayText}>
-              category of reminder
-            </Text>
-            <DropDownPicker
-              open={open}
-              value={value}
-              items={items}
-              setOpen={setOpen}
-              setValue={setValue}
-              setItems={setItems}
-              placeholder="weekly"
-              showArrowIcon
-              style={{ width: 105, backgroundColor: 'transparent', borderWidth: 0 }}
-              containerStyle={{ width: 105, borderTopWidth: 0 }}
-              dropDownContainerStyle={{ borderTopWidth: 0, backgroundColor: 'white' }}
-            />
-          </View>
-          <View style={[styles.timeOfDayContainer, { zIndex: 1 }]}>
-            <Text style={styles.timeOfDayText}>
-              category of reminder
-            </Text>
-            <DropDownPicker
-              open={open2}
-              value={value2}
-              items={items}
-              setOpen={setOpen2}
-              setValue={setValue2}
-              setItems={setItems}
-              placeholder="weekly"
-              showArrowIcon
-              style={{ width: 105, backgroundColor: 'transparent', borderWidth: 0 }}
-              containerStyle={{ width: 105, borderTopWidth: 0 }}
-              dropDownContainerStyle={{ borderTopWidth: 0, backgroundColor: 'white' }}
-            />
-          </View>
-          <View style={[styles.timeOfDayContainer, { marginTop: '7%' }]}>
-            <Pressable
-              title="set default"
-              style={styles.setDefaultButton}
-            >
-              <Text style={styles.setDefaultText}>set default</Text>
-            </Pressable>
-            <Pressable
-              title="save"
-              style={styles.saveButton}
-            >
-              <Text style={styles.saveText}>save</Text>
-            </Pressable>
-          </View>
+          <ToggleSwitch label="Water Intake" value={reminderSet.has('Water Intake')} onValueChange={toggleSwitch} />
+          <ToggleSwitch label="Full Meal" value={reminderSet.has('Full Meal')} onValueChange={toggleSwitch} />
+          <ToggleSwitch label="Physical Activity" value={reminderSet.has('Physical Activity')} onValueChange={toggleSwitch} />
+          <ToggleSwitch label="Mood-Boosting Activity" value={reminderSet.has('Mood-Boosting Activity')} onValueChange={toggleSwitch} />
+          <ToggleSwitch label="Wellness-Boosting Activity" value={reminderSet.has('Wellness-Boosting Activity')} onValueChange={toggleSwitch} />
+          <ToggleSwitch label="Thirty Day Detox" value={reminderSet.has('Thirty Day Detox')} onValueChange={toggleSwitch} />
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 

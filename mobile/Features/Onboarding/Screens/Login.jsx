@@ -1,5 +1,5 @@
 import {
-  Text, View, TextInput, TouchableOpacity, StyleSheet,
+  Text, View, TextInput, TouchableOpacity,
 } from 'react-native';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
@@ -7,65 +7,7 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { login } from '../../../redux/authSlice';
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#E3F5F4',
-  },
-  arrowContainer: {
-    position: 'absolute',
-    top: 100,
-    left: 30,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  title: {
-    fontSize: 40,
-  },
-  inputContainer: {
-    marginTop: 20,
-    alignItems: 'flex-start',
-  },
-  inputWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    height: 63,
-    width: 350,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginTop: 5,
-    paddingLeft: 10,
-    backgroundColor: 'white',
-  },
-  inputBox: {
-    height: 40,
-    width: 300,
-    marginTop: 5,
-    paddingLeft: 10,
-    backgroundColor: 'white',
-  },
-  buttonShape: {
-    backgroundColor: '#C0C0C0',
-    borderRadius: 20,
-    paddingVertical: 10,
-    paddingHorizontal: 40,
-    marginTop: 10,
-    width: 258,
-    height: 70,
-  },
-  buttonText: {
-    color: 'black',
-    textAlign: 'center',
-    fontSize: 20,
-    marginTop: 12,
-  },
-  eyeIcon: {
-    marginTop: 5,
-  },
-});
+import styles from '../Components/OnboardingStyling';
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState('');

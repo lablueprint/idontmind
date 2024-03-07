@@ -12,8 +12,8 @@ export default function Feed({ navigation }) {
   const [postDraftBody, setPostDraftBody] = useState('');
   const [postDraftUser, setPostDraftUser] = useState('');
 
-  // Grabs user email and authentication token for current user session
-  const { email, authHeader } = useSelector((state) => state.auth);
+  // Grabs user firstName and authentication token for current user session
+  const { email, firstName, authHeader } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const [postList, setPostList] = useState([]);
@@ -103,7 +103,7 @@ export default function Feed({ navigation }) {
       <Text>
         Welcome
         {' '}
-        {email}
+        {firstName}
       </Text>
       {postList.map(
         (p) => (
