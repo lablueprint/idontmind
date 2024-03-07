@@ -7,6 +7,7 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { login } from '../../../redux/authSlice';
+import styles from '../Components/OnboardingStyling';
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState('');
