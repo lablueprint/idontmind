@@ -1,14 +1,14 @@
-import {
-  ScrollView, View, Text, TouchableOpacity, Image, Button, StyleSheet,
-} from 'react-native';
-import { useState } from 'react';
-import * as ImagePicker from 'expo-image-picker';
+import { View, Text, TouchableOpacity } from 'react-native';
+import PropTypes from 'prop-types';
 import OptionStyle from './OptionStyle';
 
 export default function Options({ navigation }) {
   const options = ['personal info(name, etc)', 'account info (email, pass)', 'mental health info', 'push notifications', 'content recommendations', 'check-ins'];
 
   const navigateFunctions = (key) => {
+    if (key === 4) {
+      navigation.navigate('PushNotifications');
+    }
     if (key === 5) {
       navigation.navigate('BannedTags');
     }
@@ -52,7 +52,7 @@ export default function Options({ navigation }) {
       <Text style={OptionStyle.title}> options </Text>
       <Text style={OptionStyle.personalData}> personal data </Text>
       {options.map((option, index) => (
-        <View key={index + 1}>
+        <View key={option}>
           {index === 3 && <Text style={OptionStyle.customize}> customize </Text>}
           <View style={OptionStyle.optionContainer}>
             <View style={OptionStyle.box} />
@@ -78,3 +78,9 @@ export default function Options({ navigation }) {
 
   );
 }
+
+Options.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+  }).isRequired,
+};

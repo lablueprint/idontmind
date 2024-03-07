@@ -5,10 +5,12 @@ const SearchBarStyle = StyleSheet.create({
     height: 400,
     marginTop: 30,
     marginLeft: 40,
+    paddingTop: 20,
   },
 
   rowContainer: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
   },
 
   searchbar: {

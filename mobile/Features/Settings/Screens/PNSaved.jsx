@@ -1,40 +1,22 @@
 import {
-  Pressable, Text, View, TouchableOpacity,
+  Pressable, Text, View,
 } from 'react-native';
 import React, { useState } from 'react';
 import { Divider } from '@rneui/themed';
 import { Switch } from 'react-native-switch';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { TimerPickerModal } from 'react-native-timer-picker';
-import { LinearGradient } from 'expo-linear-gradient';
 import styles from './PushNotificationsStyle';
 
 function PushNotifications() {
-  const [notifEnabled, setNotifEnabled] = useState(false);
   const [isEnabled, setIsEnabled] = useState(false);
   const [isEnabled2, setIsEnabled2] = useState(false);
   const [isEnabled3, setIsEnabled3] = useState(false);
   const [isEnabled4, setIsEnabled4] = useState(false);
 
-  const toggleNotif = () => setNotifEnabled((previousState) => !previousState);
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
   const toggleSwitch2 = () => setIsEnabled2((previousState) => !previousState);
   const toggleSwitch3 = () => setIsEnabled3((previousState) => !previousState);
   const toggleSwitch4 = () => setIsEnabled4((previousState) => !previousState);
-
-  const formatTime = (pickedDuration) => {
-    let { hours } = pickedDuration;
-    const { minutes } = pickedDuration;
-    let part = 'AM';
-    if (hours > 12) {
-      hours -= 12;
-      part = 'PM';
-    }
-    if (minutes === 0) {
-      return `${hours}:00${part}`;
-    }
-    return `${hours}:${minutes}${part}`;
-  };
 
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
@@ -46,9 +28,6 @@ function PushNotifications() {
     { label: 'monthly', value: 'monthly' },
   ]);
 
-  const [showPicker, setShowPicker] = useState(false);
-  const [alarmString, setAlarmString] = useState(null);
-
   return (
     <View>
       <Text style={styles.header}>
@@ -57,84 +36,7 @@ function PushNotifications() {
       <View style={styles.container}>
         <Divider
           width={1}
-          marginBottom={25}
         />
-        <Text style={[styles.category, { marginTop: '5%', marginBottom: '4%' }]}>
-          DAILY CHECK-IN
-        </Text>
-        <View>
-          <View style={[styles.timeOfDayContainer, { marginBottom: 25 }]}>
-            <Text
-              style={[styles.timeOfDayText, notifEnabled
-                ? styles.timeOfDayText : styles.unselected]}
-            >
-              {alarmString !== null
-                ? alarmString
-                : 'No alarm set'}
-            </Text>
-            <Switch
-              backgroundActive="#404040"
-              backgroundInactive="lightgray"
-              activeText=""
-              inActiveText=""
-              value={notifEnabled}
-              onValueChange={toggleNotif}
-              barHeight={24}
-              circleSize={22}
-              switchWidthMultiplier={2.3}
-              circleBorderWidth={0}
-            />
-          </View>
-        </View>
-        <View style={[{ backgroundColor: '#F1F1F1', alignItems: 'center', justifyContent: 'center' },
-          notifEnabled ? styles.showIt : styles.dontShowIt]}
-        >
-          <TouchableOpacity
-            activeOpacity={0.7}
-            onPress={() => setShowPicker(true)}
-          >
-            <View style={{ alignItems: 'center' }}>
-              <TouchableOpacity
-                activeOpacity={0.7}
-                onPress={() => setShowPicker(true)}
-              >
-                <View style={{ marginTop: 30 }}>
-                  <Text
-                    style={{
-                      paddingVertical: 10,
-                      paddingHorizontal: 18,
-                      borderWidth: 1,
-                      borderRadius: 10,
-                      fontSize: 16,
-                      overflow: 'hidden',
-                      borderColor: '#8C8C8C',
-                      color: '#8C8C8C',
-                    }}
-                  >
-                    edit
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-          </TouchableOpacity>
-          <TimerPickerModal
-            visible={showPicker}
-            setIsVisible={setShowPicker}
-            onConfirm={(pickedDuration) => {
-              setAlarmString(formatTime(pickedDuration));
-              setShowPicker(false);
-            }}
-            modalTitle="Set Alarm"
-            onCancel={() => setShowPicker(false)}
-            closeOnOverlayPress
-            use12HourPicker
-            LinearGradient={LinearGradient}
-            hideSeconds
-            styles={{
-              theme: 'light',
-            }}
-          />
-        </View>
         <Text style={[styles.category, { marginTop: '5%', marginBottom: '4%' }]}>
           CATEGORY
         </Text>
