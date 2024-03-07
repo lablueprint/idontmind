@@ -1,5 +1,6 @@
+/* eslint-disable global-require */
 import {
-  Text, View, StyleSheet, TouchableOpacity, FlatList, Image, Button,
+  Text, View, StyleSheet, TouchableOpacity, FlatList, Image,
 } from 'react-native';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
@@ -78,7 +79,7 @@ const DATA = [
 
 export default function ContentLibrary({ navigation }) {
   const navigateToLanding = () => {
-    navigation.navigate('Landing');
+    navigation.navigate('PostSignInLanding'); // will be changed by chance PR
   };
 
   const horizontalRenderItem = ({ item }) => (
@@ -142,7 +143,13 @@ export default function ContentLibrary({ navigation }) {
     // search logic
     if (query.trim() !== '') {
       if (!recentSearches.includes(query.toLowerCase())) {
-        setRecentSearches((prevSearches) => [query.toLowerCase(), ...prevSearches]);
+        setRecentSearches((prevSearches) => {
+          const updatedSearches = [query.toLowerCase(), ...prevSearches];
+          if (updatedSearches.length > 10) {
+            updatedSearches.pop(); // Remove the last element
+          }
+          return updatedSearches;
+        });
       }
     }
   };

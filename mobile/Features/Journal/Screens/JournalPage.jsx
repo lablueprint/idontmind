@@ -11,7 +11,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import SafeAreaView from 'react-native-safe-area-view';
 import styles from '../Components/JournalStyle';
 
-export function JournalPage({ navigation, tab }) {
+export function JournalPage({ navigation, freeWrite }) {
   const route = useRoute();
   const body = route.params?.body;
   const isHistory = route.params?.isHistory;/* retrieve the value of isHistory
@@ -29,31 +29,35 @@ export function JournalPage({ navigation, tab }) {
     setConfirmPopUp(!confirmPopUp);
   }; // toggles confirmPopUp
 
+  const generateRandomPrompt = () => {
+    if (prompts.length > 0) {
+      let randomIndex = Math.floor(Math.random() * prompts.length);
+      console.log(randomIndex);
+      let randomPrompt = prompts[randomIndex]['Journal Prompts'];
+      while (randomPrompt === title) {
+        randomIndex = Math.floor(Math.random() * prompts.length);
+        randomPrompt = prompts[randomIndex]['Journal Prompts'];
+      }
+      setTitle(randomPrompt);
+    }
+  };
+
   useEffect(() => {
     const getPrompts = async () => {
       try {
         const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/content/getAllPrompts`);
         console.log(res.data);
         setPrompts(res.data);
-        // console.log("prompts: ", prompts);
+        generateRandomPrompt();
       } catch (err) {
         console.err(err);
         return err;
       }
     };
     getPrompts();
-    console.log('PROMPTS IN USE EFFECT: ', prompts);
   }, []);
+  useEffect(() => { generateRandomPrompt(); }, [prompts]);
 
-  const generateRandomPrompt = () => {
-    if (prompts.length > 0) {
-      const randomIndex = Math.floor(Math.random() * prompts.length);
-      console.log(randomIndex);
-      const randomPrompt = prompts[randomIndex].question;
-      setTitle(randomPrompt);
-    }
-  };
-  useEffect(() => { generateRandomPrompt(); }, []);
 
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -68,11 +72,12 @@ export function JournalPage({ navigation, tab }) {
     }
   };
 
-  const getPrompt = (tag) => {
-    if (tag === 1) {
+  const getPrompt = (option) => {
+    if (!option) {
+      console.log(title);
       return <Text style={styles.prompt}>{title}</Text>;
     }
-    return <TextInput multiline placeholder="Add Title..." onChangeText={setTitle} value={title} />;
+    return <TextInput style={{ backgroundColor: 'gray' }} multiline placeholder="Add Title..." onChangeText={setTitle} value={title} />;
   };
 
   const currDate = new Date();
@@ -136,11 +141,11 @@ export function JournalPage({ navigation, tab }) {
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
           <SafeAreaView>
             <SafeAreaView style={styles.container}>
-              <Text style={{ marginTop: 180 }}>{`${currDate.toDateString()}, ${militaryToStandard(timeHours)}:${timeMinutes}` }</Text>
+              <Text style={{ marginTop: 180 }}>{`${currDate.toDateString()}, ${militaryToStandard(timeHours)}:${timeMinutes}`}</Text>
               <SafeAreaView>
-                {getPrompt(tab)}
+                {getPrompt(freeWrite)}
               </SafeAreaView>
-              {tab === 1 && <Button title="Generate Random Prompt" onPress={generateRandomPrompt} />}
+              {!freeWrite && <Button title="Generate Random Prompt" onPress={generateRandomPrompt} />}
               <SafeAreaView style={styles.textBox}>
                 <ScrollView automaticallyAdjustKeyboardInsets>
                   <View>
@@ -153,68 +158,61 @@ export function JournalPage({ navigation, tab }) {
                 {' '}
                 {wordsLen(text)}
               </Text>
-           
-
               <SafeAreaView>
-           
-
-              <Modal visible={confirmPopUp}>
-                <TouchableOpacity onPressOut={handlePopUp} style={styles.modalView}>
-                  <SafeAreaView style={styles.modalBox}>
-                    <Text style={{ fontSize: 20 }}>confirm journal entry?</Text>
-                    <Pressable
-                      style={styles.modalSelections}
-                      onPress={() => addNewJournal(username, title, text)}
-                    >
-                      <Text>
-                        yes
-                      </Text>
-                    </Pressable>
-                    <Pressable style={styles.modalSelections} onPress={handlePopUp}>
-                      <Text>
-                        no
-                      </Text>
-                    </Pressable>
-                  </SafeAreaView>
-                </TouchableOpacity>
-              </Modal>
+                <Modal visible={confirmPopUp}>
+                  <TouchableOpacity onPressOut={handlePopUp} style={styles.modalView}>
+                    <SafeAreaView style={styles.modalBox}>
+                      <Text style={{ fontSize: 20 }}>confirm journal entry?</Text>
+                      <Pressable
+                        style={styles.modalSelections}
+                        onPress={() => addNewJournal(username, title, text)}
+                      >
+                        <Text>
+                          yes
+                        </Text>
+                      </Pressable>
+                      <Pressable style={styles.modalSelections} onPress={handlePopUp}>
+                        <Text>
+                          no
+                        </Text>
+                      </Pressable>
+                    </SafeAreaView>
+                  </TouchableOpacity>
+                </Modal>
               </SafeAreaView>
-          
 
             </SafeAreaView>
           </SafeAreaView>
         </TouchableWithoutFeedback>
         <Text>{' '}</Text>
-          <Text>{' '}</Text>
-          <Text>{' '}</Text>
-          <Text>{' '}</Text>
-          <Text>{' '}</Text>
-          <Text>{' '}</Text>
-          <Text>{' '}</Text>
-          <Text>{' '}</Text>
-      
+        <Text>{' '}</Text>
+        <Text>{' '}</Text>
+        <Text>{' '}</Text>
+        <Text>{' '}</Text>
+        <Text>{' '}</Text>
+        <Text>{' '}</Text>
+        <Text>{' '}</Text>
         <TouchableOpacity style={styles.imageContainer} onPress={pickImage}>
-                <Text>+ add attachment</Text>
-              </TouchableOpacity>
-              {selectedImage !== '' ? (
-                <>
-                  <TouchableOpacity onPress={handleFilenamePress}>
-                    <Text>{getFilenameFromUri(selectedImage)}</Text>
-                  </TouchableOpacity>
-                  {viewImage && (
-                  <Image source={{ uri: selectedImage }} style={{ width: 200, height: 200 }} />
-                  )}
-                </>
-              ) : null}
-        
-      
-          <View>
+          <Text>+ add attachment</Text>
+        </TouchableOpacity>
+        {selectedImage !== '' ? (
+          <>
+            <TouchableOpacity onPress={handleFilenamePress}>
+              <Text>{getFilenameFromUri(selectedImage)}</Text>
+            </TouchableOpacity>
+            {viewImage && (
+            <Image source={{ uri: selectedImage }} style={{ width: 200, height: 200 }} />
+            )}
+          </>
+        ) : null}
+
+        <View>
           <Button title="Submit" onPress={handlePopUp} />
-              <Button
-                title="To Past Journal Entries"
-                onPress={navigateToJournalHistory}
-              />
-              </View>
+          <Button
+            title="To Past Journal Entries"
+            onPress={navigateToJournalHistory}
+          />
+        </View>
 
       </ScrollView>
     );
@@ -223,7 +221,7 @@ export function JournalPage({ navigation, tab }) {
   return (
     <ScrollView style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <View style={styles.container}>
-        {getPrompt(tab)}
+        {getPrompt(freeWrite)}
         <View style={styles.textBox}>
           <ScrollView automaticallyAdjustKeyboardInsets>
             <Text>{body}</Text>
@@ -248,11 +246,11 @@ JournalPage.propTypes = {
 
 function GuidedPrompt({ navigation }) {
   return (
-      <JournalPage navigation={navigation} tab={1} />
+    <JournalPage navigation={navigation} freeWrite={false} />
   );
 }
 function FreeWrite({ navigation }) {
-  return <JournalPage navigation={navigation} tab={2} />;
+  return <JournalPage navigation={navigation} freeWrite />;
 }
 
 export default function JournalTabs({ navigation }) {
@@ -262,7 +260,7 @@ export default function JournalTabs({ navigation }) {
 
   const Tab = createMaterialTopTabNavigator();
   return (
-    <View style={{ flex: 1}}>
+    <View style={{ flex: 1 }}>
       <View style={{ flexDirection: 'row', alignSelf: 'flex-end', marginTop: 40 }}>
         <TouchableOpacity style={{ margin: 10 }} onPress={navigateToCalendar}>
           <Image

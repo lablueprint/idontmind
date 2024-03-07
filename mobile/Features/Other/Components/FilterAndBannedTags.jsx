@@ -2,6 +2,7 @@ import {
   View, Text, TouchableOpacity, Button,
 } from 'react-native';
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 import FilterAndBannedTagsStyle from './FilterAndBannedTagsStyle';
 
 export default function FilterAndBannedTags({ navigation, screenOption }) {
@@ -22,10 +23,6 @@ export default function FilterAndBannedTags({ navigation, screenOption }) {
 
   const clearAll = () => {
     setSelectedTags([]);
-  };
-
-  const applyAll = () => {
-    setSelectedTags([...tags]);
   };
 
   const getCheckboxColor = (selected) => (selected ? '#404040' : '#D9D9D9');
@@ -52,9 +49,9 @@ export default function FilterAndBannedTags({ navigation, screenOption }) {
         <TouchableOpacity style={[FilterAndBannedTagsStyle.buttons, { backgroundColor: '#D9D9D9' }]} onPress={() => clearAll()}>
           <Text style={FilterAndBannedTagsStyle.text}> clear all </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[FilterAndBannedTagsStyle.buttons, { backgroundColor: '#404040' }]} onPress={() => (screenOption === 1 ? applyAll() : null)}>
+        <TouchableOpacity style={[FilterAndBannedTagsStyle.buttons, { backgroundColor: '#404040' }]} onPress={() => (navigation.goBack())}>
           <Text style={[FilterAndBannedTagsStyle.text, { color: 'white' }]}>
-            {(screenOption === 1 ? 'apply all' : 'save')}
+            {(screenOption === 1 ? 'apply all filters' : 'save')}
           </Text>
         </TouchableOpacity>
       </View>
@@ -62,3 +59,15 @@ export default function FilterAndBannedTags({ navigation, screenOption }) {
     </View>
   );
 }
+
+FilterAndBannedTags.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+    goBack: PropTypes.func,
+  }).isRequired,
+  screenOption: PropTypes.number, // I'm not seeing a great reason for this not being a boolean
+};
+
+FilterAndBannedTags.defaultProps = {
+  screenOption: 0,
+};
