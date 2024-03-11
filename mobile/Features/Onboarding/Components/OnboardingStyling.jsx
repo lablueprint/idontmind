@@ -1,10 +1,6 @@
-import {
-  Text, View, TouchableOpacity, StyleSheet,
-} from 'react-native';
-import PropTypes from 'prop-types';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { StyleSheet } from 'react-native';
 
-const styles = StyleSheet.create({
+export default StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
@@ -81,41 +77,77 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
     backgroundColor: 'gray',
   },
+  ageWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    height: 63,
+    width: 96,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginTop: 5,
+    paddingLeft: 10,
+    backgroundColor: 'white',
+  },
+  genderTitle: {
+    paddingLeft: 80,
+  },
+  genderWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    height: 63,
+    width: 255,
+    marginTop: 5,
+    paddingTop: 22,
+    paddingLeft: 10,
+  },
+  countryDropdown: {
+    width: 350,
+    height: 63,
+    marginTop: 5,
+    borderRadius: 8,
+  },
+  ageInputBox: {
+    height: 40,
+    width: 40,
+    marginTop: 5,
+    paddingLeft: 10,
+    backgroundColor: 'white',
+  },
+  ageGenderContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  allPasswordConditionsContainer: {
+    alignitems: 'flex-start',
+    marginTop: 5,
+  },
+  passwordConditionRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  passwordConditionLastRow: {
+    marginRight: 180,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  passwordConditionText: {
+    fontSize: 14,
+  },
+  lowerCondition: {
+    marginRight: 3,
+  },
+  upperCondition: {
+    marginLeft: 30,
+    marginRight: 3,
+  },
+  numsymCondition: {
+    marginRight: 3,
+  },
+  lengthCondition: {
+    marginLeft: 15.5,
+    marginRight: 3,
+  },
+  matchPassCondition: {
+    marginRight: 3,
+  },
 });
-
-export default function Customization({ navigation }) {
-  const navigateToPersonalInfo = () => {
-    navigation.navigate('PersonalInfo');
-  };
-
-  const navigateToFeed = () => {
-    navigation.navigate('NavigationBar');
-  };
-
-  return (
-    <View style={styles.container}>
-      <TouchableOpacity onPress={navigateToPersonalInfo} style={styles.arrowContainer}>
-        <Icon name="arrow-left" size={30} color="black" />
-      </TouchableOpacity>
-      <Text style={styles.title}>What&apos;s on your mind?</Text>
-      <View style={styles.paginationContainer}>
-        <View style={[styles.inactivePaginationDot]} />
-        <View style={[styles.inactivePaginationDot]} />
-        <View style={[styles.activePaginationDot]} />
-      </View>
-      <View style={styles.buttonShape}>
-        <TouchableOpacity
-          onPress={navigateToFeed}
-        >
-          <Text style={styles.buttonText}>Next</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
-}
-
-Customization.propTypes = {
-  navigation: PropTypes.shape({
-    navigate: PropTypes.func,
-  }).isRequired,
-};
