@@ -13,8 +13,8 @@ export default function Feed({ navigation }) {
   const [postDraftUser, setPostDraftUser] = useState('');
 
   // Grabs user firstName and authentication token for current user session
-  const { email, firstName , authHeader } = useSelector((state) => state.auth);
-  const dispatch = useDispatch()
+  const { email, firstName, authHeader } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
   const [postList, setPostList] = useState([]);
   const navigateToLanding = () => {

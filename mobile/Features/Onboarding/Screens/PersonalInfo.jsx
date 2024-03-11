@@ -1,6 +1,6 @@
 import {
-    Text, View, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard
-  } from 'react-native';
+  Text, View, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard,
+} from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
@@ -15,7 +15,7 @@ export default function PersonalInfo({ navigation }) {
   const [country, setCountry] = useState('');
   const [gender, setGender] = useState('');
   const [buttonEnabled, setButtonEnabled] = useState(false);
-  const countryItems = [  // will be replaced with all countries dataset
+  const countryItems = [ // will be replaced with all countries dataset
     { label: 'Albania', value: 'albania' },
     { label: 'Korea', value: 'korea' },
     { label: 'Japan', value: 'japan' },
@@ -24,21 +24,19 @@ export default function PersonalInfo({ navigation }) {
   const genderItems = [
     { label: 'Male', value: 'male' },
     { label: 'Female', value: 'female' },
-    { label: 'Nonbinary', value: 'nonbinary'},
+    { label: 'Nonbinary', value: 'nonbinary' },
     { label: 'Other', value: 'other' },
   ];
 
   const navigateToSignUp = () => {
     navigation.navigate('SignUp');
-  }
+  };
 
   const navigateToCustomization = () => {
     navigation.navigate('Customization', { loginInfo: route.params, firstName });
-  }
+  };
 
-  const areStatesDefaulted = () => {
-    return (firstName === '' || age === '' || country === '' || gender === '');
-  }
+  const areStatesDefaulted = () => (firstName === '' || age === '' || country === '' || gender === '');
 
   const notAllConditionsMet = () => {
     if (areStatesDefaulted()) {
@@ -46,15 +44,15 @@ export default function PersonalInfo({ navigation }) {
     } else {
       setButtonEnabled(true);
     }
-  }
+  };
 
   const handleNextButton = () => {
     if (!areStatesDefaulted()) {
       navigateToCustomization();
     } else {
-      console.error("Not all information selected");
+      console.error('Not all information selected');
     }
-  }
+  };
 
   useEffect(() => {
     notAllConditionsMet();
@@ -64,7 +62,7 @@ export default function PersonalInfo({ navigation }) {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         <TouchableOpacity onPress={navigateToSignUp} style={styles.arrowContainer}>
-          <Icon name="arrow-left" size={30} color="black"/>
+          <Icon name="arrow-left" size={30} color="black" />
         </TouchableOpacity>
         <Text style={styles.title}>Tell us a bit about yourself!</Text>
         <View style={styles.inputContainer}>
@@ -96,7 +94,7 @@ export default function PersonalInfo({ navigation }) {
             </View>
             <View style={styles.genderWrapper}>
               <DropdownSelect
-                placeholder='Select...'
+                placeholder="Select..."
                 options={genderItems}
                 selectedValue={gender}
                 onValueChange={(value) => setGender(value)}
@@ -108,7 +106,7 @@ export default function PersonalInfo({ navigation }) {
           <Text>Country</Text>
           <View style={styles.countryDropdown}>
             <DropdownSelect
-              placeholder='Select...'
+              placeholder="Select..."
               options={countryItems}
               selectedValue={country}
               onValueChange={(value) => setCountry(value)}
@@ -131,11 +129,11 @@ export default function PersonalInfo({ navigation }) {
         </View>
       </View>
     </TouchableWithoutFeedback>
-  )
+  );
 }
 
 PersonalInfo.propTypes = {
-    navigation: PropTypes.shape({
-        navigate: PropTypes.func,
-    }).isRequired,
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+  }).isRequired,
 };
