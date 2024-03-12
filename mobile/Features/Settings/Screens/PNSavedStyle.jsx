@@ -51,14 +51,4 @@ export default StyleSheet.create({
     fontSize: 18,
     color: 'white',
   },
-  showIt: {
-    display: 'flex',
-  },
-  dontShowIt: {
-    display: 'none',
-    backgroundColor: 'blue',
-  },
-  unselected: {
-    color: 'lightgray',
-  },
 });

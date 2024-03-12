@@ -71,6 +71,10 @@ const officialUserSchema = new mongoose.Schema({
     default: undefined,
     type: notificationPreferenceSchema,
   },
+  ChallengeDay: {
+    default: 0,
+    type: Number,
+  },
 });
 
 module.exports = mongoose.model('OfficialUser', officialUserSchema);

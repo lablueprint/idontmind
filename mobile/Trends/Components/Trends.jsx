@@ -34,7 +34,7 @@ function TrendTab({ view }) {
     let startDate = '';
     let endDate = '';
     switch (view) {
-      case 'week':
+      case 'week': // week does not work
         start.setDate(current.getDate() + (weekOffset * 7) - current.getDay());
         end.setDate(start.getDate() + 6);
         startDate = start.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });

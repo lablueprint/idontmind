@@ -13,6 +13,7 @@ export default function JournalCard({
   }; /* calls the onPress function from props,
   which is a function in JournalHistoryPage
   to navigate to the past journal entry with the previously written text */
+
   return (
     <Pressable style={styles.journalCard} onPress={() => handlePress(text)}>
       <Text>
