@@ -44,7 +44,6 @@ const createCheckIn = async (data) => {
     const collection = db.collection('checkin_time_series');
     await collection.insertMany([
       {
-        metadata: { userId: 'booop', email: 'booooooop' },
         timestamp: new Date(),
         moods: data.body.moodsText,
         activity: data.body.activityText,
