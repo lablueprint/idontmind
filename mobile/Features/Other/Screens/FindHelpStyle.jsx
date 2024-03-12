@@ -5,6 +5,8 @@ export default StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     paddingTop: 24,
+    height: '100%',
+    width: '100%',
   },
   title: {
     marginTop: 16,
@@ -17,38 +19,44 @@ export default StyleSheet.create({
     marginHorizontal: 20,
     flexDirection: 'row',
   },
-  resourceFullBlue: {
-    backgroundColor: '#D6E5FF',
-    marginHorizontal: 8,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-  },
-  resourceHalfRed: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    marginHorizontal: 8,
-    backgroundColor: '#F6CAC9',
-    flex: 1,
-  },
-  resourceHalfYellow: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    marginHorizontal: 8,
-    backgroundColor: '#FFF0D6',
-    flex: 1,
-  },
   resourceTitle: {
     textAlign: 'center',
     fontSize: 20,
     paddingVertical: 8,
   },
-  resourceBold: {
+  resourceBodyBack: {
     textAlign: 'center',
-    fontSize: 28,
-    fontWeight: 'bold',
+    fontSize: 20,
     paddingVertical: 8,
   },
-  resourceBody: {
-    fontSize: 16,
+  resourceBodyFront: {
+    fontSize: 40,
+    textAlign: 'center',
   },
+  firstCard: {
+    borderColor: 'black',
+    borderWidth: 2,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '80%',
+    height: 300,
+    borderRadius: 16,
+    marginVertical: 20,
+  },
+
+  secondCard: {
+    borderColor: 'black',
+    borderWidth: 2,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '80%',
+    height: 300,
+    borderRadius: 16,
+  },
+  // front: {
+  //   borderColor: 'green',
+  //   borderWidth: 2,
+  // },
 });
