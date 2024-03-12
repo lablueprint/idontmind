@@ -13,4 +13,10 @@ offUserRouter.post('/updateUser', offUserController.updateUser);
 
 offUserRouter.post('/deleteUserById', offUserController.deleteUserById);
 
+offUserRouter.post('/getUserChallengeDay', offUserController.getUserChallengeDay);
+
+offUserRouter.post('/resetChallengeDay', offUserController.resetChallengeDay);
+
+offUserRouter.post('/increaseChallengeDay', offUserController.increaseChallengeDay);
+
 module.exports = offUserRouter;
