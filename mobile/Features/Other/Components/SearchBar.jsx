@@ -17,7 +17,7 @@ export default function SearchBar({
   const [searchQuery, setSearchQuery] = useState('');
   const [filterQuery, setFilterQuery] = useState('All');
   const [enterPressed, setEnterPressed] = useState(false);
-  const searchFilters = ['All', 'Q&A', 'Personal Stories', 'Exercises', 'Articles'];
+  const searchFilters = ['All', 'Articles', 'Q&A', 'Personal Stories', 'Exercises'];
 
   const handleSearch = async (search, filter) => {
     if (value === 'keyword') {
@@ -28,15 +28,12 @@ export default function SearchBar({
       setResults(res.data);
     }
     onSearch(searchQuery);
-    // setSearchQuery('');
-    // onClose();
   };
 
   const handleRecentSearch = (query) => {
     setSearchQuery(query);
     handleSearch(query, filterQuery);
     setEnterPressed(true);
-    // onClose();
   };
 
   const [items, setItems] = useState([
@@ -76,15 +73,26 @@ export default function SearchBar({
             onFocus={() => setEnterPressed(false)}
           />
         </View>
+        <Button
+          title="Cancel"
+          onPress={() => {
+            onClose();
+            setResults([]);
+            setSearchQuery('');
+          }}
+        />
 
         {enterPressed && (
         <View>
-          <Text>
-            Search Results for
-            &quot;
-            {searchQuery}
-            &quot;
-          </Text>
+          {results.length === 0 ? <Text>No results found.</Text>
+            : (
+              <Text>
+                Search Results for
+                &quot;
+                {searchQuery}
+                &quot;
+              </Text>
+            )}
           <View style={SearchBarStyle.filtersContainer}>
             <ScrollView horizontal>
               {searchFilters.map((item) => (
@@ -113,54 +121,52 @@ export default function SearchBar({
         </View>
         )}
 
-        <Button
-          title="Cancel"
-          onPress={() => {
-            onClose();
-            setResults([]);
-            setSearchQuery('');
-          }}
-        />
-
-        <Text style={SearchBarStyle.text}> Recent Searches </Text>
-        <View style={SearchBarStyle.rowContainer}>
-          {recentSearches.slice(0, 3).map((item) => (
-            <View key={item}>
-              <TouchableOpacity
-                style={SearchBarStyle.recentSearch}
-                onPress={() => handleRecentSearch(item)}
-              >
-                <Text style={SearchBarStyle.text}>{item}</Text>
-              </TouchableOpacity>
-            </View>
-          ))}
+        {!enterPressed
+        && (
+        <View>
+          <Text style={SearchBarStyle.text}> Recent Searches </Text>
+          <View>
+            {recentSearches.slice(0, 3).map((item) => (
+              <View key={item}>
+                <TouchableOpacity
+                  style={SearchBarStyle.recentSearch}
+                  onPress={() => handleRecentSearch(item)}
+                >
+                  <Text style={SearchBarStyle.recentText}>{item}</Text>
+                </TouchableOpacity>
+              </View>
+            ))}
+          </View>
         </View>
+        )}
 
-        <View style={{ height: 600 }}>
-          <ScrollView>
-            {
-          results.map((item) => {
-            let resourceName;
-            if (item.Title) {
-              resourceName = item.Title;
-            } else if (item['Journal Prompts']) {
-              resourceName = item['Journal Prompts'];
-            } else {
-              resourceName = item.Question;
-            }
-            return (
-              <Bookmark
-                key={item.id}
-                resourceName={resourceName}
-                author={item.Author}
-              >
-                {item.Author}
-              </Bookmark>
-            );
-          })
-        }
-          </ScrollView>
-        </View>
+        {enterPressed && (
+          <View style={{ height: 600 }}>
+            <ScrollView>
+              {
+                results.map((item) => {
+                  let resourceName;
+                  if (item.Title) {
+                    resourceName = item.Title;
+                  } else if (item['Journal Prompts']) {
+                    resourceName = item['Journal Prompts'];
+                  } else {
+                    resourceName = item.Question;
+                  }
+                  return (
+                    <Bookmark
+                      key={item.id}
+                      resourceName={resourceName}
+                      author={item.Author}
+                    >
+                      {item.Author}
+                    </Bookmark>
+                  );
+                })
+              }
+            </ScrollView>
+          </View>
+        )}
       </View>
     </Modal>
   );
