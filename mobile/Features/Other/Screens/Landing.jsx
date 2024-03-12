@@ -23,7 +23,7 @@ export default function Landing({ navigation }) {
 
   const navigateToSplash = () => {
     navigation.navigate('Splash');
-  }
+  };
 
   const navigateToWOYM = () => {
     navigation.navigate('WOYM');
