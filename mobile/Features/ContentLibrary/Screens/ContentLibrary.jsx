@@ -8,7 +8,6 @@ import style from '../Components/ContentStyle';
 import starImage from '../../../assets/star.png';
 import filterImage from '../../../assets/filter.png';
 import searchImage from '../../../assets/search.png';
-import shapeImage from '../../../assets/shape.png';
 import Card from '../Components/Card';
 import TagContext from '../Context/TagContext';
 
@@ -57,30 +56,18 @@ export default function ContentLibrary({ navigation }) {
       navigateToTag={navigateToTag}
       index={index}
       item={item}
+      orientation="horizontal"
     />
   );
 
   /* RenderItem function for Vertical Card Carousel */
-  const verticalRenderItem = ({ item }) => (
-    <TouchableOpacity
-      style={[style.verticalCard]}
-      onPress={() => navigateToTag(item.tagName)}
-    >
-      <Text
-        style={[style.verticalText]}
-      >
-        {item.tagName}
-      </Text>
-      <View style={[style.verticalCardInfo]}>
-        <Image
-          style={[style.shape]}
-          source={shapeImage}
-        />
-      </View>
-      <View
-        style={[style.whiteBox]}
-      />
-    </TouchableOpacity>
+  const verticalRenderItem = ({ item, index }) => (
+    <Card
+      navigateToTag={navigateToTag}
+      index={index}
+      item={item}
+      orientation="vertical"
+    />
   );
 
   return (

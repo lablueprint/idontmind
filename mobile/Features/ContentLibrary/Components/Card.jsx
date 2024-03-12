@@ -8,9 +8,10 @@ import style from './ContentStyle';
 import starImage from '../../../assets/star.png';
 import goldStar from '../../../assets/goldStar.png';
 import TagContext from '../Context/TagContext';
+import shapeImage from '../../../assets/shape.png';
 
 export default function Card({
-  navigateToTag, index, item,
+  navigateToTag, index, item, orientation,
 }) {
   const {
     deleteFavorite, addFavorite, findFavorite,
@@ -45,30 +46,70 @@ export default function Card({
   };
 
   return (
-    <TouchableOpacity
-      style={[style.horizontalCard]}
-      onPress={() => navigateToTag(index)}
-    >
-      <TouchableOpacity
-        onPress={() => handleFavoriteChange()}
-      >
-        <Image
-          style={[style.star,
-            { alignSelf: 'flex-end' },
-          ]}
-          source={favorited === false ? starImage : goldStar}
-        />
-      </TouchableOpacity>
-      <View
-        style={[style.horizontalCardInfo]}
-      >
-        <Text
-          style={[style.horizontalText]}
+    <View>
+      { orientation === 'horizontal' ? (
+        <TouchableOpacity
+          style={[style.horizontalCard]}
+          onPress={() => navigateToTag(index)}
         >
-          {tagName}
-        </Text>
-      </View>
-    </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => handleFavoriteChange()}
+          >
+            <Image
+              style={[style.star,
+                { alignSelf: 'flex-end' },
+              ]}
+              source={favorited === false ? starImage : goldStar}
+            />
+          </TouchableOpacity>
+          <View
+            style={[style.horizontalCardInfo]}
+          >
+            <Text
+              style={[style.horizontalText]}
+            >
+              {tagName}
+            </Text>
+          </View>
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity
+          style={[style.verticalCard]}
+          onPress={() => navigateToTag(index)}
+        >
+          <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'center' }}>
+            <Text
+              style={[style.verticalText]}
+            >
+              {tagName}
+            </Text>
+            <TouchableOpacity
+              style={{
+                alignSelf: 'flex-end', flex: 1,
+              }}
+              onPress={() => handleFavoriteChange()}
+            >
+              <Image
+                style={[style.star,
+                  { alignSelf: 'flex-end' },
+                ]}
+                source={favorited === false ? starImage : goldStar}
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={[style.verticalCardInfo]}>
+            <Image
+              style={[style.shape]}
+              source={shapeImage}
+            />
+          </View>
+          <View
+            style={[style.whiteBox]}
+          />
+        </TouchableOpacity>
+
+      )}
+    </View>
   );
 }
 
@@ -79,4 +120,5 @@ Card.propTypes = {
     _id: PropTypes.string,
     tagName: PropTypes.string,
   }).isRequired,
+  orientation: PropTypes.string.isRequired,
 };

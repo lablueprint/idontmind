@@ -6,6 +6,11 @@ const TagContext = createContext();
 export function TagProvider({ children }) {
   const [Tags, setTags] = useState([]);
   const [Favorites, setFavorites] = useState(new Set());
+  const [RecommendedTags, setRecommendedTags] = useState([]);
+
+  const initRecommendedTags = (allRecommendedTags) => {
+    setRecommendedTags(allRecommendedTags);
+  };
 
   const addFavorite = (newFavorite) => {
     const newSet = new Set(Favorites);
@@ -58,8 +63,10 @@ export function TagProvider({ children }) {
     deleteFavorite,
     findFavorite,
     initFavorites,
+    RecommendedTags,
+    initRecommendedTags,
   }), [Tags, updateTag, initTags, findTag, Favorites, addFavorite, deleteFavorite,
-    findFavorite, initFavorites]);
+    findFavorite, initFavorites, initRecommendedTags, RecommendedTags]);
 
   return (
     <TagContext.Provider value={contextValue}>
