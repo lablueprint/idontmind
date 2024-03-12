@@ -21,11 +21,34 @@ const SearchBarStyle = StyleSheet.create({
     flexWrap: 'wrap',
   },
 
+  filtersContainer: {
+    marginBottom: 20,
+  },
+
+  filterButton: {
+    backgroundColor: '#D2E4E3',
+    borderRadius: 50,
+    marginRight: 10,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+  },
+
+  filterQuery: {
+    backgroundColor: '#546967',
+  },
+
+  whiteText: {
+    color: 'white',
+  },
+
+  blackText: {
+    color: '#343A3A',
+  },
+
   searchbar: {
     height: 50,
     backgroundColor: '#D9D9D9',
     color: 'black',
-    // width: '80%',
     borderRadius: 15,
     padding: 10,
   },

@@ -27,6 +27,11 @@ export default function Bookmark({
 }
 
 Bookmark.propTypes = {
-  resourceName: PropTypes.string.isRequired,
-  author: PropTypes.string.isRequired,
+  resourceName: PropTypes.string,
+  author: PropTypes.string,
+};
+
+Bookmark.defaultProps = {
+  resourceName: '',
+  author: '',
 };

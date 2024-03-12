@@ -15,23 +15,28 @@ export default function SearchBar({
   const [value, setValue] = useState('tag');
   const [results, setResults] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [filterQuery, setFilterQuery] = useState('All');
+  const [enterPressed, setEnterPressed] = useState(false);
+  const searchFilters = ['All', 'Q&A', 'Personal Stories', 'Exercises', 'Articles'];
 
-  const handleSearch = async () => {
+  const handleSearch = async (search, filter) => {
     if (value === 'keyword') {
-      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/test/searchByKeyword`, { keyword: searchQuery });
-      setResults([...res.data[0], ...res.data[1], ...res.data[2]]);
+      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/test/searchByKeyword`, { keyword: search, filter });
+      setResults(res.data);
     } else if (value === 'tag') {
-      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/test/searchByTag`, { tag: searchQuery });
-      setResults([...res.data[0], ...res.data[1], ...res.data[2]]);
+      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/test/searchByTag`, { tag: search, filter });
+      setResults(res.data);
     }
     onSearch(searchQuery);
-    setSearchQuery('');
+    // setSearchQuery('');
     // onClose();
   };
 
   const handleRecentSearch = (query) => {
-    onSearch(query);
-    onClose();
+    setSearchQuery(query);
+    handleSearch(query, filterQuery);
+    setEnterPressed(true);
+    // onClose();
   };
 
   const [items, setItems] = useState([
@@ -52,20 +57,69 @@ export default function SearchBar({
             setOpen={setOpen}
             setValue={setValue}
             setItems={setItems}
-            style={{ marginLeft: '62%', width: '35%' }} // Adjust width and margin as needed
+            style={{ marginLeft: '62%', width: '35%' }}
             dropDownContainerStyle={{ backgroundColor: 'white', marginLeft: '62%', width: '17%' }}
+            onChangeValue={async () => {
+              if (enterPressed) { await handleSearch(searchQuery, filterQuery); }
+            }}
           />
           <TextInput
-            style={{ width: '65%', marginRight: '75%', ...SearchBarStyle.searchbar }} // Use flex: 1 to take remaining space
+            style={{ width: '65%', marginRight: '75%', ...SearchBarStyle.searchbar }}
             placeholder="Search..."
             placeholderTextColor="#000"
             value={searchQuery}
             onChangeText={(text) => setSearchQuery(text)}
+            onSubmitEditing={async () => {
+              setEnterPressed(true);
+              await handleSearch(searchQuery, filterQuery);
+            }}
+            onFocus={() => setEnterPressed(false)}
           />
         </View>
+
+        {enterPressed && (
+        <View>
+          <Text>
+            Search Results for
+            &quot;
+            {searchQuery}
+            &quot;
+          </Text>
+          <View style={SearchBarStyle.filtersContainer}>
+            <ScrollView horizontal>
+              {searchFilters.map((item) => (
+                <TouchableOpacity
+                  key={item}
+                  onPress={() => {
+                    if (item !== filterQuery) {
+                      setFilterQuery(item);
+                      handleSearch(searchQuery, item);
+                    }
+                  }}
+                  style={[
+                    SearchBarStyle.filterButton,
+                    filterQuery === item && SearchBarStyle.filterQuery,
+                  ]}
+                >
+                  <Text style={filterQuery === item
+                    ? SearchBarStyle.whiteText : SearchBarStyle.blackText}
+                  >
+                    {item}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          </View>
+        </View>
+        )}
+
         <Button
-          title="Search"
-          onPress={handleSearch}
+          title="Cancel"
+          onPress={() => {
+            onClose();
+            setResults([]);
+            setSearchQuery('');
+          }}
         />
 
         <Text style={SearchBarStyle.text}> Recent Searches </Text>
@@ -82,13 +136,6 @@ export default function SearchBar({
           ))}
         </View>
 
-        <Button
-          title="Close"
-          onPress={() => {
-            onClose();
-            setResults([]);
-          }}
-        />
         <View style={{ height: 600 }}>
           <ScrollView>
             {
@@ -112,7 +159,6 @@ export default function SearchBar({
             );
           })
         }
-
           </ScrollView>
         </View>
       </View>

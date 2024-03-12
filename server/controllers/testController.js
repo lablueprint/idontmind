@@ -16,16 +16,22 @@ const createTest = async (req, res) => {
 
 // filter resources by keyword in title
 const searchByKeyword = async (req, res) => {
-  const { keyword } = req.body;
-  const aggregateCalls = [
-    Article.aggregate([{ $match: { Title: { $regex: keyword, $options: 'i' } } }]),
-    Prompt.aggregate([{ $match: { 'Journal Prompts': { $regex: keyword, $options: 'i' } } }]),
-    QnA.aggregate([{ $match: { Question: { $regex: keyword, $options: 'i' } } }]),
-  ];
+  const { keyword, filter } = req.body;
+  const aggregateCalls = [];
+
+  if (filter === 'All' || filter === 'Articles') {
+    aggregateCalls.push(Article.aggregate([{ $match: { Title: { $regex: keyword, $options: 'i' } } }]));
+  }
+  if (filter === 'All' || filter === 'Prompts') {
+    aggregateCalls.push(Prompt.aggregate([{ $match: { 'Journal Prompts': { $regex: keyword, $options: 'i' } } }]));
+  }
+  if (filter === 'All' || filter === 'Q&A') {
+    aggregateCalls.push(QnA.aggregate([{ $match: { Question: { $regex: keyword, $options: 'i' } } }]));
+  }
+
   try {
     const data = await Promise.all(aggregateCalls);
-    console.log(data);
-    res.send(data);
+    res.send(data.flat());
   } catch (err) {
     console.error(err);
     res.status(500).send(err);
@@ -34,34 +40,31 @@ const searchByKeyword = async (req, res) => {
 
 // filter resources by tag
 const searchByTag = async (req, res) => {
-  const { tag } = req.body;
+  const { tag, filter } = req.body;
   const tagSearch = tag.toLowerCase();
-  const aggregateCalls = [
-    Article.aggregate([{
-      $match: {
-        Tags: {
-          $elemMatch: { $in: [tagSearch] },
-        },
-      },
-    }]),
-    Prompt.aggregate([{
-      $match: {
-        Tag: {
-          $elemMatch: { $in: [tagSearch] },
-        },
-      },
-    }]),
-    QnA.aggregate([{
-      $match: {
-        Tags: {
-          $elemMatch: { $in: [tagSearch] },
-        },
-      },
-    }]),
-  ];
+  const aggregateCalls = [];
+
+  if (filter === 'All' || filter === 'Articles') {
+    aggregateCalls.push(
+      Article.aggregate([{ $match: { Tags: { $elemMatch: { $in: [tagSearch] } } } }]),
+    );
+  }
+
+  if (filter === 'All' || filter === 'Prompts') {
+    aggregateCalls.push(
+      Prompt.aggregate([{ $match: { Tag: { $elemMatch: { $in: [tagSearch] } } } }]),
+    );
+  }
+
+  if (filter === 'All' || filter === 'Q&A') {
+    aggregateCalls.push(
+      QnA.aggregate([{ $match: { Tags: { $elemMatch: { $in: [tagSearch] } } } }]),
+    );
+  }
+
   try {
     const data = await Promise.all(aggregateCalls);
-    res.send(data); // [0] = Article, [1] = Prompt, etc.
+    res.send(data.flat());
   } catch (err) {
     console.error(err);
     res.status(500).send(err);
