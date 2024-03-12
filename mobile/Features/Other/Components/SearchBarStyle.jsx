@@ -22,7 +22,7 @@ const SearchBarStyle = StyleSheet.create({
   },
 
   searchbar: {
-    height: 40,
+    height: 50,
     backgroundColor: '#D9D9D9',
     color: 'black',
     // width: '80%',

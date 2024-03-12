@@ -24,6 +24,7 @@ const searchByKeyword = async (req, res) => {
   ];
   try {
     const data = await Promise.all(aggregateCalls);
+    console.log(data);
     res.send(data);
   } catch (err) {
     console.error(err);
@@ -34,25 +35,26 @@ const searchByKeyword = async (req, res) => {
 // filter resources by tag
 const searchByTag = async (req, res) => {
   const { tag } = req.body;
+  const tagSearch = tag.toLowerCase();
   const aggregateCalls = [
     Article.aggregate([{
       $match: {
         Tags: {
-          $elemMatch: { $in: [tag] },
+          $elemMatch: { $in: [tagSearch] },
         },
       },
     }]),
     Prompt.aggregate([{
       $match: {
         Tag: {
-          $elemMatch: { $in: [tag] },
+          $elemMatch: { $in: [tagSearch] },
         },
       },
     }]),
     QnA.aggregate([{
       $match: {
         Tags: {
-          $elemMatch: { $in: [tag] },
+          $elemMatch: { $in: [tagSearch] },
         },
       },
     }]),
