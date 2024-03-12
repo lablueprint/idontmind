@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { View, Button } from 'react-native';
-import SearchBar from '../Components/SearchBar';
+import PropTypes from 'prop-types';
+import SearchBar from '../../Other/Components/SearchBar';
 
-export default function ContentScreen({navigation}) {
+export default function ContentScreen({ navigation }) {
   const [isOpen, setOpen] = useState(false);
   const [recentSearches, setRecentSearches] = useState([]);
 
@@ -39,3 +40,9 @@ export default function ContentScreen({navigation}) {
     </View>
   );
 }
+
+ContentScreen.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+  }).isRequired,
+};
