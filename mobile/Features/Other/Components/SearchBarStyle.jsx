@@ -8,6 +8,14 @@ const SearchBarStyle = StyleSheet.create({
     paddingTop: 20,
   },
 
+  topContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '0%',
+    zIndex: 1,
+  },
+
   rowContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -17,7 +25,7 @@ const SearchBarStyle = StyleSheet.create({
     height: 40,
     backgroundColor: '#D9D9D9',
     color: 'black',
-    width: '80%',
+    // width: '80%',
     borderRadius: 15,
     padding: 10,
   },
