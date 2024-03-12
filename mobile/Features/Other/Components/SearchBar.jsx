@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import {
-  View, Text, TextInput, Modal, Button, TouchableOpacity, ScrollView,
+  View, Text, TextInput, Modal, Button, TouchableOpacity, ScrollView, Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import DropDownPicker from 'react-native-dropdown-picker';
 import axios from 'axios';
 import SearchBarStyle from './SearchBarStyle';
 import Bookmark from './Bookmark';
+import timeline from '../../../assets/time_line.png';
+import clear from '../../../assets/clear.png';
 
 export default function SearchBar({
   visible, onClose, onSearch, recentSearches,
@@ -61,7 +63,7 @@ export default function SearchBar({
             }}
           />
           <TextInput
-            style={{ width: '65%', marginRight: '75%', ...SearchBarStyle.searchbar }}
+            style={{ width: '65%', marginRight: '0%', ...SearchBarStyle.searchbar }}
             placeholder="Search..."
             placeholderTextColor="#000"
             value={searchQuery}
@@ -72,6 +74,14 @@ export default function SearchBar({
             }}
             onFocus={() => setEnterPressed(false)}
           />
+          <TouchableOpacity
+            onPress={() => {
+              setSearchQuery('');
+            }}
+            style={{ width: '8%', marginLeft: '-10%', marginRight: '75%' }}
+          >
+            <Image source={clear} />
+          </TouchableOpacity>
         </View>
         <Button
           title="Cancel"
@@ -79,6 +89,8 @@ export default function SearchBar({
             onClose();
             setResults([]);
             setSearchQuery('');
+            setFilterQuery('All');
+            setEnterPressed(false);
           }}
         />
 
@@ -132,7 +144,11 @@ export default function SearchBar({
                   style={SearchBarStyle.recentSearch}
                   onPress={() => handleRecentSearch(item)}
                 >
-                  <Text style={SearchBarStyle.recentText}>{item}</Text>
+                  <View style={SearchBarStyle.rowContainer}>
+                    <Image source={timeline} style={SearchBarStyle.image} />
+                    <Text style={SearchBarStyle.recentText}>{item}</Text>
+                  </View>
+                  <View style={SearchBarStyle.line} />
                 </TouchableOpacity>
               </View>
             ))}

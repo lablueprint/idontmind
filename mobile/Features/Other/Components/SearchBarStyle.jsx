@@ -54,23 +54,27 @@ const SearchBarStyle = StyleSheet.create({
   },
 
   recentSearch: {
-    // width: 149,
-    // height: 29,
-    // borderRadius: 20,
-    // backgroundColor: '#D9D9D9',
     alignItems: 'left',
     justifyContent: 'center',
     margin: 5,
+    marginTop: 15,
   },
-
   recentText: {
     fontSize: 15,
     color: 'rgba(81, 82, 86, 0.80)',
   },
-
   text: {
     fontSize: 20,
     color: 'black',
+  },
+  line: {
+    height: 1,
+    backgroundColor: '#ccc',
+    width: '90%',
+    marginTop: 5,
+  },
+  image: {
+    marginRight: 10,
   },
 });
 
