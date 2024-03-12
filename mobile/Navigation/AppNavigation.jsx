@@ -19,7 +19,6 @@ export default function AppNavigation() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Landing" component={Landing} options={{ headerShown: false }} />
-        <Stack.Screen name="Feed" component={Feed} options={{ headerShown: false }} />
         <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
         <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
         <Stack.Screen name="PersonalInfo" component={PersonalInfo} options={{ headerShown: false }} />
