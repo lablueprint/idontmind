@@ -14,7 +14,7 @@ function Splash({ navigation }) {
     <View style={styles.container}>
       <Image source={IDMlogo} style={styles.logo} />
       <Text style={styles.underLogo}>
-        The short-term relationship that`&apos;`s good for your mental health.
+        The short-term relationship that&apos;s good for your mental health.
       </Text>
       <Text style={styles.termsPrivacy}>
         <Text>By registering or signing in, you are agreeing to our</Text>
