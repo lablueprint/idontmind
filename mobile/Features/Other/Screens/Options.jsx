@@ -1,4 +1,8 @@
-import { View, Text, TouchableOpacity } from 'react-native';
+import {
+  ScrollView, View, Text, TouchableOpacity, Image, StyleSheet,
+} from 'react-native';
+import { useState } from 'react';
+import * as ImagePicker from 'expo-image-picker';
 import PropTypes from 'prop-types';
 import OptionStyle from './OptionStyle';
 
