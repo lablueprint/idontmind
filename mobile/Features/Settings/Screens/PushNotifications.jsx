@@ -1,11 +1,10 @@
 import {
-  Pressable, Text, View, StyleSheet, TouchableOpacity,
+  Pressable, Text, View, TouchableOpacity,
 } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Divider } from '@rneui/themed';
 import { Switch } from 'react-native-switch';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { Dropdown } from 'react-native-element-dropdown';
 import { TimerPickerModal } from 'react-native-timer-picker';
 import { LinearGradient } from 'expo-linear-gradient';
 import styles from './PushNotificationsStyle';
@@ -24,7 +23,8 @@ function PushNotifications() {
   const toggleSwitch4 = () => setIsEnabled4((previousState) => !previousState);
 
   const formatTime = (pickedDuration) => {
-    let { hours, minutes, seconds } = pickedDuration;
+    let { hours } = pickedDuration;
+    const { minutes } = pickedDuration;
     let part = 'AM';
     if (hours > 12) {
       hours -= 12;
@@ -48,7 +48,6 @@ function PushNotifications() {
 
   const [showPicker, setShowPicker] = useState(false);
   const [alarmString, setAlarmString] = useState(null);
-  const [displayString, setDisplayString] = useState(null);
 
   return (
     <View>
@@ -65,7 +64,10 @@ function PushNotifications() {
         </Text>
         <View>
           <View style={[styles.timeOfDayContainer, { marginBottom: 25 }]}>
-            <Text style={[styles.timeOfDayText, notifEnabled ? styles.timeOfDayText : styles.unselected]}>
+            <Text
+              style={[styles.timeOfDayText, notifEnabled
+                ? styles.timeOfDayText : styles.unselected]}
+            >
               {alarmString !== null
                 ? alarmString
                 : 'No alarm set'}
@@ -119,7 +121,6 @@ function PushNotifications() {
             visible={showPicker}
             setIsVisible={setShowPicker}
             onConfirm={(pickedDuration) => {
-              console.log(pickedDuration);
               setAlarmString(formatTime(pickedDuration));
               setShowPicker(false);
             }}
