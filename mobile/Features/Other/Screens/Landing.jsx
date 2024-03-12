@@ -14,8 +14,11 @@ export default function Landing({ navigation }) {
   const navigateToSignUp = () => {
     navigation.navigate('SignUp');
   };
+  // const navigateToFeed = () => {
+  //   navigation.navigate('NavigationBar');
+  // };
   const navigateToFeed = () => {
-    navigation.navigate('NavigationBar');
+    navigation.navigate('AltNavigationBar');
   };
 
   const dispatch = useDispatch();
