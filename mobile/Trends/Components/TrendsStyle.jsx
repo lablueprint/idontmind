@@ -8,14 +8,13 @@ export default StyleSheet.create({
     marginTop: 20,
   },
   title: {
-    fontSize: 30,
+    fontSize: 38,
     marginBottom: 10,
   },
   line: {
     width: 350,
     borderBottomWidth: 1,
     borderBottomColor: '#26292E',
-    margin: 20,
   },
   displayWeek: {
     padding: 10,

@@ -20,7 +20,7 @@ export default function NavigationBar() {
       <Tab.Screen name="PostSignInLanding" component={PostSignInLanding} options={{ headerShown: false }} />
       <Tab.Screen name="Feed" component={Feed} options={{ headerShown: false }} />
       <Tab.Screen name="CheckIn" component={CheckIn} options={{ headerShown: false }} />
-      <Tab.Screen name="Trends" component={TrendsPage} options={{ headerShown: true }} />
+      <Tab.Screen name="Trends" component={TrendsPage} options={{ headerShown: false }} />
       <Tab.Screen name="Journal" component={JournalPage} options={{ headerShown: false }} />
       <Tab.Screen name="Journal History" component={JournalHistoryPage} options={{ headerShown: false }} />
       <Tab.Screen name="Content Library" component={ContentLibrary} options={{ headerShown: false }} />

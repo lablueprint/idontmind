@@ -7,6 +7,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import PropTypes from 'prop-types';
 import styles from './TrendsStyle';
 import { data, barData } from './TrendsData';
+import TrendsHeader from './TrendsHeader';
 
 function TrendTab({ view }) {
   // -1 = last week, 0 = this week, 1 = next week, etc.
@@ -62,14 +63,13 @@ function TrendTab({ view }) {
   return (
     <ScrollView style={{ backgroundColor: '#FFF8F8' }}>
       <View style={styles.container}>
-        <Text style={styles.title}>trends</Text>
-        <Text>
-          your tendencies in this past
-          {' '}
-          {view}
-          .
-        </Text>
-        <View style={styles.line} />
+        <View style={{ marginTop: 40 }}>
+          <Text style={styles.title}>Trends</Text>
+          <Text style={{ marginBottom: 10, fontSize: 20 }}>
+            General Insights
+          </Text>
+          <View style={styles.line} />
+        </View>
         <View style={styles.weekContainer}>
           <Button title="<" color="black" onPress={() => changeWeek(-1)} />
           <View style={styles.displayWeek}>
@@ -122,13 +122,16 @@ function MonthTab() {
 function YearTab() {
   return <TrendTab view="year" />;
 }
+const Tab = createMaterialTopTabNavigator();
+
 export default function Trends() {
-  const Tab = createMaterialTopTabNavigator();
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={{ headerShown: true }}
+      tabBar={(props) => <TrendsHeader {...props} />}
+    >
       <Tab.Screen name="Week" component={WeekTab} />
       <Tab.Screen name="Month" component={MonthTab} />
-      <Tab.Screen name="Year" component={YearTab} />
     </Tab.Navigator>
   );
 }
