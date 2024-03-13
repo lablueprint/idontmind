@@ -9,4 +9,8 @@ testRouter.get('/get', (req, res) => {
   res.send('Get API');
 });
 
+testRouter.post('/searchByKeyword', testController.searchByKeyword);
+
+testRouter.post('/searchByTag', testController.searchByTag);
+
 module.exports = testRouter;
