@@ -77,6 +77,7 @@ export default function SearchBar({
           <TouchableOpacity
             onPress={() => {
               setSearchQuery('');
+              setEnterPressed(false);
             }}
             style={{ width: '8%', marginLeft: '-10%', marginRight: '75%' }}
           >
@@ -96,9 +97,10 @@ export default function SearchBar({
 
         {enterPressed && (
         <View>
-          {results.length === 0 ? <Text>No results found.</Text>
+          {results.length === 0
+            ? <Text style={SearchBarStyle.resultText}>No results found.</Text>
             : (
-              <Text>
+              <Text style={SearchBarStyle.resultText}>
                 Search Results for
                 &quot;
                 {searchQuery}
@@ -138,7 +140,7 @@ export default function SearchBar({
         <View>
           <Text style={SearchBarStyle.text}> Recent Searches </Text>
           <View>
-            {recentSearches.slice(0, 3).map((item) => (
+            {recentSearches.map((item) => (
               <View key={item}>
                 <TouchableOpacity
                   style={SearchBarStyle.recentSearch}
@@ -171,7 +173,7 @@ export default function SearchBar({
                   }
                   return (
                     <Bookmark
-                      key={item.id}
+                      key={resourceName}
                       resourceName={resourceName}
                       author={item.Author}
                     >

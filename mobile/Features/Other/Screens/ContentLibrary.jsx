@@ -145,12 +145,22 @@ export default function ContentLibrary({ navigation }) {
       if (!recentSearches.includes(query.toLowerCase())) {
         setRecentSearches((prevSearches) => {
           const updatedSearches = [query.toLowerCase(), ...prevSearches];
-          if (updatedSearches.length > 10) {
+          if (updatedSearches.length > 5) {
             updatedSearches.pop(); // Remove the last element
           }
           return updatedSearches;
         });
       }
+      // move an existing search result to the top
+      // else {
+      //   setRecentSearches((prevSearches) => {
+      //     const pos = prevSearches.indexOf(query);
+      //     const rotatedPart = prevSearches.slice(0, pos).reverse();
+      //     const restPart = prevSearches.slice(pos);
+      //     console.log(rotatedPart.concat(restPart));
+      //     return rotatedPart.concat(restPart);
+      //   });
+      // }
     }
   };
 

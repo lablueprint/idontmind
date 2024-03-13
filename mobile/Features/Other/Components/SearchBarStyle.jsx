@@ -64,8 +64,10 @@ const SearchBarStyle = StyleSheet.create({
     color: 'rgba(81, 82, 86, 0.80)',
   },
   text: {
-    fontSize: 20,
+    fontSize: 17,
     color: 'black',
+    marginTop: 5,
+    marginBottom: 5,
   },
   line: {
     height: 1,
@@ -75,6 +77,9 @@ const SearchBarStyle = StyleSheet.create({
   },
   image: {
     marginRight: 10,
+  },
+  resultText: {
+    marginBottom: 15,
   },
 });
 
