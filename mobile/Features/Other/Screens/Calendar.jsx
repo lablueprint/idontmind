@@ -114,6 +114,7 @@ export default function CalendarPage({ navigation }) {
 
   return (
     <View style={styles.container}>
+      <ScrollView>
       <View style={{ backgroundColor: '#91A8D1', margin: 10 }}>
         {/* <CalendarPicker
           todayBackgroundColor={'blue'}
@@ -132,7 +133,6 @@ export default function CalendarPage({ navigation }) {
           style={{
             borderWidth: 1,
             borderColor: 'gray',
-            height: 350
           }}
           
           theme={{
@@ -223,8 +223,7 @@ export default function CalendarPage({ navigation }) {
       {clickedDate ? 
       <View>
         <Text>Past Entries</Text>
-        <ScrollView>
-          {filteredJournals.map((x) => (
+          {filteredJournals.reverse().map((x) => (
             <JournalCard
               key={x._id}
               username={x.username}
@@ -235,24 +234,23 @@ export default function CalendarPage({ navigation }) {
 
             />
           ))}
-        </ScrollView> 
       </View> :
       <View>
         <Text>Recent Entries</Text>
-        <ScrollView>
-          {recentJournals.map((x) => (
+          {recentJournals.reverse().map((x) => (
             <JournalCard
               key={x._id}
               username={x.username}
-              date={x.timestamp}
+              date={x.timestamp}  
               prompt={x.prompt}
               text={x.text}
               onPress={navigateToPastJournal}
 
             />
           ))}
-        </ScrollView> 
-      </View> }
+      </View> 
+      }
+      </ScrollView> 
     </View>
   );
 }

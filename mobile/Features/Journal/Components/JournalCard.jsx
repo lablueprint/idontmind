@@ -8,14 +8,15 @@ import styles from './JournalHistoryStyle';
 export default function JournalCard({
   onPress, text, username, prompt, date,
 }) {
-  const handlePress = (text2) => {
-    onPress(text2);
+  const handlePress = () => {
+    console.log("entered handlePress")
+    onPress({ username, prompt, text, date });  
   }; /* calls the onPress function from props,
   which is a function in JournalHistoryPage
   to navigate to the past journal entry with the previously written text */
 
   return (
-    <Pressable style={styles.journalCard} onPress={() => handlePress(text)}>
+    <Pressable style={styles.journalCard} onPress={handlePress}>
       <Text>
         username:
         {username}

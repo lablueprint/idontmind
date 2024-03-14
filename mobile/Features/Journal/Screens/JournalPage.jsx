@@ -134,11 +134,12 @@ export function JournalPage({ navigation, freeWrite }) {
 
   /* render it in two different ways depending on if isHistory(if false, editable text box, if
   true, uneditable text box with previously written text) */
+  console.log("IN JOURNAL");
   if (!isHistory) {
     return (
-      <ScrollView>
+      <ScrollView style={{ flex: 1 }}>
 
-        {/* <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}> */}
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
           <SafeAreaView>
             <SafeAreaView style={styles.container}>
               <Text style={{ marginTop: 180 }}>{`${currDate.toDateString()}, ${militaryToStandard(timeHours)}:${timeMinutes}`}</Text>
@@ -224,6 +225,7 @@ export function JournalPage({ navigation, freeWrite }) {
         {getPrompt(freeWrite)}
         <View style={styles.textBox}>
           <ScrollView automaticallyAdjustKeyboardInsets>
+            <Text>Hi</Text>
             <Text>{body}</Text>
           </ScrollView>
         </View>
@@ -254,12 +256,17 @@ function FreeWrite({ navigation }) {
 }
 
 export default function JournalTabs({ navigation }) {
+  const route = useRoute();
+  const isHistory = route.params?.isHistory;
+
+  console.log("IN THE ACTUAL TAB JOURNAL T")
+  console.log("Tab is history", isHistory);
   const navigateToCalendar = () => {
     navigation.navigate('Calendar');
   };
 
   const Tab = createMaterialTopTabNavigator();
-  return (
+  if (!isHistory){ return (
     <View style={{ flex: 1 }}>
       <View style={{ flexDirection: 'row', alignSelf: 'flex-end', marginTop: 40 }}>
         <TouchableOpacity style={{ margin: 10 }} onPress={navigateToCalendar}>
@@ -288,4 +295,26 @@ export default function JournalTabs({ navigation }) {
       </Tab.Navigator>
     </View>
   );
+  }
+  else{
+    return (
+      <ScrollView style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <View style={styles.container}>
+          {getPrompt(freeWrite)}
+          <View style={styles.textBox}>
+            <ScrollView automaticallyAdjustKeyboardInsets>
+              <Text>Hi</Text>
+              <Text>{body}</Text>
+            </ScrollView>
+          </View>
+        </View>
+  
+        <Button
+          title="To Past Journal Entries"
+          onPress={navigateToJournalHistory}
+        />
+      </ScrollView>
+  
+    );
+  }
 }
