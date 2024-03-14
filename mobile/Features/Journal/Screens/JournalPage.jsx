@@ -11,15 +11,23 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import SafeAreaView from 'react-native-safe-area-view';
 import styles from '../Components/JournalStyle';
 
-export function JournalPage({ navigation, freeWrite }) {
-  const route = useRoute();
-  const body = route.params?.body;
-  const isHistory = route.params?.isHistory;/* retrieve the value of isHistory
+export function JournalPage({ navigation, freeWrite, isHistory, body, isDetails}) {
+  // const route = useRoute();
+  // const body = route.params?.body;
+  // const isHistory = route.params?.isHistory;
+
+  // const body = "body";
+  // const isHistory = true;
+  
+  /* retrieve the value of isHistory
   from the previous navigation page (JournalHistoryPage) */
   const [selectedImage, setSelectedImage] = useState(null);
   const [viewImage, setViewImage] = useState(false);
   const [title, setTitle] = useState();
   const [prompts, setPrompts] = useState([]);
+
+  // console.log("HISTORY PART 2", isHistory);
+  // console.log("BODY PART 2", body);
 
   const [text, setText] = useState(''); // state for the text the user types in
   const [confirmPopUp, setConfirmPopUp] = useState(false); /* state that tells if
@@ -57,7 +65,6 @@ export function JournalPage({ navigation, freeWrite }) {
     getPrompts();
   }, []);
   useEffect(() => { generateRandomPrompt(); }, [prompts]);
-
 
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({

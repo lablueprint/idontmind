@@ -62,6 +62,6 @@ export default StyleSheet.create({
     backgroundColor: 'lightgrey',
     alignItems: 'center',
     justifyContent: 'center',
-    marginLeft: 110,
+    marginLeft: 40,
   },
 });

@@ -9,8 +9,7 @@ export default function JournalCard({
   onPress, text, username, prompt, date,
 }) {
   const handlePress = () => {
-    console.log("entered handlePress")
-    onPress({ username, prompt, text, date });  
+    onPress(username, prompt, text, date);
   }; /* calls the onPress function from props,
   which is a function in JournalHistoryPage
   to navigate to the past journal entry with the previously written text */
