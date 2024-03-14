@@ -1,13 +1,38 @@
 import { useState } from 'react';
 import {
-  Button, View, Text, ScrollView,
+  Button, View, Text, ScrollView, TouchableOpacity,
 } from 'react-native';
 import { BarChart, LineChart } from 'react-native-gifted-charts';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import PropTypes from 'prop-types';
 import styles from './TrendsStyle';
 import { data, barData } from './TrendsData';
 import TrendsHeader from './TrendsHeader';
+
+function TrendSection({header, description, buttonText}) {
+  return(
+    <View style={{display: 'flex', flexDirection: 'column', gap: 10}}>
+      <Text style={{fontSize: 24}}>{header}</Text>
+      <Text style={{fontSize: 14}}>{description}</Text>
+      <LineChart
+        data={data}
+        width={300}
+        height={300}
+      />
+      <Text>some response</Text>
+      <TouchableOpacity>
+        <Text>{buttonText}</Text>
+      </TouchableOpacity>
+    </View>
+  );
+}
+
+TrendSection.propTypes = {
+  header: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  buttonText: PropTypes.string.isRequired,
+}
 
 function TrendTab({ view }) {
   // -1 = last week, 0 = this week, 1 = next week, etc.
@@ -61,16 +86,37 @@ function TrendTab({ view }) {
   };
 
   return (
-    <ScrollView style={{ backgroundColor: '#FFF8F8' }}>
-      <View style={styles.container}>
-        <View style={{ marginTop: 40 }}>
-          <Text style={styles.title}>Trends</Text>
-          <Text style={{ marginBottom: 10, fontSize: 20 }}>
-            General Insights
-          </Text>
-          <View style={styles.line} />
+    <View style={{display: 'flex', flexDirection: 'column'}}>
+      <ScrollView style={{ backgroundColor: '#FFF8F8' }} showsVerticalScrollIndicator={false}>
+        <View style={styles.container}>
+          <View className="header" style={{ marginTop: 40 }}>
+            <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+              <Text style={styles.title}>Trends</Text>
+              <View style={{alignSelf: 'center', display: 'flex', flexDirection: 'row', gap: 20, marginRight: 10}}>
+                <TouchableOpacity>
+                  <Text style={{fontSize: 18}}>Week</Text>
+                </TouchableOpacity>
+                <TouchableOpacity>
+                  <Text style={{fontSize: 18}}>Month</Text>                                
+                </TouchableOpacity>
+              </View>
+            </View>
+            <Text style={{ marginBottom: 10, fontSize: 14 }}>
+              General Insights
+            </Text>
+            <View style={styles.line} />
+          </View>
+          <View style={{ marginTop: 20 }}>
+            <View style={{gap: 35}}>
+              <TrendSection header="Mood and Sleep" description="Discovering how mood and sleep intertwine offers valuable insights for a healthier, happier you." buttonText="button"/>
+              <TrendSection header="Mood and Sleep" description="Discovering how mood and sleep intertwine offers valuable insights for a healthier, happier you." buttonText="button"/>
+              <TrendSection header="Mood and Sleep" description="Discovering how mood and sleep intertwine offers valuable insights for a healthier, happier you." buttonText="button"/>        
+            </View>    
+          </View>                
         </View>
-        <View style={styles.weekContainer}>
+      </ScrollView>
+      <View style={{flex: 1}}>
+        <View style={[styles.weekContainer, {position: 'absolute', left: 0, right: 0, bottom: 0, backgroundColor: 'white'}]}>
           <Button title="<" color="black" onPress={() => changeWeek(-1)} />
           <View style={styles.displayWeek}>
             <Text style={styles.weekText}>
@@ -82,33 +128,11 @@ function TrendTab({ view }) {
           </View>
           <Button title=">" color="black" onPress={() => changeWeek(1)} />
         </View>
-        <View style={styles.chartWrapper}>
-          <Text style={styles.trendHeader}>trend header</Text>
-          <BarChart
-            showFractionalValue
-            showYAxisIndices
-            hideRules
-            noOfSections={4}
-            maxValue={400}
-            data={barData}
-            barWidth={40}
-            sideWidth={15}
-            isThreeD
-            side="right"
-          />
-        </View>
-        <View style={styles.chartWrapper}>
-          <Text style={styles.trendHeader}>trend header</Text>
-          <LineChart
-            data={data}
-            width={300}
-            height={300}
-          />
-        </View>
-      </View>
-    </ScrollView>
+    </View>    
+  </View>    
   );
 }
+
 TrendTab.propTypes = {
   view: PropTypes.string.isRequired,
 };
@@ -122,16 +146,10 @@ function MonthTab() {
 function YearTab() {
   return <TrendTab view="year" />;
 }
-const Tab = createMaterialTopTabNavigator();
+const Tab = createBottomTabNavigator();
 
 export default function Trends() {
   return (
-    <Tab.Navigator
-      screenOptions={{ headerShown: true }}
-      tabBar={(props) => <TrendsHeader {...props} />}
-    >
-      <Tab.Screen name="Week" component={WeekTab} />
-      <Tab.Screen name="Month" component={MonthTab} />
-    </Tab.Navigator>
+    <TrendTab view="week" />
   );
 }

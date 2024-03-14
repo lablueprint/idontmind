@@ -3,8 +3,8 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
+    paddingHorizontal: 20,
     marginTop: 20,
   },
   title: {
@@ -19,7 +19,7 @@ export default StyleSheet.create({
   displayWeek: {
     padding: 10,
     backgroundColor: 'rgba(169, 232, 34, 0.20)',
-    borderRadius: 10,
+    borderRadius: 30,
     width: '70%',
   },
   weekText: {
@@ -35,7 +35,7 @@ export default StyleSheet.create({
     justifyContent: 'space-evenly',
     alignItems: 'center',
     alignContent: 'center',
-    marginBottom: 10,
+    paddingVertical: 25,
   },
   chartWrapper: {
     borderRadius: 15,
