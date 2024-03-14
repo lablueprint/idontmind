@@ -14,7 +14,6 @@ export default function CalendarPage({ navigation }) {
   const [filteredJournals, setFilteredJournals] = useState([]);
   const [clickedDate, setClickedDate] = useState(false);
 
-
   const datesAreOnSameDay = (first, second) => {
     console.log(`firstTime: ${first}`);
     console.log(`secondTime: ${second}`);
@@ -41,26 +40,23 @@ export default function CalendarPage({ navigation }) {
     }
   };
 
-
   useEffect(() => {
     getAllJournals();
   }, []);
 
-
   const handleDateSelect = (date) => {
     object_date = new Date(date.dateString);
     todayDate = new Date();
-    console.log("OBJECT FULL DATE:", object_date);
-    console.log("TODAY FULL DATE:", todayDate);
+    console.log('OBJECT FULL DATE:', object_date);
+    console.log('TODAY FULL DATE:', todayDate);
 
-    console.log("OBJECT DAY:", object_date.getUTCDate());
-    console.log("TODAY DAY:", todayDate.getDate());
-    
-  
+    console.log('OBJECT DAY:', object_date.getUTCDate());
+    console.log('TODAY DAY:', todayDate.getDate());
+
     if (
-      object_date.getUTCDate() === todayDate.getDate() &&
-      object_date.getUTCMonth() === todayDate.getMonth() &&
-      object_date.getYear() === todayDate.getYear()
+      object_date.getUTCDate() === todayDate.getDate()
+      && object_date.getUTCMonth() === todayDate.getMonth()
+      && object_date.getYear() === todayDate.getYear()
     ) {
       setClickedDate(false);
     } else {
@@ -107,8 +103,8 @@ export default function CalendarPage({ navigation }) {
     },
   });
 
-  const navigateToPastJournal = (text) => {
-    navigation.navigate('Journal', { body: text, isHistory: true });
+  const navigateToPastJournal = (username, prompt, text, date) => {
+    navigation.navigate('JournalDetails', { user: username, question: prompt, body: text, day: date });
   }; /* navigate to the past journal entry, isHistory
    is set to true (uneditable text box with the corresponding prompt) */
 
@@ -126,15 +122,15 @@ export default function CalendarPage({ navigation }) {
         <Calendar
           onDayPress={handleDateSelect}
           markedDates={{
-        [selectedDate]: {selected: true, disableTouchEvent: true, selectedDotColor: 'orange'}
+            [selectedDate]: { selected: true, disableTouchEvent: true, selectedDotColor: 'orange' },
           }}
-          //need to figure out styling of calendar
+          // need to figure out styling of calendar
           style={{
             borderWidth: 1,
             borderColor: 'gray',
-            height: 350
+            height: 350,
           }}
-          
+
           theme={{
             calendarBackground: '#91A8D1',
             backgroundColor: '#91A8D1',
@@ -144,7 +140,7 @@ export default function CalendarPage({ navigation }) {
             'stylesheet.calendar.header': {
               calendar: {
                 lineHeight: 20,
-              },      
+              },
               header: {
                 flexDirection: 'row',
                 justifyContent: 'space-between',
@@ -220,39 +216,41 @@ export default function CalendarPage({ navigation }) {
           }}
         />
       </View>
-      {clickedDate ? 
-      <View>
-        <Text>Past Entries</Text>
-        <ScrollView>
-          {filteredJournals.map((x) => (
-            <JournalCard
-              key={x._id}
-              username={x.username}
-              date={x.timestamp}
-              prompt={x.prompt}
-              text={x.text}
-              onPress={navigateToPastJournal}
-
-            />
-          ))}
-        </ScrollView> 
-      </View> :
-      <View>
-        <Text>Recent Entries</Text>
-        <ScrollView>
-          {recentJournals.map((x) => (
-            <JournalCard
-              key={x._id}
-              username={x.username}
-              date={x.timestamp}
-              prompt={x.prompt}
-              text={x.text}
-              onPress={navigateToPastJournal}
-
-            />
-          ))}
-        </ScrollView> 
-      </View> }
+      {clickedDate
+        ? (
+          <View>
+            <Text>Past Entries</Text>
+            <ScrollView>
+              {filteredJournals.map((x) => (
+                <JournalCard
+                  key={x._id}
+                  username={x.username}
+                  date={x.timestamp}
+                  prompt={x.prompt}
+                  text={x.text}
+                  onPress={navigateToPastJournal}
+                />
+              ))}
+            </ScrollView>
+          </View>
+        )
+        : (
+          <View>
+            <Text>Recent Entries</Text>
+            <ScrollView>
+              {recentJournals.map((x) => (
+                <JournalCard
+                  key={x._id}
+                  username={x.username}
+                  date={x.timestamp}
+                  prompt={x.prompt}
+                  text={x.text}
+                  onPress={navigateToPastJournal}
+                />
+              ))}
+            </ScrollView>
+          </View>
+        ) }
     </View>
   );
 }
