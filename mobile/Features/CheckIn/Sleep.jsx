@@ -11,6 +11,7 @@ import styles from './SleepStyle';
 function Sleep({ navigation }) {
   const route = useRoute();
   const moodsChosen = route.params?.moodsChosen;
+  const moodValueChosen = route.params?.moodValueChosen;
   const activityChosen = route.params?.activityChosen;
   // update progress
   const numPages = route.params?.numPages;
@@ -23,11 +24,15 @@ function Sleep({ navigation }) {
   };
 
   const continueButton = () => {
-    navigation.navigate('EndCheckIn', { moodsChosen, activityChosen, sleepScore: slider });
+    if (slider !== 0) {
+      navigation.navigate('EndCheckIn', {
+        moodsChosen, moodValueChosen, activityChosen, sleepScore: slider,
+      });
+    }
   };
 
   const skipButton = () => {
-    navigation.navigate('EndCheckIn', { moodsChosen, activityChosen });
+    navigation.navigate('EndCheckIn', { moodsChosen, moodValueChosen, activityChosen });
   };
 
   return (

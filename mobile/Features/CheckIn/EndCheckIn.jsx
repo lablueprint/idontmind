@@ -8,11 +8,15 @@ import axios from 'axios';
 function EndCheckIn({ navigation }) {
   const route = useRoute();
   const moodsChosen = route.params?.moodsChosen;
+  const moodValueChosen = route.params?.moodValueChosen;
   const activityChosen = route.params?.activityChosen;
   const sleepScore = route.params?.sleepScore;
   const handleEnd = async () => {
     const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/checkins/createCheckIn`, {
-      moodsText: moodsChosen, activityText: activityChosen, sleep: sleepScore,
+      moodsText: moodsChosen,
+      moodScore: moodValueChosen,
+      activityText: activityChosen,
+      sleepScore,
     });
     if (res.data.error) {
       console.error(res.data.error);

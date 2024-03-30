@@ -46,8 +46,9 @@ const createCheckIn = async (data) => {
       {
         timestamp: new Date(),
         moods: data.body.moodsText,
+        moodScore: data.body.moodScore,
         activity: data.body.activityText,
-        sleep: data.body.sleep,
+        sleepScore: data.body.sleepScore,
       },
     ]);
   } catch (error) {

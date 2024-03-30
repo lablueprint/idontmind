@@ -49,12 +49,12 @@ function Feeling({ navigation }) {
 
   const continueButton = () => {
     if (Object.values(selectedCoping).some((value) => value)) {
-      navigation.navigate('Activity', { numPages, moodValue: slider, moodsChosen: selectedCoping });
+      navigation.navigate('Activity', { numPages, moodValueChosen: slider, moodsChosen: selectedCoping });
     }
   };
 
   const skipButton = () => {
-    navigation.navigate('Activity', { numPages, moodValue: slider });
+    navigation.navigate('Activity', { numPages, moodValueChosen: slider });
   };
 
   return (

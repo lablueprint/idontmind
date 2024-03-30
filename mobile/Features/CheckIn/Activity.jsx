@@ -15,10 +15,11 @@ function Activity({ navigation }) {
   const newActivity = route.params?.activityPassedIn;
   const newIcon = route.params?.iconChosen;
   const moodsChosen = route.params?.moodsChosen;
-
+  const moodValueChosen = route.params?.moodValueChosen;
   const progress = 2 / numPages;
   // addedActivities array to keep track of the new activities the user has added
   const [addedActivities, setAddedActivities] = useState([]);
+  // activityChosen state to keep track of what actiivty the user selects
   const [activityChosen, setActivityChosen] = useState('');
 
   useEffect(() => {
@@ -31,13 +32,15 @@ function Activity({ navigation }) {
   }, [newActivity, newIcon]);
 
   const continueButton = () => {
-    navigation.navigate('Sleep', {
-      numPages, moodsChosen, activityChosen,
-    });
+    if (activityChosen !== '') {
+      navigation.navigate('Sleep', {
+        numPages, moodsChosen, moodValueChosen, activityChosen,
+      });
+    }
   };
 
   const skipButton = () => {
-    navigation.navigate('Sleep', { numPages, moodsChosen });
+    navigation.navigate('Sleep', { numPages, moodsChosen, moodValueChosen });
   };
 
   // later implement functionality for pressing on a activity button:
