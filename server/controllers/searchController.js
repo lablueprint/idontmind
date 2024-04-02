@@ -1,18 +1,6 @@
-const Test = require('../models/testSchema');
 const Article = require('../models/ArticleSchema');
 const Prompt = require('../models/PromptSchema');
 const QnA = require('../models/QnASchema');
-
-// Example of creating a document in the database
-const createTest = async (req, res) => {
-  const test = new Test(req.body);
-  try {
-    const data = await test.save(test);
-    res.send(data);
-  } catch (err) {
-    console.error(err);
-  }
-};
 
 // filter resources by keyword in title
 const searchByKeyword = async (req, res) => {
@@ -74,5 +62,5 @@ const searchByTag = async (req, res) => {
 // batched data
 
 module.exports = {
-  createTest, searchByKeyword, searchByTag,
+  searchByKeyword, searchByTag,
 };

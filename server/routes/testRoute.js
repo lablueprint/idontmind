@@ -1,16 +1,14 @@
 const express = require('express');
 
-const testRouter = express.Router();
-const testController = require('../controllers/testController');
+const searchRouter = express.Router();
+const searchController = require('../controllers/searchController');
 
-testRouter.post('/post', testController.createTest);
-
-testRouter.get('/get', (req, res) => {
+searchRouter.get('/get', (req, res) => {
   res.send('Get API');
 });
 
-testRouter.post('/searchByKeyword', testController.searchByKeyword);
+searchRouter.post('/searchByKeyword', searchController.searchByKeyword);
 
-testRouter.post('/searchByTag', testController.searchByTag);
+searchRouter.post('/searchByTag', searchController.searchByTag);
 
-module.exports = testRouter;
+module.exports = searchRouter;
