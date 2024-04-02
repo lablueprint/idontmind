@@ -24,8 +24,8 @@ export default function Landing({ navigation }) {
   const handleHardcodedLogin = async () => {
     try {
       const userData = {
-        email: 'poop@gmail.com',
-        password: 'poop',
+        email: 'sample@gmail.com',
+        password: 'sample',
       };
       const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/users/signin`, userData);
       if (res.data.error) {
@@ -37,6 +37,10 @@ export default function Landing({ navigation }) {
     } catch (err) {
       console.error(err.message);
     }
+  };
+
+  const navigateToLoading = () => {
+    navigation.navigate('Loading');
   };
 
   return (
@@ -53,6 +57,10 @@ export default function Landing({ navigation }) {
       <Button
         title="Hardcoded Sign In"
         onPress={handleHardcodedLogin}
+      />
+      <Button
+        title="To Loading"
+        onPress={navigateToLoading}
       />
     </View>
   );
