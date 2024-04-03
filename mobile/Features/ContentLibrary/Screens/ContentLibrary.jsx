@@ -1,129 +1,78 @@
-/* eslint-disable global-require */
 import {
-  Text, View, StyleSheet, TouchableOpacity, FlatList, Image,
+  Text, View, TouchableOpacity, FlatList, Image,
 } from 'react-native';
-import { useState } from 'react';
 import PropTypes from 'prop-types';
-import SearchBar from '../Components/SearchBar';
-
-/* Style Sheet */
-const style = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    backgroundColor: 'white',
-  },
-  row: {
-    flexDirection: 'row',
-  },
-  button: {
-    backgroundColor: 'white',
-    borderRadius: 20,
-  },
-  horizontalCard: {
-    padding: 10, marginVertical: 8, marginRight: 16, backgroundColor: 'lightgrey', borderRadius: 10, width: 122, flex: 1,
-  },
-  star: {
-    width: 20, height: 20, opacity: 0.4,
-  },
-  horizontalCardInfo: {
-    flexDirection: 'row', flex: 1, width: 70,
-  },
-  horizontalText: {
-    color: 'black', alignSelf: 'flex-end', marginBottom: 20, flexWrap: 'wrap', flex: 1, fontSize: 16, marginLeft: 5,
-  },
-  verticalCard: {
-    padding: 10, marginVertical: 8, marginRight: 16, backgroundColor: 'lightgrey', borderRadius: 10, flex: 1, flexDirection: 'column',
-  },
-  shape: {
-    width: 95, height: 85, marginRight: 15,
-  },
-  verticalCardInfo: {
-    flex: 1, flexDirection: 'row-reverse',
-  },
-  verticalText: {
-    fontSize: 25,
-  },
-  whiteBox: {
-    backgroundColor: 'white', width: 100, height: 25, borderRadius: 8, marginBottom: 5, marginLeft: 5,
-  },
-});
-
-/* Fake Data */
-const DATA = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'resource name',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'resource name',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'resource name',
-  },
-  {
-    id: 'bd7acbea-c1b1-42c2-aed5-3ad53abb28ba',
-    title: 'resource name',
-  },
-  {
-    id: '3ac68afc-c605-46d3-a4f8-fbd91aa97f63',
-    title: 'resource name',
-  },
-  {
-    id: '58694a0f-3da2-471f-bd96-145571e29d72',
-    title: 'resource name',
-  },
-];
+import { useState, useEffect, useContext } from 'react';
+import axios from 'axios';
+import style from '../Components/ContentStyle';
+import starImage from '../../../assets/star.png';
+import filterImage from '../../../assets/filter.png';
+import searchImage from '../../../assets/search.png';
+import Card from '../Components/Card';
+import TagContext from '../Context/TagContext';
+// do want to change routing though:
+import SearchBar from '../../Other/Components/SearchBar';
 
 export default function ContentLibrary({ navigation }) {
-  const navigateToLanding = () => {
-    navigation.navigate('PostSignInLanding'); // will be changed by chance PR
+  const { initTags, initFavorites } = useContext(TagContext);
+
+  const navigateToTag = (index) => {
+    navigation.navigate('Tag', { index, routeName: 'Content Library' });
   };
 
-  const horizontalRenderItem = ({ item }) => (
-    <TouchableOpacity
-      style={[style.horizontalCard]}
-    >
-      <Image
-        style={[style.star,
-          { alignSelf: 'flex-end' },
-        ]}
-        source={require('../../../assets/star.png')}
-      />
-      <View
-        style={[style.horizontalCardInfo]}
-      >
-        <Text
-          style={[style.horizontalText]}
-        >
-          {item.title}
-        </Text>
-      </View>
-    </TouchableOpacity>
+  const navigateToFavorites = () => {
+    navigation.navigate('Favorites');
+  };
+
+  /* List of Tags */
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    /* Grab all Tags and initalize the Tag List State Variable */
+    const getAllTags = async () => {
+      try {
+        /* Grab all tags */
+        const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/getAllTagTitles`);
+
+        /* Grab user's favorite list */
+        const resFavorites = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/getFavorites`, { username: 'hi' });
+
+        /* Set Context Set for Favorites */
+        initFavorites(resFavorites.data);
+
+        /* Set Context List for Tags */
+        initTags(res.data);
+
+        /* Set Initial Data for Render Functions */
+        setData(res.data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    getAllTags();
+  }, []);
+
+  /* RenderItem function for Horizontal Card Carousel */
+  const horizontalRenderItem = ({ item, index }) => (
+    <Card
+      navigateToTag={navigateToTag}
+      index={index}
+      item={item}
+      orientation="horizontal"
+    />
   );
 
-  const verticalRenderItem = ({ item }) => (
-    <TouchableOpacity
-      style={[style.verticalCard]}
-    >
-      <Text
-        style={[style.verticalText]}
-      >
-        {item.title}
-      </Text>
-      <View style={[style.verticalCardInfo]}>
-        <Image
-          style={[style.shape]}
-          source={require('../../../assets/shape.png')}
-        />
-      </View>
-      <View
-        style={[style.whiteBox]}
-      />
-    </TouchableOpacity>
+  /* RenderItem function for Vertical Card Carousel */
+  const verticalRenderItem = ({ item, index }) => (
+    <Card
+      navigateToTag={navigateToTag}
+      index={index}
+      item={item}
+      orientation="vertical"
+    />
   );
+
+  // search from main branch; likely to be overwritten by aggregations pr
 
   const [isOpen, setOpen] = useState(false);
   const [recentSearches, setRecentSearches] = useState([]);
@@ -174,7 +123,7 @@ export default function ContentLibrary({ navigation }) {
           style={[style.container, { flex: 3 }]}
         >
           <TouchableOpacity
-            onPress={() => navigateToLanding()}
+            onPress={() => navigateToFavorites()}
             style={[style.button, {
               flexBasis: 37, justifyContent: 'center', backgroundColor: 'lightgray', width: 110, flexDirection: 'row',
             }]}
@@ -183,11 +132,12 @@ export default function ContentLibrary({ navigation }) {
               style={{
                 width: 20, height: 20, marginTop: 7, marginRight: 3, opacity: 0.4,
               }}
-              source={require('../../../assets/star.png')}
+              source={starImage}
             />
-            <Text style={{
-              textAlign: 'center', fontSize: 16, marginTop: 9, marginRight: 2,
-            }}
+            <Text
+              style={{
+                textAlign: 'center', fontSize: 16, marginTop: 9, marginRight: 2,
+              }}
             >
               favorites
             </Text>
@@ -198,7 +148,7 @@ export default function ContentLibrary({ navigation }) {
           <TouchableOpacity onPress={openSearch}>
             <Image
               style={{ width: 20, height: 31, marginRight: 15 }}
-              source={require('../../../assets/search.png')}
+              source={searchImage}
             />
             <SearchBar
               visible={isOpen}
@@ -210,20 +160,22 @@ export default function ContentLibrary({ navigation }) {
           <TouchableOpacity onPress={navigateToFilter}>
             <Image
               style={{ width: 20, height: 31 }}
-              source={require('../../../assets/filter.png')}
+              source={filterImage}
             />
           </TouchableOpacity>
-
         </View>
       </View>
       <View style={[style.row, { flexBasis: 35 }]}>
-        <Text style={{ fontSize: 16, flex: 1, color: 'gray' }}>recommended for you</Text>
+        <Text style={{ fontSize: 16, flex: 1, color: 'gray' }}>
+          recommended for you
+        </Text>
       </View>
       <View style={[style.row, { flex: 1 }]}>
         <FlatList
           horizontal
-          data={DATA}
+          data={data}
           renderItem={horizontalRenderItem}
+          keyExtractor={(item) => item._id}
           showsHorizontalScrollIndicator={false}
         />
       </View>
@@ -232,8 +184,9 @@ export default function ContentLibrary({ navigation }) {
       />
       <View style={[style.row, { flex: 2, paddingTop: 25 }]}>
         <FlatList
-          data={DATA}
+          data={data}
           renderItem={verticalRenderItem}
+          keyExtractor={(item) => item._id}
           showsVerticalScrollIndicator={false}
         />
       </View>

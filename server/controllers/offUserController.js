@@ -84,6 +84,16 @@ const deleteUserById = async (req, res) => {
   }
 };
 
+const getFavorites = async (req, res) => {
+  try {
+    const { username } = req.body;
+    const user = await User.find({ username });
+    res.send(user[0].favorites);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 // get current user's challenge
 const getUserChallengeDay = async (req, res) => {
   const { id } = req.body;
@@ -124,6 +134,7 @@ module.exports = {
   getUserById,
   updateUser,
   deleteUserById,
+  getFavorites,
   getUserChallengeDay,
   resetChallengeDay,
   increaseChallengeDay,
