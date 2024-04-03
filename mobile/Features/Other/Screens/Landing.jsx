@@ -39,6 +39,10 @@ export default function Landing({ navigation }) {
     }
   };
 
+  const navigateToSplash = () => {
+    navigation.navigate('Splash');
+  };
+
   const navigateToLoading = () => {
     navigation.navigate('Loading');
   };
@@ -57,6 +61,10 @@ export default function Landing({ navigation }) {
       <Button
         title="Hardcoded Sign In"
         onPress={handleHardcodedLogin}
+      />
+      <Button
+        title="To Splash"
+        onPress={navigateToSplash}
       />
       <Button
         title="To Loading"
