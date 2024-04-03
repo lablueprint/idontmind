@@ -43,12 +43,6 @@ export default function Landing({ navigation }) {
     navigation.navigate('Splash');
   };
 
-  const navigateToWOYM = () => {
-    navigation.navigate('WOYM');
-  };
-  const navigateToJournalHistory = () => {
-    navigation.navigate('Journal History');
-  };
   const navigateToLoading = () => {
     navigation.navigate('Loading');
   };
@@ -69,16 +63,8 @@ export default function Landing({ navigation }) {
         onPress={handleHardcodedLogin}
       />
       <Button
-        title="To Journal History"
-        onPress={navigateToJournalHistory}
-      />
-      <Button
         title="To Splash"
         onPress={navigateToSplash}
-      />
-      <Button
-        title="To WOYM"
-        onPress={navigateToWOYM}
       />
       <Button
         title="To Loading"
