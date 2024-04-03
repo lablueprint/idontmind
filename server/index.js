@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const jwtStrategy = require('passport-jwt').Strategy;
 const { ExtractJwt } = require('passport-jwt');
+const bodyParser = require('body-parser');
 const passport = require('./passport');
 const User = require('./models/UserSchema');
 
@@ -42,8 +43,9 @@ connectToDatabase();
 // Start the Node Express server
 const app = express();
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '200mb' }));
 app.use(passport.initialize());
+app.use(bodyParser.urlencoded({ limit: '200mb', extended: true }));
 
 // API Routes
 app.use('/test', testRouter);
