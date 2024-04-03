@@ -10,6 +10,8 @@ import filterImage from '../../../assets/filter.png';
 import searchImage from '../../../assets/search.png';
 import Card from '../Components/Card';
 import TagContext from '../Context/TagContext';
+// do want to change routing though:
+import SearchBar from '../../Other/Components/SearchBar';
 
 export default function ContentLibrary({ navigation }) {
   const { initTags, initFavorites } = useContext(TagContext);
@@ -70,6 +72,37 @@ export default function ContentLibrary({ navigation }) {
     />
   );
 
+  // search from main branch; likely to be overwritten by aggregations pr
+
+  const [isOpen, setOpen] = useState(false);
+  const [recentSearches, setRecentSearches] = useState([]);
+
+  const navigateToFilter = () => {
+    navigation.navigate('Filter');
+  };
+
+  const openSearch = () => {
+    setOpen(true);
+  };
+  const closeSearch = () => {
+    setOpen(false);
+  };
+
+  const handleSearch = (query) => {
+    // search logic
+    if (query.trim() !== '') {
+      if (!recentSearches.includes(query.toLowerCase())) {
+        setRecentSearches((prevSearches) => {
+          const updatedSearches = [query.toLowerCase(), ...prevSearches];
+          if (updatedSearches.length > 10) {
+            updatedSearches.pop(); // Remove the last element
+          }
+          return updatedSearches;
+        });
+      }
+    }
+  };
+
   return (
     <View
       style={[style.container, { paddingLeft: 25 }]}
@@ -102,14 +135,24 @@ export default function ContentLibrary({ navigation }) {
           </TouchableOpacity>
         </View>
         <View style={{ flex: 2, flexDirection: 'row', marginTop: 5 }}>
-          <Image
-            style={{ width: 20, height: 31, marginRight: 15 }}
-            source={searchImage}
-          />
-          <Image
-            style={{ width: 20, height: 31 }}
-            source={filterImage}
-          />
+          <TouchableOpacity onPress={openSearch}>
+            <Image
+              style={{ width: 20, height: 31, marginRight: 15 }}
+              source={searchImage}
+            />
+            <SearchBar
+              visible={isOpen}
+              onClose={closeSearch}
+              onSearch={handleSearch}
+              recentSearches={recentSearches}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={navigateToFilter}>
+            <Image
+              style={{ width: 20, height: 31 }}
+              source={filterImage}
+            />
+          </TouchableOpacity>
         </View>
       </View>
       <View style={[style.row, { flexBasis: 35 }]}>
