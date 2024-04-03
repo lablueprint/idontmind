@@ -43,6 +43,7 @@
     "react-native-reanimated": "^3.7.1",
     "react-native-safe-area-context": "4.6.3",
     "react-native-screens": "~3.22.0",
+    "react-native-swiper": "^1.6.0",
     "react-native-switch": "^1.5.1",
     "react-native-tab-view": "^3.5.2",
     "react-native-timer-picker": "^1.5.3",
