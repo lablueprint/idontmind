@@ -56,7 +56,7 @@ export default function Customization({ navigation }) {
         <TouchableOpacity onPress={navigateToPersonalInfo} style={styles.arrowContainer}>
           <Icon name="arrow-left" size={30} color="black" />
         </TouchableOpacity>
-        <Text style={styles.title}>What's on your mind?</Text>
+        <Text style={styles.title}>What&apos;s on your mind?</Text>
         <View style={styles.paginationContainer}>
           <View style={[styles.inactivePaginationDot]} />
           <View style={[styles.inactivePaginationDot]} />

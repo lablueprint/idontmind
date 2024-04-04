@@ -93,6 +93,59 @@ const readSpecifiedFields = async (req, res) => {
   }
 };
 
+const getFavorites = async (req, res) => {
+  try {
+    const { username } = req.body;
+    const user = await User.find({ username });
+    res.send(user[0].favorites);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+// get current user's challenge
+const getUserChallengeDay = async (req, res) => {
+  const { id } = req.body;
+  try {
+    const user = await User.findById(id);
+    return res.send({ ChallengeDay: user.ChallengeDay });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send(err);
+  }
+};
+
+const resetChallengeDay = async (req, res) => {
+  const { id } = req.body;
+  try {
+    const user = await User.findOneAndUpdate({ _id: id }, { $set: { ChallengeDay: 0 } });
+    return res.send({ ChallengeDay: user.ChallengeDay });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send(err);
+  }
+};
+
+const increaseChallengeDay = async (req, res) => {
+  const { id } = req.body;
+  try {
+    const user = await User.findOneAndUpdate({ _id: id }, { $inc: { ChallengeDay: 1 } });
+    return res.send({ ChallengeDay: user.ChallengeDay });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send(err);
+  }
+};
+
 module.exports = {
-  createUser, getAllUsers, getUserById, updateUser, deleteUserById, readSpecifiedFields,
+  readSpecifiedFields,
+  getFavorites,
+  getUserChallengeDay,
+  resetChallengeDay,
+  increaseChallengeDay,
+  createUser,
+  getAllUsers,
+  getUserById,
+  updateUser,
+  deleteUserById,
 };

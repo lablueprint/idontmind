@@ -1,12 +1,20 @@
 const express = require('express');
 
-const testRouter = express.Router();
-const testController = require('../controllers/testController');
+const miscRouter = express.Router();
+const searchController = require('../controllers/searchController');
 
-testRouter.post('/post', testController.createTest);
+const awsController = require('../controllers/awsController');
 
-testRouter.get('/get', (req, res) => {
+miscRouter.get('/get', (req, res) => {
   res.send('Get API');
 });
 
-module.exports = testRouter;
+miscRouter.post('/searchByKeyword', searchController.searchByKeyword);
+
+miscRouter.post('/searchByTag', searchController.searchByTag);
+
+miscRouter.get('/getImage', awsController.getImage);
+
+miscRouter.post('/uploadImage', awsController.uploadImage);
+
+module.exports = miscRouter;
