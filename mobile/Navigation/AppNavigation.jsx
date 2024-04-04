@@ -13,7 +13,7 @@ import Filter from '../Features/Other/Screens/Filter';
 import BannedTags from '../Features/Other/Screens/BannedTags';
 import Splash from '../Features/GettingStarted/Splash';
 import Terms from '../Features/GettingStarted/Terms';
-import Loading from '../Features/Register/Loading';
+import Loading from '../Features/Other/Components/Loading';
 // import PushNotifications from '../Features/Settings/Screens/PushNotifications';
 
 const Stack = createStackNavigator();
