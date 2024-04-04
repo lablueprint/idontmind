@@ -9,7 +9,7 @@ import PushNotifications from '../Features/Settings/Screens/PushNotifications';
 import FindHelp from '../Features/Other/Screens/FindHelp';
 import Options from '../Features/Other/Screens/Options';
 import JournalHistoryPage from '../Features/Journal/Components/JournalHistoryPage';
-import WOYM from '../Features/Register/WOYM';
+import WOYM from '../Features/Onboarding/Screens/WOYM';
 import DayChallenge from '../Features/Other/Screens/DayChallenge';
 import ContentDashboard from '../Features/Other/Screens/ContentDashboard';
 
