@@ -4,7 +4,7 @@ import {
 import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import JournalCard from '../../Journal/Components/JournalCard';
+import JournalCard from './JournalCard';
 
 export default function JournalHistoryPage({ navigation }) {
   const [journals, setJournals] = useState([]); // array of journal entries
