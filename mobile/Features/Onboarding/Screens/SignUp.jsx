@@ -1,12 +1,12 @@
 import {
-    Text, View, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard
-  } from 'react-native';
+  Text, View, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard,
+} from 'react-native';
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import styles from '../Components/OnboardingStyling';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
+import styles from '../Components/OnboardingStyling';
 
 export default function SignUp({ navigation }) {
   const [email, setEmail] = useState('');
@@ -25,22 +25,20 @@ export default function SignUp({ navigation }) {
 
   const handleNextButton = () => {
     navigateToPersonalInfo();
-  }
+  };
 
   const navigateToLanding = () => {
-      navigation.navigate('Landing');
-    }
+    navigation.navigate('Landing');
+  };
 
   // Checks {email}@{site}.{top-level domain}
   const isValidEmail = () => {
-    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;  
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     return (emailRegex.test(email));
-  }
+  };
 
   // Checks if passwords are the same
-  const isSamePassword = () => {
-    return(password === confirmPassword);
-  }
+  const isSamePassword = () => (password === confirmPassword);
 
   // Checks if password meets all conditions needed
   const isValidPassword = () => {
@@ -50,14 +48,14 @@ export default function SignUp({ navigation }) {
 
     const newSet = new Set();
 
-    lowercaseRegex.test(password) ? newSet.add("lower") : newSet.delete("lower");
-    uppercaseRegex.test(password) ? newSet.add("upper") : newSet.delete("upper");
-    numberOrSymbolRegex.test(password) ? newSet.add("numsym") : newSet.delete("numsym");
-    password.length >= 8 ? newSet.add("length") : newSet.delete("length");
+    lowercaseRegex.test(password) ? newSet.add('lower') : newSet.delete('lower');
+    uppercaseRegex.test(password) ? newSet.add('upper') : newSet.delete('upper');
+    numberOrSymbolRegex.test(password) ? newSet.add('numsym') : newSet.delete('numsym');
+    password.length >= 8 ? newSet.add('length') : newSet.delete('length');
 
-    setPasswordConditionsMet(newSet)
+    setPasswordConditionsMet(newSet);
 
-    return (newSet.size == 4);
+    return (newSet.size === 4);
   };
 
   // Toggles showing password requirements under password
@@ -67,7 +65,7 @@ export default function SignUp({ navigation }) {
         setShowPasswordRequirements(true);
       }
     }
-  }
+  };
 
   // Toggles showing password matched requirement under confirm password
   const isShowingPasswordMatch = () => {
@@ -76,7 +74,7 @@ export default function SignUp({ navigation }) {
         setShowPasswordMatch(true);
       }
     }
-  }
+  };
 
   const notAllConditionsMet = () => {
     if (!isValidEmail() || !isSamePassword() || !isValidPassword()) {
@@ -84,7 +82,7 @@ export default function SignUp({ navigation }) {
     } else {
       setButtonEnabled(true);
     }
-  }
+  };
 
   useEffect(() => {
     isValidPassword();
@@ -97,30 +95,30 @@ export default function SignUp({ navigation }) {
   }, [passwordConditionsMet, setShowPasswordRequirements, setShowPasswordMatch, setButtonEnabled]);
 
   const handleSignUp = async () => {
-      try {
-        if (!isValidEmail()) {
-          console.error("Invalid Email Address")
-          return;
-        }
-
-        if (!isSamePassword()) {
-          console.error("Passwords do not match");
-          return;
-        }
-
-        if (!isValidPassword()) {
-          console.error("Password conditions not met");
-          return;
-        }
-
-        handleNextButton()
-      } catch (err) {
-        console.error(err.message);
+    try {
+      if (!isValidEmail()) {
+        console.error('Invalid Email Address');
+        return;
       }
-    };
+
+      if (!isSamePassword()) {
+        console.error('Passwords do not match');
+        return;
+      }
+
+      if (!isValidPassword()) {
+        console.error('Password conditions not met');
+        return;
+      }
+
+      handleNextButton();
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
 
   // Handles pagination dots visibility for password
-  const togglePasswordVisibility = () => {  
+  const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
@@ -133,9 +131,9 @@ export default function SignUp({ navigation }) {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         <TouchableOpacity onPress={navigateToLanding} style={styles.arrowContainer}>
-          <Icon name="arrow-left" size={30} color="black"/>
+          <Icon name="arrow-left" size={30} color="black" />
         </TouchableOpacity>
-        <Text style={styles.title}>Let's get started!</Text>
+        <Text style={styles.title}>Let&apos;s get started!</Text>
         <View style={styles.inputContainer}>
           <Text>Email</Text>
           <View style={styles.inputWrapper}>
@@ -162,7 +160,8 @@ export default function SignUp({ navigation }) {
             </TouchableOpacity>
           </View>
         </View>
-        {showPasswordRequirements && (<View style={styles.allPasswordConditionsContainer}>
+        {showPasswordRequirements && (
+        <View style={styles.allPasswordConditionsContainer}>
           <View style={styles.passwordConditionRow}>
             <FontAwesomeIcon
               icon={passwordConditionsMet.has('lower') ? faCheck : faTimes}
@@ -176,7 +175,7 @@ export default function SignUp({ navigation }) {
             <Text style={styles.passwordConditionText}>An uppercase letter</Text>
           </View>
           <View style={styles.passwordConditionRow}>
-          <FontAwesomeIcon
+            <FontAwesomeIcon
               icon={passwordConditionsMet.has('numsym') ? faCheck : faTimes}
               style={[styles.numsymCondition, { color: passwordConditionsMet.has('numsym') ? 'green' : 'red' }]}
             />
@@ -187,7 +186,8 @@ export default function SignUp({ navigation }) {
             />
             <Text style={styles.passwordConditionText}>At least 8 characters</Text>
           </View>
-        </View>)}
+        </View>
+        )}
         <View style={styles.inputContainer}>
           <Text>Confirm Password</Text>
           <View style={styles.inputWrapper}>
@@ -203,7 +203,8 @@ export default function SignUp({ navigation }) {
             </TouchableOpacity>
           </View>
         </View>
-        {showPasswordMatch && (<View style={styles.allPasswordConditionsContainer}>
+        {showPasswordMatch && (
+        <View style={styles.allPasswordConditionsContainer}>
           <View style={styles.passwordConditionLastRow}>
             <FontAwesomeIcon
               icon={isSamePassword() ? faCheck : faTimes}
@@ -211,7 +212,8 @@ export default function SignUp({ navigation }) {
             />
             <Text style={styles.passwordConditionText}>Passwords match</Text>
           </View>
-        </View>)}
+        </View>
+        )}
         <View style={styles.paginationContainer}>
           <View style={[styles.activePaginationDot]} />
           <View style={[styles.inactivePaginationDot]} />
