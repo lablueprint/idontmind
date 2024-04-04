@@ -50,7 +50,7 @@ export default function Options({ navigation }) {
 
     if (!result.canceled) {
       setSelectedImage(result.assets[0].uri);
-      await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/test/uploadImage`, {
+      await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/aws/uploadImage`, {
         imageObject:
        result.assets[0],
       });

@@ -16,7 +16,7 @@ export default function JournalHistoryPage({ navigation }) {
   }; // fetch all the journal entries and set the journals array accordingly
 
   const retrieveImg = async () => {
-    const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/test/getImage`);
+    const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/aws/getImage`);
     setImg(res.data);
   };
   useEffect(() => {

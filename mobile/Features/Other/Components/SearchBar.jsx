@@ -23,10 +23,10 @@ export default function SearchBar({
 
   const handleSearch = async (search, filter) => {
     if (value === 'keyword') {
-      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/test/searchByKeyword`, { keyword: search, filter });
+      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/aws/searchByKeyword`, { keyword: search, filter });
       setResults(res.data);
     } else if (value === 'tag') {
-      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/test/searchByTag`, { tag: search, filter });
+      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/aws/searchByTag`, { tag: search, filter });
       setResults(res.data);
     }
     onSearch(searchQuery);
