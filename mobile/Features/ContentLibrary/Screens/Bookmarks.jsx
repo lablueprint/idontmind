@@ -1,0 +1,135 @@
+import {
+  View, Text, TouchableOpacity, ScrollView, Pressable, Image, FlatList,
+} from 'react-native';
+import PropTypes from 'prop-types';
+import { useEffect, useState, useContext } from 'react';
+import axios from 'axios';
+import Bookmark from '../../Other/Components/Bookmark';
+import TagContext from '../Context/TagContext';
+import folderImg from '../../../assets/folder.png';
+import styles from './BookmarksStyle';
+import Folder from './Folder';
+
+function Bookmarks({ navigation }) {
+  const [favorites, setFavorites] = useState([]);
+
+  const {
+    Favorites, findTag, Tags,
+  } = useContext(TagContext);
+
+  const navigateToContentLibrary = () => {
+    navigation.navigate('Content Library');
+  };
+  const navigateToTag = (_id) => {
+    const index = findTag(_id);
+    navigation.navigate('Tag', { index, routeName: 'Bookmarks' });
+  };
+
+  const folderNames = ['folder1', 'im not creative', 'no ideas', 'cant think', 'of another', ''];
+
+  useEffect(() => {
+    const foo = async () => {
+      try {
+        /* Filling favorites list */
+        const newFavorites = [];
+        Favorites.forEach((id) => {
+          const index = findTag(id);
+          newFavorites.push(Tags[index]);
+        });
+        setFavorites(newFavorites);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    foo();
+  }, [Favorites]);
+
+  return (
+    <View
+      className="mainContainer"
+      style={{
+        display: 'flex', flexDirection: 'column', paddingHorizontal: 25, paddingTop: 50, flex: 1,
+      }}
+    >
+      <TouchableOpacity color="black" onPress={navigateToContentLibrary} style={{ paddingRight: 10, alignSelf: 'flex-start' }}>
+        <Text style={{ fontSize: 34 }}>{'<'}</Text>
+      </TouchableOpacity>
+      <View
+        className="title"
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          borderBottomColor: 'lightgray',
+          borderBottomWidth: 3,
+          alignItems: 'center',
+          justifyContent: 'center',
+          paddingBottom: 20,
+        }}
+      >
+        <Text style={{ fontSize: 34 }}>Bookmarks</Text>
+      </View>
+      <View style={{
+        display: 'flex', flexDirection: 'column', flex: 8, paddingTop: 10,
+      }}
+      >
+        <Text style={{ fontSize: 22 }}>Folders </Text>
+        <View style={{ alignItems: 'center', justifyContents: 'center' }}>
+          <FlatList
+            data={folderNames}
+            renderItem={({ item }) => <Folder folderName={item} />}
+            keyExtractor={(item, index) => index.toString()}
+            numColumns={3}
+            contentContainerStyle={{ margin: -10 }}
+          />
+        </View>
+      </View>
+      <View style={{ flex: 1 }} />
+      <View style={{
+        display: 'flex', flexDirection: 'column', flex: 8,
+      }}
+      >
+        <Text style={{ fontSize: 22 }}>
+          Resources
+        </Text>
+
+        <View style={{ height: 600, width: '110%' }}>
+          <ScrollView>
+            {
+                favorites.map((item) => {
+                  let resourceName;
+                  if (item.Title) {
+                    resourceName = item.Title;
+                  } else if (item['Journal Prompts']) {
+                    resourceName = item['Journal Prompts'];
+                  } else {
+                    resourceName = item.Question;
+                  }
+                  return (
+                    <Pressable onPress={() => navigateToTag(item._id)}>
+                      <Bookmark
+                        key={resourceName}
+                        resourceName={resourceName}
+                        author={item.Author}
+                        style={{}}
+                      >
+                        {item.Author}
+                      </Bookmark>
+                    </Pressable>
+                  );
+                })
+              }
+          </ScrollView>
+        </View>
+      </View>
+      <View style={{ flex: 1 }} />
+    </View>
+  );
+}
+
+export default Bookmarks;
+
+Bookmarks.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+  }).isRequired,
+};
