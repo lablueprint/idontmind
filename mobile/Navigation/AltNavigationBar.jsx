@@ -9,16 +9,6 @@ import HomeIcon from '../assets/navbaricons/homeicon.png';
 import ContentIcon from '../assets/navbaricons/contenticon.png';
 import FindHelpIcon from '../assets/navbaricons/findhelpicon.png';
 import GreenCircle from '../assets/navbaricons/greencircle.png';
-import Feed from '../Features/Other/Screens/Feed';
-import CheckIn from '../Features/Other/Screens/CheckIn';
-import TrendsPage from '../Trends/Screens/TrendsPage';
-import JournalPage from '../Features/Journal/Screens/JournalPage';
-import ContentLibrary from '../Features/Other/Screens/ContentLibrary';
-import PushNotifications from '../Features/Settings/Screens/PushNotifications';
-import FindHelp from '../Features/Other/Screens/FindHelp';
-import Options from '../Features/Other/Screens/Options';
-import JournalHistoryPage from '../Features/Other/Screens/JournalHistoryPage';
-import WOYM from '../Features/Register/WOYM';
 
 const Tab = createBottomTabNavigator();
 
