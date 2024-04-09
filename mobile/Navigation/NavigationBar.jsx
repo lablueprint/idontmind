@@ -12,6 +12,7 @@ import JournalHistoryPage from '../Features/Other/Screens/JournalHistoryPage';
 import WOYM from '../Features/Register/WOYM';
 import DayChallenge from '../Features/Other/Screens/DayChallenge';
 import ContentDashboard from '../Features/Other/Screens/ContentDashboard';
+import Bookmarks from '../Features/ContentLibrary/Screens/Bookmarks';
 
 const Tab = createBottomTabNavigator();
 
@@ -31,6 +32,8 @@ export default function NavigationBar() {
       <Tab.Screen name="WOYM" component={WOYM} options={{ headerShown: false }} />
       <Tab.Screen name="Day Challenge" component={DayChallenge} options={{ headerShown: false }} />
       <Tab.Screen name="Content Dashboard" component={ContentDashboard} options={{ headerShown: false }} />
+      <Tab.Screen name="Bookmarks" component={Bookmarks} options={{ headerShown: false }} />
+
     </Tab.Navigator>
   );
 }

@@ -21,7 +21,7 @@ export default function ContentLibrary({ navigation }) {
   };
 
   const navigateToFavorites = () => {
-    navigation.navigate('Favorites');
+    navigation.navigate('Bookmarks');
   };
 
   /* List of Tags */
