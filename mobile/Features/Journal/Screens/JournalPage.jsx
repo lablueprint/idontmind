@@ -23,8 +23,9 @@ export function JournalPage({ navigation, freeWrite, isHistory, body, isDetails}
   from the previous navigation page (JournalHistoryPage) */
   const [selectedImage, setSelectedImage] = useState(null);
   const [viewImage, setViewImage] = useState(false);
-  const [title, setTitle] = useState();
+  const [title, setTitle] = useState('');
   const [prompts, setPrompts] = useState([]);
+  const [freeWriteTitle, setFreeWriteTitle] = useState('');
 
   // console.log("HISTORY PART 2", isHistory);
   // console.log("BODY PART 2", body);
@@ -84,8 +85,9 @@ export function JournalPage({ navigation, freeWrite, isHistory, body, isDetails}
       console.log(title);
       return <Text style={styles.prompt}>{title}</Text>;
     }
-    return <TextInput style={{ backgroundColor: 'gray' }} multiline placeholder="Add Title..." onChangeText={setTitle} value={title} />;
+      return <TextInput style={{ backgroundColor: 'gray' }} multiline placeholder="Add Title..." onChangeText={(text) => setFreeWriteTitle(text)} value={freeWriteTitle} />;
   };
+  console.log("free write title", freeWriteTitle);
 
   const currDate = new Date();
 
@@ -142,6 +144,8 @@ export function JournalPage({ navigation, freeWrite, isHistory, body, isDetails}
   /* render it in two different ways depending on if isHistory(if false, editable text box, if
   true, uneditable text box with previously written text) */
   console.log("IN JOURNAL");
+  const journalTitle = freeWrite ? title : freeWriteTitle;
+  console.log("journal title: " , journalTitle);
   if (!isHistory) {
     return (
       <ScrollView style={{ flex: 1 }}>
@@ -173,7 +177,7 @@ export function JournalPage({ navigation, freeWrite, isHistory, body, isDetails}
                       <Text style={{ fontSize: 20 }}>confirm journal entry?</Text>
                       <Pressable
                         style={styles.modalSelections}
-                        onPress={() => addNewJournal(username, title, text)}
+                        onPress={() => addNewJournal(username, journalTitle, text)}
                       >
                         <Text>
                           yes

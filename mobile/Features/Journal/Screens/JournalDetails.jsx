@@ -14,7 +14,7 @@ export default function JournalDetails({ navigation }) {
   const text = route.params?.body;
   const date = route.params?.day;
 
-//   console.log("body", body);
+   console.log("body", text);
 
   const navigateToJournalHistory = () => {
     navigation.navigate('Journal History');
@@ -23,10 +23,11 @@ export default function JournalDetails({ navigation }) {
   return (
     <ScrollView contentContainerStyle={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <View style={styles.container}>
+      <Text>{prompt}</Text>
+      <Text>{date}</Text>
         {/* {getPrompt(freeWrite)} */}
         <View style={styles.textBox}>
           <ScrollView automaticallyAdjustKeyboardInsets>
-            <Text>{prompt}</Text>
             <Text>{text}</Text>
           </ScrollView>
         </View>

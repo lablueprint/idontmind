@@ -219,7 +219,7 @@ export default function CalendarPage({ navigation }) {
       {clickedDate ? 
       <View>
         <Text>Past Entries</Text>
-          {filteredJournals.reverse().map((x) => (
+          {[...filteredJournals].reverse().map((x) => (
             <JournalCard
               key={x._id}
               username={x.username}
@@ -233,7 +233,7 @@ export default function CalendarPage({ navigation }) {
       </View> :
       <View>
         <Text>Recent Entries</Text>
-          {recentJournals.reverse().map((x) => (
+          {[...recentJournals].reverse().map((x) => (
             <JournalCard
               key={x._id}
               username={x.username}
