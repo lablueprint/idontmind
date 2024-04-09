@@ -14,6 +14,12 @@ export default function CalendarPage({ navigation }) {
   const [filteredJournals, setFilteredJournals] = useState([]);
   const [clickedDate, setClickedDate] = useState(false);
 
+  const formatDate = (dateString) => {
+    const options = { month: 'long', day: 'numeric', year: 'numeric' };
+    const formattedDate = new Date(dateString).toLocaleDateString(undefined, options);
+    return formattedDate;
+  };
+
   const datesAreOnSameDay = (first, second) => {
     console.log(`firstTime: ${first}`);
     console.log(`secondTime: ${second}`);
@@ -43,29 +49,36 @@ export default function CalendarPage({ navigation }) {
   useEffect(() => {
     getAllJournals();
   }, []);
-
   const handleDateSelect = (date) => {
-    object_date = new Date(date.dateString);
-    todayDate = new Date();
-    console.log('OBJECT FULL DATE:', object_date);
+    // Convert selected date to Pacific Time Zone
+    const pacificDate = new Date(`${date.dateString}T00:00:00-07:00`); // Assuming the selected date is in YYYY-MM-DD format
+
+    // Use the Pacific Time Zone date for further processing
+    const objectDate = new Date(pacificDate);
+    const todayDate = new Date();
+    console.log('OBJECT FULL DATE:', objectDate);
     console.log('TODAY FULL DATE:', todayDate);
 
-    console.log('OBJECT DAY:', object_date.getUTCDate());
+    console.log('OBJECT DAY:', objectDate.getUTCDate());
     console.log('TODAY DAY:', todayDate.getDate());
 
-    if (
-      object_date.getUTCDate() === todayDate.getDate()
-      && object_date.getUTCMonth() === todayDate.getMonth()
-      && object_date.getYear() === todayDate.getYear()
-    ) {
+    if (selectedDate && objectDate.getTime() === selectedDate.getTime() && clickedDate) {
       setClickedDate(false);
     } else {
-      setClickedDate(true);
+      if (
+        objectDate.getDate() === todayDate.getDate()
+            && objectDate.getMonth() === todayDate.getMonth()
+            && objectDate.getFullYear() === todayDate.getFullYear()
+      ) {
+        setClickedDate(true); // Set clickedDate to true for the current date
+      } else {
+        setClickedDate(true); // Set clickedDate to true for other dates
+      }
+      setSelectedDate(objectDate);
+      const journals = [...allJournals];
+      setFilteredJournals(journals.filter((journal) => datesAreOnSameDay(new Date(journal.timestamp), objectDate)));
+      console.log(`filtered journals: ${filteredJournals}`);
     }
-    setSelectedDate(object_date);
-    const journals = [...allJournals];
-    setFilteredJournals(journals.filter((journal) => datesAreOnSameDay(new Date(journal.timestamp), object_date)));
-    console.log(`filtered journals: ${filteredJournals}`);
   };
 
   const customDayHeaderStyles = ({ dayOfWeek, month, year }) => ({
@@ -104,7 +117,9 @@ export default function CalendarPage({ navigation }) {
   });
 
   const navigateToPastJournal = (username, prompt, text, date) => {
-    navigation.navigate('JournalDetails', { user: username, question: prompt, body: text, day: date });
+    navigation.navigate('JournalDetails', {
+      user: username, question: prompt, body: text, day: date,
+    });
   }; /* navigate to the past journal entry, isHistory
    is set to true (uneditable text box with the corresponding prompt) */
 
@@ -225,7 +240,7 @@ export default function CalendarPage({ navigation }) {
                 <JournalCard
                   key={x._id}
                   username={x.username}
-                  date={x.timestamp}
+                  date={formatDate(x.timestamp)}
                   prompt={x.prompt}
                   text={x.text}
                   onPress={navigateToPastJournal}
@@ -242,7 +257,7 @@ export default function CalendarPage({ navigation }) {
                 <JournalCard
                   key={x._id}
                   username={x.username}
-                  date={x.timestamp}
+                  date={formatDate(x.timestamp)}
                   prompt={x.prompt}
                   text={x.text}
                   onPress={navigateToPastJournal}
