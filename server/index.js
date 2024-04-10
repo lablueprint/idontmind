@@ -26,6 +26,7 @@ const userRouter = require('./routes/userRoute');
 const contentRouter = require('./routes/contentRoute');
 const offJournalRouter = require('./routes/offJournalRoute');
 const offUserRouter = require('./routes/offUserRoute');
+const timeSerieRouter = require('./routes/TimeSerieRoute');
 
 // Connect to the MongoDB database
 async function connectToDatabase() {
@@ -53,6 +54,7 @@ app.use('/users', userRouter);
 app.use('/content', contentRouter);
 app.use('/offUser', offUserRouter);
 app.use('/offJournal', offJournalRouter);
+app.use('/timeSerie', timeSerieRouter);
 
 app.get('/', (req, res) => {
   res.send('Hello World!');

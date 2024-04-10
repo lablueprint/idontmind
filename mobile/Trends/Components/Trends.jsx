@@ -1,20 +1,39 @@
 import { useState } from 'react';
 import {
-  Button, View, Text, ScrollView, TouchableOpacity,
+  Button, View, Text, ScrollView, TouchableOpacity, StyleSheet, Image,
 } from 'react-native';
 import { BarChart, LineChart } from 'react-native-gifted-charts';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import PropTypes from 'prop-types';
+import { AnimatedCircularProgress } from 'react-native-circular-progress';
+import { LinearGradient } from 'expo-linear-gradient';
 import styles from './TrendsStyle';
 import { data, barData } from './TrendsData';
 import TrendsHeader from './TrendsHeader';
+import TrendImage from '../../assets/TrendImage.png';
 
-function TrendSection({header, description, buttonText}) {
-  return(
-    <View style={{display: 'flex', flexDirection: 'column', gap: 10}}>
-      <Text style={{fontSize: 24}}>{header}</Text>
-      <Text style={{fontSize: 14}}>{description}</Text>
+const style = StyleSheet.create({
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    backgroundColor: 'white',
+  },
+  row: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  column: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+});
+
+function TrendSection({ header, description, buttonText }) {
+  return (
+    <View style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+      <Text style={{ fontSize: 24 }}>{header}</Text>
+      <Text style={{ fontSize: 14 }}>{description}</Text>
       <LineChart
         data={data}
         width={300}
@@ -28,11 +47,70 @@ function TrendSection({header, description, buttonText}) {
   );
 }
 
+function CircleProgress() {
+  return (
+    <View>
+      <AnimatedCircularProgress
+        size={90}
+        width={12}
+        fill={75}
+        tintColor="#374342"
+        onAnimationComplete={() => console.log('onAnimationComplete')}
+        backgroundColor="#F6FCFC"
+        rotation={180}
+        lineCap="round"
+      />
+    </View>
+  );
+}
+
+function CircleSection({ header, description }) {
+  return (
+    <View style={[styles.column, { marginBottom: 30 }]}>
+      <View style={[styles.row, { justifyContent: 'space-between', marginBottom: 30 }]}>
+        <View style={[styles.column]}>
+          <Text style={{ marginTop: 10, marginBottom: 10, fontSize: '20rem' }}>
+            {header}
+          </Text>
+          <Text>
+            {description}
+          </Text>
+        </View>
+        <View>
+          <Button title=">" color="black" onPress={() => changeWeek(1)} />
+        </View>
+      </View>
+      <View style={[styles.row, { justifyContent: 'space-between' }]}>
+        <CircleProgress />
+        <CircleProgress />
+        <CircleProgress />
+      </View>
+    </View>
+
+  );
+}
+
+function WaterSection() {
+  return (
+    <View style={[styles.column]}>
+      <View style={[styles.row, { justifyContent: 'space-between', marginBottom: 30, paddingHorizontal: 50 }]}>
+        <CircleProgress />
+        <CircleProgress />
+      </View>
+    </View>
+  );
+}
+
 TrendSection.propTypes = {
   header: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   buttonText: PropTypes.string.isRequired,
-}
+};
+
+CircleSection.propTypes = {
+  header: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+};
 
 function TrendTab({ view }) {
   // -1 = last week, 0 = this week, 1 = next week, etc.
@@ -63,8 +141,8 @@ function TrendTab({ view }) {
       case 'week': // week does not work
         start.setDate(current.getDate() + (weekOffset * 7) - current.getDay());
         end.setDate(start.getDate() + 6);
-        startDate = start.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-        endDate = end.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        startDate = start.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
+        endDate = end.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
         return `${startDate} - ${endDate}`.toLowerCase();
 
       case 'month':
@@ -86,50 +164,49 @@ function TrendTab({ view }) {
   };
 
   return (
-    <View style={{display: 'flex', flexDirection: 'column'}}>
-      <ScrollView style={{ backgroundColor: '#FFF8F8' }} showsVerticalScrollIndicator={false}>
-        <View style={styles.container}>
-          <View className="header" style={{ marginTop: 40 }}>
-            <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
-              <Text style={styles.title}>Trends</Text>
-              <View style={{alignSelf: 'center', display: 'flex', flexDirection: 'row', gap: 20, marginRight: 10}}>
+    <View style={{ display: 'flex', flexDirection: 'column' }}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <LinearGradient colors={['#E0F1F3', '#E5F8F3']} style={[styles.container, { flex: 1 }]}>
+          <View className="header" style={{ marginTop: 40, marginBottom: 100 }}>
+            <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+              <View style={{position: 'relative'}}>
+                <Image source={TrendImage} style={{position: 'absolute', height: 75, width: 125 }}/>
+                <Text style={styles.title}>Trends</Text>
+              </View>
+
+              <View style={{
+                alignSelf: 'center', display: 'flex', flexDirection: 'row', gap: 20, marginRight: 10,
+              }}
+              >
                 <TouchableOpacity>
-                  <Text style={{fontSize: 18}}>Week</Text>
+                  <Text style={{ fontSize: 18 }}>Week</Text>
                 </TouchableOpacity>
                 <TouchableOpacity>
-                  <Text style={{fontSize: 18}}>Month</Text>                                
+                  <Text style={{ fontSize: 18 }}>Month</Text>
                 </TouchableOpacity>
               </View>
             </View>
-            <Text style={{ marginBottom: 10, fontSize: 14 }}>
-              General Insights
-            </Text>
-            <View style={styles.line} />
+            <CircleSection header="Activity" description="Water, food, and movement at a glance." />
+            <WaterSection />
+            <CircleSection header="Emotion" description="Feelings, goals, and outlook" />
           </View>
-          <View style={{ marginTop: 20 }}>
-            <View style={{gap: 35}}>
-              <TrendSection header="Mood and Sleep" description="Discovering how mood and sleep intertwine offers valuable insights for a healthier, happier you." buttonText="button"/>
-              <TrendSection header="Mood and Sleep" description="Discovering how mood and sleep intertwine offers valuable insights for a healthier, happier you." buttonText="button"/>
-              <TrendSection header="Mood and Sleep" description="Discovering how mood and sleep intertwine offers valuable insights for a healthier, happier you." buttonText="button"/>        
-            </View>    
-          </View>                
-        </View>
+        </LinearGradient>
       </ScrollView>
-      <View style={{flex: 1}}>
-        <View style={[styles.weekContainer, {position: 'absolute', left: 0, right: 0, bottom: 0, backgroundColor: 'white'}]}>
+      <View style={{ flex: 1 }}>
+        <View style={[styles.weekContainer, {
+          position: 'absolute', left: 0, right: 0, bottom: 0, backgroundColor: '#BFDBD7', borderTopLeftRadius: 50, borderTopRightRadius: 50,
+        }]}
+        >
           <Button title="<" color="black" onPress={() => changeWeek(-1)} />
-          <View style={styles.displayWeek}>
-            <Text style={styles.weekText}>
-              {getWeekText()}
-            </Text>
+          <LinearGradient colors={['#374342', '#546967']} style={styles.displayWeek}>
             <Text style={styles.dateText}>
               {getDate()}
             </Text>
-          </View>
+          </LinearGradient>
           <Button title=">" color="black" onPress={() => changeWeek(1)} />
         </View>
-    </View>    
-  </View>    
+      </View>
+    </View>
   );
 }
 

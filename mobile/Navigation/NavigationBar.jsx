@@ -3,6 +3,7 @@ import PostSignInLanding from '../Features/Other/Screens/PostSignInLanding';
 import Feed from '../Features/Other/Screens/Feed';
 import CheckIn from '../Features/Other/Screens/CheckIn';
 import TrendsPage from '../Trends/Screens/TrendsPage';
+import TrendsBody from '../Trends/Screens/TrendsBody';
 import JournalPage from '../Features/Journal/Screens/JournalPage';
 import ContentLibrary from '../Features/Other/Screens/ContentLibrary';
 import FindHelp from '../Features/Other/Screens/FindHelp';
@@ -21,6 +22,7 @@ export default function NavigationBar() {
       <Tab.Screen name="Feed" component={Feed} options={{ headerShown: false }} />
       <Tab.Screen name="CheckIn" component={CheckIn} options={{ headerShown: false }} />
       <Tab.Screen name="Trends" component={TrendsPage} options={{ headerShown: false }} />
+      <Tab.Screen name="TrendsBody" component={TrendsBody} options={{ headerShown: false }} />
       <Tab.Screen name="Journal" component={JournalPage} options={{ headerShown: false }} />
       <Tab.Screen name="Journal History" component={JournalHistoryPage} options={{ headerShown: false }} />
       <Tab.Screen name="Content Library" component={ContentLibrary} options={{ headerShown: false }} />
