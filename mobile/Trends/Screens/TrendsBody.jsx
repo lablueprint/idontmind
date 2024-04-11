@@ -5,23 +5,8 @@ import axios from 'axios';
 import { useEffect } from 'react';
 import { LineChart } from 'react-native-gifted-charts';
 import PropTypes from 'prop-types';
-import { data, data2 } from '../Components/TrendsData';
 
-function TrendSection({ header, description, buttonText }) {
-  useEffect(() => {
-    const getAllTimeSeries = async () => {
-      try {
-        const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/timeSerie/getAllTimeSeries`, {
-          email: 'booooooop',
-          userId: 'booop',
-        });
-        console.log(res.data);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    getAllTimeSeries();
-  }, []);
+function TrendSection({ header, description, buttonText, data, data2 }) {
   return (
     <View style={{
       display: 'flex', flexDirection: 'column', gap: 10,
@@ -58,11 +43,46 @@ TrendSection.propTypes = {
 };
 
 export default function TrendsBody() {
+  let ThisData = null;
+  let ThisData2 = null;
+  useEffect(() => {
+    const getAllTimeSeries = async () => {
+      try {
+        const weekOffset = 1;
+        const current = new Date();      
+        const start = new Date(current);
+        const end = new Date(current);      
+        start.setMonth(current.getMonth() + weekOffset, 1);
+        end.setMonth(start.getMonth() + 1, 0);              
+        startDate = start.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+        endDate = end.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });             
+        console.log(startDate);
+        console.log(endDate);
+        const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/timeSerie/getAllTimeSeries`, {
+          email: 'booooooop',
+          userId: 'booop',
+          startDate,
+          endDate,
+        });
+        const {data, data2} = res.data[0];
+        console.log(data);
+        console.log(data2);
+        ThisData = data;
+        ThisData2 = data2;
+
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    getAllTimeSeries();
+  }, []);
+  console.log(ThisData);
+  console.log(ThisData2);
   return (
     <ScrollView style={{ gap: 35, paddingTop: 50, paddingHorizontal: 30 }}>
-      <TrendSection header="Energy Levels" description="Discovering how mood and sleep intertwine offers valuable insights for a healthier, happier you." buttonText="button" />
-      <TrendSection header="Sleep Quality" description="Discovering how mood and sleep intertwine offers valuable insights for a healthier, happier you." buttonText="button" />
-      <TrendSection header="Mood and Sleep" description="Discovering how mood and sleep intertwine offers valuable insights for a healthier, happier you." buttonText="button" />
+      <TrendSection header="Energy Levels" description="Discovering how mood and sleep intertwine offers valuable insights for a healthier, happier you." buttonText="button" data={ThisData} data2={ThisData2}/>
+      <TrendSection header="Sleep Quality" description="Discovering how mood and sleep intertwine offers valuable insights for a healthier, happier you." buttonText="button" data={ThisData} data2={ThisData2}/>
+      <TrendSection header="Mood and Sleep" description="Discovering how mood and sleep intertwine offers valuable insights for a healthier, happier you." buttonText="button" data={ThisData} data2={ThisData2}/>
     </ScrollView>
   );
 }

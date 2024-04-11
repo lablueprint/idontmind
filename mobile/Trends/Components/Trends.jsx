@@ -3,6 +3,7 @@ import {
   Button, View, Text, ScrollView, TouchableOpacity, StyleSheet, Image,
 } from 'react-native';
 import { BarChart, LineChart } from 'react-native-gifted-charts';
+import axios from 'axios';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import PropTypes from 'prop-types';
@@ -138,7 +139,7 @@ function TrendTab({ view }) {
     let startDate = '';
     let endDate = '';
     switch (view) {
-      case 'week': // week does not work
+      case 'week': // week does not work 
         start.setDate(current.getDate() + (weekOffset * 7) - current.getDay());
         end.setDate(start.getDate() + 6);
         startDate = start.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
@@ -163,6 +164,21 @@ function TrendTab({ view }) {
     return '';
   };
 
+  const InsertManyExamples = async () => {
+    try {
+      const current = new Date();      
+      const start = new Date(current);
+      const end = new Date(current);      
+      start.setMonth(current.getMonth() + weekOffset, 1);
+      end.setMonth(start.getMonth() + 1, 0);      
+      startDate = start.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+      endDate = end.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });      
+      await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/timeSerie/InsertManyExamples`, {leftDate: startDate, rightDate: endDate });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <View style={{ display: 'flex', flexDirection: 'column' }}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -178,7 +194,7 @@ function TrendTab({ view }) {
                 alignSelf: 'center', display: 'flex', flexDirection: 'row', gap: 20, marginRight: 10,
               }}
               >
-                <TouchableOpacity>
+                <TouchableOpacity onPress={InsertManyExamples}>
                   <Text style={{ fontSize: 18 }}>Week</Text>
                 </TouchableOpacity>
                 <TouchableOpacity>
