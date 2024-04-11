@@ -61,10 +61,6 @@ export default function AltNavigationBar() {
                         width: '100%',
                         height: '100%',
                       }}
-                      imageStyle={{
-                        width: '100%',
-                        height: '100%',
-                      }}
                     >
                       <View style={{
                         flex: 1,
@@ -75,7 +71,7 @@ export default function AltNavigationBar() {
                         <Image
                           tintColor="white"
                           source={icons[i]}
-                          style={{ width: size, height: size }}
+                          style={{ width: Dimensions.get('window').height / 25, height: Dimensions.get('window').height / 25 }}
                         />
                       </View>
                     </ImageBackground>
