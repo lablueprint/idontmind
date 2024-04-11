@@ -3,7 +3,7 @@ import {
   Text, View, Pressable, Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import shape from '../../assets/images/shape.png';
+import chev from '../../assets/chevron-up.png';
 import styles from './WOYMStyle';
 
 function WOYM({ navigation }) {
@@ -70,16 +70,25 @@ function WOYM({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.heading}>
-        <Text>
+      <View>
+        <Text style={styles.heading}>
           What&apos;s on your mind?
         </Text>
       </View>
-      <View style={styles.heading}>
+      <View>
+        <Text style={styles.subheading}>
+          Select at least three tags you&apos;re interested in receiving curated content for.
+          You can always change this later.
+        </Text>
+      </View>
+      <View style={styles.pillArea}>
         <View style={styles.titleButton}>
-          <Text>Coping</Text>
+          <Text style={styles.pillTitle}>Coping</Text>
           <Pressable style={styles.arrow} onPress={displayCoping}>
-            <Image source={shape} style={styles.down} />
+            <Image
+              source={chev}
+              style={[styles.down, showCoping ? styles.down : styles.rotated]}
+            />
           </Pressable>
         </View>
         <View style={[styles.pills, showCoping ? styles.showIt : styles.dontShowIt]}>
@@ -89,7 +98,11 @@ function WOYM({ navigation }) {
               style={[styles.pill, cope[1] ? styles.selectedPill : styles.nonselectedPill]}
             >
               <Pressable onPress={() => toggleCoping(cope[0])}>
-                <Text>{cope[0]}</Text>
+                <Text
+                  style={cope[1] ? styles.selectedPillText : styles.nonselectedPillText}
+                >
+                  {cope[0]}
+                </Text>
               </Pressable>
             </View>
           ))}
@@ -97,9 +110,12 @@ function WOYM({ navigation }) {
       </View>
       <View style={styles.heading}>
         <View style={styles.titleButton}>
-          <Text>Emotional Well-Being</Text>
+          <Text style={styles.pillTitle}>Emotional Well-Being</Text>
           <Pressable style={styles.arrow} onPress={displayEWB}>
-            <Image source={shape} style={styles.down} />
+            <Image
+              source={chev}
+              style={[styles.down, showEWB ? styles.down : styles.rotated]}
+            />
           </Pressable>
         </View>
         <View style={[styles.pills, showEWB ? styles.showIt : styles.dontShowIt]}>
@@ -109,7 +125,11 @@ function WOYM({ navigation }) {
               style={[styles.pill, cope[1] ? styles.selectedPill : styles.nonselectedPill]}
             >
               <Pressable onPress={() => toggleEWB(cope[0])}>
-                <Text>{cope[0]}</Text>
+                <Text
+                  style={cope[1] ? styles.selectedPillText : styles.nonselectedPillText}
+                >
+                  {cope[0]}
+                </Text>
               </Pressable>
             </View>
           ))}
