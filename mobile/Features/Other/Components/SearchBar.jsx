@@ -156,7 +156,7 @@ export default function SearchBar({
                   onPress={() => handleRecentSearch(item.query, item.type)}
                 >
                   <View style={SearchBarStyle.rowContainer}>
-                    <Image source={timeline} style={SearchBarStyle.image} />
+                    <Image width={1} source={timeline} style={SearchBarStyle.image} />
                     <Text style={SearchBarStyle.recentText}>{item.query}</Text>
                   </View>
                   <View style={SearchBarStyle.recentType}>

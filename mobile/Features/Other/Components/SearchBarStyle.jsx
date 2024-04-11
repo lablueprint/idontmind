@@ -21,6 +21,7 @@ const SearchBarStyle = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
+    alignItems: 'center',
   },
 
   filtersContainer: {
@@ -56,11 +57,10 @@ const SearchBarStyle = StyleSheet.create({
   },
 
   recentSearch: {
-    display: 'flex',
+    alignItems: 'center',
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    margin: 5,
     marginTop: 15,
     width: '90%',
   },
@@ -83,10 +83,12 @@ const SearchBarStyle = StyleSheet.create({
     height: 1,
     backgroundColor: '#ccc',
     width: '100%',
-    marginTop: 5,
+    marginTop: 20,
   },
   image: {
     marginRight: 10,
+    width: 25,
+    height: 25,
   },
   resultText: {
     marginBottom: 15,
