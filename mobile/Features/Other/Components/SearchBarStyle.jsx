@@ -17,8 +17,10 @@ const SearchBarStyle = StyleSheet.create({
   },
 
   rowContainer: {
+    display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
+    justifyContent: 'space-between',
   },
 
   filtersContainer: {
@@ -54,14 +56,22 @@ const SearchBarStyle = StyleSheet.create({
   },
 
   recentSearch: {
-    alignItems: 'left',
-    justifyContent: 'center',
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
     margin: 5,
     marginTop: 15,
+    width: '90%',
   },
   recentText: {
     fontSize: 15,
     color: 'rgba(81, 82, 86, 0.80)',
+  },
+  recentType: {
+    backgroundColor: '#D2E4E3',
+    borderRadius: '50%',
+    padding: '3%',
   },
   text: {
     fontSize: 17,
@@ -72,7 +82,7 @@ const SearchBarStyle = StyleSheet.create({
   line: {
     height: 1,
     backgroundColor: '#ccc',
-    width: '90%',
+    width: '100%',
     marginTop: 5,
   },
   image: {

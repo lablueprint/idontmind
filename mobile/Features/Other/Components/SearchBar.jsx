@@ -14,33 +14,33 @@ export default function SearchBar({
   visible, onClose, onSearch, recentSearches,
 }) {
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState('tag');
+  const [value, setValue] = useState('Tags');
   const [results, setResults] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterQuery, setFilterQuery] = useState('All');
   const [enterPressed, setEnterPressed] = useState(false);
   const searchFilters = ['All', 'Articles', 'Q&A', 'Personal Stories', 'Exercises'];
 
-  const handleSearch = async (search, filter) => {
-    if (value === 'keyword') {
+  const handleSearch = async (search, filter, type = value) => {
+    if (type === 'Keywords') {
       const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/test/searchByKeyword`, { keyword: search, filter });
       setResults(res.data);
-    } else if (value === 'tag') {
+    } else if (type === 'Tags') {
       const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/test/searchByTag`, { tag: search, filter });
       setResults(res.data);
     }
-    onSearch(searchQuery);
   };
 
-  const handleRecentSearch = (query) => {
+  const handleRecentSearch = (query, type) => {
+    setValue(type);
     setSearchQuery(query);
-    handleSearch(query, filterQuery);
+    handleSearch(query, filterQuery, type);
     setEnterPressed(true);
   };
 
   const [items, setItems] = useState([
-    { label: 'Tags', value: 'tag' },
-    { label: 'Keywords', value: 'keyword' },
+    { label: 'Tags', value: 'Tags' },
+    { label: 'Keywords', value: 'Keywords' },
   ]);
 
   return (
@@ -49,7 +49,7 @@ export default function SearchBar({
         <View style={SearchBarStyle.topContainer}>
           <DropDownPicker
             placeholder="Tags"
-            defaultValue="tag"
+            defaultValue="Tags"
             open={open}
             value={value}
             items={items}
@@ -67,9 +67,18 @@ export default function SearchBar({
             placeholder="Search..."
             placeholderTextColor="#000"
             value={searchQuery}
-            onChangeText={(text) => setSearchQuery(text)}
+            onChangeText={async (text) => {
+              setSearchQuery(text);
+              if (text === '') {
+                setEnterPressed(false);
+                return;
+              }
+              setEnterPressed(true);
+              await handleSearch(text, filterQuery);
+            }}
             onSubmitEditing={async () => {
               setEnterPressed(true);
+              onSearch(searchQuery, value);
               await handleSearch(searchQuery, filterQuery);
             }}
             onFocus={() => setEnterPressed(false)}
@@ -141,14 +150,17 @@ export default function SearchBar({
           <Text style={SearchBarStyle.text}> Recent Searches </Text>
           <View>
             {recentSearches.map((item) => (
-              <View key={item}>
+              <View key={item.query + item.type}>
                 <TouchableOpacity
                   style={SearchBarStyle.recentSearch}
-                  onPress={() => handleRecentSearch(item)}
+                  onPress={() => handleRecentSearch(item.query, item.type)}
                 >
                   <View style={SearchBarStyle.rowContainer}>
                     <Image source={timeline} style={SearchBarStyle.image} />
-                    <Text style={SearchBarStyle.recentText}>{item}</Text>
+                    <Text style={SearchBarStyle.recentText}>{item.query}</Text>
+                  </View>
+                  <View style={SearchBarStyle.recentType}>
+                    <Text>{item.type}</Text>
                   </View>
                   <View style={SearchBarStyle.line} />
                 </TouchableOpacity>
@@ -194,5 +206,10 @@ SearchBar.propTypes = {
   visible: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onSearch: PropTypes.func.isRequired,
-  recentSearches: PropTypes.arrayOf(PropTypes.string).isRequired,
+  recentSearches: PropTypes.arrayOf(
+    PropTypes.shape({
+      query: PropTypes.string.isRequired,
+      type: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
 };
