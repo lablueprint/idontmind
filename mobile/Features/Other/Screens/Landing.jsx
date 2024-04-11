@@ -18,6 +18,10 @@ export default function Landing({ navigation }) {
     navigation.navigate('NavigationBar');
   };
 
+  const navigateToCheckIn = () => {
+    navigation.navigate('CheckIn');
+  };
+
   const dispatch = useDispatch();
 
   // Handles a hardcoded login for testing
@@ -65,6 +69,10 @@ export default function Landing({ navigation }) {
       <Button
         title="To Splash"
         onPress={navigateToSplash}
+      />
+      <Button
+        title="To CheckIn"
+        onPress={navigateToCheckIn}
       />
       <Button
         title="To Loading"
