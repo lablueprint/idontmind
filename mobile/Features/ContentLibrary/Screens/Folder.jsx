@@ -11,7 +11,10 @@ export default function Folder({
 }) {
   if (folderName.length !== 0) {
     return (
-      <Pressable>
+      <Pressable onPress={() => {
+        console.log(folderName);
+      }}
+      >
         <View style={style.folderContainer}>
           <Image source={folderImg} />
           <Text>{folderName}</Text>
@@ -21,7 +24,10 @@ export default function Folder({
   }
 
   return (
-    <Pressable>
+    <Pressable onPress={() => {
+      console.log('add');
+    }}
+    >
       <View style={style.addContainer}>
         <Text style={style.plus}>+</Text>
       </View>

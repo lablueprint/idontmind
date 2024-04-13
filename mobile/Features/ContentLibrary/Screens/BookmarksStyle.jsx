@@ -25,6 +25,34 @@ const BookmarksStyle = StyleSheet.create({
     fontSize: 50,
     color: '#767C7C',
   },
+  filtersContainer: {
+    marginBottom: 20,
+  },
+  filterButton: {
+    backgroundColor: '#D2E4E3',
+    borderRadius: 50,
+    marginRight: 10,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+  },
+  filterQuery: {
+    backgroundColor: '#546967',
+  },
+  pill: {
+    backgroundColor: '#D2E4E3',
+
+    padding: 10,
+    margin: 5,
+
+    borderRadius: 50,
+  },
+  pills: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    top: 100,
+
+  },
 });
 
 export default BookmarksStyle;
