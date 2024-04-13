@@ -1,18 +1,20 @@
 import {
-  Text, View, TouchableOpacity, Image, ScrollView, Pressable,
+  Text, View, TouchableOpacity, Image, ScrollView,
 } from 'react-native';
 import PropTypes from 'prop-types';
+import Swiper from 'react-native-swiper';
 import axios from 'axios';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import starImage from '../../../assets/star.png';
+import leftArrow from '../../../assets/left.png';
+import rightArrow from '../../../assets/right.png';
 import shapeImage from '../../../assets/shape.png';
 import cancelImage from '../../../assets/cancel.png';
 import goldStar from '../../../assets/goldStar.png';
 import style from '../Components/ContentStyle';
 import TagContext from '../Context/TagContext';
-import styles from './BookmarksStyle';
 
-export default function Tag({ navigation, route }) {
+export default function Tagold({ navigation, route }) {
   /* index of corresponding Tag */
   const { index, routeName } = route.params;
 
@@ -29,8 +31,6 @@ export default function Tag({ navigation, route }) {
 
   /* Checks if current tag is in users favorite list */
   const favorited = findFavorite(_id);
-
-  const subtopics = ['Tag', 'Creativity', 'Energy', 'Environment', 'Exercise', 'Fitness', 'Health', 'Journaling', 'Medication']; // hardcoded for now, i think tag content list
 
   const navigateToPreviousRoute = () => {
     navigation.navigate(routeName);
@@ -56,11 +56,6 @@ export default function Tag({ navigation, route }) {
     } else {
       unfavoriteTag();
     }
-  };
-
-  const navigateToResourceList = (subtopicName) => {
-    console.log(subtopicName);
-    navigation.navigate('Resource List', { subtopicName });
   };
 
   return (
@@ -110,7 +105,7 @@ export default function Tag({ navigation, route }) {
         </View>
       </View>
       <View style={[style.row, {
-        flexBasis: 35, flex: 4, flexDirection: 'column',
+        flexBasis: 35, flex: 2, flexDirection: 'column',
       }]}
       >
         <Image
@@ -124,26 +119,13 @@ export default function Tag({ navigation, route }) {
         />
         <View
           style={{
-            flex: 3, flexDirection: 'column', borderBottomColor: 'lightgrey', borderBottomWidth: 1,
+            flex: 2, flexDirection: 'column', borderBottomColor: 'lightgrey', borderBottomWidth: 1,
           }}
         >
           <Text
             style={{ fontSize: 32 }}
           >
             {tagName}
-          </Text>
-          <Text
-            style={{ fontSize: 12 }}
-          >
-            Prioritizing lifestyle and wellness practices is beneficial
-            for mental health as they promote balance, resilience, and
-            positive coping mechanisms, fostering a sense of well-being
-            and inner harmony.
-          </Text>
-          <Text
-            style={{ fontSize: 12 }}
-          >
-            Click on a subtopic to see specific resources
           </Text>
           <ScrollView
             style={{ flex: 1 }}
@@ -163,29 +145,85 @@ export default function Tag({ navigation, route }) {
           </ScrollView>
         </View>
 
-        <View style={styles.pills}>
-          {subtopics.map((item) => (
-            <View
-              key={item}
-              style={styles.pill}
-            >
-              <Pressable onPress={() => navigateToResourceList(item)}>
-                <Text>{item}</Text>
-              </Pressable>
-            </View>
-          ))}
-        </View>
       </View>
-      <View />
       <View
         style={{ flex: 2 }}
-      />
+      >
+        <View
+          style={{ flex: 1, flexDirection: 'row' }}
+        >
+          <View
+            style={{
+              flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+            }}
+          >
+            <View>
+              <Image
+                style={{
+                  width: 15, height: 15, marginTop: 7, marginRight: 3, opacity: 0.4,
+                }}
+                source={leftArrow}
+              />
+            </View>
+          </View>
+          <View style={{
+            flex: 3, alignItems: 'center', justifyContent: 'center',
+          }}
+          >
+            <Text style={{ opacity: 0.5, fontSize: 22, paddingTop: 8 }}>
+              explore.
+            </Text>
+          </View>
+          <View
+            style={{
+              flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+            }}
+          >
+            <View style={{ alignSelf: 'flex-end' }}>
+              <Image
+                style={{
+                  width: 15, height: 15, marginTop: 7, marginRight: 3, opacity: 0.4,
+                }}
+                source={rightArrow}
+              />
+            </View>
+          </View>
+        </View>
+        <View
+          style={{ flex: 4 }}
+        >
+          <Swiper
+            loop={false}
+          >
+            {/* eventually want to map the tag's content list */}
+            {[].map((key, item) => (
+              <View style={{
+                flex: 1, padding: 10,
+              }}
+              >
+                <View style={{
+                  flex: 3, backgroundColor: 'lightgrey', borderRadius: 10, alignItems: 'center', justifyContent: 'center',
+                }}
+                >
+                  <Text>
+                    {item.tagName}
+                  </Text>
+                </View>
+                <View style={{
+                  flex: 1,
+                }}
+                />
+              </View>
+            ))}
+          </Swiper>
+        </View>
+      </View>
     </View>
 
   );
 }
 
-Tag.propTypes = {
+Tagold.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func,
   }).isRequired,

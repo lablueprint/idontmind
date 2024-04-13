@@ -6,7 +6,6 @@ import { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import Bookmark from '../../Other/Components/Bookmark';
 import TagContext from '../Context/TagContext';
-import folderImg from '../../../assets/folder.png';
 import styles from './BookmarksStyle';
 import Folder from './Folder';
 
@@ -20,12 +19,14 @@ function Bookmarks({ navigation }) {
   const navigateToContentLibrary = () => {
     navigation.navigate('Content Library');
   };
-  const navigateToTag = (_id) => {
-    const index = findTag(_id);
-    navigation.navigate('Tag', { index, routeName: 'Bookmarks' });
+  const navigateToResource = (item) => {
+    const resourceName = item.Title ? item.Title : 'hardcoded title';
+    navigation.navigate('Resource', { resourceName, routeName: 'Bookmarks' });
   };
 
   const folderNames = ['folder1', 'im not creative', 'no ideas', 'cant think', 'of another', ''];
+  const filters = ['All', 'Tags', 'Resources'];
+  const [filterQuery, setFilterQuery] = useState('All');
 
   useEffect(() => {
     const foo = async () => {
@@ -72,6 +73,31 @@ function Bookmarks({ navigation }) {
         display: 'flex', flexDirection: 'column', flex: 8, paddingTop: 10,
       }}
       >
+        <View style={styles.filtersContainer}>
+          <ScrollView horizontal>
+            {filters.map((item) => (
+              <TouchableOpacity
+                key={item}
+                onPress={() => {
+                  if (item !== filterQuery) {
+                    setFilterQuery(item);
+                    console.log(filterQuery);
+                  }
+                }}
+                style={[
+                  styles.filterButton,
+                  filterQuery === item && styles.filterQuery,
+                ]}
+              >
+                <Text style={filterQuery === item
+                  ? styles.whiteText : styles.blackText}
+                >
+                  {item}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        </View>
         <Text style={{ fontSize: 22 }}>Folders </Text>
         <View style={{ alignItems: 'center', justifyContents: 'center' }}>
           <FlatList
@@ -105,7 +131,7 @@ function Bookmarks({ navigation }) {
                     resourceName = item.Question;
                   }
                   return (
-                    <Pressable onPress={() => navigateToTag(item._id)}>
+                    <Pressable key={resourceName} onPress={() => navigateToResource(item)}>
                       <Bookmark
                         key={resourceName}
                         resourceName={resourceName}
