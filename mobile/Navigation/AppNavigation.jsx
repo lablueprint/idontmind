@@ -11,6 +11,8 @@ import Filter from '../Features/Other/Screens/Filter';
 import BannedTags from '../Features/Other/Screens/BannedTags';
 import PushNotifications from '../Features/Settings/Screens/PushNotifications';
 import Loading from '../Features/Register/Loading';
+import TrendsTab from '../Trends/Components/Trends';
+import TrendsBody from '../Trends/Screens/TrendsBody';
 
 const Stack = createStackNavigator();
 
@@ -29,6 +31,8 @@ export default function AppNavigation() {
         <Stack.Screen name="BannedTags" component={BannedTags} options={{ headerShown: false }} />
         <Stack.Screen name="PushNotifications" component={PushNotifications} options={{ headerShown: false }} />
         <Stack.Screen name="Loading" component={Loading} options={{ headerShown: false }} />
+        <Stack.Screen name="Trends" component={TrendsTab} options={{ headerShown: false }} />
+        <Stack.Screen name="TrendsBody" component={TrendsBody} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

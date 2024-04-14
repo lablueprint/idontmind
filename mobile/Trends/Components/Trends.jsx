@@ -65,7 +65,7 @@ function CircleProgress() {
   );
 }
 
-function CircleSection({ header, description }) {
+function CircleSection({ header, description, navigateToTrendsBody }) {
   return (
     <View style={[styles.column, { marginBottom: 30 }]}>
       <View style={[styles.row, { justifyContent: 'space-between', marginBottom: 30 }]}>
@@ -78,7 +78,9 @@ function CircleSection({ header, description }) {
           </Text>
         </View>
         <View>
-          <Button title=">" color="black" onPress={() => changeWeek(1)} />
+          <TouchableOpacity onPress={navigateToTrendsBody}>
+            <Text>{'>'}</Text>
+          </TouchableOpacity>
         </View>
       </View>
       <View style={[styles.row, { justifyContent: 'space-between' }]}>
@@ -111,15 +113,20 @@ TrendSection.propTypes = {
 CircleSection.propTypes = {
   header: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
+  navigateToTrendsBody: PropTypes.func.isRequired,
 };
 
-function TrendTab({ view }) {
+function TrendTab({ view, navigation }) {
   // -1 = last week, 0 = this week, 1 = next week, etc.
   const [weekOffset, setWeekOffset] = useState(0);
   // changes the week when navigating the < > buttons
   const changeWeek = (val) => {
     if (weekOffset + val > 0) return;
     setWeekOffset(weekOffset + val);
+  };
+
+  const navigateToTrendsBody = () => {
+    navigation.navigate('TrendsBody');
   };
 
   // map week number to displayed text
@@ -139,7 +146,7 @@ function TrendTab({ view }) {
     let startDate = '';
     let endDate = '';
     switch (view) {
-      case 'week': // week does not work 
+      case 'week': // week does not work
         start.setDate(current.getDate() + (weekOffset * 7) - current.getDay());
         end.setDate(start.getDate() + 6);
         startDate = start.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
@@ -166,14 +173,14 @@ function TrendTab({ view }) {
 
   const InsertManyExamples = async () => {
     try {
-      const current = new Date();      
+      const current = new Date();
       const start = new Date(current);
-      const end = new Date(current);      
+      const end = new Date(current);
       start.setMonth(current.getMonth() + weekOffset, 1);
-      end.setMonth(start.getMonth() + 1, 0);      
-      startDate = start.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-      endDate = end.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });      
-      await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/timeSerie/InsertManyExamples`, {leftDate: startDate, rightDate: endDate });
+      end.setMonth(start.getMonth() + 1, 0);
+      const startDate = start.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+      const endDate = end.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+      await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/timeSerie/InsertManyExamples`, { leftDate: startDate, rightDate: endDate });
     } catch (err) {
       console.error(err);
     }
@@ -184,27 +191,10 @@ function TrendTab({ view }) {
       <ScrollView showsVerticalScrollIndicator={false}>
         <LinearGradient colors={['#E0F1F3', '#E5F8F3']} style={[styles.container, { flex: 1 }]}>
           <View className="header" style={{ marginTop: 40, marginBottom: 100 }}>
-            <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-              <View style={{position: 'relative'}}>
-                <Image source={TrendImage} style={{position: 'absolute', height: 75, width: 125 }}/>
-                <Text style={styles.title}>Trends</Text>
-              </View>
-
-              <View style={{
-                alignSelf: 'center', display: 'flex', flexDirection: 'row', gap: 20, marginRight: 10,
-              }}
-              >
-                <TouchableOpacity onPress={InsertManyExamples}>
-                  <Text style={{ fontSize: 18 }}>Week</Text>
-                </TouchableOpacity>
-                <TouchableOpacity>
-                  <Text style={{ fontSize: 18 }}>Month</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-            <CircleSection header="Activity" description="Water, food, and movement at a glance." />
+            <TrendsHeader />
+            <CircleSection header="Activity" description="Water, food, and movement at a glance." navigateToTrendsBody />
             <WaterSection />
-            <CircleSection header="Emotion" description="Feelings, goals, and outlook" />
+            <CircleSection header="Emotion" description="Feelings, goals, and outlook" navigateToTrendsBody />
           </View>
         </LinearGradient>
       </ScrollView>
@@ -228,6 +218,9 @@ function TrendTab({ view }) {
 
 TrendTab.propTypes = {
   view: PropTypes.string.isRequired,
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 function WeekTab() {
