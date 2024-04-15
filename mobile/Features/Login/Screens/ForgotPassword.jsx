@@ -3,45 +3,9 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
+import styles from './ForgotPasswordStyle';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
-
-const styles = StyleSheet.create({
-  emailInput: {
-    width: '100%',
-    height: 50,
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#000',
-    borderRadius: 8,
-  },
-  shadowProp: {
-    shadowColor: '#171717',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.5,
-    shadowRadius: 16,
-  },
-  sendButtonContainer: {
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    position: 'absolute',
-    top: '90%',
-  },
-  sendButton: {
-    width: '48%',
-    borderRadius: 99,
-    backgroundColor: '#C8C8C8',
-    paddingVertical: 14,
-  },
-  sendButtonText: {
-    alignSelf: 'center',
-    color: '#7A7A7A',
-    fontSize: 14,
-    fontWeight: 600,
-
-  },
-});
 
 function ForgotPassword({ navigation }) {
   const [email, setEmail] = useState('');
@@ -77,19 +41,19 @@ function ForgotPassword({ navigation }) {
   };
 
   return (
-    <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+    <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: '#E5F8F3' }}>
       <View style={{ width: '83%', marginTop: '15%' }}>
-        <Text style={{ fontSize: 40, fontWeight: 325 }}>
+        <Text style={{ fontSize: 40, fontWeight: 300 }}>
           Forgot Password?
         </Text>
-        <Text style={{ fontSize: 16, lineHeight: 24 }}>
+        <Text style={{ fontSize: 16, lineHeight: 24, marginTop: '2%' }}>
           Enter your email address to receive instructions for resetting your password.
         </Text>
-        <Text style={{ fontSize: 16, fontWeight: 600 }}>
+        <Text style={{ fontSize: 16, fontWeight: 600, marginTop: '15%', marginBottom: '3%', color: '#767C7C' }}>
           Email
         </Text>
         <TextInput
-          style={[styles.emailInput, styles.shadowProp]}
+          style={styles.emailInput}
           placeholder="jeff@idontmind.com"
           onChangeText={setEmail}
           value={email}
@@ -97,11 +61,21 @@ function ForgotPassword({ navigation }) {
       </View>
       <View style={styles.sendButtonContainer}>
         <Pressable
-          title="Send Button"
-          style={styles.sendButton}
+          style={({ pressed }) => [
+            styles.sendButton,
+            { backgroundColor: email.trim() ? '#546967' : '#C8C8C8' }, // Change button background color based on if email has text
+            pressed && styles.buttonPressed,
+          ]}
           onPress={handleEmailSubmit}
+          disabled={!email.trim()} // Disable button if email is empty or only contains whitespace
         >
-          <Text style={styles.sendButtonText}>Send Instructions</Text>
+          <Text style={[
+            styles.sendButtonText,
+            { color: email.trim() ? '#FFFFFF' : '#A9A9A9' },
+          ]}
+          >
+            Send Instructions
+          </Text>
         </Pressable>
       </View>
     </View>

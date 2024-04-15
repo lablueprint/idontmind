@@ -4,42 +4,8 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-
-const styles = StyleSheet.create({
-  emailInput: {
-    width: '100%',
-    height: 50,
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#000',
-    borderRadius: 8,
-  },
-  shadowProp: {
-    shadowColor: '#171717',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.5,
-    shadowRadius: 16,
-  },
-  sendButtonContainer: {
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    position: 'absolute',
-    top: '90%',
-  },
-  sendButton: {
-    width: '48%',
-    borderRadius: 99,
-    backgroundColor: '#C8C8C8',
-    paddingVertical: 14,
-  },
-  sendButtonText: {
-    alignSelf: 'center',
-    color: '#7A7A7A',
-    fontSize: 14,
-    fontWeight: 600,
-  },
-});
+import { MaterialIcons } from '@expo/vector-icons'; 
+import styles from './ResetPasswordStyle';
 
 function ResetPassword({ route, navigation }) {
   const { curUser } = route.params;
@@ -47,6 +13,8 @@ function ResetPassword({ route, navigation }) {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordsMatch, setPasswordsMatch] = useState(true);
   const [showMessage, setShowMessage] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleResetSubmit = async () => {
     try {
@@ -64,41 +32,56 @@ function ResetPassword({ route, navigation }) {
   };
 
   useEffect(() => {
-    setPasswordsMatch(password === confirmPassword);
+    if (password === '' || confirmPassword === '') {
+      setPasswordsMatch(false); // If either password is empty, they don't match
+    } else {
+      setPasswordsMatch(password === confirmPassword); // Otherwise, compare the passwords
+    }
   }, [password, confirmPassword]);
 
   return (
-    <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+    <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: '#E5F8F3' }}>
       <View style={{ width: '83%', marginTop: '15%' }}>
-        <Text style={{ fontSize: 40, fontWeight: 325 }}>
+        <Text style={{ fontSize: 40, fontWeight: 300, marginBottom: '5%' }}>
           Reset Password
         </Text>
-        <Text style={{ fontSize: 16, fontWeight: 600 }}>
+        <Text style={{ fontSize: 16, fontWeight: 500, marginBottom: '2%', color: '#767C7C' }}>
           Password
         </Text>
-        <TextInput
-          style={[styles.emailInput, styles.shadowProp]}
-          placeholder="Enter password"
-          onChangeText={setPassword}
-          value={password}
-          secureTextEntry={true}
-        />
-        <Text style={{ fontSize: 16, fontWeight: 600 }}>
+        <View style={[styles.emailInput, styles.shadowProp]}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '85%', height: '100%', alignItems: 'center'}}>
+            <TextInput
+              style={{width: '70%'}}
+              placeholder="Enter password"
+              onChangeText={setPassword}
+              value={password}
+              secureTextEntry={!showPassword}
+            />
+            <Pressable onPress={() => setShowPassword(!showPassword)}>
+              <MaterialIcons name={showPassword ? 'visibility' : 'visibility-off'} size={24} color="#767C7C" />
+            </Pressable>
+          </View>
+        </View>
+        <Text style={{ fontSize: 16, fontWeight: 500, marginBottom: '2%', marginTop: '6%', color: '#767C7C' }}>
           Confirm Password
         </Text>
-        <TextInput
-          style={[styles.emailInput, styles.shadowProp]}
-          placeholder="Confirm password"
-          onChangeText={(text) => {
-            setConfirmPassword(text);
-            setShowMessage(text.length > 0); // Show message when confirm password has length > 0
-          }}
-          value={confirmPassword}
-          secureTextEntry={true}
-        />
-        {showMessage && !passwordsMatch && (
-          <Text>Passwords do not match</Text>
-        )}
+        <View style={[styles.emailInput, styles.shadowProp]}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '85%', height: '100%', alignItems: 'center'}}>
+            <TextInput
+              style={{width: '70%'}}
+              placeholder="Confirm password"
+              onChangeText={(text) => {
+                setConfirmPassword(text);
+                setShowMessage(text.length > 0);
+              }}
+              value={confirmPassword}
+              secureTextEntry={!showConfirmPassword}
+            />
+            <Pressable onPress={() => setShowConfirmPassword(!showConfirmPassword)}>
+              <MaterialIcons name={showConfirmPassword ? 'visibility' : 'visibility-off'} size={24} color="#767C7C" />
+            </Pressable>
+          </View>
+        </View>
       </View>
       <View style={styles.sendButtonContainer}>
         <Pressable
