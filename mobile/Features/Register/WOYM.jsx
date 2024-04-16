@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Text, View, Pressable, Image,
+  ScrollView,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import chev from '../../assets/chevron-up.png';
@@ -28,6 +29,7 @@ function WOYM({ navigation }) {
     'Positive Thinking': false,
     Stress: false,
   });
+  const [outOf3, setOutOf3] = useState(0);
 
   const [showCoping, setShowCoping] = useState(false);
   const [showEWB, setShowEWB] = useState(false);
@@ -67,75 +69,98 @@ function WOYM({ navigation }) {
       setShowEWB(false);
     }
   };
+  useEffect(() => {
+    const copingCount = Object.values(selectedCoping).filter((value) => value).length;
+    const ewbCount = Object.values(selectedEWB).filter((value) => value).length;
+    const totalCount = copingCount + ewbCount;
+    setOutOf3(totalCount);
+    if (totalCount > 3) {
+      setOutOf3(3);
+    }
+  }, [selectedCoping, selectedEWB]);
 
   return (
-    <View style={styles.container}>
-      <View>
-        <Text style={styles.heading}>
-          What&apos;s on your mind?
-        </Text>
-      </View>
-      <View>
-        <Text style={styles.subheading}>
-          Select at least three tags you&apos;re interested in receiving curated content for.
-          You can always change this later.
-        </Text>
-      </View>
-      <View style={styles.pillArea}>
-        <View style={styles.titleButton}>
-          <Text style={styles.pillTitle}>Coping</Text>
-          <Pressable style={styles.arrow} onPress={displayCoping}>
-            <Image
-              source={chev}
-              style={[styles.down, showCoping ? styles.down : styles.rotated]}
-            />
+    <ScrollView style={styles.sv}>
+      <View style={styles.container}>
+        <View>
+          <Text style={styles.heading}>
+            What&apos;s on your mind?
+          </Text>
+        </View>
+        <View>
+          <Text style={styles.subheading}>
+            Select at least three tags you&apos;re interested in receiving curated content for.
+            You can always change this later.
+          </Text>
+        </View>
+        <View style={styles.pillArea}>
+          <View style={styles.titleButton}>
+            <Text style={styles.pillTitle}>Coping</Text>
+            <Pressable style={styles.arrow} onPress={displayCoping}>
+              <Image
+                source={chev}
+                style={[styles.down, showCoping ? styles.down : styles.rotated]}
+              />
+            </Pressable>
+          </View>
+          <View style={[styles.pills, showCoping ? styles.showIt : styles.dontShowIt]}>
+            {Object.entries(selectedCoping).map((cope) => (
+              <View
+                key={cope[0]}
+                style={[styles.pill, cope[1] ? styles.selectedPill : styles.nonselectedPill]}
+              >
+                <Pressable onPress={() => toggleCoping(cope[0])}>
+                  <Text
+                    style={cope[1] ? styles.selectedPillText : styles.nonselectedPillText}
+                  >
+                    {cope[0]}
+                  </Text>
+                </Pressable>
+              </View>
+            ))}
+          </View>
+        </View>
+        <View style={styles.pillArea}>
+          <View style={styles.titleButton}>
+            <Text style={styles.pillTitle}>Emotional Well-Being</Text>
+            <Pressable style={styles.arrow} onPress={displayEWB}>
+              <Image
+                source={chev}
+                style={[styles.down, showEWB ? styles.down : styles.rotated]}
+              />
+            </Pressable>
+          </View>
+          <View style={[styles.pills, showEWB ? styles.showIt : styles.dontShowIt]}>
+            {Object.entries(selectedEWB).map((cope) => (
+              <View
+                key={cope[0]}
+                style={[styles.pill, cope[1] ? styles.selectedPill : styles.nonselectedPill]}
+              >
+                <Pressable onPress={() => toggleEWB(cope[0])}>
+                  <Text
+                    style={cope[1] ? styles.selectedPillText : styles.nonselectedPillText}
+                  >
+                    {cope[0]}
+                  </Text>
+                </Pressable>
+              </View>
+            ))}
+          </View>
+        </View>
+        <View style={styles.nextButtContainer}>
+          <Pressable
+            style={[styles.nextButt, outOf3 > 2 ? styles.nextNot : styles.nextReady]}
+          >
+            <Text style={[styles.nextText, outOf3 > 2 ? styles.nextTextNot : styles.nextTextReady]}>
+              Next (
+              {outOf3}
+              /3)
+            </Text>
           </Pressable>
         </View>
-        <View style={[styles.pills, showCoping ? styles.showIt : styles.dontShowIt]}>
-          {Object.entries(selectedCoping).map((cope) => (
-            <View
-              key={cope[0]}
-              style={[styles.pill, cope[1] ? styles.selectedPill : styles.nonselectedPill]}
-            >
-              <Pressable onPress={() => toggleCoping(cope[0])}>
-                <Text
-                  style={cope[1] ? styles.selectedPillText : styles.nonselectedPillText}
-                >
-                  {cope[0]}
-                </Text>
-              </Pressable>
-            </View>
-          ))}
-        </View>
       </View>
-      <View style={styles.heading}>
-        <View style={styles.titleButton}>
-          <Text style={styles.pillTitle}>Emotional Well-Being</Text>
-          <Pressable style={styles.arrow} onPress={displayEWB}>
-            <Image
-              source={chev}
-              style={[styles.down, showEWB ? styles.down : styles.rotated]}
-            />
-          </Pressable>
-        </View>
-        <View style={[styles.pills, showEWB ? styles.showIt : styles.dontShowIt]}>
-          {Object.entries(selectedEWB).map((cope) => (
-            <View
-              key={cope[0]}
-              style={[styles.pill, cope[1] ? styles.selectedPill : styles.nonselectedPill]}
-            >
-              <Pressable onPress={() => toggleEWB(cope[0])}>
-                <Text
-                  style={cope[1] ? styles.selectedPillText : styles.nonselectedPillText}
-                >
-                  {cope[0]}
-                </Text>
-              </Pressable>
-            </View>
-          ))}
-        </View>
-      </View>
-    </View>
+    </ScrollView>
+
   );
 }
 

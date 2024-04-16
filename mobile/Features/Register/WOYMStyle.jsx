@@ -1,21 +1,29 @@
 import { StyleSheet } from 'react-native';
+import Recoleta from '../../assets/Fonts/Recoleta/Recoleta-Regular.ttf';
 
 export default StyleSheet.create({
+  sv: {
+    flex: 1,
+    backgroundColor: '#E0F1F3',
+  },
   container: {
     paddingTop: 100,
     paddingHorizontal: 40,
     height: '100%',
     width: '100%',
     flexDirection: 'column',
-    backgroundColor: '#E0F1F3',
+    fontSize: 16,
   },
   heading: {
     fontSize: 40,
     color: '#343A3A',
+    marginBottom: 24,
   },
   subheading: {
     color: '#767C7C',
     fontSize: 16,
+    marginBottom: 40,
+    // fontFamily: Recoleta,
   },
   pillTitle: {
     fontSize: 24,
@@ -36,11 +44,13 @@ export default StyleSheet.create({
   titleButton: {
     display: 'flex',
     flexDirection: 'row',
+    marginBottom: 20,
   },
   down: {
-    width: 20,
-    height: 20,
+    width: 12,
+    height: 6,
     marginHorizontal: 10,
+    marginTop: 12,
   },
   rotated: {
     transform: [{ rotate: '180deg' }],
@@ -55,7 +65,7 @@ export default StyleSheet.create({
     marginBottom: 40,
   },
   pill: {
-    paddingVertical: 7,
+    paddingVertical: 12,
     paddingHorizontal: 16,
     margin: 4,
   },
@@ -66,5 +76,32 @@ export default StyleSheet.create({
   nonselectedPill: {
     backgroundColor: '#D2E4E3',
     borderRadius: 99,
+  },
+  nextText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  nextTextReady: {
+    color: '#767C7C',
+  },
+  nextTextNot: {
+    color: '#F6FCFC',
+  },
+  nextButt: {
+    borderRadius: 99,
+    backgroundColor: '#C6CECE',
+    paddingVertical: 26,
+    paddingHorizontal: 96,
+    alignItems: 'center',
+  },
+  nextReady: {
+    backgroundColor: '#C6CECE',
+  },
+  nextNot: {
+    backgroundColor: '#374342',
+  },
+  nextButtContainer: {
+    alignItems: 'center',
+    marginBottom: 24,
   },
 });
