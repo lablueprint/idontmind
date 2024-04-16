@@ -46,6 +46,7 @@ export default function CalendarPage({ navigation }) {
     }
   };
 
+
   useEffect(() => {
     getAllJournals();
   }, []);
@@ -123,6 +124,8 @@ export default function CalendarPage({ navigation }) {
   }; /* navigate to the past journal entry, isHistory
    is set to true (uneditable text box with the corresponding prompt) */
 
+   console.log("All journals: ", allJournals);
+   
   return (
     <View style={styles.container}>
       <View style={{ backgroundColor: '#91A8D1', margin: 10 }}>
@@ -138,12 +141,13 @@ export default function CalendarPage({ navigation }) {
           onDayPress={handleDateSelect}
           markedDates={{
             [selectedDate]: { selected: true, disableTouchEvent: true, selectedDotColor: 'orange' },
+            '2024-04-07': { selected: true },
           }}
           // need to figure out styling of calendar
           style={{
             borderWidth: 1,
             borderColor: 'gray',
-            height: 350,
+            height: 310,
           }}
 
           theme={{
