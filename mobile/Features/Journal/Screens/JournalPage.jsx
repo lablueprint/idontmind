@@ -178,30 +178,34 @@ export function JournalPage({
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View style={{ flex: 1, alignItems: 'center', paddingTop: 15 }}>
           <Text>{`${formattedDate}, ${militaryToStandard(timeHours)}:${formatMinutes(timeMinutes)}`}</Text>
-          {freeWrite ? (<TextInput
-        style={{
-          backgroundColor: '#C6CECE',
-          color: 'black',
-          padding: 10,
-          borderRadius: 5,
-          marginTop: 5,
-        }}
-        multiline
-        placeholder="Add Title..."
-        onChangeText={setFreeWriteTitle}
-        value={freeWriteTitle}
-      />) : (
-           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-           <View style={{ flex: 1 }}>
-             <Text style={{ fontSize: 15, fontWeight: 'bold', marginLeft: 15 }}>{randomTitle}</Text>
-           </View>
-           <Pressable onPress={generateRandomPrompt}>
-             <Image
-               style={{ height: 20, width: 20, marginRight: 15, marginBottom: 10 }}
-               source={require('../../../assets/iterate.png')}
-             />
-           </Pressable>
-         </View>
+          {freeWrite ? (
+            <TextInput
+              style={{
+                backgroundColor: '#C6CECE',
+                color: 'black',
+                padding: 10,
+                borderRadius: 5,
+                marginTop: 5,
+              }}
+              multiline
+              placeholder="Add Title..."
+              onChangeText={setFreeWriteTitle}
+              value={freeWriteTitle}
+            />
+          ) : (
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View style={{ flex: 1 }}>
+                <Text style={{ fontSize: 15, fontWeight: 'bold', marginLeft: 15 }}>{randomTitle}</Text>
+              </View>
+              <Pressable onPress={generateRandomPrompt}>
+                <Image
+                  style={{
+                    height: 20, width: 20, marginRight: 15, marginBottom: 10,
+                  }}
+                  source={require('../../../assets/iterate.png')}
+                />
+              </Pressable>
+            </View>
 
           )}
 

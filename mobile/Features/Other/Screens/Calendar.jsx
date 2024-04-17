@@ -149,7 +149,6 @@ export default function CalendarPage({ navigation }) {
             borderColor: 'gray',
             height: 310,
           }}
-
           theme={{
             calendarBackground: '#91A8D1',
             backgroundColor: '#91A8D1',
@@ -175,7 +174,6 @@ export default function CalendarPage({ navigation }) {
               },
             },
           }}
-
           stylesheet={{
             calendar: {
               // Adjust lineHeight to reduce space between rows
