@@ -53,6 +53,41 @@ const BookmarksStyle = StyleSheet.create({
     top: 100,
 
   },
+  nextResource: {
+    backgroundColor: '#374342',
+    borderRadius: 50,
+    height: 50,
+    width: '50%',
+    display: 'flex',
+    alignContent: 'center',
+    justifyContent: 'center',
+    margin: 20,
+
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    width: '100%',
+    height: '50%',
+    backgroundColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // semi-transparent black
+    zIndex: 1, // Ensure the overlay is on top of other content
+  },
 });
 
 export default BookmarksStyle;

@@ -133,7 +133,7 @@ function Bookmarks({ navigation }) {
                   return (
                     <Pressable key={resourceName} onPress={() => navigateToResource(item)}>
                       <Bookmark
-                        key={resourceName}
+                        // key={resourceName}
                         resourceName={resourceName}
                         author={item.Author}
                         style={{}}
