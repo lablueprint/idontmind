@@ -6,13 +6,16 @@ import { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { useRoute } from '@react-navigation/native';
 import BookmarkImage from '../../../assets/bookmark_blue.png';
+import styles from './BookmarksStyle';
 
 function Resource({ navigation }) {
   const route = useRoute();
   const resourceName = route.params?.resourceName;
   const routeName = route.params?.routeName;
+  const subtopicName = route.params?.subtopicName;
   const navigateToPreviousRoute = () => {
-    navigation.navigate(routeName);
+    if (routeName === 'Resource List') navigation.navigate(routeName, { subtopicName });
+    else navigation.navigate(routeName);
   };
   return (
     <View
@@ -71,6 +74,16 @@ function Resource({ navigation }) {
           feel-good hormones.
           {' '}
         </Text>
+        <View style={{
+          display: 'flex', justifyContent: 'center', flex: 1, alignItems: 'center',
+        }}
+        >
+          <Pressable style={styles.nextResource}>
+            <Text style={{ color: 'white', textAlign: 'center' }}>next resource</Text>
+          </Pressable>
+
+        </View>
+
       </ScrollView>
 
     </View>

@@ -1,5 +1,5 @@
 import {
-  View, Text, TouchableOpacity, ScrollView, Pressable, Image, FlatList,
+  View, Text, TouchableOpacity, ScrollView, Pressable, Image, FlatList, Modal,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { useEffect, useState, useContext } from 'react';
@@ -7,18 +7,24 @@ import axios from 'axios';
 import { useRoute } from '@react-navigation/native';
 import Bookmark from '../../Other/Components/Bookmark';
 import styles from './BookmarksStyle';
+import BookmarkImage from '../../../assets/bookmark_blue.png';
+import BottomHalfModal from './BottomModal';
 
 function ResourceList({ navigation }) {
+  const [modalVisible, setModalVisible] = useState(false);
   const route = useRoute();
   const subtopicName = route.params?.subtopicName;
   const resources = [['resource 1', 'nicole'], ['yo mama', 'aaron'], ['haha', 'jeffrey'], ['no', 'alan'], ['well yes', 'daniel']];
 
+  const toggleModal = () => {
+    setModalVisible(!modalVisible);
+  };
   const navigateToTag = () => {
     navigation.navigate('Tag', { index: 0, routeName: 'Content Library' }); // set index to 0 as default for now
   };
   const navigateToResource = (item) => {
     const name = item.Title ? item.Title : 'hardcoded title';
-    navigation.navigate('Resource', { resourceName: name, routeName: 'Resource List' });
+    navigation.navigate('Resource', { resourceName: name, routeName: 'Resource List', subtopicName });
   };
 
   const filters = ['All', 'Tags', 'Resources'];
@@ -31,6 +37,9 @@ function ResourceList({ navigation }) {
         display: 'flex', flexDirection: 'column', paddingHorizontal: 25, paddingTop: 50, flex: 1,
       }}
     >
+      {modalVisible && (
+        <View style={styles.overlay} />
+      )}
       <TouchableOpacity color="black" onPress={navigateToTag} style={{ paddingRight: 10, alignSelf: 'flex-start' }}>
         <Text style={{ fontSize: 34 }}>{'<'}</Text>
       </TouchableOpacity>
@@ -47,6 +56,10 @@ function ResourceList({ navigation }) {
         }}
       >
         <Text style={{ fontSize: 34 }}>{subtopicName}</Text>
+        <Pressable onPress={toggleModal}>
+          <Image source={BookmarkImage} />
+        </Pressable>
+
       </View>
       <View style={{
         display: 'flex', flexDirection: 'column', flex: 8, paddingTop: 10,
@@ -113,7 +126,8 @@ function ResourceList({ navigation }) {
           </ScrollView>
         </View>
       </View>
-      <View style={{ flex: 1 }} />
+      <BottomHalfModal modalVisibleParent={modalVisible} toggleModal={toggleModal} />
+
     </View>
   );
 }
