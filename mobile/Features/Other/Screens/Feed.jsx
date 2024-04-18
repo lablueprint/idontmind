@@ -100,7 +100,7 @@ export default function Feed({ navigation }) {
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>
+      <Text style={{ fontFamily: 'recoleta-black' }}>
         Welcome
         {' '}
         {firstName}
@@ -116,7 +116,7 @@ export default function Feed({ navigation }) {
           />
         ),
       )}
-      <Text> Demo Form </Text>
+      <Text style={{ fontFamily: 'cabinet-grotesk-black' }}> Demo Form </Text>
       <View>
         <TextInput
           name="username"
