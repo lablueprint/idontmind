@@ -51,6 +51,7 @@ export default function CalendarPage({ navigation }) {
     }
   };
 
+
   useEffect(() => {
     getAllJournals();
   }, []);
@@ -132,6 +133,8 @@ export default function CalendarPage({ navigation }) {
   }; /* navigate to the past journal entry, isHistory
    is set to true (uneditable text box with the corresponding prompt) */
 
+   console.log("All journals: ", allJournals);
+   
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -153,8 +156,8 @@ export default function CalendarPage({ navigation }) {
             borderWidth: 1,
             borderColor: 'gray',
             lineHeight: '10',
+            height: 310,
           }}
-
           theme={{
             calendarBackground: '#F6FCFC',
             // backgroundColor: '#82A5A1',
@@ -182,64 +185,63 @@ export default function CalendarPage({ navigation }) {
             //   },
             // },
           }}
-
-          // stylesheet={{
-          //   calendar: {
-          //     // Adjust lineHeight to reduce space between rows
-          //     lineHeight: 10,
-          //   },
-          //   dayNumFontFamily: {
-          //     // Adjust font family for day numbers if needed
-          //   },
-          //   dayNumFontSize: {
-          //     // Adjust font size of day numbers
-          //     fontSize: 16,
-          //   },
-          //   dayTextColor: {
-          //     // Adjust color of day numbers
-          //     color: 'black',
-          //   },
-          //   todayTextColor: {
-          //     // Adjust color of today's date
-          //     color: 'blue',
-          //   },
-          //   selectedDayTextColor: {
-          //     // Adjust color of selected date
-          //     color: 'white',
-          //   },
-          //   textDayFontFamily: {
-          //     // Adjust font family for day text if needed
-          //   },
-          //   textDayFontSize: {
-          //     // Adjust font size of day text if needed
-          //   },
-          //   textDayFontWeight: {
-          //     // Adjust font weight of day numbers
-          //     fontWeight: 'bold',
-          //   },
-          //   textMonthFontFamily: {
-          //     // Adjust font family for month text if needed
-          //   },
-          //   textMonthFontSize: {
-          //     // Adjust font size of month text
-          //     fontSize: 18,
-          //   },
-          //   textMonthFontWeight: {
-          //     // Adjust font weight of month text
-          //     fontWeight: 'bold',
-          //   },
-          //   textDayHeaderFontSize: {
-          //     // Adjust font size of day header
-          //     fontSize: 14,
-          //   },
-          //   textDayHeaderFontWeight: {
-          //     // Adjust font weight of day header
-          //     fontWeight: 'bold',
-          //   },
-          //   arrowStyle: {
-          //     // Adjust arrow style if needed
-          //   },
-          // }}
+          stylesheet={{
+            calendar: {
+              // Adjust lineHeight to reduce space between rows
+              lineHeight: 50,
+            },
+            dayNumFontFamily: {
+              // Adjust font family for day numbers if needed
+            },
+            dayNumFontSize: {
+              // Adjust font size of day numbers
+              fontSize: 16,
+            },
+            dayTextColor: {
+              // Adjust color of day numbers
+              color: 'black',
+            },
+            todayTextColor: {
+              // Adjust color of today's date
+              color: 'blue',
+            },
+            selectedDayTextColor: {
+              // Adjust color of selected date
+              color: 'white',
+            },
+            textDayFontFamily: {
+              // Adjust font family for day text if needed
+            },
+            textDayFontSize: {
+              // Adjust font size of day text if needed
+            },
+            textDayFontWeight: {
+              // Adjust font weight of day numbers
+              fontWeight: 'bold',
+            },
+            textMonthFontFamily: {
+              // Adjust font family for month text if needed
+            },
+            textMonthFontSize: {
+              // Adjust font size of month text
+              fontSize: 18,
+            },
+            textMonthFontWeight: {
+              // Adjust font weight of month text
+              fontWeight: 'bold',
+            },
+            textDayHeaderFontSize: {
+              // Adjust font size of day header
+              fontSize: 14,
+            },
+            textDayHeaderFontWeight: {
+              // Adjust font weight of day header
+              fontWeight: 'bold',
+            },
+            arrowStyle: {
+              // Adjust arrow style if needed
+            },
+          }}
         />
       </View>
       {clickedDate

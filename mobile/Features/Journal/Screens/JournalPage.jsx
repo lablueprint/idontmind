@@ -8,7 +8,6 @@ import PropTypes, { checkPropTypes } from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import SafeAreaView from 'react-native-safe-area-view';
 import styles from '../Components/JournalStyle';
 
 export function JournalPage({
@@ -51,6 +50,7 @@ export function JournalPage({
         randomPrompt = prompts[randomIndex]['Journal Prompts'];
       }
       setRandomTitle(randomPrompt);
+      return randomPrompt;
     }
   };
 
@@ -85,7 +85,7 @@ export function JournalPage({
 
   const getPrompt = (option) => {
     if (!option) {
-      return <Text style={styles.prompt}>{randomTitle}</Text>;
+      return <Text style={{ fontSize: 15, fontWeight: 'bold' }}>{randomTitle}</Text>;
     }
     return (
       <TextInput
@@ -94,6 +94,7 @@ export function JournalPage({
           color: 'black',
           padding: 10,
           borderRadius: 5,
+          margin: 20,
         }}
         multiline
         placeholder="Add Title..."
@@ -150,6 +151,8 @@ export function JournalPage({
   const timeHours = currDate.getHours();
   const timeMinutes = currDate.getMinutes();
 
+  const formatMinutes = (minutes) => (minutes < 10 ? '0' : '') + minutes;
+
   const militaryToStandard = (hours) => {
     if (hours > '12') {
       return (hours - '12');
@@ -165,10 +168,9 @@ export function JournalPage({
 
   const formattedDate = formatDate(currDate);
 
-  const handleTextChange = (inputText) => {
-    setText(inputText);
-    navigation.navigate('PostDetails', {randomTitle, inputText});
-  };
+  // const handleTextChange = (inputText) => {
+  //   setText(inputText);
+  // };
 
   /* render it in two different ways depending on if isHistory(if false, editable text box, if
   true, uneditable text box with previously written text) */
@@ -177,93 +179,112 @@ export function JournalPage({
   // console.log("journal title: " , journalTitle);
   if (!isHistory) {
     return (
-      <ScrollView style={{ flex: 1 }}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <View style={{ flex: 1, alignItems: 'center', paddingTop: 15 }}>
+          <Text>{`${formattedDate}, ${militaryToStandard(timeHours)}:${formatMinutes(timeMinutes)}`}</Text>
+          {freeWrite ? (
+            <TextInput
+              style={{
+                backgroundColor: '#C6CECE',
+                color: 'black',
+                padding: 10,
+                borderRadius: 5,
+                marginTop: 5,
+              }}
+              multiline
+              placeholder="Add Title..."
+              onChangeText={setFreeWriteTitle}
+              value={freeWriteTitle}
+            />
+          ) : (
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View style={{ flex: 1 }}>
+                <Text style={{ fontSize: 15, fontWeight: 'bold', marginLeft: 15 }}>{randomTitle}</Text>
+              </View>
+              <Pressable onPress={generateRandomPrompt}>
+                <Image
+                  style={{
+                    height: 20, width: 20, marginRight: 15, marginBottom: 10,
+                  }}
+                  source={require('../../../assets/iterate.png')}
+                />
+              </Pressable>
+            </View>
 
-        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-          <SafeAreaView>
-            <SafeAreaView style={styles.container}>
-              <Text style={{ marginTop: 180 }}>{`${formattedDate}, ${militaryToStandard(timeHours)}:${timeMinutes}`}</Text>
-              <SafeAreaView>
-                {getPrompt(freeWrite)}
-              </SafeAreaView>
-              {!freeWrite && <Button title="Generate Random Prompt" onPress={generateRandomPrompt} />}
-              <SafeAreaView style={styles.textBox}>
-                <ScrollView automaticallyAdjustKeyboardInsets>
-                  <View>
-                    <TextInput 
-                    multiline placeholder="Type your response" 
-                    onChangeText={handleTextChange} 
-                    value={text} />
-                  </View>
-                </ScrollView>
-              </SafeAreaView>
-              <Text>
-                word count:
-                {' '}
-                {wordsLen(text)}
-              </Text>
-              <SafeAreaView>
-                <Modal visible={confirmPopUp}>
-                  <TouchableOpacity onPressOut={handlePopUp} style={styles.modalView}>
-                    <SafeAreaView style={styles.modalBox}>
-                      <Text style={{ fontSize: 20 }}>confirm journal entry?</Text>
-                      {freeWrite ? (
-                        <Pressable
-                          style={styles.modalSelections}
-                          onPress={() => addNewJournal(username, freeWriteTitle, text)}
-                        >
-                          <Text>yes</Text>
-                        </Pressable>
-                      ) : (
-                        <Pressable
-                          style={styles.modalSelections}
-                          onPress={() => addNewJournal(username, randomTitle, text)}
-                        >
-                          <Text>yes</Text>
-                        </Pressable>
-                      )}
-                      <Pressable style={styles.modalSelections} onPress={handlePopUp}>
-                        <Text>no</Text>
-                      </Pressable>
-                    </SafeAreaView>
-                  </TouchableOpacity>
-                </Modal>
+          )}
 
-              </SafeAreaView>
-
-            </SafeAreaView>
-          </SafeAreaView>
-        </TouchableWithoutFeedback>
-        <Text>{' '}</Text>
-        <Text>{' '}</Text>
-        <Text>{' '}</Text>
-        <Text>{' '}</Text>
-        <Text>{' '}</Text>
-        <Text>{' '}</Text>
-        <Text>{' '}</Text>
-        <Text>{' '}</Text>
-        <TouchableOpacity style={styles.imageContainer} onPress={pickImage}>
-          <Text>+ add attachment</Text>
-        </TouchableOpacity>
-        {selectedImage !== '' ? (
-          <>
-            <TouchableOpacity onPress={handleFilenamePress}>
-              <Text>{getFilenameFromUri(selectedImage)}</Text>
-            </TouchableOpacity>
-            {viewImage && (
-            <Image source={{ uri: selectedImage }} style={{ width: 200, height: 200 }} />
-            )}
-          </>
-        ) : null}
-
-        <View>
+          {/* <Pressable
+            onPress={() => navigation.navigate('PostDetails', {
+              randomTitle, text, setText, generateRandomPrompt, freeWriteTitle, freeWrite,
+            })}
+          > */}
+          <TextInput
+            multiline
+            placeholder="Type your response"
+            onFocus={() => navigation.navigate('PostDetails', {
+              randomTitle, text, setText, generateRandomPrompt, freeWriteTitle, freeWrite,
+            })}
+            onChangeText={(inputText) => setText(inputText)}
+            value={text}
+            style={{
+              margin: 15, minWidth: '80%', minHeight: 300, borderWidth: 2, borderColor: 'black', alignItems: 'center',
+            }}
+          />
+          {/* </Pressable> */}
+          <Text>
+            word count:
+            {' '}
+            {wordsLen(text)}
+          </Text>
+          <TouchableOpacity
+            style={{
+              minWidth: '80%', minHeight: 40, borderRadius: 2, backgroundColor: 'lightgrey', alignItems: 'center', justifyContent: 'center', marginTop: 10,
+            }}
+            onPress={pickImage}
+          >
+            <Text>+ add attachment</Text>
+          </TouchableOpacity>
+          {selectedImage !== '' ? (
+            <>
+              <TouchableOpacity onPress={handleFilenamePress}>
+                <Text>{getFilenameFromUri(selectedImage)}</Text>
+              </TouchableOpacity>
+              {viewImage && (
+                <Image source={{ uri: selectedImage }} style={{ width: 200, height: 200 }} />
+              )}
+            </>
+          ) : null}
           <Button title="Submit" onPress={handlePopUp} />
           <Button
             title="To Past Journal Entries"
             onPress={navigateToJournalHistory}
           />
         </View>
-
+        <Modal visible={confirmPopUp}>
+          <TouchableOpacity onPressOut={handlePopUp} style={styles.modalView}>
+            <View style={styles.modalBox}>
+              <Text style={{ fontSize: 20 }}>confirm journal entry?</Text>
+              {freeWrite ? (
+                <Pressable
+                  style={styles.modalSelections}
+                  onPress={() => addNewJournal(username, freeWriteTitle, text)}
+                >
+                  <Text>yes</Text>
+                </Pressable>
+              ) : (
+                <Pressable
+                  style={styles.modalSelections}
+                  onPress={() => addNewJournal(username, randomTitle, text)}
+                >
+                  <Text>yes</Text>
+                </Pressable>
+              )}
+              <Pressable style={styles.modalSelections} onPress={handlePopUp}>
+                <Text>no</Text>
+              </Pressable>
+            </View>
+          </TouchableOpacity>
+        </Modal>
       </ScrollView>
     );
   }
@@ -317,7 +338,7 @@ export default function JournalTabs({ navigation }) {
   const Tab = createMaterialTopTabNavigator();
   if (!isHistory){ return (
     <View style={{ flex: 1 }}>
-      <View style={{ flexDirection: 'row', alignSelf: 'flex-end', marginTop: 40 }}>
+      <View style={{ flexDirection: 'row', alignSelf: 'flex-end', marginTop: 20 }}>
         <TouchableOpacity style={{ margin: 10 }} onPress={navigateToCalendar}>
           <Image
             style={{ width: 30, height: 31 }}
@@ -338,7 +359,7 @@ export default function JournalTabs({ navigation }) {
         </TouchableOpacity>
       </View>
 
-      <Tab.Navigator style={{ marginTop: 10 }}>
+      <Tab.Navigator>
         <Tab.Screen name="Guided Prompt" component={GuidedPrompt} />
         <Tab.Screen name="Free Write" component={FreeWrite} />
       </Tab.Navigator>
