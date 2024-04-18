@@ -1,15 +1,14 @@
 import React from 'react';
-import JournalPage from './JournalPage'; // Make sure to provide the correct path
 import { useRoute } from '@react-navigation/native';
-import styles from '../Components/JournalStyle';
 import {
-    ScrollView, Text, View, Button, TextInput, Keyboard,
-    TouchableWithoutFeedback, Modal, TouchableOpacity, Pressable, Image,
-  } from 'react-native';
+  ScrollView, Text, View, Button
+  ,
+} from 'react-native';
+import styles from '../Components/JournalStyle';
 
 export default function JournalDetails({ navigation }) {
   const route = useRoute();
-  const username = route.params?.user;
+  // const username = route.params?.user;
   const prompt = route.params?.question;
   const text = route.params?.body;
   const date = route.params?.day;
@@ -24,7 +23,7 @@ export default function JournalDetails({ navigation }) {
         <View style={styles.textBox}>
           <ScrollView automaticallyAdjustKeyboardInsets>
             <Text>{date}</Text>
-            <Text style={{fontSize: 20}}>{prompt}</Text>
+            <Text style={{ fontSize: 20 }}>{prompt}</Text>
             <Text>{text}</Text>
           </ScrollView>
         </View>

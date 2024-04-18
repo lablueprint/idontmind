@@ -1,36 +1,23 @@
 import {
-  ScrollView, Text, View, Button, TextInput, Keyboard,
-  TouchableWithoutFeedback, Modal, TouchableOpacity, Pressable, Image,
+  ScrollView, Text, View, Button, TextInput,
+  Modal, TouchableOpacity, Pressable, Image,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { useRoute } from '@react-navigation/native';
-import PropTypes, { checkPropTypes } from 'prop-types';
+import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import styles from '../Components/JournalStyle';
 
 export function JournalPage({
-  navigation, freeWrite, isHistory, body, isDetails,
+  navigation, freeWrite, isHistory,
 }) {
-  // const route = useRoute();
-  // const body = route.params?.body;
-  // const isHistory = route.params?.isHistory;
-
-  // const body = "body";
-  // const isHistory = true;
-
-  /* retrieve the value of isHistory
-  from the previous navigation page (JournalHistoryPage) */
   const [selectedImage, setSelectedImage] = useState(null);
   const [viewImage, setViewImage] = useState(false);
   const [prompts, setPrompts] = useState([]);
   const [randomTitle, setRandomTitle] = useState();
   const [freeWriteTitle, setFreeWriteTitle] = useState('');
-  console.log('randomTitle:', randomTitle);
-
-  // console.log("HISTORY PART 2", isHistory);
-  // console.log("BODY PART 2", body);
+  // console.log('randomTitle:', randomTitle);
 
   const [text, setText] = useState(''); // state for the text the user types in
   const [confirmPopUp, setConfirmPopUp] = useState(false); /* state that tells if
@@ -168,10 +155,6 @@ export function JournalPage({
 
   const formattedDate = formatDate(currDate);
 
-  // const handleTextChange = (inputText) => {
-  //   setText(inputText);
-  // };
-
   /* render it in two different ways depending on if isHistory(if false, editable text box, if
   true, uneditable text box with previously written text) */
   // console.log("IN JOURNAL");
@@ -212,12 +195,6 @@ export function JournalPage({
             </View>
 
           )}
-
-          {/* <Pressable
-            onPress={() => navigation.navigate('PostDetails', {
-              randomTitle, text, setText, generateRandomPrompt, freeWriteTitle, freeWrite,
-            })}
-          > */}
           <TextInput
             multiline
             placeholder="Type your response"
@@ -388,3 +365,29 @@ export default function JournalTabs({ navigation }) {
     );
   }
 }
+
+JournalPage.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
+  freeWrite: PropTypes.bool.isRequired,
+  isHistory: PropTypes.bool.isRequired,
+};
+
+JournalTabs.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
+};
+
+GuidedPrompt.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
+};
+
+FreeWrite.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
+};

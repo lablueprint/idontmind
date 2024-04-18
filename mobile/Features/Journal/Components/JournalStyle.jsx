@@ -19,7 +19,7 @@ export default StyleSheet.create({
     justifyContent: 'flex-start',
     borderWidth: 2,
     width: '80%',
-   height: '80%',
+    height: '80%',
   },
   attachmentBox: {
     padding: 10,
