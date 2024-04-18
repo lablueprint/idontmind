@@ -1,5 +1,4 @@
 import { StyleSheet } from 'react-native';
-import Recoleta from '../../assets/Fonts/Recoleta/Recoleta-Regular.ttf';
 
 export default StyleSheet.create({
   sv: {
@@ -23,7 +22,6 @@ export default StyleSheet.create({
     color: '#767C7C',
     fontSize: 16,
     marginBottom: 40,
-    // fontFamily: Recoleta,
   },
   pillTitle: {
     fontSize: 24,
@@ -50,7 +48,6 @@ export default StyleSheet.create({
     width: 12,
     height: 6,
     marginHorizontal: 10,
-    marginTop: 12,
   },
   rotated: {
     transform: [{ rotate: '180deg' }],
@@ -91,7 +88,7 @@ export default StyleSheet.create({
     borderRadius: 99,
     backgroundColor: '#C6CECE',
     paddingVertical: 26,
-    paddingHorizontal: 96,
+    width: 277,
     alignItems: 'center',
   },
   nextReady: {
@@ -103,5 +100,18 @@ export default StyleSheet.create({
   nextButtContainer: {
     alignItems: 'center',
     marginBottom: 24,
+  },
+  row: {
+    flexDirection: 'row',
+  },
+  arrow: {
+    alignSelf: 'center',
+  },
+  stillButt: {
+    position: 'absolute',
+    bottom: 74, // why does this look huge
+    left: 0,
+    right: 0,
+    alignItems: 'center',
   },
 });
