@@ -7,4 +7,6 @@ timeSerieRouter.post('/getAllTimeSeries', timeSerieController.getAllTimeSeries);
 
 timeSerieRouter.post('/InsertManyExamples', timeSerieController.InsertManyExamples);
 
+timeSerieRouter.post('/getSleepTimeSeries', timeSerieController.getSleepTimeSeries);
+
 module.exports = timeSerieRouter;

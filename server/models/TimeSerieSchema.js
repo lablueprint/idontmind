@@ -7,8 +7,8 @@ const TimeSerie = new mongoose.Schema(
       userId: String,
     },
     timestamp: Date,    
-    'sleep': String,
-    'waterIntake': String,
+    'sleep': Number,
+    'waterIntake': Number,
   },
   {
     timeseries: {

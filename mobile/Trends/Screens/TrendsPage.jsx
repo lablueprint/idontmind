@@ -3,7 +3,7 @@ import Trends from '../Components/Trends';
 
 export default function TrendsPage({ navigation }) {
   return (
-    <Trends navigation />
+    <Trends navigation={navigation} />
   );
 }
 TrendsPage.propTypes = {

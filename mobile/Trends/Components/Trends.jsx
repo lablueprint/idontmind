@@ -13,6 +13,7 @@ import styles from './TrendsStyle';
 import { data, barData } from './TrendsData';
 import TrendsHeader from './TrendsHeader';
 import TrendImage from '../../assets/TrendImage.png';
+import Arrow from '../../assets/arrow.png';
 
 const style = StyleSheet.create({
   container: {
@@ -78,9 +79,11 @@ function CircleSection({ header, description, navigateToTrendsBody }) {
           </Text>
         </View>
         <View>
-          <TouchableOpacity onPress={navigateToTrendsBody}>
-            <Text>{'>'}</Text>
-          </TouchableOpacity>
+          <LinearGradient colors={['#E0F1F3', '#E5F8F3']}>
+            <TouchableOpacity onPress={navigateToTrendsBody}>
+              <Image source={Arrow} style={{ height: 20, width: 20 }} />              
+            </TouchableOpacity>
+          </LinearGradient>
         </View>
       </View>
       <View style={[styles.row, { justifyContent: 'space-between' }]}>
@@ -126,7 +129,7 @@ function TrendTab({ view, navigation }) {
   };
 
   const navigateToTrendsBody = () => {
-    navigation.navigate('TrendsBody');
+    navigation.navigate('TrendsBody', { title: 'Activity' });
   };
 
   // map week number to displayed text
@@ -171,30 +174,15 @@ function TrendTab({ view, navigation }) {
     return '';
   };
 
-  const InsertManyExamples = async () => {
-    try {
-      const current = new Date();
-      const start = new Date(current);
-      const end = new Date(current);
-      start.setMonth(current.getMonth() + weekOffset, 1);
-      end.setMonth(start.getMonth() + 1, 0);
-      const startDate = start.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-      const endDate = end.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-      await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/timeSerie/InsertManyExamples`, { leftDate: startDate, rightDate: endDate });
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   return (
     <View style={{ display: 'flex', flexDirection: 'column' }}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <LinearGradient colors={['#E0F1F3', '#E5F8F3']} style={[styles.container, { flex: 1 }]}>
           <View className="header" style={{ marginTop: 40, marginBottom: 100 }}>
-            <TrendsHeader />
-            <CircleSection header="Activity" description="Water, food, and movement at a glance." navigateToTrendsBody />
+            <TrendsHeader title="Trends" />
+            <CircleSection header="Activity" description="Water, food, and movement at a glance." navigateToTrendsBody={navigateToTrendsBody} />
             <WaterSection />
-            <CircleSection header="Emotion" description="Feelings, goals, and outlook" navigateToTrendsBody />
+            <CircleSection header="Emotion" description="Feelings, goals, and outlook" navigateToTrendsBody={navigateToTrendsBody} />
           </View>
         </LinearGradient>
       </ScrollView>
@@ -234,8 +222,14 @@ function YearTab() {
 }
 const Tab = createBottomTabNavigator();
 
-export default function Trends() {
+export default function Trends({ navigation }) {
   return (
-    <TrendTab view="week" />
+    <TrendTab view="week" navigation={navigation} />
   );
 }
+
+Trends.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
+};
