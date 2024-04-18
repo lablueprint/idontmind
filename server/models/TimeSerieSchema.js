@@ -6,17 +6,17 @@ const TimeSerie = new mongoose.Schema(
       email: String,
       userId: String,
     },
-    timestamp: Date,    
-    'sleep': Number,
-    'waterIntake': Number,
+    timestamp: Date,
+    sleep: Number,
+    waterIntake: Number,
   },
   {
     timeseries: {
       timeField: 'timestamp',
       metaField: 'metadata',
-      granularity: "hours"      
-    }
-  }
+      granularity: 'hours',
+    },
+  },
 );
 
 module.exports = mongoose.model('checkin_time_serie', TimeSerie);

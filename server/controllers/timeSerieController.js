@@ -1,57 +1,11 @@
 const TimeSerie = require('../models/TimeSerieSchema');
 
-const getAllTimeSeries = async (req, res) => {
-  console.log('getAllTimeSeries');
-  const {
-    email, userId, startDate, endDate,
-  } = req.body;
-  try {
-    const timeseries = await TimeSerie.aggregate([
-      {
-        $match:
-        {
-          metadata: {
-            email,
-            userId,
-          },
-          timestamp: {
-            $gte: new Date(startDate),
-            $lt: new Date(endDate),
-          },
-          sleep: { $exists: true, $ne: null },
-          waterIntake: { $exists: true, $ne: null },
-        },
-      },
-      {
-        $group: {
-          _id: null,
-          data: { $push: { value: '$sleep', timestamp: '$timestamp' } },
-          data2: { $push: { value: '$waterIntake', timestamp: '$timestamp' } },
-          avgSleep: { $avg: '$sleep' },
-          avgWater: { $avg: '$waterIntake' },
-        },
-      },
-      {
-        $project: {
-          _id: 0,
-          data: 1,
-          data2: 1,
-          avgSleep: 1,
-          avgWater: 1,
-          avgData: { $multiply: [{ $divide: [{ $multiply: ['$avgSleep', '$avgWater'] }, '$avgWater'] }, 100] },
-        },
-      },
-    ]);
-    res.send(timeseries);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send(err);
-  }
-};
+const getUserTimeSeries = async (req, res) => {
+  console.log('getUserTimeSeries');
 
-const getSleepTimeSeries = async (req, res) => {
-  console.log('getSleepTimeSeries');
-  const { email, userId, startDate, midDate, endDate } = req.body;
+  const {
+    email, userId, startDate, midDate, endDate,
+  } = req.body;
 
   try {
     const Sleeptimeseries = await TimeSerie.aggregate([
@@ -67,7 +21,7 @@ const getSleepTimeSeries = async (req, res) => {
             $lte: new Date(endDate),
           },
           sleep: { $exists: true, $ne: null },
-          waterIntake: { $exists: true, $ne: null },          
+          waterIntake: { $exists: true, $ne: null },
         },
       },
       {
@@ -75,147 +29,177 @@ const getSleepTimeSeries = async (req, res) => {
           firstPeriod: [
             {
               $match: {
-                timestamp: { $lte: new Date(midDate) }
-              }
+                timestamp: { $lte: new Date(midDate) },
+              },
             },
             {
               $group: {
                 _id: null,
-                SleepData: { $push: { value: '$sleep', label: { $switch: {
-                  branches: [
-                    { case: { $eq: [ { $dayOfWeek: "$timestamp" }, 1 ] }, then: "U" },
-                    { case: { $eq: [ { $dayOfWeek: "$timestamp" }, 2 ] }, then: "M" },
-                    { case: { $eq: [ { $dayOfWeek: "$timestamp" }, 3 ] }, then: "T" },
-                    { case: { $eq: [ { $dayOfWeek: "$timestamp" }, 4 ] }, then: "W" },
-                    { case: { $eq: [ { $dayOfWeek: "$timestamp" }, 5 ] }, then: "R" },
-                    { case: { $eq: [ { $dayOfWeek: "$timestamp" }, 6 ] }, then: "F" },
-                    { case: { $eq: [ { $dayOfWeek: "$timestamp" }, 7 ] }, then: "S" }
-                  ],
-                  default: "Unknown"
-                } } } },                
-                WaterData: { $push: { value: '$waterIntake', label: { $switch: {
-                  branches: [
-                    { case: { $eq: [ { $dayOfWeek: "$timestamp" }, 1 ] }, then: "U" },
-                    { case: { $eq: [ { $dayOfWeek: "$timestamp" }, 2 ] }, then: "M" },
-                    { case: { $eq: [ { $dayOfWeek: "$timestamp" }, 3 ] }, then: "T" },
-                    { case: { $eq: [ { $dayOfWeek: "$timestamp" }, 4 ] }, then: "W" },
-                    { case: { $eq: [ { $dayOfWeek: "$timestamp" }, 5 ] }, then: "R" },
-                    { case: { $eq: [ { $dayOfWeek: "$timestamp" }, 6 ] }, then: "F" },
-                    { case: { $eq: [ { $dayOfWeek: "$timestamp" }, 7 ] }, then: "S" }
-                  ],
-                  default: "Unknown"
-                } } } },                
+                SleepData: {
+                  $push: {
+                    value: '$sleep',
+                    label: {
+                      $switch: {
+                        branches: [
+                          { case: { $eq: [{ $dayOfWeek: '$timestamp' }, 1] }, then: 'U' },
+                          { case: { $eq: [{ $dayOfWeek: '$timestamp' }, 2] }, then: 'M' },
+                          { case: { $eq: [{ $dayOfWeek: '$timestamp' }, 3] }, then: 'T' },
+                          { case: { $eq: [{ $dayOfWeek: '$timestamp' }, 4] }, then: 'W' },
+                          { case: { $eq: [{ $dayOfWeek: '$timestamp' }, 5] }, then: 'R' },
+                          { case: { $eq: [{ $dayOfWeek: '$timestamp' }, 6] }, then: 'F' },
+                          { case: { $eq: [{ $dayOfWeek: '$timestamp' }, 7] }, then: 'S' },
+                        ],
+                        default: 'Unknown',
+                      },
+                    },
+                  },
+                },
+                WaterData: {
+                  $push: {
+                    value: '$waterIntake',
+                    label: {
+                      $switch: {
+                        branches: [
+                          { case: { $eq: [{ $dayOfWeek: '$timestamp' }, 1] }, then: 'U' },
+                          { case: { $eq: [{ $dayOfWeek: '$timestamp' }, 2] }, then: 'M' },
+                          { case: { $eq: [{ $dayOfWeek: '$timestamp' }, 3] }, then: 'T' },
+                          { case: { $eq: [{ $dayOfWeek: '$timestamp' }, 4] }, then: 'W' },
+                          { case: { $eq: [{ $dayOfWeek: '$timestamp' }, 5] }, then: 'R' },
+                          { case: { $eq: [{ $dayOfWeek: '$timestamp' }, 6] }, then: 'F' },
+                          { case: { $eq: [{ $dayOfWeek: '$timestamp' }, 7] }, then: 'S' },
+                        ],
+                        default: 'Unknown',
+                      },
+                    },
+                  },
+                },
                 avgSleep: { $avg: '$sleep' },
                 avgWater: { $avg: '$waterIntake' },
-              }
+              },
             },
           ],
           secondPeriod: [
             {
               $match: {
-                timestamp: { $gt: new Date(midDate) }
-              }
+                timestamp: { $gt: new Date(midDate) },
+              },
             },
             {
               $group: {
                 _id: null,
-                SleepData: { $push: { value: '$sleep', label: { $switch: {
-                  branches: [
-                    { case: { $eq: [ { $dayOfWeek: "$timestamp" }, 1 ] }, then: "U" },
-                    { case: { $eq: [ { $dayOfWeek: "$timestamp" }, 2 ] }, then: "M" },
-                    { case: { $eq: [ { $dayOfWeek: "$timestamp" }, 3 ] }, then: "T" },
-                    { case: { $eq: [ { $dayOfWeek: "$timestamp" }, 4 ] }, then: "W" },
-                    { case: { $eq: [ { $dayOfWeek: "$timestamp" }, 5 ] }, then: "R" },
-                    { case: { $eq: [ { $dayOfWeek: "$timestamp" }, 6 ] }, then: "F" },
-                    { case: { $eq: [ { $dayOfWeek: "$timestamp" }, 7 ] }, then: "S" }
-                  ],
-                  default: "Unknown"
-                } } } },                                
-                WaterData: { $push: { value: '$waterIntake', label: { $switch: {
-                  branches: [
-                    { case: { $eq: [ { $dayOfWeek: "$timestamp" }, 1 ] }, then: "U" },
-                    { case: { $eq: [ { $dayOfWeek: "$timestamp" }, 2 ] }, then: "M" },
-                    { case: { $eq: [ { $dayOfWeek: "$timestamp" }, 3 ] }, then: "T" },
-                    { case: { $eq: [ { $dayOfWeek: "$timestamp" }, 4 ] }, then: "W" },
-                    { case: { $eq: [ { $dayOfWeek: "$timestamp" }, 5 ] }, then: "R" },
-                    { case: { $eq: [ { $dayOfWeek: "$timestamp" }, 6 ] }, then: "F" },
-                    { case: { $eq: [ { $dayOfWeek: "$timestamp" }, 7 ] }, then: "S" }
-                  ],
-                  default: "Unknown"
-                } } } },                
+                SleepData: {
+                  $push: {
+                    value: '$sleep',
+                    label: {
+                      $switch: {
+                        branches: [
+                          { case: { $eq: [{ $dayOfWeek: '$timestamp' }, 1] }, then: 'U' },
+                          { case: { $eq: [{ $dayOfWeek: '$timestamp' }, 2] }, then: 'M' },
+                          { case: { $eq: [{ $dayOfWeek: '$timestamp' }, 3] }, then: 'T' },
+                          { case: { $eq: [{ $dayOfWeek: '$timestamp' }, 4] }, then: 'W' },
+                          { case: { $eq: [{ $dayOfWeek: '$timestamp' }, 5] }, then: 'R' },
+                          { case: { $eq: [{ $dayOfWeek: '$timestamp' }, 6] }, then: 'F' },
+                          { case: { $eq: [{ $dayOfWeek: '$timestamp' }, 7] }, then: 'S' },
+                        ],
+                        default: 'Unknown',
+                      },
+                    },
+                  },
+                },
+                WaterData: {
+                  $push: {
+                    value: '$waterIntake',
+                    label: {
+                      $switch: {
+                        branches: [
+                          { case: { $eq: [{ $dayOfWeek: '$timestamp' }, 1] }, then: 'U' },
+                          { case: { $eq: [{ $dayOfWeek: '$timestamp' }, 2] }, then: 'M' },
+                          { case: { $eq: [{ $dayOfWeek: '$timestamp' }, 3] }, then: 'T' },
+                          { case: { $eq: [{ $dayOfWeek: '$timestamp' }, 4] }, then: 'W' },
+                          { case: { $eq: [{ $dayOfWeek: '$timestamp' }, 5] }, then: 'R' },
+                          { case: { $eq: [{ $dayOfWeek: '$timestamp' }, 6] }, then: 'F' },
+                          { case: { $eq: [{ $dayOfWeek: '$timestamp' }, 7] }, then: 'S' },
+                        ],
+                        default: 'Unknown',
+                      },
+                    },
+                  },
+                },
                 avgSleep: { $avg: '$sleep' },
                 avgWater: { $avg: '$waterIntake' },
-              }
+              },
             },
-          ],       
-        }
+          ],
+        },
       },
       {
         $project: {
           PercentageAvgSleep: {
             $multiply: [
-              { 
+              {
                 $divide: [
-                  { $subtract: [
-                    {
-                      $arrayElemAt: [
-                        "$secondPeriod.avgSleep",
-                        0
-                      ]
-                    },
-                    {
-                      $arrayElemAt: [
-                        "$firstPeriod.avgSleep",
-                        0
-                      ]
-                    }
-                    ] 
+                  {
+                    $subtract: [
+                      {
+                        $arrayElemAt: [
+                          '$secondPeriod.avgSleep',
+                          0,
+                        ],
+                      },
+                      {
+                        $arrayElemAt: [
+                          '$firstPeriod.avgSleep',
+                          0,
+                        ],
+                      },
+                    ],
                   },
                   {
                     $arrayElemAt: [
-                      "$firstPeriod.avgSleep",
-                      0
-                    ]
-                  }
-                ]
+                      '$firstPeriod.avgSleep',
+                      0,
+                    ],
+                  },
+                ],
               },
-              100
+              100,
             ],
           },
           PercentageAvgWater: {
             $multiply: [
-              { 
+              {
                 $divide: [
-                  { $subtract: [
-                    {
-                      $arrayElemAt: [
-                        "$secondPeriod.avgWater",
-                        0
-                      ]
-                    },
-                    {
-                      $arrayElemAt: [
-                        "$firstPeriod.avgWater",
-                        0
-                      ]
-                    }
-                    ] 
+                  {
+                    $subtract: [
+                      {
+                        $arrayElemAt: [
+                          '$secondPeriod.avgWater',
+                          0,
+                        ],
+                      },
+                      {
+                        $arrayElemAt: [
+                          '$firstPeriod.avgWater',
+                          0,
+                        ],
+                      },
+                    ],
                   },
                   {
                     $arrayElemAt: [
-                      "$firstPeriod.avgWater",
-                      0
-                    ]
-                  }
-                ]
+                      '$firstPeriod.avgWater',
+                      0,
+                    ],
+                  },
+                ],
               },
-              100
+              100,
             ],
           },
-          firstPeriod: { $arrayElemAt: ["$firstPeriod", 0] },
-          secondPeriod: { $arrayElemAt: ["$secondPeriod", 0] }          
-        }
-      }
+          firstPeriod: { $arrayElemAt: ['$firstPeriod', 0] },
+          secondPeriod: { $arrayElemAt: ['$secondPeriod', 0] },
+        },
+      },
     ]);
     res.send(Sleeptimeseries);
   } catch (err) {
@@ -226,139 +210,137 @@ const getSleepTimeSeries = async (req, res) => {
 
 const InsertManyExamples = async (req, res) => {
   console.log('Insert Many Examples');
-  const { leftDate, rightDate } = req.body;
-  console.log(leftDate);
-  console.log(rightDate);
   try {
     await TimeSerie.insertMany(
       [
-      {
-        metadata: {
-          email: 'booooooop',
-          userId: 'booop',
+        {
+          metadata: {
+            email: 'booooooop',
+            userId: 'booop',
+          },
+          timestamp: new Date('2024-06-22T12:00:00.000Z'),
+          sleep: 1,
+          waterIntake: 2,
         },
-        timestamp: new Date('2024-06-22T12:00:00.000Z'),
-        sleep: 1,
-        waterIntake: 2,
-      },
-      {
-        metadata: {
-          email: 'booooooop',
-          userId: 'booop',
+        {
+          metadata: {
+            email: 'booooooop',
+            userId: 'booop',
+          },
+          timestamp: new Date('2024-06-23T12:00:00.000Z'),
+          sleep: 3,
+          waterIntake: 1,
         },
-        timestamp: new Date('2024-06-23T12:00:00.000Z'),
-        sleep: 3,
-        waterIntake: 1,
-      },
-      {
-        metadata: {
-          email: 'booooooop',
-          userId: 'booop',
+        {
+          metadata: {
+            email: 'booooooop',
+            userId: 'booop',
+          },
+          timestamp: new Date('2024-06-24T12:00:00.000Z'),
+          sleep: 2,
+          waterIntake: 2,
         },
-        timestamp: new Date('2024-06-24T12:00:00.000Z'),
-        sleep: 2,
-        waterIntake: 2,
-      },
-      {
-        metadata: {
-          email: 'booooooop',
-          userId: 'booop',
+        {
+          metadata: {
+            email: 'booooooop',
+            userId: 'booop',
+          },
+          timestamp: new Date('2024-06-25T12:00:00.000Z'),
+          sleep: 4,
+          waterIntake: 2,
         },
-        timestamp: new Date('2024-06-25T12:00:00.000Z'),
-        sleep: 4,
-        waterIntake: 2,
-      },
-      {
-        metadata: {
-          email: 'booooooop',
-          userId: 'booop',
+        {
+          metadata: {
+            email: 'booooooop',
+            userId: 'booop',
+          },
+          timestamp: new Date('2024-06-26T12:00:00.000Z'),
+          sleep: 2,
+          waterIntake: 6,
         },
-        timestamp: new Date('2024-06-26T12:00:00.000Z'),
-        sleep: 2,
-        waterIntake: 6,
-      },
-      {
-        metadata: {
-          email: 'booooooop',
-          userId: 'booop',
+        {
+          metadata: {
+            email: 'booooooop',
+            userId: 'booop',
+          },
+          timestamp: new Date('2024-06-27T12:00:00.000Z'),
+          sleep: 3,
+          waterIntake: 4,
         },
-        timestamp: new Date('2024-06-27T12:00:00.000Z'),
-        sleep: 3,
-        waterIntake: 4,
-      },
-      {
-        metadata: {
-          email: 'booooooop',
-          userId: 'booop',
+        {
+          metadata: {
+            email: 'booooooop',
+            userId: 'booop',
+          },
+          timestamp: new Date('2024-06-28T12:00:00.000Z'),
+          sleep: 6,
+          waterIntake: 6,
         },
-        timestamp: new Date('2024-06-28T12:00:00.000Z'),
-        sleep: 6,
-        waterIntake: 6,
-      },
-      {
-        metadata: {
-          email: 'booooooop',
-          userId: 'booop',
+        {
+          metadata: {
+            email: 'booooooop',
+            userId: 'booop',
+          },
+          timestamp: new Date('2024-06-29T12:00:00.000Z'),
+          sleep: 5,
+          waterIntake: 7,
         },
-        timestamp: new Date('2024-06-29T12:00:00.000Z'),
-        sleep: 5,
-        waterIntake: 7,
-      },
-      {
-        metadata: {
-          email: 'booooooop',
-          userId: 'booop',
+        {
+          metadata: {
+            email: 'booooooop',
+            userId: 'booop',
+          },
+          timestamp: new Date('2024-06-30T12:00:00.000Z'),
+          sleep: 3,
+          waterIntake: 4,
         },
-        timestamp: new Date('2024-06-30T12:00:00.000Z'),
-        sleep: 3,
-        waterIntake: 4,
-      },
-      {
-        metadata: {
-          email: 'booooooop',
-          userId: 'booop',
+        {
+          metadata: {
+            email: 'booooooop',
+            userId: 'booop',
+          },
+          timestamp: new Date('2024-07-01T12:00:00.000Z'),
+          sleep: 2,
+          waterIntake: 5,
         },
-        timestamp: new Date('2024-07-01T12:00:00.000Z'),
-        sleep: 2,
-        waterIntake: 5,
-      },
-      {
-        metadata: {
-          email: 'booooooop',
-          userId: 'booop',
+        {
+          metadata: {
+            email: 'booooooop',
+            userId: 'booop',
+          },
+          timestamp: new Date('2024-07-02T12:00:00.000Z'),
+          sleep: 5,
+          waterIntake: 2,
         },
-        timestamp: new Date('2024-07-02T12:00:00.000Z'),
-        sleep: 5,
-        waterIntake: 2,
-      },
-      {
-        metadata: {
-          email: 'booooooop',
-          userId: 'booop',
+        {
+          metadata: {
+            email: 'booooooop',
+            userId: 'booop',
+          },
+          timestamp: new Date('2024-07-03T12:00:00.000Z'),
+          sleep: 6,
+          waterIntake: 4,
         },
-        timestamp: new Date('2024-07-03T12:00:00.000Z'),
-        sleep: 6,
-        waterIntake: 4,
-      },
-      {
-        metadata: {
-          email: 'booooooop',
-          userId: 'booop',
+        {
+          metadata: {
+            email: 'booooooop',
+            userId: 'booop',
+          },
+          timestamp: new Date('2024-07-04T12:00:00.000Z'),
+          sleep: 7,
+          waterIntake: 3,
         },
-        timestamp: new Date('2024-07-04T12:00:00.000Z'),
-        sleep: 7,
-        waterIntake: 3,
-      },
-      {
-        metadata: {
-          email: 'booooooop',
-          userId: 'booop',
+        {
+          metadata: {
+            email: 'booooooop',
+            userId: 'booop',
+          },
+          timestamp: new Date('2024-07-05T12:00:00.000Z'),
+          sleep: 5,
+          waterIntake: 5,
         },
-        timestamp: new Date('2024-07-05T12:00:00.000Z'),
-        sleep: 5,
-        waterIntake: 5,
-      },
-    ]);
+      ],
+    );
   } catch (err) {
     console.error(err);
     res.status(500).send(err);
@@ -366,5 +348,5 @@ const InsertManyExamples = async (req, res) => {
 };
 
 module.exports = {
-  getAllTimeSeries, InsertManyExamples, getSleepTimeSeries,
+  InsertManyExamples, getUserTimeSeries,
 };

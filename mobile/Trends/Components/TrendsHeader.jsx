@@ -1,15 +1,12 @@
 import {
-  View, Text, TouchableOpacity, Image,
+  View, Text, TouchableOpacity, Image, StyleSheet,
 } from 'react-native';
-import TrendImage from '../../assets/TrendImage.png';
-import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useState, useEffect, useContext } from 'react';
-import axios from 'axios';
-import TrendsContext from '../Context/TrendsContext';
+import { useState } from 'react';
+import TrendImage from '../../assets/TrendImage.png';
 
-const style = StyleSheet.create({ 
+const style = StyleSheet.create({
   header_container: {
     display: 'flex',
     flexDirection: 'row',
@@ -55,54 +52,18 @@ const style = StyleSheet.create({
 
 export default function TrendsHeader({ title }) {
   const [selectedPeriod, setSelectedPeriod] = useState('Week');
-  const [start, setStart] = useState(new Date());
-  const [end, setEnd] = useState(new Date());
 
-  const { initData } = useContext(TrendsContext);
+  // Planning to use this for storying the data at a local/global level.
+  // const { initData } = useContext(TrendsContext);
 
   const toggleButtonChange = () => {
-
-    /* Temp hard coded values */
-    const weekOffset = 2;
-    const current = new Date();
-
     if (selectedPeriod === 'Week') {
       setSelectedPeriod('Month');
     } else {
       setSelectedPeriod('Week');
     }
-
-    // if (selectedPeriod === 'Week') {
-    //   start.setDate(current.getDate() + (weekOffset * 7) - current.getDay());
-    //   end.setDate(start.getDate() + 6);      
-    // } else {
-    //   start.setMonth(current.getMonth() + weekOffset, 1);
-    //   end.setMonth(start.getMonth() + 1, 0);      
-    // }
-    // setStart(start);
-    // setEnd(end);
   };
-  useEffect(() => {
-    const getUserTimeSeries = async () => {
-      try {
-        initData();
-        // const startDate = start.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-        // const endDate = end.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-        // console.log(startDate);
-        // console.log(endDate);
-        // const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/timeSerie/getAllTimeSeries`, {
-        //   email: 'booooooop',
-        //   userId: 'booop',
-        //   startDate,
-        //   endDate,
-        // });
-        // const { data, data2, avgData, avgSleep, avgWater } = res.data[0];
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    getUserTimeSeries();
-  }, [selectedPeriod, start, end]);
+
   return (
     <View style={[style.header_container]}>
       <View style={[style.header_text_container]}>
@@ -110,55 +71,54 @@ export default function TrendsHeader({ title }) {
         <Text style={[style.header_text]}>{title}</Text>
       </View>
 
-      <View style={[style.header_toggle]}
-      >
+      <View style={[style.header_toggle]}>
         {selectedPeriod === 'Week' ? (
           <LinearGradient
-          colors={['#374342', '#546967']}
-          start={[0, 0]}
-          end={[1, 1]}
-          style={[style.header_toggle_buttons]}          
+            colors={['#374342', '#546967']}
+            start={[0, 0]}
+            end={[1, 1]}
+            style={[style.header_toggle_buttons]}
           >
             <TouchableOpacity
-            onPress={toggleButtonChange}
+              onPress={toggleButtonChange}
             >
               <Text style={{ fontSize: '18px', color: 'white' }}>Week</Text>
             </TouchableOpacity>
           </LinearGradient>
         ) : (
           <TouchableOpacity
-          onPress={toggleButtonChange}          
-          style={[style.header_toggle_buttons]}
+            onPress={toggleButtonChange}
+            style={[style.header_toggle_buttons]}
           >
             <Text style={{ fontSize: '18px' }}>Week</Text>
           </TouchableOpacity>
         )}
         {selectedPeriod === 'Month' ? (
           <LinearGradient
-          colors={['#374342', '#546967']}
-          start={[0, 0]}
-          end={[1, 1]}
-          style={[style.header_toggle_buttons]}          
+            colors={['#374342', '#546967']}
+            start={[0, 0]}
+            end={[1, 1]}
+            style={[style.header_toggle_buttons]}
           >
             <TouchableOpacity
-            onPress={toggleButtonChange}
+              onPress={toggleButtonChange}
             >
               <Text style={{ fontSize: '18px', color: 'white' }}>Month</Text>
             </TouchableOpacity>
           </LinearGradient>
         ) : (
           <TouchableOpacity
-            onPress={toggleButtonChange}          
+            onPress={toggleButtonChange}
             style={[style.header_toggle_buttons]}
           >
             <Text style={{ fontSize: '18px' }}>Month</Text>
           </TouchableOpacity>
-        )}    
+        )}
       </View>
     </View>
   );
 }
 
 TrendsHeader.propType = {
-  title: PropTypes.string.isRequired,  
-}
+  title: PropTypes.string.isRequired,
+};

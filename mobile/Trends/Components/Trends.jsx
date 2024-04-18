@@ -1,35 +1,16 @@
 import { useState } from 'react';
 import {
-  Button, View, Text, ScrollView, TouchableOpacity, StyleSheet, Image,
+  Button, View, Text, ScrollView, TouchableOpacity, Image,
 } from 'react-native';
-import { BarChart, LineChart } from 'react-native-gifted-charts';
-import axios from 'axios';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { LineChart } from 'react-native-gifted-charts';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import PropTypes from 'prop-types';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { LinearGradient } from 'expo-linear-gradient';
 import styles from './TrendsStyle';
-import { data, barData } from './TrendsData';
+import { data } from './TrendsData';
 import TrendsHeader from './TrendsHeader';
-import TrendImage from '../../assets/TrendImage.png';
 import Arrow from '../../assets/arrow.png';
-
-const style = StyleSheet.create({
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    backgroundColor: 'white',
-  },
-  row: {
-    display: 'flex',
-    flexDirection: 'row',
-  },
-  column: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-});
 
 function TrendSection({ header, description, buttonText }) {
   return (
@@ -81,7 +62,7 @@ function CircleSection({ header, description, navigateToTrendsBody }) {
         <View>
           <LinearGradient colors={['#E0F1F3', '#E5F8F3']}>
             <TouchableOpacity onPress={navigateToTrendsBody}>
-              <Image source={Arrow} style={{ height: 20, width: 20 }} />              
+              <Image source={Arrow} style={{ height: 20, width: 20 }} />
             </TouchableOpacity>
           </LinearGradient>
         </View>
