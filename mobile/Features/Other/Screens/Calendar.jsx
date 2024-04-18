@@ -3,11 +3,20 @@ import {
   View, Text, StyleSheet, ScrollView,
 } from 'react-native';
 // import CalendarPicker from 'react-native-calendar-picker';
-import { Calendar, LocaleConfig } from 'react-native-calendars';
+import { Calendar } from 'react-native-calendars';
+import PropTypes from 'prop-types';
 import axios from 'axios';
 import JournalCard from '../../Journal/Components/JournalCard';
 
 export default function CalendarPage({ navigation }) {
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: 'bl',
+      marginTop: 40,
+    },
+  });
+
   const [selectedDate, setSelectedDate] = useState('');
   const [allJournals, setAllJournals] = useState([]);
   const [recentJournals, setRecentJournals] = useState([]);
@@ -21,10 +30,6 @@ export default function CalendarPage({ navigation }) {
   };
 
   const datesAreOnSameDay = (first, second) => {
-    console.log(`firstTime: ${first}`);
-    console.log(`secondTime: ${second}`);
-    console.log(`journal's date: ${first.getDate()}`);
-    console.log(`selected date: ${second.getDate()}`);
     if (first && second) {
       return (
         first.getFullYear() === second.getFullYear()
@@ -32,14 +37,15 @@ export default function CalendarPage({ navigation }) {
       && first.getDate() === second.getDate()
       );
     }
+    return false;
   };
 
   const getAllJournals = async () => {
     try {
       const result = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/journals/getAllJournals`);
-      const recent_journals = result.data.length >= 10 ? result.data.slice(-10) : result.data;
+      const recentJournalData = result.data.length >= 10 ? result.data.slice(-10) : result.data;
       setAllJournals(result.data);
-      setRecentJournals(recent_journals);
+      setRecentJournals(recentJournalData);
     } catch (err) {
       console.error(err);
       return err;
@@ -57,11 +63,6 @@ export default function CalendarPage({ navigation }) {
     // Use the Pacific Time Zone date for further processing
     const objectDate = new Date(pacificDate);
     const todayDate = new Date();
-    console.log('OBJECT FULL DATE:', objectDate);
-    console.log('TODAY FULL DATE:', todayDate);
-
-    console.log('OBJECT DAY:', objectDate.getUTCDate());
-    console.log('TODAY DAY:', todayDate.getDate());
 
     if (selectedDate && objectDate.getTime() === selectedDate.getTime() && clickedDate) {
       setClickedDate(false);
@@ -78,7 +79,6 @@ export default function CalendarPage({ navigation }) {
       setSelectedDate(objectDate);
       const journals = [...allJournals];
       setFilteredJournals(journals.filter((journal) => datesAreOnSameDay(new Date(journal.timestamp), objectDate)));
-      console.log(`filtered journals: ${filteredJournals}`);
     }
   };
 
@@ -124,8 +124,6 @@ export default function CalendarPage({ navigation }) {
   }; /* navigate to the past journal entry, isHistory
    is set to true (uneditable text box with the corresponding prompt) */
 
-   console.log("All journals: ", allJournals);
-   
   return (
     <View style={styles.container}>
       <View style={{ backgroundColor: '#91A8D1', margin: 10 }}>
@@ -272,10 +270,8 @@ export default function CalendarPage({ navigation }) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'bl',
-    marginTop: 40,
-  },
-});
+CalendarPage.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
+};
