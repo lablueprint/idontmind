@@ -2,11 +2,22 @@ import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   journalCard: {
-    width: 300,
-    padding: 20,
-    margin: 10,
+    width: 163,
+    padding: 12,
+    margin: 5,
     borderColor: 'black',
-    backgroundColor: '#D9D9D9',
+    backgroundColor: '#F6FCFC',
     borderRadius: 12,
+    height: 140,
+  
+  },
+  date: {
+
+  },
+  prompt: {
+
+  },
+  text: {
+
   },
 });

@@ -11,21 +11,24 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import SafeAreaView from 'react-native-safe-area-view';
 import styles from '../Components/JournalStyle';
 
-export function JournalPage({ navigation, freeWrite, isHistory, body, isDetails}) {
+export function JournalPage({
+  navigation, freeWrite, isHistory, body, isDetails,
+}) {
   // const route = useRoute();
   // const body = route.params?.body;
   // const isHistory = route.params?.isHistory;
 
   // const body = "body";
   // const isHistory = true;
-  
+
   /* retrieve the value of isHistory
   from the previous navigation page (JournalHistoryPage) */
   const [selectedImage, setSelectedImage] = useState(null);
   const [viewImage, setViewImage] = useState(false);
-  const [title, setTitle] = useState('');
   const [prompts, setPrompts] = useState([]);
+  const [randomTitle, setRandomTitle] = useState();
   const [freeWriteTitle, setFreeWriteTitle] = useState('');
+  console.log('randomTitle:', randomTitle);
 
   // console.log("HISTORY PART 2", isHistory);
   // console.log("BODY PART 2", body);
@@ -43,11 +46,11 @@ export function JournalPage({ navigation, freeWrite, isHistory, body, isDetails}
       let randomIndex = Math.floor(Math.random() * prompts.length);
       console.log(randomIndex);
       let randomPrompt = prompts[randomIndex]['Journal Prompts'];
-      while (randomPrompt === title) {
+      while (randomPrompt === randomTitle) {
         randomIndex = Math.floor(Math.random() * prompts.length);
         randomPrompt = prompts[randomIndex]['Journal Prompts'];
       }
-      setTitle(randomPrompt);
+      setRandomTitle(randomPrompt);
     }
   };
 
@@ -82,10 +85,22 @@ export function JournalPage({ navigation, freeWrite, isHistory, body, isDetails}
 
   const getPrompt = (option) => {
     if (!option) {
-      console.log(title);
-      return <Text style={styles.prompt}>{title}</Text>;
+      return <Text style={styles.prompt}>{randomTitle}</Text>;
     }
-      return <TextInput style={{ backgroundColor: 'gray' }} multiline placeholder="Add Title..." onChangeText={(text) => setFreeWriteTitle(text)} value={freeWriteTitle} />;
+    return (
+      <TextInput
+        style={{
+          backgroundColor: '#C6CECE',
+          color: 'black',
+          padding: 10,
+          borderRadius: 5,
+        }}
+        multiline
+        placeholder="Add Title..."
+        onChangeText={setFreeWriteTitle}
+        value={freeWriteTitle}
+      />
+    );
   };
   console.log("free write title", freeWriteTitle);
 
@@ -101,6 +116,7 @@ export function JournalPage({ navigation, freeWrite, isHistory, body, isDetails}
       timeZone: 'America/Los_Angeles',
     });
     const timestamp = pstDate;
+    // const timestamp = currentdate;
     await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/journals/createJournal`, {
       username: newUsername, prompt: newPrompt, text: newText, timestamp,
     });
@@ -141,11 +157,24 @@ export function JournalPage({ navigation, freeWrite, isHistory, body, isDetails}
     return hours;
   };
 
+  const formatDate = (dateString) => {
+    const options = { month: 'long', day: 'numeric', year: 'numeric' };
+    const formattedDate = new Date(dateString).toLocaleDateString(undefined, options);
+    return formattedDate;
+  };
+
+  const formattedDate = formatDate(currDate);
+
+  const handleTextChange = (inputText) => {
+    setText(inputText);
+    navigation.navigate('PostDetails', {randomTitle, inputText});
+  };
+
   /* render it in two different ways depending on if isHistory(if false, editable text box, if
   true, uneditable text box with previously written text) */
-  console.log("IN JOURNAL");
-  const journalTitle = freeWrite ? title : freeWriteTitle;
-  console.log("journal title: " , journalTitle);
+  // console.log("IN JOURNAL");
+  // const journalTitle = freeWrite ? title : freeWriteTitle;
+  // console.log("journal title: " , journalTitle);
   if (!isHistory) {
     return (
       <ScrollView style={{ flex: 1 }}>
@@ -153,7 +182,7 @@ export function JournalPage({ navigation, freeWrite, isHistory, body, isDetails}
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
           <SafeAreaView>
             <SafeAreaView style={styles.container}>
-              <Text style={{ marginTop: 180 }}>{`${currDate.toDateString()}, ${militaryToStandard(timeHours)}:${timeMinutes}`}</Text>
+              <Text style={{ marginTop: 180 }}>{`${formattedDate}, ${militaryToStandard(timeHours)}:${timeMinutes}`}</Text>
               <SafeAreaView>
                 {getPrompt(freeWrite)}
               </SafeAreaView>
@@ -161,7 +190,10 @@ export function JournalPage({ navigation, freeWrite, isHistory, body, isDetails}
               <SafeAreaView style={styles.textBox}>
                 <ScrollView automaticallyAdjustKeyboardInsets>
                   <View>
-                    <TextInput multiline placeholder="Type your response" onChangeText={setText} value={text} />
+                    <TextInput 
+                    multiline placeholder="Type your response" 
+                    onChangeText={handleTextChange} 
+                    value={text} />
                   </View>
                 </ScrollView>
               </SafeAreaView>
@@ -175,22 +207,28 @@ export function JournalPage({ navigation, freeWrite, isHistory, body, isDetails}
                   <TouchableOpacity onPressOut={handlePopUp} style={styles.modalView}>
                     <SafeAreaView style={styles.modalBox}>
                       <Text style={{ fontSize: 20 }}>confirm journal entry?</Text>
-                      <Pressable
-                        style={styles.modalSelections}
-                        onPress={() => addNewJournal(username, journalTitle, text)}
-                      >
-                        <Text>
-                          yes
-                        </Text>
-                      </Pressable>
+                      {freeWrite ? (
+                        <Pressable
+                          style={styles.modalSelections}
+                          onPress={() => addNewJournal(username, freeWriteTitle, text)}
+                        >
+                          <Text>yes</Text>
+                        </Pressable>
+                      ) : (
+                        <Pressable
+                          style={styles.modalSelections}
+                          onPress={() => addNewJournal(username, randomTitle, text)}
+                        >
+                          <Text>yes</Text>
+                        </Pressable>
+                      )}
                       <Pressable style={styles.modalSelections} onPress={handlePopUp}>
-                        <Text>
-                          no
-                        </Text>
+                        <Text>no</Text>
                       </Pressable>
                     </SafeAreaView>
                   </TouchableOpacity>
                 </Modal>
+
               </SafeAreaView>
 
             </SafeAreaView>

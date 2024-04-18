@@ -1,18 +1,19 @@
 import React from 'react';
-import JournalPage from './JournalPage'; // Make sure to provide the correct path
-import { useRoute } from '@react-navigation/native';
 import styles from '../Components/JournalStyle';
 import {
     ScrollView, Text, View, Button, TextInput, Keyboard,
     TouchableWithoutFeedback, Modal, TouchableOpacity, Pressable, Image,
   } from 'react-native';
 
-export default function JournalDetails({ navigation }) {
-  const route = useRoute();
-  const username = route.params?.user;
-  const prompt = route.params?.question;
-  const text = route.params?.body;
-  const date = route.params?.day;
+export default function PostDetails({ navigation, route}) {
+//   const route = useRoute();
+//   const prompt = route.params?.question;
+//   const text = route.params?.body;
+//   const date = route.params?.day;
+const {randomTitle, inputText} = route.params||{};
+// console.log(prompt);
+// console.log(body);
+
 
   const navigateToJournalHistory = () => {
     navigation.navigate('Journal History');
@@ -20,15 +21,14 @@ export default function JournalDetails({ navigation }) {
 
   return (
     <ScrollView contentContainerStyle={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <View style={styles.container}>
+      {/* <View style={styles.container}>
         <View style={styles.textBox}>
-          <ScrollView automaticallyAdjustKeyboardInsets>
-            <Text>{date}</Text>
-            <Text style={{fontSize: 20}}>{prompt}</Text>
-            <Text>{text}</Text>
-          </ScrollView>
+          <ScrollView automaticallyAdjustKeyboardInsets> */}
+            <Text style={{fontSize: 20}}>{randomTitle}</Text>
+            <Text>{inputText}</Text>
+          {/* </ScrollView>
         </View>
-      </View>
+      </View> */}
       <Button
         title="Go back"
         onPress={navigation.goBack}
@@ -41,5 +41,4 @@ export default function JournalDetails({ navigation }) {
     </ScrollView>
 
   );
-  
 }
