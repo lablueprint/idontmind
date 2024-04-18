@@ -17,7 +17,7 @@ export default function ContentLibrary({ navigation }) {
   const { initTags, initFavorites } = useContext(TagContext);
 
   const navigateToTag = (index) => {
-    navigation.navigate('Tag', { index, routeName: 'Content Library' });
+    navigation.navigate('Tag', { index, routeName: 'Content' });
   };
 
   const navigateToFavorites = () => {

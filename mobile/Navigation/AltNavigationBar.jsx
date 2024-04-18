@@ -1,4 +1,5 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 import {
   Image, ImageBackground, View, Dimensions,
 } from 'react-native';
@@ -14,12 +15,49 @@ import ContentIcon from '../assets/navbaricons/contenticon.png';
 import FindHelpIcon from '../assets/navbaricons/findhelpicon.png';
 import BlackCircle from '../assets/navbaricons/blackcircle.png';
 
-const Tab = createBottomTabNavigator();
+import PostSignInLanding from '../Features/Other/Screens/PostSignInLanding';
+import Feed from '../Features/Other/Screens/Feed';
+import CheckIn from '../Features/Other/Screens/CheckIn';
+import PushNotifications from '../Features/Settings/Screens/PushNotifications';
+import Options from '../Features/Other/Screens/Options';
+import JournalHistoryPage from '../Features/Other/Screens/JournalHistoryPage';
+import WOYM from '../Features/Register/WOYM';
+import DayChallenge from '../Features/Other/Screens/DayChallenge';
+
+const Stack = createStackNavigator();
+const otherNames = ['Day Challenge', 'CheckIn', 'PostSignInLanding', 'Feed', 'Notifs', 'Options', 'Journal History', 'WOYM'];
+const otherPages = [DayChallenge, CheckIn, PostSignInLanding, Feed, PushNotifications, Options, JournalHistoryPage, WOYM];
+
+function HomeWithExtraPages() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Content Dashboard"
+        component={ContentDashboard}
+        options={{
+          headerShown: false,
+        }}
+      />
+      { [...Array(otherNames.length).keys()].map((i) => (
+        <Stack.Screen
+          key={otherNames[i]}
+          name={otherNames[i]}
+          component={otherPages[i]}
+          options={{
+            headerShown: false,
+          }}
+        />
+      )) }
+    </Stack.Navigator>
+  );
+}
 
 export default function AltNavigationBar() {
+  const Tab = createBottomTabNavigator();
+
   const names = ['Trends', 'Journal', 'Home', 'Content', 'Find Help'];
   const icons = [TrendsIcon, JournalIcon, HomeIcon, ContentIcon, FindHelpIcon];
-  const components = [TrendsPage, JournalPage, ContentDashboard, ContentLibrary, FindHelp];
+  const components = [TrendsPage, JournalPage, HomeWithExtraPages, ContentLibrary, FindHelp];
 
   return (
     <Tab.Navigator
@@ -38,6 +76,7 @@ export default function AltNavigationBar() {
     >
       {[...Array(5).keys()].map((i) => (
         <Tab.Screen
+          key={names[i]}
           name={names[i]}
           component={components[i]}
           options={{
