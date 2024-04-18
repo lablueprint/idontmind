@@ -36,7 +36,7 @@ function EndCheckIn({ navigation }) {
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>go away, diya</Text>
       <Image
-        source={require('../../assets/shape.png')}
+        source={require('../../assets/images/shape.png')}
       />
       <View>
         <Pressable onPress={handleEnd}>

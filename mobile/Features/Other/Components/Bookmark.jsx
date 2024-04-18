@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import style from './BookmarkStyle';
-import BookmarkImage from '../../../assets/bookmark.png';
+import BookmarkImage from '../../../assets/images/bookmark.png';
 
 export default function Bookmark({
   resourceName, author,

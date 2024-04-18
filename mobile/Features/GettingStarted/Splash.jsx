@@ -2,7 +2,7 @@ import {
   Text, View, Pressable, TouchableOpacity, Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import IDMlogo from '../../assets/idontmindlogo.png';
+import IDMlogo from '../../assets/images/idontmindlogo.png';
 import styles from './SplashStyle';
 
 function Splash({ navigation }) {

@@ -5,7 +5,7 @@ import {
 import { useRoute } from '@react-navigation/native';
 import ProgressBar from 'react-native-progress/Bar';
 import PropTypes from 'prop-types';
-import nicole from '../../assets/sleepFace.png';
+import nicole from '../../assets/images/sleepFace.png';
 import styles from './MoodStyle';
 
 function Activity({ navigation }) {
