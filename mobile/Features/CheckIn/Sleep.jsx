@@ -73,27 +73,27 @@ function Sleep({ navigation }) {
         <View style={styles.faces}>
           <View style={styles.singularFace}>
             <Image
-              source={require('../../assets/sleepFace.png')}
+              source={require('../../assets/images/sleepFace.png')}
             />
           </View>
           <View style={styles.singularFace}>
             <Image
-              source={require('../../assets/sleepFace.png')}
+              source={require('../../assets/images/sleepFace.png')}
             />
           </View>
           <View style={styles.singularFace}>
             <Image
-              source={require('../../assets/sleepFace.png')}
+              source={require('../../assets/images/sleepFace.png')}
             />
           </View>
           <View style={styles.singularFace}>
             <Image
-              source={require('../../assets/sleepFace.png')}
+              source={require('../../assets/images/sleepFace.png')}
             />
           </View>
           <View style={styles.singularFace}>
             <Image
-              source={require('../../assets/sleepFace.png')}
+              source={require('../../assets/images/sleepFace.png')}
             />
           </View>
         </View>

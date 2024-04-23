@@ -17,7 +17,7 @@ function CheckIn({ navigation }) {
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>welcome back, diya</Text>
       <Image
-        source={require('../../assets/shape.png')}
+        source={require('../../assets/images/shape.png')}
       />
       <View>
         <Pressable onPress={beginCheckIn}>

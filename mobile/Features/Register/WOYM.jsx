@@ -3,7 +3,7 @@ import {
   Text, View, Pressable, Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import shape from '../../assets/shape.png';
+import shape from '../../assets/images/shape.png';
 import styles from './WOYMStyle';
 
 function WOYM({ navigation }) {
