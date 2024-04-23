@@ -11,13 +11,13 @@ const style = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: 'fill',
-    height: '40px',
+    width: '100%',
+    height: 40,
     position: 'fixed',
     marginBottom: 20,
   },
   header_text_container: {
-    fontSize: '2rem',
+    fontSize: 2,
     position: 'relative',
   },
   header_text_image: {
@@ -26,26 +26,25 @@ const style = StyleSheet.create({
     width: '100%',
   },
   header_text: {
-    fontSize: '40px',
+    fontSize: 40,
     fontWeight: 400,
-    lineHeight: '52px',
-    letterSpacing: '-0.01em',
+    lineHeight: 52,
     textAlign: 'left',
   },
   header_toggle: {
     display: 'flex',
     flexDirection: 'row',
-    boxShadow: '0px 4px 10px 0px #00000003',
-    gap: '10px',
+    boxShadow: '0 4 10 0 #00000003',
+    gap: '10',
     alignSelf: 'center',
 
   },
   header_toggle_buttons: {
-    width: '84px',
-    height: '40px',
+    width: 84,
+    height: 40,
     paddingHorizontal: 15,
     paddingVertical: 10,
-    borderRadius: '10px 0px 0px 0px',
+    borderRadius: '10 0 0 0',
   },
 
 });
@@ -82,7 +81,7 @@ export default function TrendsHeader({ title }) {
             <TouchableOpacity
               onPress={toggleButtonChange}
             >
-              <Text style={{ fontSize: '18px', color: 'white' }}>Week</Text>
+              <Text style={{ fontSize: 18, color: 'white' }}>Week</Text>
             </TouchableOpacity>
           </LinearGradient>
         ) : (
@@ -90,7 +89,7 @@ export default function TrendsHeader({ title }) {
             onPress={toggleButtonChange}
             style={[style.header_toggle_buttons]}
           >
-            <Text style={{ fontSize: '18px' }}>Week</Text>
+            <Text style={{ fontSize: 18 }}>Week</Text>
           </TouchableOpacity>
         )}
         {selectedPeriod === 'Month' ? (
@@ -103,7 +102,7 @@ export default function TrendsHeader({ title }) {
             <TouchableOpacity
               onPress={toggleButtonChange}
             >
-              <Text style={{ fontSize: '18px', color: 'white' }}>Month</Text>
+              <Text style={{ fontSize: 18, color: 'white' }}>Month</Text>
             </TouchableOpacity>
           </LinearGradient>
         ) : (
@@ -111,7 +110,7 @@ export default function TrendsHeader({ title }) {
             onPress={toggleButtonChange}
             style={[style.header_toggle_buttons]}
           >
-            <Text style={{ fontSize: '18px' }}>Month</Text>
+            <Text style={{ fontSize: 18 }}>Month</Text>
           </TouchableOpacity>
         )}
       </View>

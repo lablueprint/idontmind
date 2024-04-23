@@ -38,7 +38,6 @@ function CircleProgress() {
         width={12}
         fill={75}
         tintColor="#374342"
-        onAnimationComplete={() => console.log('onAnimationComplete')}
         backgroundColor="#F6FCFC"
         rotation={180}
         lineCap="round"
@@ -52,7 +51,7 @@ function CircleSection({ header, description, navigateToTrendsBody }) {
     <View style={[styles.column, { marginBottom: 30 }]}>
       <View style={[styles.row, { justifyContent: 'space-between', marginBottom: 30 }]}>
         <View style={[styles.column]}>
-          <Text style={{ marginTop: 10, marginBottom: 10, fontSize: '20rem' }}>
+          <Text style={{ marginTop: 10, marginBottom: 10, fontSize: 20 }}>
             {header}
           </Text>
           <Text>
