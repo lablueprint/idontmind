@@ -42,12 +42,20 @@ export default StyleSheet.create({
   titleButton: {
     display: 'flex',
     flexDirection: 'row',
+  },
+  extraMargin: {
     marginBottom: 20,
   },
   down: {
-    width: 12,
-    height: 6,
+    alignSelf: 'center',
+    width: '100%',
+    height: 10,
+  },
+  arrowCont: {
+    width: 14,
     marginHorizontal: 10,
+    objectFit: 'cover',
+    alignSelf: 'center',
   },
   rotated: {
     transform: [{ rotate: '180deg' }],
@@ -106,6 +114,7 @@ export default StyleSheet.create({
   },
   arrow: {
     alignSelf: 'center',
+    flexDirection: 'row',
   },
   stillButt: {
     position: 'absolute',

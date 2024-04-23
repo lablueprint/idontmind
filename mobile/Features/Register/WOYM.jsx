@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import {
   Text, View, Pressable, Image,
-  ScrollView,
+  ScrollView, Svg,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import chev from '../../assets/chevron-up.png';
@@ -132,16 +132,19 @@ function WOYM({ navigation }) {
   useEffect(() => {
     const copingCount = Object.values(selectedCoping).filter((value) => value).length;
     const ewbCount = Object.values(selectedEWB).filter((value) => value).length;
-    const totalCount = copingCount + ewbCount;
+    const iCount = Object.values(selectedIdentity).filter((value) => value).length;
+    const sCount = Object.values(selectedLifestyle).filter((value) => value).length;
+    const mCount = Object.values(selectedMental).filter((value) => value).length;
+    const totalCount = copingCount + ewbCount + iCount + sCount + mCount;
     setOutOf3(totalCount);
     if (totalCount > 3) {
       setOutOf3(3);
     }
-  }, [selectedCoping, selectedEWB]);
+  }, [selectedCoping, selectedEWB, selectedLifestyle, selectedIdentity, selectedMental]);
 
   return (
     <View style={{ flex: 1 }}>
-      <ScrollView style={styles.sv}>
+      <ScrollView style={[styles.sv, styles.overlay]}>
         <View style={styles.container}>
           <View>
             <Text style={styles.heading}>
@@ -155,13 +158,15 @@ function WOYM({ navigation }) {
             </Text>
           </View>
           <View style={styles.pillArea}>
-            <View style={styles.titleButton}>
-              <Text style={styles.pillTitle}>Coping</Text>
+            <View style={[styles.titleButton, showCoping ? styles.extraMargin : styles.titleButton]}>
               <Pressable style={styles.arrow} onPress={() => setShowCoping(!showCoping)}>
-                <Image
-                  source={chev}
-                  style={[styles.down, showCoping ? styles.down : styles.rotated]}
-                />
+                <Text style={styles.pillTitle}>Coping</Text>
+                <View style={styles.arrowCont}>
+                  <Image
+                    source={chev}
+                    style={[styles.down, showCoping ? styles.down : styles.rotated]}
+                  />
+                </View>
               </Pressable>
             </View>
             <View style={[styles.pills, showCoping ? styles.showIt : styles.dontShowIt]}>
@@ -182,13 +187,15 @@ function WOYM({ navigation }) {
             </View>
           </View>
           <View style={styles.pillArea}>
-            <View style={styles.titleButton}>
-              <Text style={styles.pillTitle}>Emotional Well-Being</Text>
+            <View style={[styles.titleButton, showEWB ? styles.extraMargin : styles.titleButton]}>
               <Pressable style={styles.arrow} onPress={() => setShowEWB(!showEWB)}>
-                <Image
-                  source={chev}
-                  style={[styles.down, showEWB ? styles.down : styles.rotated]}
-                />
+                <Text style={styles.pillTitle}>Emotional Well-Being</Text>
+                <View style={styles.arrowCont}>
+                  <Image
+                    source={chev}
+                    style={[styles.down, showEWB ? styles.down : styles.rotated]}
+                  />
+                </View>
               </Pressable>
             </View>
             <View style={[styles.pills, showEWB ? styles.showIt : styles.dontShowIt]}>
@@ -209,13 +216,15 @@ function WOYM({ navigation }) {
             </View>
           </View>
           <View style={styles.pillArea}>
-            <View style={styles.titleButton}>
-              <Text style={styles.pillTitle}>Identity and Self-Perception</Text>
+            <View style={[styles.titleButton, showIdentity ? styles.extraMargin : styles.titleButton]}>
               <Pressable style={styles.arrow} onPress={() => setShowIdentity(!showIdentity)}>
-                <Image
-                  source={chev}
-                  style={[styles.down, showIdentity ? styles.down : styles.rotated]}
-                />
+                <Text style={styles.pillTitle}>Identity and Self-Perception</Text>
+                <View style={styles.arrowCont}>
+                  <Image
+                    source={chev}
+                    style={[styles.down, showIdentity ? styles.down : styles.rotated]}
+                  />
+                </View>
               </Pressable>
             </View>
             <View style={[styles.pills, showIdentity ? styles.showIt : styles.dontShowIt]}>
@@ -236,13 +245,15 @@ function WOYM({ navigation }) {
             </View>
           </View>
           <View style={styles.pillArea}>
-            <View style={styles.titleButton}>
-              <Text style={styles.pillTitle}>Lifestyle and Wellness</Text>
+            <View style={[styles.titleButton, showLifestyle ? styles.extraMargin : styles.titleButton]}>
               <Pressable style={styles.arrow} onPress={() => setShowLifestyle(!showLifestyle)}>
-                <Image
-                  source={chev}
-                  style={[styles.down, showLifestyle ? styles.down : styles.rotated]}
-                />
+                <Text style={styles.pillTitle}>Lifestyle and Wellness</Text>
+                <View style={styles.arrowCont}>
+                  <Image
+                    source={chev}
+                    style={[styles.down, showLifestyle ? styles.down : styles.rotated]}
+                  />
+                </View>
               </Pressable>
             </View>
             <View style={[styles.pills, showLifestyle ? styles.showIt : styles.dontShowIt]}>
@@ -263,13 +274,15 @@ function WOYM({ navigation }) {
             </View>
           </View>
           <View style={styles.pillArea}>
-            <View style={styles.titleButton}>
-              <Text style={styles.pillTitle}>Mental Health Conditions</Text>
+            <View style={[styles.titleButton, showMental ? styles.extraMargin : styles.titleButton]}>
               <Pressable style={styles.arrow} onPress={() => setShowMental(!showMental)}>
-                <Image
-                  source={chev}
-                  style={[styles.down, showMental ? styles.down : styles.rotated]}
-                />
+                <Text style={styles.pillTitle}>Mental Health Conditions</Text>
+                <View style={styles.arrowCont}>
+                  <Image
+                    source={chev}
+                    style={[styles.down, showMental ? styles.down : styles.rotated]}
+                  />
+                </View>
               </Pressable>
             </View>
             <View style={[styles.pills, showMental ? styles.showIt : styles.dontShowIt]}>
@@ -315,6 +328,7 @@ function WOYM({ navigation }) {
           </Pressable>
         </View>
       </View>
+      <View style={styles.fade} />
     </View>
 
   );
