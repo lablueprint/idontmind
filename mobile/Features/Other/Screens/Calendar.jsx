@@ -138,12 +138,23 @@ export default function CalendarPage({ navigation }) {
       <Text style={styles.header}>Journal Entries</Text>
         <Calendar
           onDayPress={handleDateSelect}
+          markingType={'custom'}
           // customHeader={<CustomHeader month={LocaleConfig.months[month]} year={year} />} // Pass the custom header component here
           markedDates={{
             [selectedDate]: { selected: true, disableTouchEvent: true, selectedDotColor: 'orange' },
             // timestamps.map(timestamp => ({ timestamp: { selected: true } } )),
             ...timestamps.reduce((acc, timestamp) => {
-              acc[timestamp] = { selected: true, selectedColor: '#BFDBD7' };
+              acc[timestamp] = { 
+                selected: true, 
+                customStyles: {
+                  backgroundColor: '#BFDBD7'
+                },
+                text: {
+                  color: 'black',
+                  fontWeight: 'bold',
+                }
+              };
+              //selectedColor: '#BFDBD7' 
               return acc;
             }, {})
           }}
