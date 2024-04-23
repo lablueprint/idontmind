@@ -7,8 +7,8 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import axios from 'axios';
 import SearchBarStyle from './SearchBarStyle';
 import Bookmark from './Bookmark';
-import timeline from '../../../assets/time_line.png';
-import clear from '../../../assets/clear.png';
+import timeline from '../../../assets/images/time_line.png';
+import clear from '../../../assets/images/clear.png';
 
 export default function SearchBar({
   visible, onClose, onSearch, recentSearches,

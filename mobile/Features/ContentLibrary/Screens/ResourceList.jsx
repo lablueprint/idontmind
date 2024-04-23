@@ -126,7 +126,7 @@ function ResourceList({ navigation }) {
           </ScrollView>
         </View>
       </View>
-      <BottomHalfModal modalVisibleParent={modalVisible} toggleModal={toggleModal} />
+      <BottomHalfModal modalVisibleParent={modalVisible} toggleModal={toggleModal} page="Tags" />
 
     </View>
   );
