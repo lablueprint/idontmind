@@ -17,22 +17,27 @@ export default StyleSheet.create({
     fontSize: 40,
     color: '#343A3A',
     marginBottom: 24,
+    fontFamily: 'recoleta-regular',
   },
   subheading: {
     color: '#767C7C',
     fontSize: 16,
     marginBottom: 40,
+    fontFamily: 'cabinet-grotesk-regular',
   },
   pillTitle: {
     fontSize: 24,
+    fontFamily: 'recoleta-regular',
   },
   nonselectedPillText: {
     fontSize: 16,
     color: '#343A3A',
+    fontFamily: 'cabinet-grotesk-regular',
   },
   selectedPillText: {
     fontSize: 16,
     color: '#F6FCFC',
+    fontFamily: 'cabinet-grotesk-regular',
   },
   pills: {
     display: 'flex',
@@ -85,12 +90,15 @@ export default StyleSheet.create({
   nextText: {
     fontSize: 18,
     fontWeight: 'bold',
+    fontFamily: 'cabinet-grotesk-bold',
   },
   nextTextReady: {
     color: '#767C7C',
+    fontFamily: 'cabinet-grotesk-bold',
   },
   nextTextNot: {
     color: '#F6FCFC',
+    fontFamily: 'cabinet-grotesk-bold',
   },
   nextButt: {
     borderRadius: 99,
