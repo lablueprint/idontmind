@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import {
-  View, Text, StyleSheet, ScrollView, ListView
+  View, Text, StyleSheet, ScrollView, ListView, TouchableOpacity, Button
 } from 'react-native';
 // import CalendarPicker from 'react-native-calendar-picker';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
 import axios from 'axios';
 import JournalCard from '../../Journal/Components/JournalCard';
+import LinearGradient from 'react-native-linear-gradient';
+
 
 export default function CalendarPage({ navigation }) {
   const [selectedDate, setSelectedDate] = useState('');
@@ -22,10 +24,6 @@ export default function CalendarPage({ navigation }) {
   };
 
   const datesAreOnSameDay = (first, second) => {
-    // console.log(`firstTime: ${first}`);
-    // console.log(`secondTime: ${second}`);
-    // console.log(`journal's date: ${first.getDate()}`);
-    // console.log(`selected date: ${second.getDate()}`);
     if (first && second) {
       return (
         first.getFullYear() === second.getFullYear()
@@ -61,11 +59,6 @@ export default function CalendarPage({ navigation }) {
     // Use the Pacific Time Zone date for further processing
     const objectDate = new Date(pacificDate);
     const todayDate = new Date();
-    // console.log('OBJECT FULL DATE:', objectDate);
-    // console.log('TODAY FULL DATE:', todayDate);
-
-    // console.log('OBJECT DAY:', objectDate.getUTCDate());
-    // console.log('TODAY DAY:', todayDate.getDate());
 
     if (selectedDate && objectDate.getTime() === selectedDate.getTime() && clickedDate) {
       setClickedDate(false);
@@ -125,6 +118,10 @@ export default function CalendarPage({ navigation }) {
     },
   });
 
+  const navigateToJournalPage = () => {
+    navigation.navigate('JournalPage'); // Replace 'JournalPage' with the name of your journal page component
+  };
+
   const navigateToPastJournal = (username, prompt, text, date) => {
     navigation.navigate('JournalDetails', {
       user: username, question: prompt, body: text, day: date,
@@ -132,69 +129,86 @@ export default function CalendarPage({ navigation }) {
   }; /* navigate to the past journal entry, isHistory
    is set to true (uneditable text box with the corresponding prompt) */
 
+   
+
   return (
     <View style={styles.container}>
       <ScrollView>
       <View style={{ padding: 20 }}>
-      <Text>Journal Entries</Text>
+      <Text style={styles.header}>Journal Entries</Text>
         <Calendar
           onDayPress={handleDateSelect}
+          // customHeader={<CustomHeader month={LocaleConfig.months[month]} year={year} />} // Pass the custom header component here
           markedDates={{
-            selectedDate: { selected: true, disableTouchEvent: true, selectedDotColor: 'orange' },
+            [selectedDate]: { selected: true, disableTouchEvent: true, selectedDotColor: 'orange' },
             // timestamps.map(timestamp => ({ timestamp: { selected: true } } )),
             ...timestamps.reduce((acc, timestamp) => {
               acc[timestamp] = { selected: true, selectedColor: '#BFDBD7' };
               return acc;
             }, {})
           }}
-          // customHeaderTitle
           // need to figure out styling of calendar
           style={{
             borderWidth: 1,
             borderColor: 'gray',
             lineHeight: '10',
+            borderRadius: '5',
           }}
 
           theme={{
             calendarBackground: '#F6FCFC',
             // backgroundColor: '#82A5A1',
-            textMonthFontSize: 16,
+            textMonthFontSize: 14,
             textMonthFontWeight: 'light',
             arrowColor: 'black',
             textDayFontFamily: 'monospace',
             textMonthFontFamily: 'monospace',
+            textDayFontSize: 12,
             textDayHeaderFontFamily: 'monospace',
-            // 'stylesheet.calendar.header': {
-            //   calendar: {
-            //     lineHeight: 1,
-            //   },
-            //   header: {
-            //     flexDirection: 'row',
-            //     justifyContent: 'space-between',
-            //     paddingLeft: 10,
-            //     paddingRight: 10,
-            //     marginTop: 6,
-            //     alignItems: 'left',
-            //   },
-            //   monthText: {
-            //     fontSize: 16, // Decrease the font size of month text
-            //     color: 'black',
-            //   },
-            // },
+            radius: 4,
+            'stylesheet.calendar.main': {
+              // Adjust the row height
+              week: {
+                marginTop: 1,
+                marginBottom: 1,
+                flexDirection: 'row',
+                justifyContent: 'space-around',
+              },
+              dayContainer: {
+                width: 32, // Adjust the width of each day container
+                height: 32, // Adjust the height of each day container
+                alignItems: 'center',
+                justifyContent: 'center',
+              },
+            },
+            'stylesheet.calendar.header': {
+              header: {
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                paddingLeft: 10,
+                paddingRight: 10,
+                marginTop: 6,
+                alignItems: 'left',
+              },
+              monthText: {
+                fontSize: 16, // Decrease the font size of month text
+                color: 'black',
+              },
+            },
           }}
 
-          // stylesheet={{
-          //   calendar: {
-          //     // Adjust lineHeight to reduce space between rows
-          //     lineHeight: 10,
-          //   },
+          stylesheet={{
+            calendar: {
+              // Adjust lineHeight to reduce space between rows
+              dayHeight: 10, //doesn't work
+            },
           //   dayNumFontFamily: {
           //     // Adjust font family for day numbers if needed
           //   },
-          //   dayNumFontSize: {
-          //     // Adjust font size of day numbers
-          //     fontSize: 16,
-          //   },
+            // dayNumFontSize: {
+            //   // Adjust font size of day numbers
+            //   fontSize: 10,
+            // },
           //   dayTextColor: {
           //     // Adjust color of day numbers
           //     color: 'black',
@@ -239,13 +253,20 @@ export default function CalendarPage({ navigation }) {
           //   arrowStyle: {
           //     // Adjust arrow style if needed
           //   },
-          // }}
+          }}
         />
       </View>
       {clickedDate
         ? (
           <View style={{paddingHorizontal: 12}}>
-            <Text style={styles.header}>Past Entries</Text>
+            <View flexDirection='row' justifyContent='space-between'>
+              <Text style={styles.header}>Recent Entries</Text>
+              <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}} colors={['#4c669f', '#3b5998', '#192f6a']} style={styles.linearGradient}>
+                <TouchableOpacity style={styles.addEntriesButton} onPress={navigateToJournalPage}>
+                  <Text>Add Entry +</Text>
+                </TouchableOpacity>  
+              </LinearGradient>          
+            </View>
             <View style={[styles.journalCardContainer, styles.journalCardHorizontal]}>
               {[...filteredJournals].reverse().map((x) => (
                 <JournalCard
@@ -263,7 +284,12 @@ export default function CalendarPage({ navigation }) {
         )
         : (
           <View style={{paddingHorizontal: 12}}>
-            <Text>Recent Entries</Text>
+            <View flexDirection='row' justifyContent='space-between'>
+              <Text style={styles.header}>Recent Entries</Text>
+              <TouchableOpacity onPress={navigateToJournalPage}>
+                <Text>Add Entry +</Text>
+              </TouchableOpacity>            
+            </View>
             <View style={[styles.journalCardContainer, styles.journalCardHorizontal]}>
               {[...recentJournals].reverse().map((x) => (
                 <JournalCard
@@ -294,12 +320,31 @@ const styles = StyleSheet.create({
   journalCardContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    maxWidth: 369,
   },
+
   journalCardHorizontal: {
     justifyContent: 'flex-start',
   },
 
   header: {
     fontFamily: 'Recoleta',
+    fontSize: 22,
+    paddingBottom: 10,
+  },
+
+  addEntriesButton: {
+    borderRadius: 8,
+    backgroundColor: '#546967', 
+    backgroundImage: 'linear-gradient(93.55deg, #374342 -0.17%, #546967 99.83%)', 
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  addEntriesButtonText: {
+
   }
 });

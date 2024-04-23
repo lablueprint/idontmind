@@ -1,5 +1,5 @@
 import {
-  Text, Pressable,
+  Text, Pressable, View
 } from 'react-native';
 import PropTypes from 'prop-types';
 import styles from './JournalHistoryStyle';
@@ -15,17 +15,23 @@ export default function JournalCard({
   to navigate to the past journal entry with the previously written text */
 
   return (
+    <View style={[styles.entryContainer]} >
     <Pressable style={styles.journalCard} onPress={handlePress}>
-      <Text style={styles.date}>
-        {date}
-      </Text>
-      <Text style={styles.prompt}>
-        {prompt}
-      </Text>
-      <Text style={styles.text}>
-        {text}
-      </Text>
+      <View style={styles.dateContainer}>
+        <Text style={styles.dateText}>
+          {date}
+        </Text>
+      </View>
+      <View style={styles.contentContainer}>
+        <Text style={styles.prompt} numberOfLines={1} ellipsizeMode="tail">
+          {prompt}
+        </Text>
+        <Text style={styles.text} numberOfLines={3} ellipsizeMode="tail">
+          {text}
+        </Text>
+      </View>
     </Pressable>
+    </View>
   ); /* Journal Card only shows username, date, and prompt;
   you see the body/text when you click on the card and it
   takes you to the past journal entry page */
