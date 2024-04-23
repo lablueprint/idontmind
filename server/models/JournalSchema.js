@@ -18,6 +18,10 @@ const journalSchema = new mongoose.Schema({
     required: true,
     type: Date,
   },
+  image: {
+    required: false,
+    type: String,
+  },
 });
 
 module.exports = mongoose.model('Journal', journalSchema);

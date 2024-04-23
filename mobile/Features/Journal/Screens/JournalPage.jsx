@@ -14,6 +14,7 @@ export function JournalPage({
 }) {
   const [selectedImage, setSelectedImage] = useState(null);
   const [viewImage, setViewImage] = useState(false);
+  const [uploadImageURL, setUploadImageURL] = useState(null);
   const [prompts, setPrompts] = useState([]);
   const [randomTitle, setRandomTitle] = useState();
   const [freeWriteTitle, setFreeWriteTitle] = useState('');
@@ -59,6 +60,7 @@ export function JournalPage({
 
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
+      base64: true,
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
@@ -67,6 +69,7 @@ export function JournalPage({
 
     if (!result.canceled) {
       setSelectedImage(result.assets[0].uri);
+      setUploadImageURL(result.assets[0]);
     }
   };
 
@@ -74,19 +77,49 @@ export function JournalPage({
 
   // const prompt = 'Create a journal post!';
   const username = 'Nicole'; // set prompt and username to constants at the moment, but should be able to get that info dynamically
+  
+  const addNewJournal = async (newUsername, newPrompt, newText, newUploadImage) => {
+    try {
+      handlePopUp();
+      const currentdate = new Date();
+      const pstDate = currentdate.toLocaleString('en-US', {
+        timeZone: 'America/Los_Angeles',
+      });
+      const timestamp = pstDate;
+      // Add try-catch block to handle potential errors in axios requests
+      try {
+        await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/journals/createJournal`, {
+          username: newUsername, prompt: newPrompt, text: newText, timestamp, image: selectedImage,
+        });
+      } catch (error) {
+        console.error(error);
+        // Handle error
+      }
+      try {
+        axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/test/uploadImage`, {
+          imageObject: newUploadImage,
+        });
+        console.log('uploadeded image', newUploadImage);
+      } catch (error) {
+        console.error(error);
+        // Handle error
+      }
 
-  const addNewJournal = async (newUsername, newPrompt, newText) => {
-    handlePopUp();
-    const currentdate = new Date();
-    const pstDate = currentdate.toLocaleString('en-US', {
-      timeZone: 'America/Los_Angeles',
-    });
-    const timestamp = pstDate;
-    // const timestamp = currentdate;
-    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/journals/createJournal`, {
-      username: newUsername, prompt: newPrompt, text: newText, timestamp,
-    });
-  }; /* function that creates a new journal entry with username, prompt, text, and timestamp and
+      // Assuming selectedImage contains the image URL
+      if (newUploadImage) {
+        try {
+          await uploadImage(newUploadImage);
+        } catch (error) {
+          console.error(error);
+          // Handle error
+        }
+      }
+    } catch (error) {
+      console.error(error);
+      // Handle error
+    }
+  };
+  /*   function that creates a new journal entry with username, prompt, text, and timestamp and
   sends it to the MongoDB */
 
   const navigateToJournalHistory = () => {
@@ -219,14 +252,14 @@ export function JournalPage({
               {freeWrite ? (
                 <Pressable
                   style={styles.modalSelections}
-                  onPress={() => addNewJournal(username, freeWriteTitle, text)}
+                  onPress={() => addNewJournal(username, freeWriteTitle, text, uploadImageURL)}
                 >
                   <Text>yes</Text>
                 </Pressable>
               ) : (
                 <Pressable
                   style={styles.modalSelections}
-                  onPress={() => addNewJournal(username, randomTitle, text)}
+                  onPress={() => addNewJournal(username, randomTitle, text, uploadImageURL)}
                 >
                   <Text>yes</Text>
                 </Pressable>
