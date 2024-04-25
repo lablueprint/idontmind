@@ -3,7 +3,6 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
   journalCard: {
     width: 163,
-    padding: 12,
     margin: 5,
     borderColor: 'black',
     backgroundColor: '#F6FCFC',
@@ -26,11 +25,12 @@ export default StyleSheet.create({
   },
 
   contentContainer: {
-    marginTop: 15,
+    // marginTop: 3,
+    padding: 10,
   },
 
   prompt: {
-    textAlign: "center",
+    // textAlign: "center",
     fontFamily: "Cabinet Grotesk, sans-serif",
     fontSize: 13,
   },

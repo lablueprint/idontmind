@@ -1,5 +1,5 @@
 import {
-  Text, Pressable, View
+  Text, Pressable, View, ImageBackground
 } from 'react-native';
 import PropTypes from 'prop-types';
 import styles from './JournalHistoryStyle';
@@ -17,11 +17,19 @@ export default function JournalCard({
   return (
     <View style={[styles.entryContainer]} >
     <Pressable style={styles.journalCard} onPress={handlePress}>
-      <View style={styles.dateContainer}>
+      {/* <View style={styles.dateContainer}>
         <Text style={styles.dateText}>
           {date}
         </Text>
-      </View>
+      </View> */}
+        <ImageBackground
+          source={require('../../../assets/images/rectangleDark.png')}
+          style={styles.dateContainer}
+        >
+          <Text style={styles.dateText}>
+            {date}
+          </Text>
+        </ImageBackground>
       <View style={styles.contentContainer}>
         <Text style={styles.prompt} numberOfLines={1} ellipsizeMode="tail">
           {prompt}

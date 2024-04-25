@@ -6,7 +6,7 @@ import {
 import { Calendar } from 'react-native-calendars';
 import axios from 'axios';
 import JournalCard from '../../Journal/Components/JournalCard';
-import LinearGradient from 'react-native-linear-gradient';
+// import LinearGradient from 'react-native-linear-gradient';
 import XDate from 'xdate'
 
 
@@ -110,17 +110,17 @@ export default function CalendarPage({ navigation }) {
 
     return (
       <View style={[styles.calendarHeader, { justifyContent: 'space-between' }]}>
-        <Text>
+        <Text style={{fontFamily: 'recoleta-alt-regular'}}>
             {formatNumbers(currentMonth?.toString('MMMM yyyy'))}
         </Text>
         <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 8 }}>
           <View style={{ width: 30}}></View>
-            <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: '#BFDBD7', marginRight: 4 }} />
-            <Text style={{ fontSize: 8 }}>Free Write</Text>
+            <View style={{ width: 12, height: 12, borderRadius: 20, backgroundColor: '#BFDBD7', marginRight: 4 }} />
+            <Text style={{ fontSize: 10, fontFamily: 'cabinet-grotesk-regular' }}>Free Write</Text>
         </View>
         <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 8 }}>
-            <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: '#82A5A1', marginRight: 4 }} />
-            <Text style={{ fontSize: 8 }}>Guided Write</Text>
+            <View style={{ width: 12, height: 12, borderRadius: 20, backgroundColor: '#82A5A1', marginRight: 4 }} />
+            <Text style={{ fontSize: 10, fontFamily: 'cabinet-grotesk-regular'}}>Guided Write</Text>
       </View>
     </View>
     );
@@ -185,13 +185,14 @@ export default function CalendarPage({ navigation }) {
                 customStyles: {
                   container: {
                     backgroundColor: '#BFDBD7',
-                    width: 30, // Adjust the width of the container to make the dot smaller
-                    height: 30, // Adjust the height of the container to make the dot smaller
+                    width: 25, // Adjust the width of the container to make the dot smaller
+                    height: 25, // Adjust the height of the container to make the dot smaller
                     borderRadius: 15, // Adjust the border radius accordingly
                     marginTop: -3, // Move the dot container slightly higher
                   },
                   text: {
                     color: 'gray', //change this
+                    marginTop: 7,
                   },
                 },
               };
@@ -213,10 +214,10 @@ export default function CalendarPage({ navigation }) {
             textMonthFontSize: 14,
             textMonthFontWeight: 'light',
             arrowColor: 'black',
-            textDayFontFamily: 'monospace',
+            textDayFontFamily: 'cabinet-grotesk-regular',
             textMonthFontFamily: 'monospace',
             textDayFontSize: 12,
-            textDayHeaderFontFamily: 'monospace',
+            textDayHeaderFontFamily: 'cabinet-grotesk-regular',
             radius: 4,
             'stylesheet.calendar.main': {
               // Adjust the row height
@@ -262,14 +263,19 @@ export default function CalendarPage({ navigation }) {
           <View style={{paddingHorizontal: 12}}>
             <View flexDirection='row' justifyContent='space-between'>
               <Text style={styles.header}>Recent Entries</Text>
-              <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}} colors={['#4c669f', '#3b5998', '#192f6a']} style={styles.linearGradient}>
+              {/* <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}} colors={['#4c669f', '#3b5998', '#192f6a']}> */}
                 <TouchableOpacity style={styles.addEntriesButton} onPress={navigateToJournalPage}>
-                  <Text>Add Entry +</Text>
+                  <Text style={styles.addEntriesButtonText}>Add Entry +</Text>
                 </TouchableOpacity>  
-              </LinearGradient>          
+              {/* </LinearGradient>           */}
             </View>
             <View style={[styles.journalCardContainer, styles.journalCardHorizontal]}>
-              {[...filteredJournals].reverse().map((x) => (
+            {filteredJournals.length === 0 ? (
+              <Text style={styles.noEntriesText}>
+                You currently have no logged journal entries for this day
+              </Text>
+              ) : (
+              [...filteredJournals].reverse().map((x) => (
                 <JournalCard
                   key={x._id}
                   username={x.username}
@@ -278,8 +284,8 @@ export default function CalendarPage({ navigation }) {
                   text={x.text}
                   onPress={navigateToPastJournal}
                 />
-                /* Recent Entries */
-              ))}
+              ))
+            )}
             </View>
           </View>
         )
@@ -292,7 +298,12 @@ export default function CalendarPage({ navigation }) {
               </TouchableOpacity>            
             </View>
             <View style={[styles.journalCardContainer, styles.journalCardHorizontal]}>
-              {[...recentJournals].reverse().map((x) => (
+            {recentJournals.length === 0 ? (
+              <Text style={styles.noEntriesText}>
+                You currently have no logged journal entries
+              </Text>
+              ) : (
+              [...recentJournals].reverse().map((x) => (
                 <JournalCard
                   key={x._id}
                   username={x.username}
@@ -301,7 +312,8 @@ export default function CalendarPage({ navigation }) {
                   text={x.text}
                   onPress={navigateToPastJournal}
                 />
-              ))}
+              ))
+            )}
             </View>
           </View>
         ) }
@@ -333,7 +345,7 @@ const styles = StyleSheet.create({
   },
 
   header: {
-    fontFamily: 'Recoleta',
+    fontFamily: 'recoleta-alt-regular',
     fontSize: 22,
     paddingBottom: 10,
   },
@@ -341,12 +353,14 @@ const styles = StyleSheet.create({
   addEntriesButton: {
     borderRadius: 8,
     backgroundColor: '#546967', 
-    backgroundImage: 'linear-gradient(93.55deg, #374342 -0.17%, #546967 99.83%)', 
     justifyContent: 'center',
     alignItems: 'center',
+    width: 100, 
+    height: 30,
   },
   addEntriesButtonText: {
-
+    color: 'white',
+    fontSize: 12,
   },
   calendarHeader: {
     flexDirection: 'row', 
