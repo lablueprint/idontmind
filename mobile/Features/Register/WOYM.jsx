@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import {
   Text, View, Pressable, Image,
-  ScrollView, Svg,
+  ScrollView,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import chev from '../../assets/chevron-up.png';
+import chev from '../../assets/images/chevron-up.png';
 import styles from './WOYMStyle';
 
 function WOYM({ navigation }) {
