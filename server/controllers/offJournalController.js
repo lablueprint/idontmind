@@ -53,7 +53,7 @@ const updateJournal = async (req, res) => {
       res.status(404).send({ message: 'Journal not found' });
     }
     // check if any restricted fields are present in updatedFields
-    const restrictedFields = ['creationTime', 'id'];
+    const restrictedFields = ['timestamp', 'id'];
     const hasRestricted = Object.keys(updatedFields).some((f) => restrictedFields.includes(f));
     if (hasRestricted) {
       return res.status(403).send({ message: 'No permission to update certain fields' });

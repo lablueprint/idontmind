@@ -17,7 +17,7 @@ const officialJournalSchema = new mongoose.Schema({
     default: 0,
     type: Number,
   },
-  creationTime: {
+  timestamp: {
     default: new Date(),
     type: Date,
   },

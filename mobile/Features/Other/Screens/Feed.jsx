@@ -35,7 +35,7 @@ export default function Feed({ navigation }) {
       };
 
       // Authorization header ensures signed in user
-      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/users/getData`, userData, { headers: authHeader });
+      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/getData`, userData, { headers: authHeader });
       if (res.data.error) {
         console.error(res.data.error);
       } else {

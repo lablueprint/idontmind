@@ -26,7 +26,7 @@ export default function CalendarPage({ navigation }) {
 
   const getAllJournals = async () => {
     try {
-      const result = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/journals/getAllJournals`);
+      const result = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/offJournal/getAllJournals`);
       setAllJournals(result.data);
     } catch (err) {
       console.error(err);

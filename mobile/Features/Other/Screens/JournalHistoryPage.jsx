@@ -11,7 +11,7 @@ export default function JournalHistoryPage({ navigation }) {
   const [img, setImg] = useState(null);
 
   const getPastJournals = async () => {
-    const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/journals/getAllJournals`);
+    const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/offJournal/getAllJournals`);
     setJournals(res.data);
   }; // fetch all the journal entries and set the journals array accordingly
 

@@ -48,7 +48,7 @@ export default function JournalPage({ navigation }) {
       timeZone: 'America/Los_Angeles',
     });
     const timestamp = pstDate;
-    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/journals/createJournal`, {
+    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offJournal/createJournal`, {
       username: newUsername, prompt: newPrompt, text: newText, timestamp,
     });
   }; /* function that creates a new journal entry with username, prompt, text, and timestamp and
