@@ -7,7 +7,7 @@ import axios from 'axios';
 function DayChallenge({ navigation }) {
   const [currentDay, setCurrentDay] = useState(0);
   const navigateToContentLibrary = () => {
-    navigation.navigate('Content Library');
+    navigation.navigate('Content');
   };
 
   const reset = async () => {

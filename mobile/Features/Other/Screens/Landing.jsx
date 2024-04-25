@@ -17,6 +17,9 @@ export default function Landing({ navigation }) {
   const navigateToFeed = () => {
     navigation.navigate('NavigationBar');
   };
+  const navigateToAltFeed = () => {
+    navigation.navigate('AltNavigationBar');
+  };
 
   const navigateToCheckIn = () => {
     navigation.navigate('CheckIn');
@@ -37,6 +40,25 @@ export default function Landing({ navigation }) {
       } else {
         dispatch(login(res.data));
         navigateToFeed();
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  // Handles a hardcoded login for testing
+  const handlenNewHardcodedLogin = async () => {
+    try {
+      const userData = {
+        email: 'sample@gmail.com',
+        password: 'sample',
+      };
+      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/users/signin`, userData);
+      if (res.data.error) {
+        console.error(res.data.error);
+      } else {
+        dispatch(login(res.data));
+        navigateToAltFeed();
       }
     } catch (err) {
       console.error(err.message);
@@ -65,6 +87,10 @@ export default function Landing({ navigation }) {
       <Button
         title="Hardcoded Sign In"
         onPress={handleHardcodedLogin}
+      />
+      <Button
+        title="Hardcoded Sign In (with new nav bar)"
+        onPress={handlenNewHardcodedLogin}
       />
       <Button
         title="To Splash"
