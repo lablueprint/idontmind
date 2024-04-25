@@ -17,19 +17,12 @@ export default function JournalCard({
   return (
     <View style={[styles.entryContainer]} >
     <Pressable style={styles.journalCard} onPress={handlePress}>
-      {/* <View style={styles.dateContainer}>
+      <View style={styles.dateContainer}>
         <Text style={styles.dateText}>
           {date}
         </Text>
-      </View> */}
-        <ImageBackground
-          source={require('../../../assets/images/rectangleDark.png')}
-          style={styles.dateContainer}
-        >
-          <Text style={styles.dateText}>
-            {date}
-          </Text>
-        </ImageBackground>
+      </View>
+
       <View style={styles.contentContainer}>
         <Text style={styles.prompt} numberOfLines={1} ellipsizeMode="tail">
           {prompt}

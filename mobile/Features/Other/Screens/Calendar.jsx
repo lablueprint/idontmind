@@ -6,8 +6,9 @@ import {
 import { Calendar } from 'react-native-calendars';
 import axios from 'axios';
 import JournalCard from '../../Journal/Components/JournalCard';
-// import LinearGradient from 'react-native-linear-gradient';
+import { LinearGradient } from 'expo-linear-gradient';
 import XDate from 'xdate'
+
 
 
 export default function CalendarPage({ navigation }) {
@@ -19,11 +20,13 @@ export default function CalendarPage({ navigation }) {
   const [timestamps, setTimestamps] = useState([]);
   const [currentMonth, setCurrentMonth] = useState(new XDate());
 
-  const formatDate = (dateString) => {
-    const options = { month: 'long', day: 'numeric', year: 'numeric' };
-    const formattedDate = new Date(dateString).toLocaleDateString(undefined, options);
-    return formattedDate;
-  };
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    const year = date.getFullYear().toString().slice(-2);
+    return `${month}/${day}/${year}`;
+  }
 
   const datesAreOnSameDay = (first, second) => {
     if (first && second) {
@@ -110,7 +113,7 @@ export default function CalendarPage({ navigation }) {
 
     return (
       <View style={[styles.calendarHeader, { justifyContent: 'space-between' }]}>
-        <Text style={{fontFamily: 'recoleta-alt-regular'}}>
+        <Text style={{fontFamily: 'recoleta-alt-regular', size: 32}}>
             {formatNumbers(currentMonth?.toString('MMMM yyyy'))}
         </Text>
         <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 8 }}>
@@ -126,28 +129,7 @@ export default function CalendarPage({ navigation }) {
     );
   };
 
-  const customDatesStyles = (date) => ({
-    style: {
-      backgroundColor: '#55637F',
-    },
-    textStyle: {
-      color: 'white',
-      fontWeight: 'light',
-    },
-  });
-  const headerWrapperStyle = () => ({
-    textStyle: {
-      fontSize: 1,
-      borderWidth: 11,
-    },
 
-  });
-  const dayLabelsWrapper = () => ({
-    textStyle: {
-      borderWidth: 0,
-
-    },
-  });
 
   const navigateToJournalPage = () => {
     navigation.navigate('JournalPage'); // Replace 'JournalPage' with the name of your journal page component
@@ -263,11 +245,11 @@ export default function CalendarPage({ navigation }) {
           <View style={{paddingHorizontal: 12}}>
             <View flexDirection='row' justifyContent='space-between'>
               <Text style={styles.header}>Recent Entries</Text>
-              {/* <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}} colors={['#4c669f', '#3b5998', '#192f6a']}> */}
-                <TouchableOpacity style={styles.addEntriesButton} onPress={navigateToJournalPage}>
+              <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}} colors={['#374342', '#546967']} style={styles.addEntriesButton}>
+                <TouchableOpacity onPress={navigateToJournalPage}>
                   <Text style={styles.addEntriesButtonText}>Add Entry +</Text>
                 </TouchableOpacity>  
-              {/* </LinearGradient>           */}
+              </LinearGradient>          
             </View>
             <View style={[styles.journalCardContainer, styles.journalCardHorizontal]}>
             {filteredJournals.length === 0 ? (
@@ -293,9 +275,11 @@ export default function CalendarPage({ navigation }) {
           <View style={{paddingHorizontal: 12}}>
             <View flexDirection='row' justifyContent='space-between'>
               <Text style={styles.header}>Recent Entries</Text>
-              <TouchableOpacity onPress={navigateToJournalPage}>
-                <Text>Add Entry +</Text>
-              </TouchableOpacity>            
+              <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}} colors={['#374342', '#546967']} style={styles.addEntriesButton}>
+                <TouchableOpacity onPress={navigateToJournalPage}>
+                  <Text style={styles.addEntriesButtonText}>Add Entry +</Text>
+                </TouchableOpacity>  
+              </LinearGradient>           
             </View>
             <View style={[styles.journalCardContainer, styles.journalCardHorizontal]}>
             {recentJournals.length === 0 ? (
@@ -346,7 +330,7 @@ const styles = StyleSheet.create({
 
   header: {
     fontFamily: 'recoleta-alt-regular',
-    fontSize: 22,
+    fontSize: 32,
     paddingBottom: 10,
   },
 

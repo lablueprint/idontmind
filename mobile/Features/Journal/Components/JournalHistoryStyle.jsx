@@ -2,42 +2,46 @@ import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   journalCard: {
-    width: 163,
+    width: 170,
     margin: 5,
     borderColor: 'black',
     backgroundColor: '#F6FCFC',
     borderRadius: 10,
-    height: 140,
+    height: 160,
     marginBottom: 12,
   },
   dateContainer: {
-    borderRadius: 10,
+    // borderRadius: 10,
     alignSelf: "flex-start",
     backgroundColor: "#82A5A1", 
     padding: 12,
+    borderTopLeftRadius: 10,
+    borderBottomRightRadius: 25,
+    width: 106,
+    height: 39,
   },
 
   dateText:{
-    fontFamily: "Cabinet Grotesk, sans-serif",
-    fontSize: 12,
+    fontFamily: "cabinet-grotesk-regular",
+    fontSize: 14,
     textAlign: "center",
-    color: "#fff",
+    color: "black",
   },
 
   contentContainer: {
     // marginTop: 3,
-    padding: 10,
+    padding: 12,
   },
 
   prompt: {
     // textAlign: "center",
-    fontFamily: "Cabinet Grotesk, sans-serif",
-    fontSize: 13,
+    fontFamily: 'cabinet-grotesk-regular',
+    fontSize: 18,
   },
   text: {
     marginTop: 8,
-    fontFamily: "Cabinet Grotesk, sans-serif",
-    fontSize: 12,
+    fontFamily: 'cabinet-grotesk-regular',
+    fontSize: 14,
     lineHeight: 20,
   },
 });
