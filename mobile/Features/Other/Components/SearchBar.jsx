@@ -71,10 +71,9 @@ export default function SearchBar({
               setSearchQuery(text);
               if (text === '') {
                 setEnterPressed(false);
-                return;
               }
-              setEnterPressed(true);
-              await handleSearch(text, filterQuery);
+              // setEnterPressed(true);
+              // await handleSearch(text, filterQuery);
             }}
             onSubmitEditing={async () => {
               setEnterPressed(true);
