@@ -9,15 +9,22 @@ import Bookmark from '../../Other/Components/Bookmark';
 import styles from './BookmarksStyle';
 import BookmarkImage from '../../../assets/bookmark_blue.png';
 import BottomHalfModal from './BottomModal';
+import NewFolderModal from '../Components/NewFolderModal';
 
 function ResourceList({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisibleNewFolder, setModalVisibleNewFolder] = useState(false);
   const route = useRoute();
   const subtopicName = route.params?.subtopicName;
   const resources = [['resource 1', 'nicole'], ['yo mama', 'aaron'], ['haha', 'jeffrey'], ['no', 'alan'], ['well yes', 'daniel']];
 
   const toggleModal = () => {
     setModalVisible(!modalVisible);
+  };
+  const toggleModalNewFolder = () => {
+    console.log('hey there');
+    setModalVisibleNewFolder(!modalVisibleNewFolder);
+    console.log(modalVisibleNewFolder);
   };
   const navigateToTag = () => {
     navigation.navigate('Tag', { index: 0, routeName: 'Content Library' }); // set index to 0 as default for now
@@ -126,8 +133,11 @@ function ResourceList({ navigation }) {
           </ScrollView>
         </View>
       </View>
-      <BottomHalfModal modalVisibleParent={modalVisible} toggleModal={toggleModal} />
-
+      <BottomHalfModal modalVisibleParent={modalVisible} toggleModal={toggleModal} toggleModalNewFolder={toggleModalNewFolder} page="Tags" />
+      <NewFolderModal
+        modalVisibleParent={modalVisibleNewFolder}
+        toggleModal={toggleModalNewFolder}
+      />
     </View>
   );
 }

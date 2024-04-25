@@ -8,9 +8,11 @@ import Bookmark from '../../Other/Components/Bookmark';
 import TagContext from '../Context/TagContext';
 import styles from './BookmarksStyle';
 import Folder from './Folder';
+import TagRectangle from '../Components/TagRectangle';
 
 function Bookmarks({ navigation }) {
   const [favorites, setFavorites] = useState([]);
+  const hardcodedTags = ['tag1', 'tag2', 'i hate tags'];
 
   const {
     Favorites, findTag, Tags,
@@ -46,7 +48,7 @@ function Bookmarks({ navigation }) {
   }, [Favorites]);
 
   return (
-    <View
+    <ScrollView
       className="mainContainer"
       style={{
         display: 'flex', flexDirection: 'column', paddingHorizontal: 25, paddingTop: 50, flex: 1,
@@ -118,9 +120,9 @@ function Bookmarks({ navigation }) {
           Resources
         </Text>
 
-        <View style={{ height: 600, width: '110%' }}>
-          <ScrollView>
-            {
+        <View style={{ width: '110%' }}>
+
+          {
                 favorites.map((item) => {
                   let resourceName;
                   if (item.Title) {
@@ -144,11 +146,32 @@ function Bookmarks({ navigation }) {
                   );
                 })
               }
-          </ScrollView>
         </View>
       </View>
-      <View style={{ flex: 1 }} />
-    </View>
+
+      <View style={{
+        display: 'flex', flexDirection: 'column', flex: 8,
+      }}
+      >
+        <Text style={{ fontSize: 22 }}>
+          Tags
+        </Text>
+
+        <View style={{ width: '110%' }}>
+
+          {
+                hardcodedTags.map((item) => (
+                  <Pressable key={item} onPress={() => navigateToResource(item)}>
+                    <TagRectangle
+                        // key={resourceName}
+                      tagName={item}
+                    />
+                  </Pressable>
+                ))
+              }
+        </View>
+      </View>
+    </ScrollView>
   );
 }
 
