@@ -1,8 +1,9 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import {
-  Image, ImageBackground, View, Dimensions,
+  Image, ImageBackground, View, Dimensions, TouchableOpacity,
 } from 'react-native';
+import PropTypes from 'prop-types';
 import TrendsPage from '../Trends/Screens/TrendsPage';
 import JournalPage from '../Features/Journal/Screens/JournalPage';
 import ContentDashboard from '../Features/Other/Screens/ContentDashboard';
@@ -52,7 +53,7 @@ function HomeWithExtraPages() {
   );
 }
 
-export default function AltNavigationBar() {
+export default function AltNavigationBar({ navigation }) {
   const Tab = createBottomTabNavigator();
 
   const names = ['Trends', 'Journal', 'Home', 'Content', 'Find Help'];
@@ -118,14 +119,21 @@ export default function AltNavigationBar() {
                   </View>
                 )
                 : (
-                  <View
-                    style={{ marginTop: '30%' }}
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate(names[i])}
+                    style={{
+                      marginTop: Dimensions.get('window').height / 40,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
                   >
-                    <Image
-                      style={{ width: size, height: size }}
-                      source={icons[i]}
-                    />
-                  </View>
+                    <View>
+                      <Image
+                        style={{ width: size, height: size }}
+                        source={icons[i]}
+                      />
+                    </View>
+                  </TouchableOpacity>
                 )
             ),
             headerShown: false,
@@ -135,3 +143,9 @@ export default function AltNavigationBar() {
     </Tab.Navigator>
   );
 }
+
+AltNavigationBar.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+  }).isRequired,
+};
