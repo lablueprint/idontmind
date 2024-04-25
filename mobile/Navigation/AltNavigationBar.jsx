@@ -71,8 +71,11 @@ export default function AltNavigationBar({ navigation }) {
           paddingHorizontal: Dimensions.get('window').width / 20,
         },
         tabBarLabelStyle: {
-          fontSize: 14,
-          color: 'black',
+          fontSize: 18,
+          color: 'rgba(64, 64, 64, 1)',
+          fontFamily: 'cabinet-grotesk-regular',
+          fontStyle: 'normal',
+          fontWeight: 400,
         },
       })}
     >
