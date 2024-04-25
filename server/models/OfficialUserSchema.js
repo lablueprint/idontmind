@@ -61,7 +61,7 @@ const officialUserSchema = new mongoose.Schema({
   },
   favorites: {
     default: [],
-    type: [String],
+    type: [Object],
   },
   checkInPreferences: {
     default: undefined,
@@ -70,6 +70,10 @@ const officialUserSchema = new mongoose.Schema({
   notificationPreferences: {
     default: undefined,
     type: notificationPreferenceSchema,
+  },
+  ChallengeDay: {
+    default: 0,
+    type: Number,
   },
 });
 

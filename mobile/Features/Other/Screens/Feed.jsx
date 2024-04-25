@@ -12,8 +12,8 @@ export default function Feed({ navigation }) {
   const [postDraftBody, setPostDraftBody] = useState('');
   const [postDraftUser, setPostDraftUser] = useState('');
 
-  // Grabs user email and authentication token for current user session
-  const { email, authHeader } = useSelector((state) => state.auth);
+  // Grabs user firstName and authentication token for current user session
+  const { email, firstName, authHeader } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const [postList, setPostList] = useState([]);
@@ -100,10 +100,10 @@ export default function Feed({ navigation }) {
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>
+      <Text style={{ fontFamily: 'recoleta-black' }}>
         Welcome
         {' '}
-        {email}
+        {firstName}
       </Text>
       {postList.map(
         (p) => (
@@ -116,7 +116,7 @@ export default function Feed({ navigation }) {
           />
         ),
       )}
-      <Text> Demo Form </Text>
+      <Text style={{ fontFamily: 'cabinet-grotesk-black' }}> Demo Form </Text>
       <View>
         <TextInput
           name="username"

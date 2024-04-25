@@ -327,13 +327,13 @@ export default function JournalTabs({ navigation }) {
         <TouchableOpacity style={{ margin: 10 }}>
           <Image
             style={{ width: 20, height: 31 }}
-            source={require('../../../assets/search.png')}
+            source={require('../../../assets/images/search.png')}
           />
         </TouchableOpacity>
         <TouchableOpacity style={{ marginRight: 40, margin: 10 }}>
           <Image
             style={{ width: 20, height: 31 }}
-            source={require('../../../assets/filter.png')}
+            source={require('../../../assets/images/filter.png')}
           />
         </TouchableOpacity>
       </View>

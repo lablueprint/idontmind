@@ -3,7 +3,7 @@ import {
   View, Text, StyleSheet, ScrollView, ListView, TouchableOpacity, Button
 } from 'react-native';
 // import CalendarPicker from 'react-native-calendar-picker';
-import { Calendar, LocaleConfig } from 'react-native-calendars';
+import { Calendar } from 'react-native-calendars';
 import axios from 'axios';
 import JournalCard from '../../Journal/Components/JournalCard';
 import LinearGradient from 'react-native-linear-gradient';
@@ -136,10 +136,12 @@ export default function CalendarPage({ navigation }) {
       <ScrollView>
       <View style={{ padding: 20 }}>
       <Text style={styles.header}>Journal Entries</Text>
+      {/* <CalendarHeader /> */}
         <Calendar
           onDayPress={handleDateSelect}
           markingType={'custom'}
           // customHeader={<CustomHeader month={LocaleConfig.months[month]} year={year} />} // Pass the custom header component here
+          // customHeader={<CalendarHeader />}
           markedDates={{
             [selectedDate]: { selected: true, disableTouchEvent: true, selectedDotColor: 'orange' },
             // timestamps.map(timestamp => ({ timestamp: { selected: true } } )),
