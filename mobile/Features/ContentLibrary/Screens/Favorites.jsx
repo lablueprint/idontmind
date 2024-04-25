@@ -4,9 +4,9 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import style from '../Components/ContentStyle';
-import shapeImage from '../../../assets/shape.png';
+import shapeImage from '../../../assets/images/shape.png';
 import TagContext from '../Context/TagContext';
-import cancelImage from '../../../assets/cancel.png';
+import cancelImage from '../../../assets/images/cancel.png';
 
 export default function FavoritesList({ navigation }) {
   const [favorites, setFavorites] = useState([]);
@@ -38,7 +38,7 @@ export default function FavoritesList({ navigation }) {
   };
 
   const navigateToContentLibrary = () => {
-    navigation.navigate('Content Library');
+    navigation.navigate('Content');
   };
 
   const verticalRenderItem = ({ item }) => (

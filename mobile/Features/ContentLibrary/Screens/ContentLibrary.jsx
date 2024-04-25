@@ -5,9 +5,9 @@ import PropTypes from 'prop-types';
 import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import style from '../Components/ContentStyle';
-import starImage from '../../../assets/star.png';
-import filterImage from '../../../assets/filter.png';
-import searchImage from '../../../assets/search.png';
+import starImage from '../../../assets/images/star.png';
+import filterImage from '../../../assets/images/filter.png';
+import searchImage from '../../../assets/images/search.png';
 import Card from '../Components/Card';
 import TagContext from '../Context/TagContext';
 // do want to change routing though:
@@ -17,7 +17,7 @@ export default function ContentLibrary({ navigation }) {
   const { initTags, initFavorites } = useContext(TagContext);
 
   const navigateToTag = (index) => {
-    navigation.navigate('Tag', { index, routeName: 'Content Library' });
+    navigation.navigate('Tag', { index, routeName: 'Content' });
   };
 
   const navigateToFavorites = () => {
