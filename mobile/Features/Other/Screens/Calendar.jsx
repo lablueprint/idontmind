@@ -7,6 +7,7 @@ import { Calendar } from 'react-native-calendars';
 import axios from 'axios';
 import JournalCard from '../../Journal/Components/JournalCard';
 import LinearGradient from 'react-native-linear-gradient';
+import XDate from 'xdate'
 
 
 export default function CalendarPage({ navigation }) {
@@ -16,6 +17,7 @@ export default function CalendarPage({ navigation }) {
   const [filteredJournals, setFilteredJournals] = useState([]);
   const [clickedDate, setClickedDate] = useState(false);
   const [timestamps, setTimestamps] = useState([]);
+  const [currentMonth, setCurrentMonth] = useState(new XDate());
 
   const formatDate = (dateString) => {
     const options = { month: 'long', day: 'numeric', year: 'numeric' };
@@ -83,17 +85,46 @@ export default function CalendarPage({ navigation }) {
     
   });
 
-  const customDayHeaderStyles = ({ dayOfWeek, month, year }) => ({
-    style: {
-      borderRadius: 6,
-      borderWidth: 1,
-      backgroundColor: 'lightpurple',
-    },
-    textStyle: {
-      fontSize: 12,
-      fontWeight: 'light',
-    },
-  });
+  function getLocale() {
+    return XDate.locales[XDate.defaultLocale];
+  }
+
+  function formatNumbers(date) {
+    const numbers = getLocale().numbers;
+    return numbers ? date.toString().replace(/[0-9]/g, (char) => numbers[+char]) : date;
+  }
+
+  // Function to handle navigation to the previous month
+  const goToPreviousMonth = () => {
+    setCurrentMonth(prevMonth => prevMonth.clone().addMonths(-1));
+  };
+
+  // Function to handle navigation to the next month
+  const goToNextMonth = () => {
+    setCurrentMonth(prevMonth => prevMonth.clone().addMonths(1));
+  };
+  
+
+  const CustomHeader = ({ currentMonth }) => {
+    // const webProps = Platform.OS === 'web' ? {'aria-level': webAriaLevel} : {};
+
+    return (
+      <View style={[styles.calendarHeader, { justifyContent: 'space-between' }]}>
+        <Text>
+            {formatNumbers(currentMonth?.toString('MMMM yyyy'))}
+        </Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 8 }}>
+          <View style={{ width: 30}}></View>
+            <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: '#BFDBD7', marginRight: 4 }} />
+            <Text style={{ fontSize: 8 }}>Free Write</Text>
+        </View>
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 8 }}>
+            <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: '#82A5A1', marginRight: 4 }} />
+            <Text style={{ fontSize: 8 }}>Guided Write</Text>
+      </View>
+    </View>
+    );
+  };
 
   const customDatesStyles = (date) => ({
     style: {
@@ -138,10 +169,13 @@ export default function CalendarPage({ navigation }) {
       <Text style={styles.header}>Journal Entries</Text>
       {/* <CalendarHeader /> */}
         <Calendar
+          initialDate={currentMonth}
           onDayPress={handleDateSelect}
           markingType={'custom'}
           // customHeader={<CustomHeader month={LocaleConfig.months[month]} year={year} />} // Pass the custom header component here
-          // customHeader={<CalendarHeader />}
+          customHeaderTitle={<CustomHeader currentMonth={currentMonth}/>}
+          onPressArrowLeft={goToPreviousMonth} 
+          onPressArrowRight={goToNextMonth} 
           markedDates={{
             [selectedDate]: { selected: true, disableTouchEvent: true, selectedDotColor: 'orange' },
             // timestamps.map(timestamp => ({ timestamp: { selected: true } } )),
@@ -149,12 +183,17 @@ export default function CalendarPage({ navigation }) {
               acc[timestamp] = { 
                 selected: true, 
                 customStyles: {
-                  backgroundColor: '#BFDBD7'
+                  container: {
+                    backgroundColor: '#BFDBD7',
+                    width: 30, // Adjust the width of the container to make the dot smaller
+                    height: 30, // Adjust the height of the container to make the dot smaller
+                    borderRadius: 15, // Adjust the border radius accordingly
+                    marginTop: -3, // Move the dot container slightly higher
+                  },
+                  text: {
+                    color: 'gray', //change this
+                  },
                 },
-                text: {
-                  color: 'black',
-                  fontWeight: 'bold',
-                }
               };
               //selectedColor: '#BFDBD7' 
               return acc;
@@ -215,57 +254,6 @@ export default function CalendarPage({ navigation }) {
               // Adjust lineHeight to reduce space between rows
               dayHeight: 10, //doesn't work
             },
-          //   dayNumFontFamily: {
-          //     // Adjust font family for day numbers if needed
-          //   },
-            // dayNumFontSize: {
-            //   // Adjust font size of day numbers
-            //   fontSize: 10,
-            // },
-          //   dayTextColor: {
-          //     // Adjust color of day numbers
-          //     color: 'black',
-          //   },
-          //   todayTextColor: {
-          //     // Adjust color of today's date
-          //     color: 'blue',
-          //   },
-          //   selectedDayTextColor: {
-          //     // Adjust color of selected date
-          //     color: 'white',
-          //   },
-          //   textDayFontFamily: {
-          //     // Adjust font family for day text if needed
-          //   },
-          //   textDayFontSize: {
-          //     // Adjust font size of day text if needed
-          //   },
-          //   textDayFontWeight: {
-          //     // Adjust font weight of day numbers
-          //     fontWeight: 'bold',
-          //   },
-          //   textMonthFontFamily: {
-          //     // Adjust font family for month text if needed
-          //   },
-          //   textMonthFontSize: {
-          //     // Adjust font size of month text
-          //     fontSize: 18,
-          //   },
-          //   textMonthFontWeight: {
-          //     // Adjust font weight of month text
-          //     fontWeight: 'bold',
-          //   },
-          //   textDayHeaderFontSize: {
-          //     // Adjust font size of day header
-          //     fontSize: 14,
-          //   },
-          //   textDayHeaderFontWeight: {
-          //     // Adjust font weight of day header
-          //     fontWeight: 'bold',
-          //   },
-          //   arrowStyle: {
-          //     // Adjust arrow style if needed
-          //   },
           }}
         />
       </View>
@@ -359,5 +347,10 @@ const styles = StyleSheet.create({
   },
   addEntriesButtonText: {
 
+  },
+  calendarHeader: {
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    marginTop: 8,
   }
 });
