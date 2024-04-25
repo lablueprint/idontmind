@@ -1,6 +1,6 @@
 import {
   ScrollView, Text, View, Button, TextInput, Keyboard,
-  TouchableWithoutFeedback, Modal, TouchableOpacity, Pressable, Image,
+  TouchableWithoutFeedback, Modal, TouchableOpacity, Pressable, Image, Dimensions,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { useRoute } from '@react-navigation/native';
@@ -74,83 +74,85 @@ export default function JournalPage({ navigation }) {
   true, uneditable text box with previously written text) */
   if (!isHistory) {
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <View style={styles.container}>
-              <Text style={styles.prompt}>{prompt}</Text>
-              <View style={styles.textBox}>
-                <ScrollView automaticallyAdjustKeyboardInsets>
-                  <TextInput multiline placeholder="Type your response" onChangeText={setText} value={text} />
-                  <View style={{ height: 40 }} />
-                </ScrollView>
-              </View>
+      <ScrollView>
+        <View style={{ flex: 1, alignItems: 'center', marginTop: Dimensions.get('window').height / 20 }}>
+          <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+              <View style={styles.container}>
+                <Text style={styles.prompt}>{prompt}</Text>
+                <View style={styles.textBox}>
+                  <ScrollView automaticallyAdjustKeyboardInsets nestedScrollEnabled>
+                    <TextInput multiline placeholder="Type your response" onChangeText={setText} value={text} />
+                    <View style={{ height: 400 }} />
+                  </ScrollView>
+                </View>
 
-              <Modal visible={confirmPopUp}>
-                <TouchableOpacity onPressOut={handlePopUp} style={styles.modalView}>
-                  <View style={styles.modalBox}>
-                    <Text style={{ fontSize: 20 }}>confirm journal entry?</Text>
-                    <Pressable
-                      style={styles.modalSelections}
-                      onPress={() => addNewJournal(username, prompt, text)}
-                    >
-                      <Text>
-                        yes
-                      </Text>
-                    </Pressable>
-                    <Pressable style={styles.modalSelections} onPress={handlePopUp}>
-                      <Text>
-                        no
-                      </Text>
-                    </Pressable>
-                  </View>
-                </TouchableOpacity>
-              </Modal>
+                <Modal visible={confirmPopUp}>
+                  <TouchableOpacity onPressOut={handlePopUp} style={styles.modalView}>
+                    <View style={styles.modalBox}>
+                      <Text style={{ fontSize: 20 }}>confirm journal entry?</Text>
+                      <Pressable
+                        style={styles.modalSelections}
+                        onPress={() => addNewJournal(username, prompt, text)}
+                      >
+                        <Text>
+                          yes
+                        </Text>
+                      </Pressable>
+                      <Pressable style={styles.modalSelections} onPress={handlePopUp}>
+                        <Text>
+                          no
+                        </Text>
+                      </Pressable>
+                    </View>
+                  </TouchableOpacity>
+                </Modal>
+              </View>
             </View>
+          </TouchableWithoutFeedback>
+          <TouchableOpacity style={styles.imageContainer} onPress={pickImage}>
+            <Text>+ add attachment</Text>
+            {selectedImage !== '' ? (
+              <>
+                <TouchableOpacity onPress={handleFilenamePress}>
+                  <Text>{getFilenameFromUri(selectedImage)}</Text>
+                </TouchableOpacity>
+                {viewImage && (
+                <Image source={{ uri: selectedImage }} style={{ width: 200, height: 200 }} />
+                )}
+              </>
+            ) : null}
+          </TouchableOpacity>
+          <Button title="Submit" onPress={handlePopUp} />
+
+          <Button
+            title="To Past Journal Entries"
+            onPress={navigateToJournalHistory}
+          />
+        </View>
+      </ScrollView>
+    );
+  }
+
+  return (
+    <ScrollView>
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <View style={styles.container}>
+          <Text style={styles.prompt}>{prompt}</Text>
+          <View style={styles.textBox}>
+            <ScrollView automaticallyAdjustKeyboardInsets nestedScrollEnabled>
+              <Text>{body}</Text>
+              <View style={{ height: 40 }} />
+            </ScrollView>
           </View>
-        </TouchableWithoutFeedback>
-        <TouchableOpacity style={styles.imageContainer} onPress={pickImage}>
-          <Text>+ add attachment</Text>
-          {selectedImage !== '' ? (
-            <>
-              <TouchableOpacity onPress={handleFilenamePress}>
-                <Text>{getFilenameFromUri(selectedImage)}</Text>
-              </TouchableOpacity>
-              {viewImage && (
-              <Image source={{ uri: selectedImage }} style={{ width: 200, height: 200 }} />
-              )}
-            </>
-          ) : null}
-        </TouchableOpacity>
-        <Button title="Submit" onPress={handlePopUp} />
+        </View>
 
         <Button
           title="To Past Journal Entries"
           onPress={navigateToJournalHistory}
         />
       </View>
-
-    );
-  }
-
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <View style={styles.container}>
-        <Text style={styles.prompt}>{prompt}</Text>
-        <View style={styles.textBox}>
-          <ScrollView automaticallyAdjustKeyboardInsets>
-            <Text>{body}</Text>
-            <View style={{ height: 40 }} />
-          </ScrollView>
-        </View>
-      </View>
-
-      <Button
-        title="To Past Journal Entries"
-        onPress={navigateToJournalHistory}
-      />
-    </View>
-
+    </ScrollView>
   );
 }
 
