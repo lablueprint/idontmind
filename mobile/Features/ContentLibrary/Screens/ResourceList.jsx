@@ -22,9 +22,7 @@ function ResourceList({ navigation }) {
     setModalVisible(!modalVisible);
   };
   const toggleModalNewFolder = () => {
-    console.log('hey there');
     setModalVisibleNewFolder(!modalVisibleNewFolder);
-    console.log(modalVisibleNewFolder);
   };
   const navigateToTag = () => {
     navigation.navigate('Tag', { index: 0, routeName: 'Content Library' }); // set index to 0 as default for now

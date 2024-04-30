@@ -2,7 +2,6 @@ import { StyleSheet } from 'react-native';
 
 const BookmarksStyle = StyleSheet.create({
   folderContainer: {
-    height: 90,
     width: 100,
     backgroundColor: '#D2E4E3',
     jutifyContent: 'center',
@@ -87,6 +86,16 @@ const BookmarksStyle = StyleSheet.create({
     bottom: 0,
     backgroundColor: 'rgba(0, 0, 0, 0.5)', // semi-transparent black
     zIndex: 1, // Ensure the overlay is on top of other content
+  },
+  whitePillText: {
+    color: '#F6FCFC',
+    fontFamily: 'cabinet-grotesk-regular',
+    fontSize: 16,
+  },
+  blackPillText: {
+    color: '#343A3A',
+    fontFamily: 'cabinet-grotesk-regular',
+    fontSize: 16,
   },
 });
 

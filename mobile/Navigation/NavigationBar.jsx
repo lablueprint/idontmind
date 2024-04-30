@@ -13,6 +13,7 @@ import WOYM from '../Features/Register/WOYM';
 import DayChallenge from '../Features/Other/Screens/DayChallenge';
 import ContentDashboard from '../Features/Other/Screens/ContentDashboard';
 import Bookmarks from '../Features/ContentLibrary/Screens/Bookmarks';
+import BookmarksEdgeCase from '../Features/ContentLibrary/Screens/BookmarksEdgeCase';
 import Resource from '../Features/ContentLibrary/Screens/Resource';
 import ResourceList from '../Features/ContentLibrary/Screens/ResourceList';
 
@@ -35,9 +36,9 @@ export default function NavigationBar() {
       <Tab.Screen name="Day Challenge" component={DayChallenge} options={{ headerShown: false }} />
       <Tab.Screen name="Content Dashboard" component={ContentDashboard} options={{ headerShown: false }} />
       <Tab.Screen name="Bookmarks" component={Bookmarks} options={{ headerShown: false }} />
+      <Tab.Screen name="Bookmarks Edge Case" component={BookmarksEdgeCase} options={{ headerShown: false }} />
       <Tab.Screen name="Resource" component={Resource} options={{ headerShown: false }} />
       <Tab.Screen name="Resource List" component={ResourceList} options={{ headerShown: false }} />
-
 
     </Tab.Navigator>
   );
