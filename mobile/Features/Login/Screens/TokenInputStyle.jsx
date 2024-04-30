@@ -7,13 +7,14 @@ export default StyleSheet.create({
   space: 4,
   cell: {
     width: 40,
-    height: 40,
+    height: 50,
     lineHeight: 38,
     fontSize: 24,
     backgroundColor: '#F6FCFC',
     textAlign: 'center',
     borderRadius: 10,
     overflow: 'hidden',
+    paddingTop: 5,
   },
   focusCell: {
     borderColor: '#000',

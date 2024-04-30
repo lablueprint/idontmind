@@ -21,6 +21,7 @@
     "@rneui/themed": "^4.0.0-rc.8",
     "axios": "^1.6.0",
     "expo": "~49.0.15",
+    "expo-crypto": "~12.4.1",
     "expo-secure-store": "^12.5.0",
     "expo-status-bar": "~1.6.0",
     "nodemailer": "^6.9.9",

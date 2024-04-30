@@ -11,6 +11,7 @@ import {
   useBlurOnFulfill,
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
+import * as Crypto from 'expo-crypto';
 import axios from 'axios';
 import styles from './TokenInputStyle';
 
@@ -19,19 +20,37 @@ function TokenInput({ route, navigation }) {
   const [token, setToken] = useState(route.params.token);
   const [showModal, setShowModal] = useState(false);
   const [value, setValue] = useState();
-  const [countdown, setCountdown] = useState(15);
+  const [countdown, setCountdown] = useState(1800);
+  const [tokenExpired, setTokenExpired] = useState(false);
   const ref = useBlurOnFulfill({ value, cellCount: 6 });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
     setValue,
   });
 
+  const generateSixDigitNumber = () => {
+    // Generate 2 bytes of random data
+    const randomBytes = Crypto.getRandomBytes(2);
+
+    // Convert randomBytes to a number
+    const number = (randomBytes[0] * 256) + randomBytes[1];
+
+    // Ensure the number is within the range of 100000 to 999999
+    let sixDigitNumber = (number % 900000) + 100000;
+    sixDigitNumber = parseInt(sixDigitNumber, 10);
+
+    console.log(32, sixDigitNumber);
+    console.log(typeof sixDigitNumber);
+    return sixDigitNumber;
+  };
+
   const sendNewToken = async () => {
     try {
-      const newToken = Math.floor(100000 + Math.random() * 900000);
+      const newToken = generateSixDigitNumber();
       console.log(`Token ${newToken} sent to email: ${email}`);
       setToken(newToken);
-      setCountdown(15);
+      setCountdown(1800);
+      setTokenExpired(false);
       const response = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/sendEmail`, { email, token });
     } catch (error) {
       console.error("Error generating or sending token:", error);
@@ -45,7 +64,7 @@ function TokenInput({ route, navigation }) {
 
   useEffect(() => {
     setToken(route.params.token);
-    setCountdown(15);
+    setCountdown(1800);
   }, [route.params.token]);
 
   useEffect(() => {
@@ -57,6 +76,7 @@ function TokenInput({ route, navigation }) {
     } else {
       // Clear interval when countdown reaches zero
       clearInterval(interval);
+      setTokenExpired(true);
       setToken('');
     }
     // Cleanup function to clear interval on unmount
@@ -76,7 +96,7 @@ function TokenInput({ route, navigation }) {
           Enter the 6-digit code that was sent to your email to reset your password.
         </Text>
         <Text style={{marginTop: '12%', color: '#767C7C' }}>
-          Sent to {email.toLowerCase()} {countdown > 0 ? `(${countdown}s)` : '(Token timed out)'}
+          Sent to {email.toLowerCase()}
         </Text>
         <View>
           <CodeField
@@ -133,16 +153,18 @@ function TokenInput({ route, navigation }) {
               </View>
               <View style={{ width: '100%', height: 20 }} />
             </View>
-            <View style={{ backgroundColor: 'white', padding: 18, borderRadius: 10, alignItems: 'center', width: '100%', marginTop: '5%' }}>
-              <TouchableOpacity 
-                onPress={() => setShowModal(false)}
-                style={{ justifyContent: 'center', alignItems: 'center', width: '100%'}}
-              >
+            <TouchableOpacity onPress={() => setShowModal(false)}>
+              <View style={{ backgroundColor: 'white', padding: 18, borderRadius: 10, alignItems: 'center', width: '100%', marginTop: '5%' }}>
                 <Text style={{ fontSize: 16, fontWeight: '500', color: 'red' }}>Cancel</Text>
-              </TouchableOpacity>
-            </View>
+              </View>
+            </TouchableOpacity>
           </View>
         </Modal>
+        {tokenExpired ? (
+          <View>
+            <Text style={{ color: 'red', marginTop: '2%', textAlign: 'right' }}>Token expired or invalid.</Text>
+          </View>
+        ) : null}
       </View>
     </View>
   );
