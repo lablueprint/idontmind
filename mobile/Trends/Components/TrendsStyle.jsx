@@ -35,7 +35,8 @@ export default StyleSheet.create({
     justifyContent: 'space-evenly',
     alignItems: 'center',
     alignContent: 'center',
-    paddingVertical: 25,
+    paddingTop: 25,
+    paddingBottom: 50,
   },
   chartWrapper: {
     borderRadius: 15,
