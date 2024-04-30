@@ -109,7 +109,7 @@ export function JournalPage({
   // const prompt = 'Create a journal post!';
   const username = 'Nicole'; // set prompt and username to constants at the moment, but should be able to get that info dynamically
 
-  const addNewJournal = async (newUsername, newPrompt, newText) => {
+  const addNewJournal = async (newUsername, newPrompt, newText, isFreeWrite) => {
     handlePopUp();
     const currentdate = new Date();
     const pstDate = currentdate.toLocaleString('en-US', {
@@ -118,7 +118,7 @@ export function JournalPage({
     const timestamp = pstDate;
     // const timestamp = currentdate;
     await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/journals/createJournal`, {
-      username: newUsername, prompt: newPrompt, text: newText, timestamp,
+      username: newUsername, prompt: newPrompt, text: newText, type: isFreeWrite, timestamp,
     });
   }; /* function that creates a new journal entry with username, prompt, text, and timestamp and
   sends it to the MongoDB */
@@ -210,14 +210,14 @@ export function JournalPage({
                       {freeWrite ? (
                         <Pressable
                           style={styles.modalSelections}
-                          onPress={() => addNewJournal(username, freeWriteTitle, text)}
+                          onPress={() => addNewJournal(username, freeWriteTitle, text, freeWrite)}
                         >
                           <Text>yes</Text>
                         </Pressable>
                       ) : (
                         <Pressable
                           style={styles.modalSelections}
-                          onPress={() => addNewJournal(username, randomTitle, text)}
+                          onPress={() => addNewJournal(username, randomTitle, text, freeWrite)}
                         >
                           <Text>yes</Text>
                         </Pressable>

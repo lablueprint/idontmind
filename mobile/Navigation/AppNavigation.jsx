@@ -62,6 +62,8 @@ export default function AppNavigation() {
           <Stack.Screen name="AddActivity" component={AddActivity} options={{ headerShown: false }} />
           <Stack.Screen name="AddIcon" component={AddIcon} options={{ headerShown: false }} />
           <Stack.Screen name="EndCheckIn" component={EndCheckIn} options={{ headerShown: false }} />
+          <Stack.Screen name="JournalPage" component={JournalPage} options={{ headerShown: false }} />
+          <Stack.Screen name="JournalDetails" component={JournalDetails} options={{ headerShown: false }} />
         </Stack.Navigator>
       </TagProvider>
     </NavigationContainer>

@@ -7,9 +7,7 @@ import { Calendar } from 'react-native-calendars';
 import axios from 'axios';
 import JournalCard from '../../Journal/Components/JournalCard';
 import { LinearGradient } from 'expo-linear-gradient';
-import XDate from 'xdate'
-
-
+import XDate from 'xdate';
 
 export default function CalendarPage({ navigation }) {
   const [selectedDate, setSelectedDate] = useState('');
@@ -18,6 +16,8 @@ export default function CalendarPage({ navigation }) {
   const [filteredJournals, setFilteredJournals] = useState([]);
   const [clickedDate, setClickedDate] = useState(false);
   const [timestamps, setTimestamps] = useState([]);
+  const [freeTimestamps, setFreeTimestamps] = useState([]);
+  const [guidedTimestamps, setGuidedimestamps] = useState([]);
   const [currentMonth, setCurrentMonth] = useState(new XDate());
 
   function formatDate(dateString) {
@@ -44,9 +44,47 @@ export default function CalendarPage({ navigation }) {
       const recent_journals = result.data.length >= 10 ? result.data.slice(-10) : result.data;
       setAllJournals(result.data);
       setRecentJournals(recent_journals);
-      setTimestamps(result.data.map(journal => journal.timestamp.substring(0,10)));
-      timestamps.forEach(timestamp => console.log(timestamp));
-      allJournals.forEach(journal => console.log(journal))
+      // setTimestamps(result.data.map(journal => journal.timestamp.substring(0,10)));
+
+      // const localTimestamps = result.data.map(journal => {
+      //   const timestamp = new Date(journal.timestamp);
+      //   return timestamp.toISOString().substring(0, 10); // Convert to local time string and extract date part
+      // });
+      // const localTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+      // const localTimestamps = result.data.map(journal => {
+      //   const timestamp = new Date(journal.timestamp);
+      //   // Convert to local time string and extract date part
+      //   return timestamp.toLocaleDateString(undefined, { timeZone: localTimezone });
+      // });
+
+      const freeTimestampsArray = [];
+      const guidedTimestampsArray = [];
+    
+      allJournals.forEach(journal => {
+        const timestamp = new XDate(journal.timestamp).toString('yyyy-MM-dd');
+        if (journal.type) {
+          freeTimestampsArray.push(timestamp);
+        } else {
+          guidedTimestampsArray.push(timestamp);
+        }
+      });
+    
+      setFreeTimestamps(freeTimestampsArray);
+      setGuidedTimestamps(guidedTimestampsArray);
+    
+
+      // //BEFORE HERE WAS GOOD
+      // const localTimestamps = result.data.map(journal => {
+      //   const timestamp = new XDate(journal.timestamp);
+      //   // Convert to local time string and extract date part
+      //   return timestamp.toString('yyyy-MM-dd');
+      // });
+
+      // setTimestamps(localTimestamps);
+  
+      // timestamps.forEach(timestamp => console.log("TIMESTAMP:", timestamp));
+      // allJournals.forEach(journal => console.log(journal))
 
     } catch (err) {
       console.error(err);
@@ -132,7 +170,7 @@ export default function CalendarPage({ navigation }) {
 
 
   const navigateToJournalPage = () => {
-    navigation.navigate('JournalPage'); // Replace 'JournalPage' with the name of your journal page component
+    navigation.navigate('JournalPage');
   };
 
   const navigateToPastJournal = (username, prompt, text, date) => {
@@ -142,7 +180,14 @@ export default function CalendarPage({ navigation }) {
   }; /* navigate to the past journal entry, isHistory
    is set to true (uneditable text box with the corresponding prompt) */
 
-   
+  const handleVisibleMonthsChange = (months) => {
+    if (months.length > 0) {
+      // const month = months[0].dateString; // Assuming months is an array with one element
+      // const monthName = monthNames[month - 1]; // Subtract 1 because arrays are zero-indexed
+      setCurrentMonth(new XDate(months[0].dateString))
+      // Now you can use monthName as needed
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -151,13 +196,14 @@ export default function CalendarPage({ navigation }) {
       <Text style={styles.header}>Journal Entries</Text>
       {/* <CalendarHeader /> */}
         <Calendar
-          initialDate={currentMonth}
+          initialDate={currentMonth.toString('yyyy-MM-dd')}
           onDayPress={handleDateSelect}
           markingType={'custom'}
           // customHeader={<CustomHeader month={LocaleConfig.months[month]} year={year} />} // Pass the custom header component here
           customHeaderTitle={<CustomHeader currentMonth={currentMonth}/>}
           onPressArrowLeft={goToPreviousMonth} 
           onPressArrowRight={goToNextMonth} 
+          onVisibleMonthsChange={handleVisibleMonthsChange}
           markedDates={{
             [selectedDate]: { selected: true, disableTouchEvent: true, selectedDotColor: 'orange' },
             // timestamps.map(timestamp => ({ timestamp: { selected: true } } )),
@@ -166,15 +212,21 @@ export default function CalendarPage({ navigation }) {
                 selected: true, 
                 customStyles: {
                   container: {
-                    backgroundColor: '#BFDBD7',
-                    width: 25, // Adjust the width of the container to make the dot smaller
-                    height: 25, // Adjust the height of the container to make the dot smaller
-                    borderRadius: 15, // Adjust the border radius accordingly
-                    marginTop: -3, // Move the dot container slightly higher
+                    backgroundColor: '#82A5A1',
+                    borderWidth: '4.9',
+                    borderColor: '#BFDBD7',
+                    // backgroundColor: 'transparent',
+                    // backgroundColor: "linear-gradient(to right, #BFDBD7, #BFDBD7)",
+                    width: 25, 
+                    height: 25,
+                    borderRadius: 15,
+                    marginTop: -3, 
+                    // backgroundImage: "url('../../images/assets/dot.png')",
                   },
                   text: {
-                    color: 'gray', //change this
-                    marginTop: 7,
+                    color: '#3B3133', //change this
+                    marginTop: 2,
+                    fontSize: 10,
                   },
                 },
               };
@@ -244,7 +296,7 @@ export default function CalendarPage({ navigation }) {
         ? (
           <View style={{paddingHorizontal: 12}}>
             <View flexDirection='row' justifyContent='space-between'>
-              <Text style={styles.header}>Recent Entries</Text>
+              <Text style={styles.header}>Past Entries</Text>
               <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}} colors={['#374342', '#546967']} style={styles.addEntriesButton}>
                 <TouchableOpacity onPress={navigateToJournalPage}>
                   <Text style={styles.addEntriesButtonText}>Add Entry +</Text>
@@ -264,6 +316,7 @@ export default function CalendarPage({ navigation }) {
                   date={formatDate(x.timestamp)}
                   prompt={x.prompt}
                   text={x.text}
+                  type={x.type}
                   onPress={navigateToPastJournal}
                 />
               ))
@@ -294,6 +347,7 @@ export default function CalendarPage({ navigation }) {
                   date={formatDate(x.timestamp)}
                   prompt={x.prompt}
                   text={x.text}
+                  type={x.type}
                   onPress={navigateToPastJournal}
                 />
               ))
@@ -339,8 +393,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#546967', 
     justifyContent: 'center',
     alignItems: 'center',
-    width: 100, 
-    height: 30,
+    width: 120, 
+    height: 37,
   },
   addEntriesButtonText: {
     color: 'white',

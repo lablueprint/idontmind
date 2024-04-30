@@ -6,7 +6,7 @@ import styles from './JournalHistoryStyle';
 
 // props: username, prompt, text, timestamp
 export default function JournalCard({
-  onPress, text, username, prompt, date,
+  onPress, text, username, prompt, date, type
 }) {
   const handlePress = () => {
     onPress(username, prompt, text, date);
@@ -17,12 +17,11 @@ export default function JournalCard({
   return (
     <View style={[styles.entryContainer]} >
     <Pressable style={styles.journalCard} onPress={handlePress}>
-      <View style={styles.dateContainer}>
+      <View style={type ? [styles.dateContainer, { backgroundColor: '#BFDBD7' }] : styles.dateContainer}>
         <Text style={styles.dateText}>
           {date}
         </Text>
       </View>
-
       <View style={styles.contentContainer}>
         <Text style={styles.prompt} numberOfLines={1} ellipsizeMode="tail">
           {prompt}
