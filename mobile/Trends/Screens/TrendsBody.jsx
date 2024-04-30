@@ -87,7 +87,7 @@ export default function TrendsBody({ route }) {
     const getUserTimeSeries = async () => {
       try {
         const weekOffset = 1;
-        const current = new Date();
+        const current = new Date('2024-04-15T00:00:00');
         const start = new Date(current);
         const mid = new Date(current);
         const end = new Date(current);

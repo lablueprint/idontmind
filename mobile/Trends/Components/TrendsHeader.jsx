@@ -17,8 +17,7 @@ const style = StyleSheet.create({
     marginBottom: 20,
   },
   header_text_container: {
-    fontSize: 2,
-    position: 'relative',
+    height: '150%',
   },
   header_text_image: {
     position: 'absolute',
