@@ -3,8 +3,8 @@ import {
   View, Text, Image, Pressable,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import style from './BookmarksStyle';
-import folderImg from '../../../assets/folder.png';
+import style from '../Screens/BookmarksStyle';
+import folderImg from '../../../assets/images/folderIcon.png';
 
 export default function Folder({
   folderName,
@@ -16,8 +16,8 @@ export default function Folder({
       }}
       >
         <View style={style.folderContainer}>
-          <Image source={folderImg} />
-          <Text>{folderName}</Text>
+          <Image style={{ resizeMode: 'contain', height: 50, width: 50 }} source={folderImg} />
+          <Text style={{ padding: 5, fontSize: 14, fontFamily: 'cabinet-grotesk-regular' }}>{folderName}</Text>
         </View>
       </Pressable>
     );

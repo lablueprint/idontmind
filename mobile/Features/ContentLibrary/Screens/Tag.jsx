@@ -11,6 +11,7 @@ import goldStar from '../../../assets/goldStar.png';
 import style from '../Components/ContentStyle';
 import TagContext from '../Context/TagContext';
 import styles from './BookmarksStyle';
+import TagRectangle from '../Components/TagRectangle';
 
 export default function Tag({ navigation, route }) {
   /* index of corresponding Tag */
@@ -30,7 +31,7 @@ export default function Tag({ navigation, route }) {
   /* Checks if current tag is in users favorite list */
   const favorited = findFavorite(_id);
 
-  const subtopics = ['Tag', 'Creativity', 'Energy', 'Environment', 'Exercise', 'Fitness', 'Health', 'Journaling', 'Medication']; // hardcoded for now, i think tag content list
+  const hardcodedTags = ['Tag', 'Creativity', 'Energy', 'Environment', 'Exercise', 'Fitness', 'Health', 'Journaling', 'Medication']; // hardcoded for now, i think tag content list
 
   const navigateToPreviousRoute = () => {
     navigation.navigate(routeName);
@@ -163,7 +164,21 @@ export default function Tag({ navigation, route }) {
           </ScrollView>
         </View>
 
-        <View style={styles.pills}>
+        <View style={{ width: '110%' }}>
+
+          {
+                hardcodedTags.map((item) => (
+                  <Pressable key={item} onPress={() => navigateToResourceList(item)}>
+                    <TagRectangle
+                        // key={resourceName}
+                      tagName={item}
+                    />
+                  </Pressable>
+                ))
+              }
+        </View>
+
+        {/* <View style={styles.pills}>
           {subtopics.map((item) => (
             <View
               key={item}
@@ -174,7 +189,7 @@ export default function Tag({ navigation, route }) {
               </Pressable>
             </View>
           ))}
-        </View>
+        </View> */}
       </View>
       <View />
       <View

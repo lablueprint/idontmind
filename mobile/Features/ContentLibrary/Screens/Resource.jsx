@@ -7,12 +7,22 @@ import axios from 'axios';
 import { useRoute } from '@react-navigation/native';
 import BookmarkImage from '../../../assets/bookmark_blue.png';
 import styles from './BookmarksStyle';
+import BottomHalfModal from './BottomModal';
+import NewFolderModal from '../Components/NewFolderModal';
 
 function Resource({ navigation }) {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisibleNewFolder, setModalVisibleNewFolder] = useState(false);
   const route = useRoute();
   const resourceName = route.params?.resourceName;
   const routeName = route.params?.routeName;
   const subtopicName = route.params?.subtopicName;
+  const toggleModal = () => {
+    setModalVisible(!modalVisible);
+  };
+  const toggleModalNewFolder = () => {
+    setModalVisibleNewFolder(!modalVisibleNewFolder);
+  };
   const navigateToPreviousRoute = () => {
     if (routeName === 'Resource List') navigation.navigate(routeName, { subtopicName });
     else navigation.navigate(routeName);
@@ -43,7 +53,9 @@ function Resource({ navigation }) {
           <Text style={{ fontSize: 34 }}>{resourceName}</Text>
           <Text style={{ fontSize: 12 }}>By: IDONTMIND Team</Text>
         </View>
-        <Image source={BookmarkImage} />
+        <Pressable onPress={toggleModal}>
+          <Image source={BookmarkImage} />
+        </Pressable>
 
       </View>
       <ScrollView>
@@ -83,6 +95,11 @@ function Resource({ navigation }) {
           </Pressable>
 
         </View>
+        <BottomHalfModal modalVisibleParent={modalVisible} toggleModal={toggleModal} toggleModalNewFolder={toggleModalNewFolder} page="Tags" />
+        <NewFolderModal
+          modalVisibleParent={modalVisibleNewFolder}
+          toggleModal={toggleModalNewFolder}
+        />
 
       </ScrollView>
 

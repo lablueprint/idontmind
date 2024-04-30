@@ -7,11 +7,13 @@ import axios from 'axios';
 import Bookmark from '../../Other/Components/Bookmark';
 import TagContext from '../Context/TagContext';
 import styles from './BookmarksStyle';
-import Folder from './Folder';
+import Folder from '../Components/Folder';
 import TagRectangle from '../Components/TagRectangle';
+import Back from '../../../assets/images/back_button.png';
 
 function Bookmarks({ navigation }) {
   const [favorites, setFavorites] = useState([]);
+  const hardcodedResources = [['My Resource', 'Nicole Jew'], ['My Resource 2', 'Alice Ju'], ['My Resource 3']];
   const hardcodedTags = ['tag1', 'tag2', 'i hate tags'];
 
   const {
@@ -27,7 +29,7 @@ function Bookmarks({ navigation }) {
   };
 
   const folderNames = ['folder1', 'im not creative', 'no ideas', 'cant think', 'of another', ''];
-  const filters = ['All', 'Tags', 'Resources'];
+  const filters = ['All', 'Q&A', 'Personal Stories', 'Exercises', 'Articles'];
   const [filterQuery, setFilterQuery] = useState('All');
 
   useEffect(() => {
@@ -51,25 +53,23 @@ function Bookmarks({ navigation }) {
     <ScrollView
       className="mainContainer"
       style={{
-        display: 'flex', flexDirection: 'column', paddingHorizontal: 25, paddingTop: 50, flex: 1,
+        display: 'flex', flexDirection: 'column', paddingHorizontal: 25, paddingTop: 50, flex: 1, backgroundColor: '#BFDBD7',
       }}
     >
-      <TouchableOpacity color="black" onPress={navigateToContentLibrary} style={{ paddingRight: 10, alignSelf: 'flex-start' }}>
-        <Text style={{ fontSize: 34 }}>{'<'}</Text>
+      <TouchableOpacity color="black" onPress={navigateToContentLibrary} style={{ paddingRight: 10, paddingTop: 10 }}>
+        <Image style={{ resizeMode: 'contain', height: 20, width: 20 }} source={Back} />
       </TouchableOpacity>
       <View
         className="title"
         style={{
           display: 'flex',
           flexDirection: 'row',
-          borderBottomColor: 'lightgray',
-          borderBottomWidth: 3,
           alignItems: 'center',
           justifyContent: 'center',
           paddingBottom: 20,
         }}
       >
-        <Text style={{ fontSize: 34 }}>Bookmarks</Text>
+        <Text style={{ fontSize: 40, fontFamily: 'recoleta-medium' }}>Bookmarks</Text>
       </View>
       <View style={{
         display: 'flex', flexDirection: 'column', flex: 8, paddingTop: 10,
@@ -92,7 +92,7 @@ function Bookmarks({ navigation }) {
                 ]}
               >
                 <Text style={filterQuery === item
-                  ? styles.whiteText : styles.blackText}
+                  ? styles.whitePillText : styles.blackPillText}
                 >
                   {item}
                 </Text>
@@ -100,7 +100,20 @@ function Bookmarks({ navigation }) {
             ))}
           </ScrollView>
         </View>
-        <Text style={{ fontSize: 22 }}>Folders </Text>
+        <View style={{
+          display: 'flex', flexDirection: 'row',
+        }}
+        >
+          <Text style={{ flex: 1, fontSize: 32, fontFamily: 'recoleta-medium' }}>
+            Folders
+          </Text>
+          <Text style={{
+            flex: 1, textAlign: 'right', fontSize: 14, alignSelf: 'center', fontFamily: 'cabinet-grotesk-regular',
+          }}
+          >
+            sort by Name
+          </Text>
+        </View>
         <View style={{ alignItems: 'center', justifyContents: 'center' }}>
           <FlatList
             data={folderNames}
@@ -116,32 +129,33 @@ function Bookmarks({ navigation }) {
         display: 'flex', flexDirection: 'column', flex: 8,
       }}
       >
-        <Text style={{ fontSize: 22 }}>
-          Resources
-        </Text>
+        <View style={{
+          display: 'flex', flexDirection: 'row', paddingTop: 20,
+        }}
+        >
+          <Text style={{ flex: 1, fontSize: 32, fontFamily: 'recoleta-medium' }}>
+            Resources
+          </Text>
+          <Text style={{
+            flex: 1, textAlign: 'right', fontSize: 14, alignSelf: 'center', fontFamily: 'cabinet-grotesk-regular',
+          }}
+          >
+            sort by Date
+          </Text>
+        </View>
 
         <View style={{ width: '110%' }}>
 
           {
-                favorites.map((item) => {
+                hardcodedResources.map((item) => {
                   let resourceName;
-                  if (item.Title) {
-                    resourceName = item.Title;
-                  } else if (item['Journal Prompts']) {
-                    resourceName = item['Journal Prompts'];
-                  } else {
-                    resourceName = item.Question;
-                  }
                   return (
                     <Pressable key={resourceName} onPress={() => navigateToResource(item)}>
                       <Bookmark
                         // key={resourceName}
-                        resourceName={resourceName}
-                        author={item.Author}
-                        style={{}}
-                      >
-                        {item.Author}
-                      </Bookmark>
+                        resourceName={item[0]}
+                        author={item[1]}
+                      />
                     </Pressable>
                   );
                 })
@@ -153,10 +167,20 @@ function Bookmarks({ navigation }) {
         display: 'flex', flexDirection: 'column', flex: 8,
       }}
       >
-        <Text style={{ fontSize: 22 }}>
-          Tags
-        </Text>
-
+        <View style={{
+          display: 'flex', flexDirection: 'row', paddingTop: 20,
+        }}
+        >
+          <Text style={{ flex: 1, fontSize: 32, fontFamily: 'recoleta-medium' }}>
+            Tags
+          </Text>
+          <Text style={{
+            flex: 1, textAlign: 'right', fontSize: 14, alignSelf: 'center', fontFamily: 'cabinet-grotesk-regular',
+          }}
+          >
+            sort by Date
+          </Text>
+        </View>
         <View style={{ width: '110%' }}>
 
           {
