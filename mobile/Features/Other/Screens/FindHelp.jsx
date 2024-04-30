@@ -1,11 +1,22 @@
 import React from 'react';
 import {
-  ScrollView, Text, View, Button,
+  ScrollView, Text, View, Button, Linking,
 } from 'react-native';
 import FlipCard from 'react-native-flip-card';
 import styles from './FindHelpStyle';
 
 export default function FindHelp() {
+  const callSuicideCrisisLifeline = () => {
+    const phoneNumber = '988';
+    Linking.openURL(`tel:${phoneNumber}`);
+  };
+
+  const textCrisisCounselor = () => {
+    const phoneNumber = '741741';
+    const message = 'IDM';
+    Linking.openURL(`sms:${phoneNumber}?body=${encodeURIComponent(message)}`);
+  };
+
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -23,7 +34,7 @@ export default function FindHelp() {
                 not, please call the Lifeline to speak with a trained Crisis Counselor 24/7.
                 988lifeline.org.
               </Text>
-              <Button style={styles.resourceBodyButton} title="DIAL 988" />
+              <Button style={styles.resourceBodyButton} onPress={callSuicideCrisisLifeline} title="DIAL 988" />
             </View>
           </FlipCard>
         </View>
@@ -39,7 +50,7 @@ export default function FindHelp() {
               <Text style={styles.resourceBodyBack}>
                 Connect with a trained Crisis Counselor to receive free, 24/7 crisis support via text message. crisistextline.org.
               </Text>
-              <Button style={styles.resourceBodyButton} title="TEXT 741741" />
+              <Button style={styles.resourceBodyButton} onPress={textCrisisCounselor} title="TEXT 741741" />
             </View>
           </FlipCard>
         </View>
