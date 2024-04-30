@@ -42,7 +42,6 @@ export default function AppNavigation() {
           <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
           <Stack.Screen name="PersonalInfo" component={PersonalInfo} options={{ headerShown: false }} />
           <Stack.Screen name="Customization" component={Customization} options={{ headerShown: false }} />
-          <Stack.Screen name="NavigationBar" component={NavigationBar} options={{ headerShown: false }} />
           <Stack.Screen name="Filter" component={Filter} options={{ headerShown: false }} />
           <Stack.Screen name="BannedTags" component={BannedTags} options={{ headerShown: false }} />
           <Stack.Screen name="Loading" component={Loading} options={{ headerShown: false }} />
