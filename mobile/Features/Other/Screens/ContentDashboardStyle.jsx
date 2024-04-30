@@ -20,6 +20,18 @@ export default StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     borderRadius: 8,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 18,
+  },
+  rightChev: {
+    height: 15,
+    width: 10,
+  },
+  leftChev: {
+    height: 15,
+    width: 10,
+    opacity: 0,
   },
   moodTendencies: {
     backgroundColor: '#6A8784',
