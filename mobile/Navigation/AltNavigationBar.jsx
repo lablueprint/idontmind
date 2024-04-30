@@ -89,7 +89,6 @@ export default function AltNavigationBar() {
                       bottom: Dimensions.get('window').height / 34,
                       justifyContent: 'center',
                       alignItems: 'center',
-                      // flex: 1,
                       width: Dimensions.get('window').height / 11,
                       height: Dimensions.get('window').height / 11,
                     }}

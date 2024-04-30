@@ -3,24 +3,22 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 20,
+    paddingHorizontal: 30,
+    paddingTop: 20,
   },
   title: {
-    fontSize: 30,
+    fontSize: 38,
     marginBottom: 10,
   },
   line: {
     width: 350,
     borderBottomWidth: 1,
     borderBottomColor: '#26292E',
-    margin: 20,
   },
   displayWeek: {
     padding: 10,
-    backgroundColor: 'rgba(169, 232, 34, 0.20)',
-    borderRadius: 10,
+    borderRadius: 30,
     width: '70%',
   },
   weekText: {
@@ -28,15 +26,17 @@ export default StyleSheet.create({
   },
   dateText: {
     textAlign: 'center',
-    color: 'rgba(38, 41, 46, 0.60)',
+    color: 'white',
     marginTop: 5,
+    fontSize: 18,
   },
   weekContainer: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignItems: 'center',
     alignContent: 'center',
-    marginBottom: 10,
+    paddingTop: 25,
+    paddingBottom: 50,
   },
   chartWrapper: {
     borderRadius: 15,
@@ -60,5 +60,13 @@ export default StyleSheet.create({
     padding: 10,
     fontSize: 20,
     fontWeight: '400',
+  },
+  column: {
+    display: 'flex',
+    flexDirection: 'col',
+  },
+  row: {
+    display: 'flex',
+    flexDirection: 'row',
   },
 });
