@@ -13,7 +13,7 @@ export default function FindHelp() {
 
   const textCrisisCounselor = () => {
     const phoneNumber = '741741';
-    const message = 'IDM';
+    const message = 'HOME';
     Linking.openURL(`sms:${phoneNumber}?body=${encodeURIComponent(message)}`);
   };
 
@@ -48,7 +48,8 @@ export default function FindHelp() {
             <View style={styles.back}>
               <Text style={styles.resourceTitle}>CRISIS TEXT LINE</Text>
               <Text style={styles.resourceBodyBack}>
-                Connect with a trained Crisis Counselor to receive free, 24/7 crisis support via text message. crisistextline.org.
+                Connect with a trained Crisis Counselor to receive free,
+                24/7 crisis support via text message. crisistextline.org.
               </Text>
               <Button style={styles.resourceBodyButton} onPress={textCrisisCounselor} title="TEXT 741741" />
             </View>
