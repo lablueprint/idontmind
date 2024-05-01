@@ -21,7 +21,6 @@ const jwtOptions = {
 
 // Route Imports
 const testRouter = require('./routes/testRoute');
-const postRouter = require('./routes/postRoute');
 const contentRouter = require('./routes/contentRoute');
 const offJournalRouter = require('./routes/offJournalRoute');
 const offUserRouter = require('./routes/offUserRoute');
@@ -48,7 +47,6 @@ app.use(bodyParser.urlencoded({ limit: '200mb', extended: true }));
 
 // API Routes
 app.use('/test', testRouter);
-app.use('/posts', postRouter);
 app.use('/content', contentRouter);
 app.use('/offUser', offUserRouter);
 app.use('/offJournal', offJournalRouter);
