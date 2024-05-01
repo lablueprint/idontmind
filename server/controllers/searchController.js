@@ -1,5 +1,4 @@
 const Article = require('../models/ArticleSchema');
-const Prompt = require('../models/PromptSchema');
 const QnA = require('../models/QnASchema');
 
 // filter resources by keyword in title
@@ -8,13 +7,24 @@ const searchByKeyword = async (req, res) => {
   const aggregateCalls = [];
 
   if (filter === 'All' || filter === 'Articles') {
-    aggregateCalls.push(Article.aggregate([{ $match: { Title: { $regex: keyword, $options: 'i' } } }]));
-  }
-  if (filter === 'All' || filter === 'Prompts') {
-    aggregateCalls.push(Prompt.aggregate([{ $match: { 'Journal Prompts': { $regex: keyword, $options: 'i' } } }]));
+    aggregateCalls.push(Article.aggregate([{
+      $match: {
+        $or: [
+          { Title: { $regex: keyword, $options: 'i' } },
+          { Exerpts: { $elemMatch: { $regex: keyword, $options: 'i' } } },
+        ],
+      },
+    }]));
   }
   if (filter === 'All' || filter === 'Q&A') {
-    aggregateCalls.push(QnA.aggregate([{ $match: { Question: { $regex: keyword, $options: 'i' } } }]));
+    aggregateCalls.push(QnA.aggregate([{
+      $match: {
+        $or: [
+          { Question: { $regex: keyword, $options: 'i' } },
+          { Answer: { $regex: keyword, $options: 'i' } },
+        ],
+      },
+    }]));
   }
 
   try {
@@ -35,12 +45,6 @@ const searchByTag = async (req, res) => {
   if (filter === 'All' || filter === 'Articles') {
     aggregateCalls.push(
       Article.aggregate([{ $match: { Tags: { $elemMatch: { $in: [tagSearch] } } } }]),
-    );
-  }
-
-  if (filter === 'All' || filter === 'Prompts') {
-    aggregateCalls.push(
-      Prompt.aggregate([{ $match: { Tag: { $elemMatch: { $in: [tagSearch] } } } }]),
     );
   }
 

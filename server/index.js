@@ -20,7 +20,7 @@ const jwtOptions = {
 };
 
 // Route Imports
-const testRouter = require('./routes/testRoute');
+const testRouter = require('./routes/miscRoute');
 const journalRouter = require('./routes/journalRoute');
 const postRouter = require('./routes/postRoute');
 const userRouter = require('./routes/userRoute');
