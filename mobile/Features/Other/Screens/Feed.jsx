@@ -77,7 +77,7 @@ export default function Feed({ navigation }) {
     const tempPostList = postList;
     tempPostList.push({
       _id: postList.length + 1,
-      username: postDraftUser,
+      email: postDraftUser,
       body: postDraftBody,
       timestamp,
     });
@@ -85,7 +85,7 @@ export default function Feed({ navigation }) {
     setPostDraftBody('');
     setPostDraftUser('');
     pushPosts({
-      username: postDraftUser,
+      email: postDraftUser,
       body: postDraftBody,
     });
   };
@@ -109,7 +109,7 @@ export default function Feed({ navigation }) {
         (p) => (
           <Post
             key={p._id}
-            username={p.username}
+            email={p.email}
             body={p.body}
             timestamp={p.timestamp}
             navigation={navigation}
@@ -119,8 +119,8 @@ export default function Feed({ navigation }) {
       <Text style={{ fontFamily: 'cabinet-grotesk-black' }}> Demo Form </Text>
       <View>
         <TextInput
-          name="username"
-          placeholder="username"
+          name="email"
+          placeholder="email"
           value={postDraftUser}
           onChangeText={onChangeDraftUser}
         />

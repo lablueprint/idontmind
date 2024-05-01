@@ -10,10 +10,6 @@ const officialUserSchema = new mongoose.Schema({
     required: false,
     type: String,
   },
-  username: {
-    required: false,
-    type: String,
-  },
   password: {
     required: true,
     type: String,

@@ -118,7 +118,7 @@ export default function CalendarPage({ navigation }) {
         {filteredJournals.map((x) => (
           <JournalCard
             key={x._id}
-            username={x.username}
+            email={x.email}
             date={x.timestamp}
             prompt={x.prompt}
             text={x.text}

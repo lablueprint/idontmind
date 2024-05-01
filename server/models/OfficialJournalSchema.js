@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const officialJournalSchema = new mongoose.Schema({
-  username: {
+  email: {
     required: true,
     type: String,
   },

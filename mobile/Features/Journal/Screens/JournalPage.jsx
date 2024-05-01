@@ -49,7 +49,7 @@ export default function JournalPage({ navigation }) {
     });
     const timestamp = pstDate;
     await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offJournal/createJournal`, {
-      username: newUsername, prompt: newPrompt, text: newText, timestamp,
+      email: newUsername, prompt: newPrompt, text: newText, timestamp,
     });
   }; /* function that creates a new journal entry with username, prompt, text, and timestamp and
   sends it to the MongoDB */

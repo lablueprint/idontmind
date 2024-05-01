@@ -1,10 +1,12 @@
 import { View, Text, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import axios from 'axios';
 
 function DayChallenge({ navigation }) {
+  const { authHeader } = useSelector((state) => state.auth);
   const [currentDay, setCurrentDay] = useState(0);
   const navigateToContentLibrary = () => {
     navigation.navigate('Content Library');
@@ -13,7 +15,7 @@ function DayChallenge({ navigation }) {
   const reset = async () => {
     try {
       const userid = '65b19dd62c6273bd7b9a0c80';
-      await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/resetChallengeDay`, { id: userid });
+      await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/resetChallengeDay`, { id: userid }, { headers: authHeader });
       setCurrentDay(0);
     } catch (err) {
       console.error(err);
@@ -23,7 +25,7 @@ function DayChallenge({ navigation }) {
   const increaseChallengeDay = async () => {
     try {
       const userid = '65b19dd62c6273bd7b9a0c80';
-      await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/increaseChallengeDay`, { id: userid });
+      await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/increaseChallengeDay`, { id: userid }, { headers: authHeader });
       setCurrentDay(currentDay + 1);
     } catch (err) {
       console.error(err);
@@ -34,7 +36,7 @@ function DayChallenge({ navigation }) {
     const foo = async () => {
       try {
         const userid = '65b19dd62c6273bd7b9a0c80';
-        const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/getUserChallengeDay`, { id: userid });
+        const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/getUserChallengeDay`, { id: userid }, { headers: authHeader });
         setCurrentDay(res.data.ChallengeDay);
       } catch (err) {
         console.error(err);

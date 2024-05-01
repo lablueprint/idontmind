@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 
 // Example of a model schema to validate and structure documents
 const postSchema = new mongoose.Schema({
-  username: {
+  email: {
     required: true,
     type: String,
   },

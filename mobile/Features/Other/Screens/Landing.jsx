@@ -35,6 +35,7 @@ export default function Landing({ navigation }) {
       if (res.data.error) {
         console.error(res.data.error);
       } else {
+        console.log(res.data);
         dispatch(login(res.data));
         navigateToFeed();
       }

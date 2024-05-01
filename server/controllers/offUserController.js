@@ -36,7 +36,7 @@ const signInUser = async (req, res, next) => {
       if (loginErr) return next(loginErr);
 
       // Generate JWT token
-      const token = jwt.sign({ id: user._id }, 'secret');
+      const token = jwt.sign({ id: user.id }, 'secret');
 
       return res.json({ user, token });
     });
@@ -150,8 +150,8 @@ const deleteUserById = async (req, res) => {
 
 const getFavorites = async (req, res) => {
   try {
-    const { username } = req.body;
-    const user = await User.find({ username });
+    const { email } = req.body;
+    const user = await User.find({ email });
     res.send(user[0].favorites);
   } catch (err) {
     console.error(err);

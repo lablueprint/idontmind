@@ -14,7 +14,7 @@ export default function Feed({ navigation, post }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>
-        {post.username}
+        {post.email}
       </Text>
       <Text>
         {post.body}
@@ -32,7 +32,7 @@ Feed.propTypes = {
     navigate: PropTypes.func,
   }).isRequired,
   post: PropTypes.shape({
-    username: PropTypes.string,
+    email: PropTypes.string,
     body: PropTypes.string,
   }).isRequired,
 };
