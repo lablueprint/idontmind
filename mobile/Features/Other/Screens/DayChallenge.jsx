@@ -9,7 +9,7 @@ function DayChallenge({ navigation }) {
   const { authHeader } = useSelector((state) => state.auth);
   const [currentDay, setCurrentDay] = useState(0);
   const navigateToContentLibrary = () => {
-    navigation.navigate('Content Library');
+    navigation.navigate('Content');
   };
 
   const reset = async () => {

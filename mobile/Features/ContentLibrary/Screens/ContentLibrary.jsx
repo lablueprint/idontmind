@@ -19,7 +19,7 @@ export default function ContentLibrary({ navigation }) {
   const { email, authHeader } = useSelector((state) => state.auth);
 
   const navigateToTag = (index) => {
-    navigation.navigate('Tag', { index, routeName: 'Content Library' });
+    navigation.navigate('Tag', { index, routeName: 'Content' });
   };
 
   const navigateToFavorites = () => {
@@ -90,12 +90,13 @@ export default function ContentLibrary({ navigation }) {
     setOpen(false);
   };
 
-  const handleSearch = (query) => {
+  const handleSearch = (query, type) => {
     // search logic
     if (query.trim() !== '') {
-      if (!recentSearches.includes(query.toLowerCase())) {
+      if (!recentSearches.some((search) => search.query.toLowerCase()
+      === query.toLowerCase() && search.type === type)) {
         setRecentSearches((prevSearches) => {
-          const updatedSearches = [query.toLowerCase(), ...prevSearches];
+          const updatedSearches = [{ query: query.toLowerCase(), type }, ...prevSearches];
           if (updatedSearches.length > 5) {
             updatedSearches.pop(); // Remove the last element
           }
