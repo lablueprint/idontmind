@@ -129,9 +129,12 @@ export default function CalendarPage({ navigation }) {
 
     return (
       <View style={[styles.calendarHeader, { justifyContent: 'space-between' , marginTop: 5}]}>
-        <Text style={{fontFamily: 'recoleta-alt-regular', fontSize: 18}}>
-            {formatNumbers(currentMonth?.toString('MMMM yyyy'))}
-        </Text>
+        <View style={{ alignItems: 'flex-end' }}>
+          <Text style={{fontFamily: 'recoleta-alt-regular', fontSize: 18}}>
+              {formatNumbers(currentMonth?.toString('MMMM yyyy'))}
+          </Text>
+          <View style={styles.highlight}></View>
+        </View>
         <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 8 }}>
           <View style={{ width: 8}}></View>
             <View style={{ width: 15, height: 15, borderRadius: 20, backgroundColor: '#BFDBD7', marginRight: 5 }} />
@@ -421,5 +424,14 @@ const styles = StyleSheet.create({
     width: 542,
     height: 450,
     borderRadius: 250, 
+  },
+
+  highlight: {
+    backgroundColor: '#C9E2DE', 
+    top: 11,
+    width: '100%',                  
+    height: '50%',        
+    position: 'absolute',
+    zIndex: -1,     
   },
 });
