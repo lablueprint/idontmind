@@ -1,10 +1,8 @@
 /* eslint-disable no-param-reassign */
 import jwt_decode from 'jwt-decode';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SecureStore from 'expo-secure-store';
 
 const { createSlice } = require('@reduxjs/toolkit');
-
-console.log('authSlice');
 
 const initialState = {
   id: null,
@@ -27,6 +25,7 @@ const authSlice = createSlice({
       state.authHeader = {
         Authorization: `Bearer ${action.payload.token}`,
       };
+      SecureStore.setItemAsync('user', JSON.stringify(action.payload));
     },
     logout: (state) => {
       console.log('logout');
@@ -35,6 +34,7 @@ const authSlice = createSlice({
       state.firstName = null;
       state.token = null;
       state.authHeader = null;
+      SecureStore.deleteItemAsync('user');
     },
   },
 });
