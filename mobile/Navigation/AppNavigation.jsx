@@ -64,6 +64,7 @@ export default function AppNavigation() {
           <Stack.Screen name="EndCheckIn" component={EndCheckIn} options={{ headerShown: false }} />
           <Stack.Screen name="JournalPage" component={JournalPage} options={{ headerShown: false }} />
           <Stack.Screen name="JournalDetails" component={JournalDetails} options={{ headerShown: false }} />
+          <Stack.Screen name="PostDetails" component={PostDetails} options={{ headerShown: false }} />
         </Stack.Navigator>
       </TagProvider>
     </NavigationContainer>

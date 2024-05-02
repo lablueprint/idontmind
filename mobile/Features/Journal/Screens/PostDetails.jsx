@@ -1,44 +1,64 @@
-import React from 'react';
-import styles from '../Components/JournalStyle';
+import React, { useState, useEffect, useRef } from 'react';
 import {
-    ScrollView, Text, View, Button, TextInput, Keyboard,
-    TouchableWithoutFeedback, Modal, TouchableOpacity, Pressable, Image,
-  } from 'react-native';
+  ScrollView, Text, View, Button, TextInput
+  ,
+} from 'react-native';
+import PropTypes from 'prop-types';
 
-export default function PostDetails({ navigation, route}) {
-//   const route = useRoute();
-//   const prompt = route.params?.question;
-//   const text = route.params?.body;
-//   const date = route.params?.day;
-const {randomTitle, inputText} = route.params||{};
-// console.log(prompt);
-// console.log(body);
+export default function PostDetails({ navigation, route }) {
+  const {
+    randomTitle, text, setText, freeWriteTitle, freeWrite,
+  } = route.params || {};
 
+  const textInputRef = useRef(null);
+  const [newText, setNewText] = useState(text);
 
-  const navigateToJournalHistory = () => {
-    navigation.navigate('Journal History');
-  }; // navigate to Journal History page
+  useEffect(() => {
+    textInputRef.current.focus();
+  }, []);
+
+  // Define a function to handle text changefdsafas
+  const handleTextChange = (inputText) => {
+    setNewText(inputText);
+    setText(inputText);
+  };
 
   return (
-    <ScrollView contentContainerStyle={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      {/* <View style={styles.container}>
-        <View style={styles.textBox}>
-          <ScrollView automaticallyAdjustKeyboardInsets> */}
-            <Text style={{fontSize: 20}}>{randomTitle}</Text>
-            <Text>{inputText}</Text>
-          {/* </ScrollView>
+    <View style={{ flex: 1 }}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <View style={{
+          marginTop: 80, alignItems: 'center', width: '100%', height: '100%',
+        }}
+        >
+          <View style={{ alignItems: 'center' }}>
+
+            {freeWrite ? (<Text style={{ fontSize: 18, fontWeight: 'bold' }}>{freeWriteTitle}</Text>) : (<Text style={{ fontSize: 18, fontWeight: 'bold' }}>{randomTitle}</Text>)}
+          </View>
+          <View style={{
+            borderWidth: 2, borderColor: 'black', width: '80%', height: '50%', marginBottom: 0,
+          }}
+          >
+            <TextInput
+              ref={textInputRef}
+              multiline
+              placeholder="Continue typing..."
+              onChangeText={handleTextChange}
+              value={newText}
+              style={{ flex: 1 }}
+            />
+
+          </View>
+          <Button
+            title="Go back"
+            onPress={navigation.goBack}
+          />
         </View>
-      </View> */}
-      <Button
-        title="Go back"
-        onPress={navigation.goBack}
-      />
-
-      <Button
-        title="To Past Journal Entries"
-        onPress={navigateToJournalHistory}
-      />
-    </ScrollView>
-
+      </ScrollView>
+    </View>
   );
 }
+
+PostDetails.propTypes = {
+  navigation: PropTypes.shape.isRequired,
+  route: PropTypes.shape.isRequired,
+};

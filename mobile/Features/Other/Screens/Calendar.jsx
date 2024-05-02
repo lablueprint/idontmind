@@ -10,6 +10,14 @@ import { LinearGradient } from 'expo-linear-gradient';
 import XDate from 'xdate';
 
 export default function CalendarPage({ navigation }) {
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: 'bl',
+      marginTop: 40,
+    },
+  });
+
   const [selectedDate, setSelectedDate] = useState('');
   const [allJournals, setAllJournals] = useState([]);
   const [recentJournals, setRecentJournals] = useState([]);
@@ -36,6 +44,7 @@ export default function CalendarPage({ navigation }) {
       && first.getDate() === second.getDate()
       );
     }
+    return false;
   };
 
   const getAllJournals = async () => {
@@ -92,6 +101,7 @@ export default function CalendarPage({ navigation }) {
     }
   };
 
+
   useEffect(() => {
     getAllJournals();
   }, [[selectedDate]]);
@@ -118,7 +128,6 @@ export default function CalendarPage({ navigation }) {
       setSelectedDate(objectDate);
       const journals = [...allJournals];
       setFilteredJournals(journals.filter((journal) => datesAreOnSameDay(new Date(journal.timestamp), objectDate)));
-      // console.log(`filtered journals: ${filteredJournals}`);
     }
   };
   // console.log("selected Date", selectedDate);
@@ -277,7 +286,6 @@ export default function CalendarPage({ navigation }) {
             lineHeight: '10',
             borderRadius: '5',
           }}
-
           theme={{
             calendarBackground: '#F6FCFC',
             // backgroundColor: '#82A5A1',
@@ -322,7 +330,6 @@ export default function CalendarPage({ navigation }) {
 
           stylesheet={{
             calendar: {
-              // Adjust lineHeight to reduce space between rows
               dayHeight: 10, //doesn't work
             },
           }}
@@ -411,7 +418,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 2,
-    maxWidth: 369,
+    maxWidth: 36,
   },
 
   journalCardHorizontal: {
