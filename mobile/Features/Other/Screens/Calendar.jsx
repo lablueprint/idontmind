@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import {
-  View, Text, StyleSheet, ScrollView, TouchableOpacity,
+  View, Text, StyleSheet, ScrollView, TouchableOpacity, Image
 } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import axios from 'axios';
@@ -170,14 +170,18 @@ export default function CalendarPage({ navigation }) {
   return (
     <View style={styles.container}>
       <ScrollView>
-      <View style={styles.circle}>
+      {/* <View style={styles.circle}>
         <LinearGradient
           colors={['#374342', '#546967']} 
           start={{ x: 0, y: 0 }} 
           end={{ x: 1, y: 1 }}
           style={styles.gradient}
         />
-      </View>
+      </View> */}
+        <Image
+          source={require('../../../assets/images/calendarbackground.png')}
+          style={{ position: 'absolute', top: -120, resizeMode: 'cover' }}
+        />
       <View style={{ padding: 20 }}>
       <Text style={[styles.header, { color: '#F6FCFC' }]}>Journal Entries</Text>
         <Calendar
@@ -428,7 +432,7 @@ const styles = StyleSheet.create({
 
   highlight: {
     backgroundColor: '#C9E2DE', 
-    top: 11,
+    top: 10,
     width: '100%',                  
     height: '50%',        
     position: 'absolute',
