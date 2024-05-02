@@ -33,9 +33,9 @@ function ResetPassword({ route, navigation }) {
 
   useEffect(() => {
     if (password === '' || confirmPassword === '') {
-      setPasswordsMatch(false); // If either password is empty, they don't match
+      setPasswordsMatch(false);
     } else {
-      setPasswordsMatch(password === confirmPassword); // Otherwise, compare the passwords
+      setPasswordsMatch(password === confirmPassword);
     }
   }, [password, confirmPassword]);
 

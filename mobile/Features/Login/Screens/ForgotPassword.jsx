@@ -6,7 +6,6 @@ import { useState, useEffect } from 'react';
 import styles from './ForgotPasswordStyle';
 import axios from 'axios';
 import * as Crypto from 'expo-crypto';
-import { useNavigation } from '@react-navigation/native';
 
 function ForgotPassword({ navigation }) {
   const [email, setEmail] = useState('');
@@ -14,46 +13,38 @@ function ForgotPassword({ navigation }) {
   const [showError, setShowError] = useState(false);
   const [curUser, setCurUser] = useState(null);
 
-  const generateToken = () => {
-    // Generates a "random" 6-digit number
-    const q = (Math.floor(100000 + Math.random() * 900000));
-    return q;
-  };
-
   const generateSixDigitNumber = () => {
-    const randomBytes = Crypto.getRandomBytes(2);
-    const number = (randomBytes[0] * 256) + randomBytes[1];
-    let sixDigitNumber = (number % 900000) + 100000;
-    sixDigitNumber = parseInt(sixDigitNumber, 10);
-
-    console.log(32, sixDigitNumber);
-    console.log(typeof sixDigitNumber);
-    return sixDigitNumber;
+    const buffer = Crypto.getRandomBytes(4);
+    const array = new Uint32Array(buffer.buffer);
+    const number = array[0] % 900000;
+    return parseInt(number + 100000, 10);
   };
 
   const handleEmailSubmit = async () => {
     try {
-      const data = {
-        email,
-      };
-
+      const data = { email };
       const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/checkUserByEmail`, data);
       if (res.data.success && (res.data.user.email).toLowerCase() === email.toLowerCase()) {
         const userData = res.data.user;
+        const newToken = generateSixDigitNumber();
         setCurUser(userData);
-        setToken(generateSixDigitNumber());
+        setToken(newToken);
         setShowError(false);
-        navigation.navigate('Token Input', { token, email, curUser });
-        const response = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/sendEmail`, { email, token });
-        if (response.data === true) {
+
+        navigation.navigate('Token Input', { token: newToken, email, curUser });
+        const response = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/sendEmail`, { email, token: newToken });
+        if (response.data.success) {
           console.log('Successfully sent email!');
+        } else {
+          console.log('Failed to send email:', response.data.message);
         }
       } else {
-        console.log('There was an issue resetting your password. Please try again.');
+        console.log('No user found with that email address.');
+        setShowError(true);
       }
     } catch (error) {
       setShowError(true);
-      console.error(error);
+      console.error('Error during email submission:', error);
     }
   };
 
@@ -89,11 +80,11 @@ function ForgotPassword({ navigation }) {
         <Pressable
           style={({ pressed }) => [
             styles.sendButton,
-            { backgroundColor: email.trim() ? '#546967' : '#C8C8C8' }, // Change button background color based on if email has text
+            { backgroundColor: email.trim() ? '#546967' : '#C8C8C8' },
             pressed && styles.buttonPressed,
           ]}
           onPress={handleEmailSubmit}
-          disabled={!email.trim()} // Disable button if email is empty or only contains whitespace
+          disabled={!email.trim()}
         >
           <Text style={[
             styles.sendButtonText,

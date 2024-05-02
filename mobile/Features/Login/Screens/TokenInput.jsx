@@ -29,19 +29,10 @@ function TokenInput({ route, navigation }) {
   });
 
   const generateSixDigitNumber = () => {
-    // Generate 2 bytes of random data
-    const randomBytes = Crypto.getRandomBytes(2);
-
-    // Convert randomBytes to a number
-    const number = (randomBytes[0] * 256) + randomBytes[1];
-
-    // Ensure the number is within the range of 100000 to 999999
-    let sixDigitNumber = (number % 900000) + 100000;
-    sixDigitNumber = parseInt(sixDigitNumber, 10);
-
-    console.log(32, sixDigitNumber);
-    console.log(typeof sixDigitNumber);
-    return sixDigitNumber;
+    const buffer = Crypto.getRandomBytes(4);
+    const array = new Uint32Array(buffer.buffer);
+    const number = array[0] % 900000;
+    return parseInt(number + 100000, 10);
   };
 
   const sendNewToken = async () => {
@@ -51,9 +42,14 @@ function TokenInput({ route, navigation }) {
       setToken(newToken);
       setCountdown(1800);
       setTokenExpired(false);
-      const response = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/sendEmail`, { email, token });
+      const response = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/sendEmail`, { email, token: newToken });
+      if (response.data.success) {
+        console.log('Email sent successfully with new token.');
+      } else {
+        console.error('Failed to send email with new token:', response.data.message);
+      }
     } catch (error) {
-      console.error("Error generating or sending token:", error);
+      console.error('Error generating or sending token:', error);
     }
   };
 
@@ -74,21 +70,16 @@ function TokenInput({ route, navigation }) {
         setCountdown((prevCountdown) => prevCountdown - 1);
       }, 1000);
     } else {
-      // Clear interval when countdown reaches zero
       clearInterval(interval);
       setTokenExpired(true);
       setToken('');
     }
-    // Cleanup function to clear interval on unmount
     return () => clearInterval(interval);
   }, [countdown]);
 
   return (
     <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: '#E5F8F3' }}>
       <View style={{ width: '83%', marginTop: '15%' }}>
-        <Text>
-          {token}
-        </Text>
         <Text style={{ fontSize: 40, fontWeight: 300, marginBottom: '1%' }}>
           Reset Password
         </Text>
