@@ -54,7 +54,7 @@ export default function Landing({ navigation }) {
         email: 'sample@gmail.com',
         password: 'sample',
       };
-      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/users/signin`, userData);
+      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/signin`, userData);
       if (res.data.error) {
         console.error(res.data.error);
       } else {
