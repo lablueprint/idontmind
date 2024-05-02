@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import {
-  View, Text, StyleSheet, ScrollView, ListView, TouchableOpacity, Button
+  View, Text, StyleSheet, ScrollView, TouchableOpacity,
 } from 'react-native';
-// import CalendarPicker from 'react-native-calendar-picker';
 import { Calendar } from 'react-native-calendars';
 import axios from 'axios';
 import JournalCard from '../../Journal/Components/JournalCard';
@@ -10,13 +9,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import XDate from 'xdate';
 
 export default function CalendarPage({ navigation }) {
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: 'bl',
-      marginTop: 40,
-    },
-  });
+
 
   const [selectedDate, setSelectedDate] = useState('');
   const [allJournals, setAllJournals] = useState([]);
@@ -47,53 +40,13 @@ export default function CalendarPage({ navigation }) {
     return false;
   };
 
+
   const getAllJournals = async () => {
     try {
       const result = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/journals/getAllJournals`);
       const recent_journals = result.data.length >= 10 ? result.data.slice(-10) : result.data;
       setAllJournals(result.data);
       setRecentJournals(recent_journals);
-      // setTimestamps(result.data.map(journal => journal.timestamp.substring(0,10)));
-
-      // const localTimestamps = result.data.map(journal => {
-      //   const timestamp = new Date(journal.timestamp);
-      //   return timestamp.toISOString().substring(0, 10); // Convert to local time string and extract date part
-      // });
-      // const localTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
-      // const localTimestamps = result.data.map(journal => {
-      //   const timestamp = new Date(journal.timestamp);
-      //   // Convert to local time string and extract date part
-      //   return timestamp.toLocaleDateString(undefined, { timeZone: localTimezone });
-      // });
-
-      const freeTimestampsArray = [];
-      const guidedTimestampsArray = [];
-    
-      allJournals.forEach(journal => {
-        const timestamp = new XDate(journal.timestamp).toString('yyyy-MM-dd');
-        if (journal.type) {
-          freeTimestampsArray.push(timestamp);
-        } else {
-          guidedTimestampsArray.push(timestamp);
-        }
-      });
-    
-      setFreeTimestamps(freeTimestampsArray);
-      setGuidedTimestamps(guidedTimestampsArray);
-    
-
-      //BEFORE HERE WAS GOOD
-      const localTimestamps = result.data.map(journal => {
-        const timestamp = new XDate(journal.timestamp);
-        // Convert to local time string and extract date part
-        return timestamp.toString('yyyy-MM-dd');
-      });
-
-      setTimestamps(localTimestamps);
-  
-      timestamps.forEach(timestamp => console.log("TIMESTAMP:", timestamp));
-      allJournals.forEach(journal => console.log(journal))
 
     } catch (err) {
       console.error(err);
@@ -104,12 +57,35 @@ export default function CalendarPage({ navigation }) {
 
   useEffect(() => {
     getAllJournals();
-  }, [[selectedDate]]);
-  const handleDateSelect = (date) => {
-    // Convert selected date to Pacific Time Zone
-    const pacificDate = new Date(`${date.dateString}T00:00:00-07:00`); // Assuming the selected date is in YYYY-MM-DD format
+  }, []);
 
-    // Use the Pacific Time Zone date for further processing
+  useEffect(() => {
+    const timestampsArray = allJournals.map(journal => {
+      return new XDate(journal.timestamp).toString('yyyy-MM-dd');
+    });
+
+    const freeTimestampsArray = [];
+    const guidedTimestampsArray = [];
+  
+    allJournals.forEach(journal => {
+      const timestamp = new XDate(journal.timestamp).toString('yyyy-MM-dd');
+      if (journal.type) {
+        freeTimestampsArray.push(timestamp);
+      } else {
+        guidedTimestampsArray.push(timestamp);
+      }
+    });
+  
+    setTimestamps(timestampsArray);
+    setFreeTimestamps(freeTimestampsArray);
+    setGuidedTimestamps(guidedTimestampsArray);
+
+  }, [allJournals]);
+
+  const handleDateSelect = (date) => {
+    //convert selected date to Pacific Time Zone
+    const pacificDate = new Date(`${date.dateString}T00:00:00-07:00`); 
+
     const objectDate = new Date(pacificDate);
     const todayDate = new Date();
 
@@ -121,19 +97,15 @@ export default function CalendarPage({ navigation }) {
             && objectDate.getMonth() === todayDate.getMonth()
             && objectDate.getFullYear() === todayDate.getFullYear()
       ) {
-        setClickedDate(true); // Set clickedDate to true for the current date
+        setClickedDate(true);
       } else {
-        setClickedDate(true); // Set clickedDate to true for other dates
+        setClickedDate(true);
       }
       setSelectedDate(objectDate);
       const journals = [...allJournals];
       setFilteredJournals(journals.filter((journal) => datesAreOnSameDay(new Date(journal.timestamp), objectDate)));
     }
   };
-  // console.log("selected Date", selectedDate);
-  const getJournalTimestamps = () => ({
-    
-  });
 
   function getLocale() {
     return XDate.locales[XDate.defaultLocale];
@@ -144,33 +116,30 @@ export default function CalendarPage({ navigation }) {
     return numbers ? date.toString().replace(/[0-9]/g, (char) => numbers[+char]) : date;
   }
 
-  // Function to handle navigation to the previous month
   const goToPreviousMonth = () => {
     setCurrentMonth(prevMonth => prevMonth.clone().addMonths(-1));
   };
 
-  // Function to handle navigation to the next month
   const goToNextMonth = () => {
     setCurrentMonth(prevMonth => prevMonth.clone().addMonths(1));
   };
   
 
   const CustomHeader = ({ currentMonth }) => {
-    // const webProps = Platform.OS === 'web' ? {'aria-level': webAriaLevel} : {};
 
     return (
-      <View style={[styles.calendarHeader, { justifyContent: 'space-between' }]}>
-        <Text style={{fontFamily: 'recoleta-alt-regular', size: 32}}>
+      <View style={[styles.calendarHeader, { justifyContent: 'space-between' , marginTop: 5}]}>
+        <Text style={{fontFamily: 'recoleta-alt-regular', fontSize: 18}}>
             {formatNumbers(currentMonth?.toString('MMMM yyyy'))}
         </Text>
         <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 8 }}>
-          <View style={{ width: 30}}></View>
-            <View style={{ width: 12, height: 12, borderRadius: 20, backgroundColor: '#BFDBD7', marginRight: 4 }} />
+          <View style={{ width: 8}}></View>
+            <View style={{ width: 15, height: 15, borderRadius: 20, backgroundColor: '#BFDBD7', marginRight: 5 }} />
             <Text style={{ fontSize: 10, fontFamily: 'cabinet-grotesk-regular' }}>Free Write</Text>
         </View>
         <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 8 }}>
-            <View style={{ width: 12, height: 12, borderRadius: 20, backgroundColor: '#82A5A1', marginRight: 4 }} />
-            <Text style={{ fontSize: 10, fontFamily: 'cabinet-grotesk-regular'}}>Guided Write</Text>
+            <View style={{ width: 15, height: 15, borderRadius: 20, backgroundColor: '#82A5A1', marginRight: 4 }} />
+            <Text style={{ fontSize: 10, fontFamily: 'cabinet-grotesk-regular'}}>Guided</Text>
       </View>
     </View>
     );
@@ -186,36 +155,37 @@ export default function CalendarPage({ navigation }) {
     navigation.navigate('JournalDetails', {
       user: username, question: prompt, body: text, day: date,
     });
-  }; /* navigate to the past journal entry, isHistory
-   is set to true (uneditable text box with the corresponding prompt) */
+  }; 
 
   const handleVisibleMonthsChange = (months) => {
     if (months.length > 0) {
-      // const month = months[0].dateString; // Assuming months is an array with one element
-      // const monthName = monthNames[month - 1]; // Subtract 1 because arrays are zero-indexed
+    
       setCurrentMonth(new XDate(months[0].dateString))
-      // Now you can use monthName as needed
     }
   };
 
   return (
     <View style={styles.container}>
       <ScrollView>
+      <View style={styles.circle}>
+        <LinearGradient
+          colors={['#374342', '#546967']} 
+          start={{ x: 0, y: 0 }} 
+          end={{ x: 1, y: 1 }}
+          style={styles.gradient}
+        />
+      </View>
       <View style={{ padding: 20 }}>
-      <Text style={styles.header}>Journal Entries</Text>
-      {/* <CalendarHeader /> */}
+      <Text style={[styles.header, { color: '#F6FCFC' }]}>Journal Entries</Text>
         <Calendar
           initialDate={currentMonth.toString('yyyy-MM-dd')}
           onDayPress={handleDateSelect}
           markingType={'custom'}
-          // customHeader={<CustomHeader month={LocaleConfig.months[month]} year={year} />} // Pass the custom header component here
           customHeaderTitle={<CustomHeader currentMonth={currentMonth}/>}
           onPressArrowLeft={goToPreviousMonth} 
           onPressArrowRight={goToNextMonth} 
           onVisibleMonthsChange={handleVisibleMonthsChange}
           markedDates={{
-            [selectedDate]: { selected: true, disableTouchEvent: true, selectedDotColor: 'orange' },
-            // timestamps.map(timestamp => ({ timestamp: { selected: true } } )),
             ...freeTimestamps.reduce((acc, timestamp) => {
               acc[timestamp] = { 
                 selected: true, 
@@ -232,7 +202,6 @@ export default function CalendarPage({ navigation }) {
                   },
                 },
               };
-              //selectedColor: '#BFDBD7' 
               return acc;
             }, {}),
             ...guidedTimestamps.reduce((acc, timestamp) => {
@@ -247,11 +216,10 @@ export default function CalendarPage({ navigation }) {
                     marginTop: -3, 
                   },
                   text: {
-                    color: '#3B3133', //change this
+                    color: '#3B3133', 
                   },
                 },
               };
-              //selectedColor: '#BFDBD7' 
               return acc;
             }, {}),
             ...timestamps.reduce((acc, timestamp) => {
@@ -269,17 +237,15 @@ export default function CalendarPage({ navigation }) {
                       marginTop: -3, 
                     },
                     text: {
-                      color: '#3B3133', //change this
+                      color: '#3B3133', 
                       marginTop: 2,
                     },
                   },
                 };
               }
-              //selectedColor: '#BFDBD7' 
               return acc;
             }, {})
           }}
-          // need to figure out styling of calendar
           style={{
             borderWidth: 1,
             borderColor: 'gray',
@@ -288,7 +254,6 @@ export default function CalendarPage({ navigation }) {
           }}
           theme={{
             calendarBackground: '#F6FCFC',
-            // backgroundColor: '#82A5A1',
             textMonthFontSize: 14,
             textMonthFontWeight: 'light',
             arrowColor: 'black',
@@ -306,8 +271,8 @@ export default function CalendarPage({ navigation }) {
                 justifyContent: 'space-around',
               },
               dayContainer: {
-                width: 32, // Adjust the width of each day container
-                height: 32, // Adjust the height of each day container
+                width: 32,
+                height: 32, 
                 alignItems: 'center',
                 justifyContent: 'center',
               },
@@ -322,7 +287,7 @@ export default function CalendarPage({ navigation }) {
                 alignItems: 'left',
               },
               monthText: {
-                fontSize: 16, // Decrease the font size of month text
+                fontSize: 16, 
                 color: 'black',
               },
             },
@@ -330,7 +295,7 @@ export default function CalendarPage({ navigation }) {
 
           stylesheet={{
             calendar: {
-              dayHeight: 10, //doesn't work
+              dayHeight: 10, 
             },
           }}
         />
@@ -406,7 +371,6 @@ export default function CalendarPage({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // flexWrap: "wrap",
     backgroundColor: '#E4F6F3',
     marginTop: 40,
     
@@ -414,11 +378,6 @@ const styles = StyleSheet.create({
   journalCardContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    maxWidth: 36,
   },
 
   journalCardHorizontal: {
@@ -447,5 +406,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row', 
     alignItems: 'center', 
     marginTop: 8,
-  }
+  },
+
+  circle: {
+    position: 'absolute',
+    top: -1150, 
+    left: 10,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  gradient: {
+    width: 542,
+    height: 450,
+    borderRadius: 250, 
+  },
 });

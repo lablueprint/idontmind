@@ -101,6 +101,7 @@ export function JournalPage({
   const username = 'Nicole'; // set prompt and username to constants at the moment, but should be able to get that info dynamically
 
   const addNewJournal = async (newUsername, newPrompt, newText, isFreeWrite) => {
+    console.log("is free write: ", isFreeWrite);
     handlePopUp();
     const currentdate = new Date();
     const pstDate = currentdate.toLocaleString('en-US', {
@@ -252,14 +253,14 @@ export function JournalPage({
               {freeWrite ? (
                 <Pressable
                   style={styles.modalSelections}
-                  onPress={() => addNewJournal(username, freeWriteTitle, text)}
+                  onPress={() => addNewJournal(username, freeWriteTitle, text, freeWrite)}
                 >
                   <Text>yes</Text>
                 </Pressable>
               ) : (
                 <Pressable
                   style={styles.modalSelections}
-                  onPress={() => addNewJournal(username, randomTitle, text)}
+                  onPress={() => addNewJournal(username, randomTitle, text, freeWrite)}
                 >
                   <Text>yes</Text>
                 </Pressable>

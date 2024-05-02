@@ -13,6 +13,8 @@ import Calendar from '../Features/Other/Screens/Calendar';
 // import JournalHistoryPage from '../Features/Other/Screens/JournalHistoryPage';
 import WOYM from '../Features/Register/WOYM';
 import DayChallenge from '../Features/Other/Screens/DayChallenge';
+import FindHelp from '../Features/Other/Screens/FindHelp';
+import ContentDashboard from '../Features/Other/Screens/ContentDashboard';
 
 const Tab = createBottomTabNavigator();
 
@@ -24,7 +26,6 @@ export default function NavigationBar() {
       <Tab.Screen name="CheckIn" component={CheckIn} options={{ headerShown: false }} />
       <Tab.Screen name="Trends" component={TrendsPage} options={{ headerShown: true }} />
       <Tab.Screen name="Journal" component={JournalTabs} options={{ headerShown: false }} />
-      <Tab.Screen name="Journal2" component={JournalPage} options={{ headerShown: false }} />
       {/* <Tab.Screen name="Content Library" component={ContentLibrary} options={{ headerShown: false }} /> */}
       <Tab.Screen name="Find Help" component={FindHelp} options={{ headerShown: false }} />
       <Tab.Screen name="Notifs" component={PushNotifications} options={{ headerShown: false }} />

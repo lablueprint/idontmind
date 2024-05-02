@@ -9,6 +9,10 @@ export default StyleSheet.create({
     borderRadius: 10,
     height: 160,
     marginBottom: 12,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
   },
   dateContainer: {
     // borderRadius: 10,
