@@ -6,10 +6,10 @@ import styles from './JournalHistoryStyle';
 
 // props: username, prompt, text, timestamp
 export default function JournalCard({
-  onPress, text, username, prompt, date,
+  onPress, text, username, prompt, date, image
 }) {
   const handlePress = () => {
-    onPress(username, prompt, text, date);
+    onPress(username, prompt, text, date, image);
   }; /* calls the onPress function from props,
   which is a function in JournalHistoryPage
   to navigate to the past journal entry with the previously written text */

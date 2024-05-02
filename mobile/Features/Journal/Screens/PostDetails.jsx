@@ -32,10 +32,10 @@ export default function PostDetails({ navigation, route }) {
         >
           <View style={{ alignItems: 'center' }}>
 
-            {freeWrite ? (<Text style={{ fontSize: 18, fontWeight: 'bold' }}>{freeWriteTitle}</Text>) : (<Text style={{ fontSize: 18, fontWeight: 'bold' }}>{randomTitle}</Text>)}
+            {freeWrite ? (<Text style={{ fontSize: 18, fontWeight: 'bold' }}>{freeWriteTitle}</Text>) : (<Text style={{ fontSize: 40, marginBottom: 20 }}>{randomTitle}</Text>)}
           </View>
           <View style={{
-            borderWidth: 2, borderColor: 'black', width: '80%', height: '50%', marginBottom: 0,
+            width: '80%', height: '70%',
           }}
           >
             <TextInput
@@ -44,7 +44,7 @@ export default function PostDetails({ navigation, route }) {
               placeholder="Continue typing..."
               onChangeText={handleTextChange}
               value={newText}
-              style={{ flex: 1 }}
+              style={{ flex: 1, fontSize: 16, backgroundColor: '#C6CECE', borderRadius: 8, padding: 30, paddingTop: 30}}
             />
 
           </View>

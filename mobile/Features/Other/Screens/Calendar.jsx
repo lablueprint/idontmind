@@ -52,7 +52,6 @@ export default function CalendarPage({ navigation }) {
     }
   };
 
-
   useEffect(() => {
     getAllJournals();
   }, []);
@@ -117,9 +116,9 @@ export default function CalendarPage({ navigation }) {
     },
   });
 
-  const navigateToPastJournal = (username, prompt, text, date) => {
+  const navigateToPastJournal = (username, prompt, text, date, image) => {
     navigation.navigate('JournalDetails', {
-      user: username, question: prompt, body: text, day: date,
+      userParam: username, promptParam: prompt, textParam: text, dateParam: date, imageParam: image,
     });
   }; /* navigate to the past journal entry, isHistory
    is set to true (uneditable text box with the corresponding prompt) */
@@ -233,7 +232,7 @@ export default function CalendarPage({ navigation }) {
       </View>
       {clickedDate
         ? (
-          <View>
+          <View style={{ flex: 1 }}>
             <Text>Past Entries</Text>
             <ScrollView>
               {filteredJournals.map((x) => (
@@ -243,6 +242,7 @@ export default function CalendarPage({ navigation }) {
                   date={formatDate(x.timestamp)}
                   prompt={x.prompt}
                   text={x.text}
+                  image={x.image}
                   onPress={navigateToPastJournal}
                 />
               ))}
@@ -250,7 +250,7 @@ export default function CalendarPage({ navigation }) {
           </View>
         )
         : (
-          <View>
+          <View style={{ flex: 1 }}>
             <Text>Recent Entries</Text>
             <ScrollView>
               {recentJournals.map((x) => (
@@ -260,6 +260,7 @@ export default function CalendarPage({ navigation }) {
                   date={formatDate(x.timestamp)}
                   prompt={x.prompt}
                   text={x.text}
+                  image={x.image}
                   onPress={navigateToPastJournal}
                 />
               ))}
