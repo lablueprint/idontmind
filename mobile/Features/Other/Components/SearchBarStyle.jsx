@@ -17,8 +17,11 @@ const SearchBarStyle = StyleSheet.create({
   },
 
   rowContainer: {
+    display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 
   filtersContainer: {
@@ -54,14 +57,21 @@ const SearchBarStyle = StyleSheet.create({
   },
 
   recentSearch: {
-    alignItems: 'left',
-    justifyContent: 'center',
-    margin: 5,
+    alignItems: 'center',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
     marginTop: 15,
+    width: '90%',
   },
   recentText: {
     fontSize: 15,
     color: 'rgba(81, 82, 86, 0.80)',
+  },
+  recentType: {
+    backgroundColor: '#D2E4E3',
+    borderRadius: '50%',
+    padding: '3%',
   },
   text: {
     fontSize: 17,
@@ -72,11 +82,13 @@ const SearchBarStyle = StyleSheet.create({
   line: {
     height: 1,
     backgroundColor: '#ccc',
-    width: '90%',
-    marginTop: 5,
+    width: '100%',
+    marginTop: 20,
   },
   image: {
     marginRight: 10,
+    width: 25,
+    height: 25,
   },
   resultText: {
     marginBottom: 15,

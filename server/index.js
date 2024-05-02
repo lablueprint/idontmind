@@ -20,14 +20,17 @@ const jwtOptions = {
 };
 
 // Route Imports
-const testRouter = require('./routes/testRoute');
+const testRouter = require('./routes/miscRoute');
 const journalRouter = require('./routes/journalRoute');
 const postRouter = require('./routes/postRoute');
 const userRouter = require('./routes/userRoute');
 const contentRouter = require('./routes/contentRoute');
 const offJournalRouter = require('./routes/offJournalRoute');
 const offUserRouter = require('./routes/offUserRoute');
+const timeSerieRouter = require('./routes/TimeSerieRoute');
+const checkInRouter = require('./routes/checkInRoute');
 const tagRouter = require('./routes/tagRoute');
+
 // Connect to the MongoDB database
 async function connectToDatabase() {
   try {
@@ -55,6 +58,8 @@ app.use('/users', userRouter);
 app.use('/content', contentRouter);
 app.use('/offUser', offUserRouter);
 app.use('/offJournal', offJournalRouter);
+app.use('/timeSerie', timeSerieRouter);
+app.use('/checkins', checkInRouter);
 app.use('/tag', tagRouter);
 
 app.get('/', (req, res) => {

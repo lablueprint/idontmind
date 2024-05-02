@@ -5,12 +5,12 @@ import PropTypes from 'prop-types';
 import Swiper from 'react-native-swiper';
 import axios from 'axios';
 import { useContext } from 'react';
-import starImage from '../../../assets/star.png';
-import leftArrow from '../../../assets/left.png';
-import rightArrow from '../../../assets/right.png';
-import shapeImage from '../../../assets/shape.png';
-import cancelImage from '../../../assets/cancel.png';
-import goldStar from '../../../assets/goldStar.png';
+import starImage from '../../../assets/images/star.png';
+import leftArrow from '../../../assets/images/left.png';
+import rightArrow from '../../../assets/images/right.png';
+import shapeImage from '../../../assets/images/shape.png';
+import cancelImage from '../../../assets/images/cancel.png';
+import goldStar from '../../../assets/images/goldStar.png';
 import style from '../Components/ContentStyle';
 import TagContext from '../Context/TagContext';
 
