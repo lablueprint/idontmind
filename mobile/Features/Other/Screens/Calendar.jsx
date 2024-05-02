@@ -17,7 +17,7 @@ export default function CalendarPage({ navigation }) {
   const [clickedDate, setClickedDate] = useState(false);
   const [timestamps, setTimestamps] = useState([]);
   const [freeTimestamps, setFreeTimestamps] = useState([]);
-  const [guidedTimestamps, setGuidedimestamps] = useState([]);
+  const [guidedTimestamps, setGuidedTimestamps] = useState([]);
   const [currentMonth, setCurrentMonth] = useState(new XDate());
 
   function formatDate(dateString) {
@@ -74,17 +74,17 @@ export default function CalendarPage({ navigation }) {
       setGuidedTimestamps(guidedTimestampsArray);
     
 
-      // //BEFORE HERE WAS GOOD
-      // const localTimestamps = result.data.map(journal => {
-      //   const timestamp = new XDate(journal.timestamp);
-      //   // Convert to local time string and extract date part
-      //   return timestamp.toString('yyyy-MM-dd');
-      // });
+      //BEFORE HERE WAS GOOD
+      const localTimestamps = result.data.map(journal => {
+        const timestamp = new XDate(journal.timestamp);
+        // Convert to local time string and extract date part
+        return timestamp.toString('yyyy-MM-dd');
+      });
 
-      // setTimestamps(localTimestamps);
+      setTimestamps(localTimestamps);
   
-      // timestamps.forEach(timestamp => console.log("TIMESTAMP:", timestamp));
-      // allJournals.forEach(journal => console.log(journal))
+      timestamps.forEach(timestamp => console.log("TIMESTAMP:", timestamp));
+      allJournals.forEach(journal => console.log(journal))
 
     } catch (err) {
       console.error(err);
@@ -94,7 +94,7 @@ export default function CalendarPage({ navigation }) {
 
   useEffect(() => {
     getAllJournals();
-  }, []);
+  }, [[selectedDate]]);
   const handleDateSelect = (date) => {
     // Convert selected date to Pacific Time Zone
     const pacificDate = new Date(`${date.dateString}T00:00:00-07:00`); // Assuming the selected date is in YYYY-MM-DD format
@@ -207,29 +207,65 @@ export default function CalendarPage({ navigation }) {
           markedDates={{
             [selectedDate]: { selected: true, disableTouchEvent: true, selectedDotColor: 'orange' },
             // timestamps.map(timestamp => ({ timestamp: { selected: true } } )),
-            ...timestamps.reduce((acc, timestamp) => {
+            ...freeTimestamps.reduce((acc, timestamp) => {
+              acc[timestamp] = { 
+                selected: true, 
+                customStyles: {
+                  container: {
+                    backgroundColor: '#BFDBD7',
+                    width: 25, 
+                    height: 25,
+                    borderRadius: 15,
+                    marginTop: -3, 
+                  },
+                  text: {
+                    color: '#3B3133',
+                  },
+                },
+              };
+              //selectedColor: '#BFDBD7' 
+              return acc;
+            }, {}),
+            ...guidedTimestamps.reduce((acc, timestamp) => {
               acc[timestamp] = { 
                 selected: true, 
                 customStyles: {
                   container: {
                     backgroundColor: '#82A5A1',
-                    borderWidth: '4.9',
-                    borderColor: '#BFDBD7',
-                    // backgroundColor: 'transparent',
-                    // backgroundColor: "linear-gradient(to right, #BFDBD7, #BFDBD7)",
                     width: 25, 
                     height: 25,
                     borderRadius: 15,
                     marginTop: -3, 
-                    // backgroundImage: "url('../../images/assets/dot.png')",
                   },
                   text: {
                     color: '#3B3133', //change this
-                    marginTop: 2,
-                    fontSize: 10,
                   },
                 },
               };
+              //selectedColor: '#BFDBD7' 
+              return acc;
+            }, {}),
+            ...timestamps.reduce((acc, timestamp) => {
+              if (freeTimestamps.includes(timestamp) && guidedTimestamps.includes(timestamp)) {
+                acc[timestamp] = { 
+                  selected: true, 
+                  customStyles: {
+                    container: {
+                      backgroundColor: '#82A5A1',
+                      borderWidth: '4.9',
+                      borderColor: '#BFDBD7',
+                      width: 25, 
+                      height: 25,
+                      borderRadius: 15,
+                      marginTop: -3, 
+                    },
+                    text: {
+                      color: '#3B3133', //change this
+                      marginTop: 2,
+                    },
+                  },
+                };
+              }
               //selectedColor: '#BFDBD7' 
               return acc;
             }, {})
@@ -250,7 +286,7 @@ export default function CalendarPage({ navigation }) {
             arrowColor: 'black',
             textDayFontFamily: 'cabinet-grotesk-regular',
             textMonthFontFamily: 'monospace',
-            textDayFontSize: 12,
+            textDayFontSize: 10,
             textDayHeaderFontFamily: 'cabinet-grotesk-regular',
             radius: 4,
             'stylesheet.calendar.main': {
