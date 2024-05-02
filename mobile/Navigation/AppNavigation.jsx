@@ -1,5 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { useSelector } from 'react-redux';
 import FavoritesList from '../Features/ContentLibrary/Screens/Favorites';
 import Tag from '../Features/ContentLibrary/Screens/Tag';
 import { TagProvider } from '../Features/ContentLibrary/Context/TagContext';
@@ -28,20 +29,33 @@ import AddActivity from '../Features/CheckIn/AddActivity';
 import AddIcon from '../Features/CheckIn/AddIcon';
 import Feeling from '../Features/CheckIn/Feeling';
 import EndCheckIn from '../Features/CheckIn/EndCheckIn';
+
 // import PushNotifications from '../Features/Settings/Screens/PushNotifications';
 
 const Stack = createStackNavigator();
 
 export default function AppNavigation() {
+  const { email } = useSelector((state) => state.auth);
+  console.log('from appNavigation');
+  console.log(email);
   return (
     <NavigationContainer>
       <TagProvider>
         <Stack.Navigator>
-          <Stack.Screen name="Landing" component={Landing} options={{ headerShown: false }} />
+          { email ? (
+            <Stack.Screen name="NavigationBar" component={NavigationBar} options={{ headerShown: false }} />
+          ) : (
+            <Stack.Screen name="Landing" component={Landing} options={{ headerShown: false }} />
+          )}
           <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
           <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
           <Stack.Screen name="PersonalInfo" component={PersonalInfo} options={{ headerShown: false }} />
           <Stack.Screen name="Customization" component={Customization} options={{ headerShown: false }} />
+          { email ? (
+            <Stack.Screen name="Landing" component={Landing} options={{ headerShown: false }} />
+          ) : (
+            <Stack.Screen name="NavigationBar" component={NavigationBar} options={{ headerShown: false }} />
+          )}
           <Stack.Screen name="Filter" component={Filter} options={{ headerShown: false }} />
           <Stack.Screen name="BannedTags" component={BannedTags} options={{ headerShown: false }} />
           <Stack.Screen name="Loading" component={Loading} options={{ headerShown: false }} />

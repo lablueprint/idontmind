@@ -2,8 +2,12 @@ import 'react-native-gesture-handler';
 import { Provider } from 'react-redux';
 import * as Font from 'expo-font';
 import { useEffect } from 'react';
+import { PersistGate } from 'redux-persist/integration/react';
 import AppNavigation from './Navigation/AppNavigation';
-import store from './redux/store';
+import { store, persistor } from './redux/store';
+import Loading from './Features/Register/Loading';
+
+// npx expo run:ios
 
 export default function App() {
   useEffect(() => {
@@ -39,7 +43,9 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <AppNavigation />
+      <PersistGate loading={<Loading />} persistor={persistor}>
+        <AppNavigation />
+      </PersistGate>
     </Provider>
   );
 }

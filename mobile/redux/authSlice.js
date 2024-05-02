@@ -1,16 +1,17 @@
 /* eslint-disable no-param-reassign */
-import * as SecureStore from 'expo-secure-store';
 import jwt_decode from 'jwt-decode';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { createSlice } = require('@reduxjs/toolkit');
 
-const user = SecureStore.getItemAsync('user');
-const token = SecureStore.getItemAsync('token');
-console.log(user);
-console.log(token);
+console.log('authSlice');
 
 const initialState = {
+  id: null,
+  token: null,
   email: null,
+  firstName: null,
+  authHeader: null,
 };
 
 const authSlice = createSlice({
@@ -18,6 +19,7 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     login: (state, action) => {
+      console.log('login');
       state.id = action.payload.user._id;
       state.email = action.payload.user.email;
       state.firstName = action.payload.user.firstName;
@@ -25,17 +27,14 @@ const authSlice = createSlice({
       state.authHeader = {
         Authorization: `Bearer ${action.payload.token}`,
       };
-      SecureStore.setItemAsync('token', JSON.stringify(action.payload.token));
-      SecureStore.setItemAsync('user', JSON.stringify(action.payload.user));
     },
     logout: (state) => {
+      console.log('logout');
       state.id = null;
       state.email = null;
       state.firstName = null;
       state.token = null;
       state.authHeader = null;
-      SecureStore.deleteItemAsync('token');
-      SecureStore.deleteItemAsync('user');
     },
   },
 });
