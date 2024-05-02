@@ -14,6 +14,10 @@ const journalSchema = new mongoose.Schema({
     required: true,
     type: String,
   },
+  type: {
+    required: true,
+    type: Boolean,
+  },
   timestamp: {
     required: true,
     type: Date,
