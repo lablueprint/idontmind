@@ -1,10 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
-import { Text, View, Button, Platform, Image, Pressable } from 'react-native';
+import {
+  Text, View, Button, Platform, Image, Pressable,
+  StyleSheet,
+} from 'react-native';
 import { Divider } from '@rneui/themed';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import { useNavigation } from '@react-navigation/native';
-import { StyleSheet } from 'react-native';
 import { Switch } from 'react-native-switch';
 import axios from 'axios';
 
@@ -95,43 +97,41 @@ export default function NotificationsTest() {
   // Handle Toggle Change
   const handleToggleChange = async () => {
     await cancelAllScheduledNotifications();
-    if (isEnabled) scheduleRandomNotification(5, "Time for your water intake!");
+    if (isEnabled) scheduleRandomNotification(5, 'Time for your water intake!');
     if (isEnabled2) scheduleRandomNotification(7, "Don't forget your full meal!");
-    if (isEnabled3) scheduleRandomNotification(9, "Time for some physical activity!");
-    if (isEnabled4) scheduleRandomNotification(11, "Engage in a mood-boosting activity!");
-    if (isEnabled5) scheduleRandomNotification(13, "Engage in a wellness-boosting activity!");
-    if (isEnabled6) scheduleRandomNotification(15, "Continue your thirty-day detox!");
+    if (isEnabled3) scheduleRandomNotification(9, 'Time for some physical activity!');
+    if (isEnabled4) scheduleRandomNotification(11, 'Engage in a mood-boosting activity!');
+    if (isEnabled5) scheduleRandomNotification(13, 'Engage in a wellness-boosting activity!');
+    if (isEnabled6) scheduleRandomNotification(15, 'Continue your thirty-day detox!');
   };
 
   const toggleWaterIntake = () => {
-    setIsEnabled(previousState => !previousState);
-    handleToggleChange();
+    setIsEnabled((previousState) => !previousState);
   };
 
   const toggleFullMeal = () => {
-    setIsEnabled2(previousState => !previousState);
-    handleToggleChange();
+    setIsEnabled2((previousState) => !previousState);
   };
 
   const togglePhysicalActivity = () => {
-    setIsEnabled3(previousState => !previousState);
-    handleToggleChange();
+    setIsEnabled3((previousState) => !previousState);
   };
 
   const toggleMoodBoostingActivity = () => {
-    setIsEnabled4(previousState => !previousState);
-    handleToggleChange();
+    setIsEnabled4((previousState) => !previousState);
   };
 
   const toggleWellnessBoostingActivity = () => {
-    setIsEnabled5(previousState => !previousState);
-    handleToggleChange();
+    setIsEnabled5((previousState) => !previousState);
   };
 
   const toggleThirtyDayDetox = () => {
-    setIsEnabled6(previousState => !previousState);
-    handleToggleChange();
+    setIsEnabled6((previousState) => !previousState);
   };
+
+  useEffect(() => {
+    handleToggleChange();
+  }, [isEnabled, isEnabled2, isEnabled3, isEnabled4, isEnabled5, isEnabled6]);
 
   /*
     Plan:
@@ -142,10 +142,10 @@ export default function NotificationsTest() {
           - Set time to send notification to "dailyReminderTime" and make it send every day
   */
 
-           //get time from database -> say it is 5:15 PM
-           //right now it is 8:44AM
+  // get time from database -> say it is 5:15 PM
+  // right now it is 8:44AM
 
-           // get time to 5:15PM --> 
+  // get time to 5:15PM -->
 
   const enableAllToggles = () => {
     setIsEnabled(true);
@@ -218,12 +218,12 @@ export default function NotificationsTest() {
 
       const nextTime = nextNotificationTime;
 
-      console.log("Next weekly reminder:", nextNotificationTime.toLocaleString());
+      console.log('Next weekly reminder:', nextNotificationTime.toLocaleString());
 
       await Notifications.scheduleNotificationAsync({
         content: {
-          title: title,
-          body: body,
+          title,
+          body,
           data: { data: 'goes here' },
         },
         trigger: {
@@ -293,9 +293,10 @@ export default function NotificationsTest() {
         border: 'solid',
         borderRadius: 2,
         borderColor: 'red',
-      }}>
-      <View style={{flexDirection: 'row', marginTop: '20%', alignSelf: 'center'}}>
-        <Text style={{fontSize: 40, fontWeight: 700, letterSpacing: -1.2 }}>
+      }}
+    >
+      <View style={{ flexDirection: 'row', marginTop: '20%', alignSelf: 'center' }}>
+        <Text style={{ fontSize: 40, fontWeight: 700, letterSpacing: -1.2 }}>
           Push Notifications
         </Text>
         <Image
@@ -433,11 +434,28 @@ export default function NotificationsTest() {
           circleBorderWidth={0}
         />
       </View>
-      <Text>Your expo push token: {expoPushToken}</Text>
+      <Text>
+        Your expo push token:
+        {' '}
+        {expoPushToken}
+      </Text>
       <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-        <Text>Title: {notification && notification.request.content.title} </Text>
-        <Text>Body: {notification && notification.request.content.body}</Text>
-        <Text>Data: {notification && JSON.stringify(notification.request.content.data)}</Text>
+        <Text>
+          Title:
+          {' '}
+          {notification && notification.request.content.title}
+          {' '}
+        </Text>
+        <Text>
+          Body:
+          {' '}
+          {notification && notification.request.content.body}
+        </Text>
+        <Text>
+          Data:
+          {' '}
+          {notification && JSON.stringify(notification.request.content.data)}
+        </Text>
       </View>
       <Button
         title="Press to schedule a notification (Add reminder after time select)"
@@ -461,8 +479,6 @@ export default function NotificationsTest() {
   );
 }
 
-
-
 // Calculate time difference for weekly reminder
 // function calculateWeeklyTimeDifference(reminderHour, reminderMinute, reminderSecond) {
 //   const currentTime = new Date();
@@ -477,7 +493,7 @@ export default function NotificationsTest() {
 //   } else if (currentDayOfWeek > reminderDayOfWeek) {
 //       daysUntilNextReminder = 7 - (currentDayOfWeek - reminderDayOfWeek);
 //   } else {
-//       if (currentHour > reminderHour || (currentHour === reminderHour && currentMinute > reminderMinute) || 
+//       if (currentHour > reminderHour || (currentHour === reminderHour && currentMinute > reminderMinute) ||
 //           (currentHour === reminderHour && currentMinute === reminderMinute && currentSecond >= reminderSecond)) {
 //           // If current time is after or equal to the reminder time, set reminder to next week
 //           daysUntilNextReminder = 7;
@@ -507,7 +523,7 @@ export default function NotificationsTest() {
 //   } else if (currentDayOfWeek > reminderDayOfWeek) {
 //       daysUntilNextReminder = (14 - (currentDayOfWeek - reminderDayOfWeek));
 //   } else {
-//       if (currentHour > reminderHour || (currentHour === reminderHour && currentMinute > reminderMinute) || 
+//       if (currentHour > reminderHour || (currentHour === reminderHour && currentMinute > reminderMinute) ||
 //           (currentHour === reminderHour && currentMinute === reminderMinute && currentSecond >= reminderSecond)) {
 //           // If current time is after or equal to the reminder time, set reminder to next two weeks
 //           daysUntilNextReminder = 14;
