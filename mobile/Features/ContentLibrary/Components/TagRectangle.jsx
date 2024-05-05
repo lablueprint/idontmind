@@ -1,15 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
-  View, Text, Image,
+  View, Text, Image, Pressable,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import style from './TagRectangleStyle';
-import BookmarkImage from '../../../assets/bookmark_dark.png';
+import BookmarkWhite from '../../../assets/images/bookmark.png';
+import BookmarkDark from '../../../assets/bookmark_dark.png';
+
 import TagFill from '../../../assets/images/tag_fill.png';
 
 export default function TagRectangle({
   tagName,
 }) {
+  const [bookmarkSelected, setBookmarkSelected] = useState(true); // hardcode it as true for now
+  const toggleBookmark = () => {
+    setBookmarkSelected(!bookmarkSelected);
+    console.log('toggle bookmark selection');
+  };
   return (
     <View style={style.container}>
       <View style={style.imageContainer1}>
@@ -18,9 +25,9 @@ export default function TagRectangle({
       <View style={style.textContainer}>
         <Text style={[style.whiteText, style.nameText]}>{tagName}</Text>
       </View>
-      <View style={style.imageContainer2}>
-        <Image style={{ resizeMode: 'contain', height: 20, width: 20 }} source={BookmarkImage} />
-      </View>
+      <Pressable style={style.imageContainer2} onPress={toggleBookmark}>
+        <Image style={{ resizeMode: 'contain', height: 20, width: 20 }} source={bookmarkSelected ? BookmarkDark : BookmarkWhite} />
+      </Pressable>
     </View>
   );
 }
