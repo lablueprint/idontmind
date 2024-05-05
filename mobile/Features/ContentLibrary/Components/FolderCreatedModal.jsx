@@ -6,28 +6,13 @@ import {
 
 import PropTypes from 'prop-types';
 import exit from '../../../assets/exit.png';
+import check from '../../../assets/green_check.png';
 
-function NewFolderModal({
-  modalVisibleParent, toggleModal, toggleModalCreated, setFolderName,
-}) {
-  const [folderNameText, setFolderNameText] = useState('');
-  const [descriptionText, setDescriptionText] = useState('');
-
-  const handleInputChange1 = (text) => {
-    setFolderNameText(text);
-  };
-  const handleInputChange2 = (text) => {
-    setDescriptionText(text);
-  };
-
-  const handleSave = () => {
+function FolderCreatedModal({ modalVisibleParent, toggleModal, newFolderName }) {
+  const handleOK = () => {
     // Handle saving the input text
-    console.log('handle save');
-    if (folderNameText !== '' && descriptionText !== '') {
-      setFolderName(folderNameText);
-      toggleModal();
-      toggleModalCreated();
-    }
+    console.log('pressed OK');
+    toggleModal();
   };
 
   return (
@@ -47,26 +32,41 @@ function NewFolderModal({
                 <Image style={{ width: 20, height: 20 }} source={exit} />
               </Pressable>
             </View>
-            <View>
-              <Text style={{ fontFamily: 'cabinet-grotesk-regular', fontSize: 18 }}>Folder Name</Text>
-              <TextInput
-                style={styles.inputFolder}
-                placeholder="Enter text..."
-                onChangeText={handleInputChange1}
-                value={folderNameText}
+            <View style={{
+              display: 'flex', justifyContent: 'center', alignItems: 'center',
+            }}
+            >
+              <Image
+                style={{
+                  resizeMode: 'contain', width: 50, height: 50, paddingBottom: 10,
+                }}
+                source={check}
               />
-              <Text style={{ fontFamily: 'cabinet-grotesk-regular', fontSize: 18 }}>Description</Text>
-              <TextInput
-                style={styles.inputDescription}
-                placeholder="Enter text..."
-                onChangeText={handleInputChange2}
-                value={descriptionText}
-              />
+              <Text style={{
+                fontFamily: 'cabinet-grotesk-regular', fontSize: 24, paddingTop: 15, paddingBottom: 10,
+              }}
+              >
+                Successfully Created!
+              </Text>
+              <Text style={{
+                fontFamily: 'cabinet-grotesk-regular', fontSize: 18, color: '#676C6C',
+              }}
+              >
+                The resource is now in your folder
+              </Text>
+              <Text style={{
+                textDecorationLine: 'underline', ontFamily: 'cabinet-grotesk-regular', fontSize: 18, color: '#676C6C', paddingBottom: 15,
+              }}
+              >
+                {' '}
+                {newFolderName}
+                .
+              </Text>
 
             </View>
             <View style={{ alignItems: 'center' }}>
-              <Pressable style={styles.saveButton} onPress={handleSave}>
-                <Text style={{ fontFamily: 'cabinet-grotesk-regular', fontSize: 18, color: 'white' }}>Save</Text>
+              <Pressable style={styles.saveButton} onPress={handleOK}>
+                <Text style={{ fontFamily: 'cabinet-grotesk-regular', fontSize: 18, color: 'white' }}>OK</Text>
               </Pressable>
             </View>
           </View>
@@ -146,11 +146,10 @@ const styles = StyleSheet.create({
   },
 });
 
-export default NewFolderModal;
+export default FolderCreatedModal;
 
-NewFolderModal.propTypes = {
+FolderCreatedModal.propTypes = {
   modalVisibleParent: PropTypes.bool.isRequired,
   toggleModal: PropTypes.func.isRequired,
-  toggleModalCreated: PropTypes.func.isRequired,
-
+  newFolderName: PropTypes.string.isRequired,
 };

@@ -1,15 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
-  View, Text, Image,
+  View, Text, Image, Pressable,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import style from './BookmarkStyle';
-import BookmarkImage from '../../../assets/images/bookmark.png';
+import BookmarkWhite from '../../../assets/images/bookmark.png';
+import BookmarkDark from '../../../assets/bookmark_dark.png';
 import Book from '../../../assets/images/reading.png';
 
 export default function Bookmark({
   resourceName, author,
 }) {
+  const [bookmarkSelected, setBookmarkSelected] = useState(false); // hardcode it as false for now
+  const toggleBookmark = () => {
+    setBookmarkSelected(!bookmarkSelected);
+    console.log('toggle bookmark selection');
+  };
   let authorLine = '';
   if (author) authorLine = 'By:';
   return (
@@ -26,7 +32,9 @@ export default function Bookmark({
         </Text>
       </View>
       <View style={style.imageContainer2}>
-        <Image source={BookmarkImage} />
+        <Pressable onPress={toggleBookmark}>
+          <Image style={{ resizeMode: 'contain', height: 20, width: 20 }} source={bookmarkSelected ? BookmarkDark : BookmarkWhite} />
+        </Pressable>
       </View>
     </View>
   );

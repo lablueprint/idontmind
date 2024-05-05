@@ -10,10 +10,14 @@ import styles from './BookmarksStyle';
 import BookmarkImage from '../../../assets/bookmark_blue.png';
 import BottomHalfModal from './BottomModal';
 import NewFolderModal from '../Components/NewFolderModal';
+import FolderCreatedModal from '../Components/FolderCreatedModal';
+import Back from '../../../assets/images/back_button.png';
 
 function ResourceList({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisibleNewFolder, setModalVisibleNewFolder] = useState(false);
+  const [modalVisibleCreated, setModalVisibleCreated] = useState(false);
+  const [newFolderName, setNewFolderName] = useState('');
   const route = useRoute();
   const subtopicName = route.params?.subtopicName;
   const resources = [['resource 1', 'nicole'], ['yo mama', 'aaron'], ['haha', 'jeffrey'], ['no', 'alan'], ['well yes', 'daniel']];
@@ -24,6 +28,12 @@ function ResourceList({ navigation }) {
   const toggleModalNewFolder = () => {
     setModalVisibleNewFolder(!modalVisibleNewFolder);
   };
+  const toggleModalCreated = () => {
+    setModalVisibleCreated(!modalVisibleCreated);
+  };
+  const setFolderName = (name) => {
+    setNewFolderName(name);
+  };
   const navigateToTag = () => {
     navigation.navigate('Tag', { index: 0, routeName: 'Content Library' }); // set index to 0 as default for now
   };
@@ -32,7 +42,7 @@ function ResourceList({ navigation }) {
     navigation.navigate('Resource', { resourceName: name, routeName: 'Resource List', subtopicName });
   };
 
-  const filters = ['All', 'Tags', 'Resources'];
+  const filters = ['All', 'Q&A', 'Personal Stories', 'Exercises', 'Articles'];
   const [filterQuery, setFilterQuery] = useState('All');
 
   return (
@@ -45,8 +55,11 @@ function ResourceList({ navigation }) {
       {modalVisible && (
         <View style={styles.overlay} />
       )}
-      <TouchableOpacity color="black" onPress={navigateToTag} style={{ paddingRight: 10, alignSelf: 'flex-start' }}>
-        <Text style={{ fontSize: 34 }}>{'<'}</Text>
+      <TouchableOpacity
+        onPress={navigateToTag}
+        style={{ paddingRight: 10, paddingTop: 20, marginBottom: -10 }}
+      >
+        <Image style={{ resizeMode: 'contain', height: 20, width: 20 }} source={Back} />
       </TouchableOpacity>
       <View
         className="title"
@@ -60,14 +73,19 @@ function ResourceList({ navigation }) {
           paddingBottom: 20,
         }}
       >
-        <Text style={{ fontSize: 34 }}>{subtopicName}</Text>
-        <Pressable onPress={toggleModal}>
-          <Image source={BookmarkImage} />
+        <Text style={{
+          flex: 6, textAlign: 'center', fontSize: 40, fontFamily: 'recoleta-regular',
+        }}
+        >
+          {subtopicName}
+        </Text>
+        <Pressable style={{ flex: 1 }} onPress={toggleModal}>
+          <Image style={{ resizeMode: 'contain', height: 40, width: 40 }} source={BookmarkImage} />
         </Pressable>
 
       </View>
       <View style={{
-        display: 'flex', flexDirection: 'column', flex: 8, paddingTop: 10,
+        display: 'flex', flexDirection: 'column', flex: 5, paddingTop: 10,
       }}
       >
         <View style={styles.filtersContainer}>
@@ -87,7 +105,7 @@ function ResourceList({ navigation }) {
                 ]}
               >
                 <Text style={filterQuery === item
-                  ? styles.whiteText : styles.blackText}
+                  ? styles.whitePillText : styles.blackPillText}
                 >
                   {item}
                 </Text>
@@ -98,35 +116,23 @@ function ResourceList({ navigation }) {
       </View>
       <View style={{ flex: 1 }} />
       <View style={{
-        display: 'flex', flexDirection: 'column', flex: 30,
+        display: 'flex', flexDirection: 'column', flex: 40,
       }}
       >
-        <Text style={{ fontSize: 22 }}>
-          Resources
-        </Text>
 
         <View style={{ height: 600, width: '110%' }}>
           <ScrollView>
             {
-                  resources.map((item) =>
-                    // let resourceName;
-                    // if (item.Title) {
-                    //   resourceName = item.Title;
-                    // } else if (item['Journal Prompts']) {
-                    //   resourceName = item['Journal Prompts'];
-                    // } else {
-                    //   resourceName = item.Question;
-                    // }
-                    (
-                      <Pressable key={item[0]} onPress={() => navigateToResource(item)}>
-                        <Bookmark
-                          key={item[0]}
-                          resourceName={item[0]}
-                          author={item[1]}
-                          style={{}}
-                        />
-                      </Pressable>
-                    ))
+                  resources.map((item) => (
+                    <Pressable key={item[0]} onPress={() => navigateToResource(item)}>
+                      <Bookmark
+                        key={item[0]}
+                        resourceName={item[0]}
+                        author={item[1]}
+                        style={{}}
+                      />
+                    </Pressable>
+                  ))
                 }
           </ScrollView>
         </View>
@@ -135,6 +141,13 @@ function ResourceList({ navigation }) {
       <NewFolderModal
         modalVisibleParent={modalVisibleNewFolder}
         toggleModal={toggleModalNewFolder}
+        toggleModalCreated={toggleModalCreated}
+        setFolderName={setFolderName}
+      />
+      <FolderCreatedModal
+        modalVisibleParent={modalVisibleCreated}
+        toggleModal={toggleModalCreated}
+        newFolderName={newFolderName}
       />
     </View>
   );

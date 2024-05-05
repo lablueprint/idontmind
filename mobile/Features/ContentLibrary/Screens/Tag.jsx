@@ -8,7 +8,7 @@ import starImage from '../../../assets/images/star.png';
 import leftArrow from '../../../assets/images/left.png';
 import rightArrow from '../../../assets/images/right.png';
 import shapeImage from '../../../assets/images/shape.png';
-import cancelImage from '../../../assets/images/cancel.png';
+import Back from '../../../assets/images/back_button.png';
 import goldStar from '../../../assets/images/goldStar.png';
 import style from '../Components/ContentStyle';
 import TagContext from '../Context/TagContext';
@@ -17,21 +17,25 @@ import TagRectangle from '../Components/TagRectangle';
 
 export default function Tag({ navigation, route }) {
   /* index of corresponding Tag */
-  const { index, routeName } = route.params;
+  const index = route.params?.index;
+  const routeName = route.params?.routeName;
 
-  const {
-    Tags, deleteFavorite, addFavorite, findFavorite,
-  } = useContext(TagContext);
+  // const {
+  //   Tags, deleteFavorite, addFavorite, findFavorite,
+  // } = useContext(TagContext);
 
-  /* Grabs current tag */
-  const tag = Tags[index];
+  // /* Grabs current tag */
+  // const tag = Tags[index];
 
-  const {
-    _id, tagName, tagBrief,
-  } = tag;
+  // const {
+  //   _id, tagName, tagBrief,
+  // } = tag;
+
+  const tagNameHardcoded = ' tagName';
 
   /* Checks if current tag is in users favorite list */
-  const favorited = findFavorite(_id);
+  // const favorited = findFavorite(_id);
+  const favorited = true; // hardcode favorited for now
 
   const hardcodedTags = ['Tag', 'Creativity', 'Energy', 'Environment', 'Exercise', 'Fitness', 'Health', 'Journaling', 'Medication']; // hardcoded for now, i think tag content list
 
@@ -40,26 +44,26 @@ export default function Tag({ navigation, route }) {
   };
 
   /* Adds Tag to Users Favorites List */
-  const favoriteTag = async () => {
-    addFavorite(_id);
-    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/favoriteTag`, { tag: { id: _id, tagName }, username: 'hi' });
-  };
+  // const favoriteTag = async () => {
+  //   addFavorite(_id);
+  //   await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/favoriteTag`, { tag: { id: _id, tagName }, username: 'hi' });
+  // };
 
   /* Remove Tag from Users Favorites List */
-  const unfavoriteTag = async () => {
-    deleteFavorite(_id);
-    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/unfavoriteTag`, { tag: { id: _id, tagName }, username: 'hi' });
-  };
+  // const unfavoriteTag = async () => {
+  //   deleteFavorite(_id);
+  //   await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/unfavoriteTag`, { tag: { id: _id, tagName }, username: 'hi' });
+  // };
 
   /* Handles Favorite Change */
-  const handleFavoriteChange = () => {
-    /* checks if the tag is not not in the user's favorite list */
-    if (findFavorite(_id) === false) {
-      favoriteTag();
-    } else {
-      unfavoriteTag();
-    }
-  };
+  // const handleFavoriteChange = () => {
+  //   /* checks if the tag is not not in the user's favorite list */
+  //   if (findFavorite(_id) === false) {
+  //     favoriteTag();
+  //   } else {
+  //     unfavoriteTag();
+  //   }
+  // };
 
   const navigateToResourceList = (subtopicName) => {
     console.log(subtopicName);
@@ -70,51 +74,24 @@ export default function Tag({ navigation, route }) {
     <View
       style={[style.container, { paddingHorizontal: 25 }]}
     >
-      <View style={[style.row, { paddingTop: 65 }]}>
-        <View style={{
-          flex: 1, flexDirection: 'row', height: 38,
-        }}
+      <View style={[style.row, { paddingTop: 100, marginBottom: -50 }]}>
+        <TouchableOpacity
+          onPress={navigateToPreviousRoute}
+          style={[style.button, {
+            flexBasis: 37,
+          }]}
         >
-          <TouchableOpacity
-            onPress={navigateToPreviousRoute}
-            style={[style.button, {
-              flexBasis: 37,
-            }]}
-          >
-            <Image
-              style={{
-                marginRight: 3, height: 38, width: 38,
-              }}
-              source={cancelImage}
-            />
-          </TouchableOpacity>
-          <View
-            style={{ flex: 4 }}
-          />
-          <TouchableOpacity
-            onPress={() => handleFavoriteChange()}
-            style={[style.button, {
-              flexBasis: 37, justifyContent: 'center', backgroundColor: 'lightgray', width: 110, flexDirection: 'row', flex: 1,
-            }]}
-          >
-            <Image
-              style={{
-                width: 20, height: 20, marginTop: 7, marginRight: 3, opacity: 0.4,
-              }}
-              source={favorited ? goldStar : starImage}
-            />
-            <Text style={{
-              textAlign: 'center', fontSize: 16, marginTop: 9, marginRight: 2,
+          <Image
+            style={{
+              resizeMode: 'contain', height: 20, width: 20,
             }}
-            >
-              {favorited ? 'unadd' : 'add'}
-            </Text>
-          </TouchableOpacity>
-        </View>
+            source={Back}
+          />
+        </TouchableOpacity>
       </View>
-      <View style={[style.row, {
-        flexBasis: 35, flex: 4, flexDirection: 'column',
-      }]}
+      <View style={{
+        flex: 1, flexDirection: 'column',
+      }}
       >
         <Image
           style={{
@@ -123,20 +100,15 @@ export default function Tag({ navigation, route }) {
           source={shapeImage}
         />
         <View
-          style={{ height: 15 }}
-        />
-        <View
-          style={{
-            flex: 3, flexDirection: 'column', borderBottomColor: 'lightgrey', borderBottomWidth: 1,
-          }}
+          style={{ flex: 4 }}
         >
           <Text
-            style={{ fontSize: 32 }}
+            style={{ textAlign: 'center', fontSize: 40, fontFamily: 'recoleta-regular' }}
           >
-            {tagName}
+            {tagNameHardcoded}
           </Text>
           <Text
-            style={{ fontSize: 12 }}
+            style={{ fontSize: 16, fontFamily: 'cabinet-grotesk-medium', marginBottom: 20 }}
           >
             Prioritizing lifestyle and wellness practices is beneficial
             for mental health as they promote balance, resilience, and
@@ -144,31 +116,18 @@ export default function Tag({ navigation, route }) {
             and inner harmony.
           </Text>
           <Text
-            style={{ fontSize: 12 }}
+            style={{ fontSize: 16, fontFamily: 'cabinet-grotesk-medium' }}
           >
             Click on a subtopic to see specific resources
           </Text>
-          <ScrollView
-            style={{ flex: 1 }}
-            alwaysBounceVertical={false}
-            showsVerticalScrollIndicator={false}
-          >
-            <Text
-              style={{
-                flex: 5, fontSize: 15, opacity: 0.75, marginTop: 5,
-              }}
-            >
-              {tagBrief}
-            </Text>
-            <View
-              style={{ flex: 1 }}
-            />
-          </ScrollView>
         </View>
 
-        <View style={{ width: '110%' }}>
-
-          {
+        <View style={{
+          flex: 6, width: '110%',
+        }}
+        >
+          <ScrollView style={{ flex: 1 }}>
+            {
                 hardcodedTags.map((item) => (
                   <Pressable key={item} onPress={() => navigateToResourceList(item)}>
                     <TagRectangle
@@ -178,25 +137,12 @@ export default function Tag({ navigation, route }) {
                   </Pressable>
                 ))
               }
+          </ScrollView>
         </View>
 
-        {/* <View style={styles.pills}>
-          {subtopics.map((item) => (
-            <View
-              key={item}
-              style={styles.pill}
-            >
-              <Pressable onPress={() => navigateToResourceList(item)}>
-                <Text>{item}</Text>
-              </Pressable>
-            </View>
-          ))}
-        </View> */}
       </View>
       <View />
-      <View
-        style={{ flex: 2 }}
-      />
+
     </View>
 
   );

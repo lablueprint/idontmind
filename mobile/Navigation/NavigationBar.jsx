@@ -16,6 +16,7 @@ import Bookmarks from '../Features/ContentLibrary/Screens/Bookmarks';
 import BookmarksEdgeCase from '../Features/ContentLibrary/Screens/BookmarksEdgeCase';
 import Resource from '../Features/ContentLibrary/Screens/Resource';
 import ResourceList from '../Features/ContentLibrary/Screens/ResourceList';
+import Tag from '../Features/ContentLibrary/Screens/Tag';
 
 const Tab = createBottomTabNavigator();
 
@@ -39,6 +40,7 @@ export default function NavigationBar() {
       <Tab.Screen name="Bookmarks Edge Case" component={BookmarksEdgeCase} options={{ headerShown: false }} />
       <Tab.Screen name="Resource" component={Resource} options={{ headerShown: false }} />
       <Tab.Screen name="Resource List" component={ResourceList} options={{ headerShown: false }} />
+      <Tab.Screen name="Tag" component={Tag} options={{ headerShown: false }} />
 
     </Tab.Navigator>
   );

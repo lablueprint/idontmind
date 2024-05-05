@@ -9,10 +9,17 @@ import BookmarkImage from '../../../assets/bookmark_blue.png';
 import styles from './BookmarksStyle';
 import BottomHalfModal from './BottomModal';
 import NewFolderModal from '../Components/NewFolderModal';
+import FolderCreatedModal from '../Components/FolderCreatedModal';
+import Back from '../../../assets/images/back_button.png';
 
 function Resource({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisibleNewFolder, setModalVisibleNewFolder] = useState(false);
+  const [modalVisibleCreated, setModalVisibleCreated] = useState(false);
+  const [newFolderName, setNewFolderName] = useState('');
+  const filters = ['Creativity', 'SelfCare'];
+  const [filterQuery, setFilterQuery] = useState('All');
+
   const route = useRoute();
   const resourceName = route.params?.resourceName;
   const routeName = route.params?.routeName;
@@ -22,6 +29,12 @@ function Resource({ navigation }) {
   };
   const toggleModalNewFolder = () => {
     setModalVisibleNewFolder(!modalVisibleNewFolder);
+  };
+  const toggleModalCreated = () => {
+    setModalVisibleCreated(!modalVisibleCreated);
+  };
+  const setFolderName = (name) => {
+    setNewFolderName(name);
   };
   const navigateToPreviousRoute = () => {
     if (routeName === 'Resource List') navigation.navigate(routeName, { subtopicName });
@@ -42,24 +55,53 @@ function Resource({ navigation }) {
         style={{
           display: 'flex',
           flexDirection: 'row',
-          borderBottomColor: 'lightgray',
-          borderBottomWidth: 3,
+
           alignItems: 'center',
           justifyContent: 'center',
           paddingBottom: 20,
         }}
       >
-        <View style={{ display: 'flex', flexDirection: 'column' }}>
-          <Text style={{ fontSize: 34 }}>{resourceName}</Text>
-          <Text style={{ fontSize: 12 }}>By: IDONTMIND Team</Text>
+        <View style={{
+          flex: 2, display: 'flex', flexDirection: 'column',
+        }}
+        >
+          <Text style={{ fontSize: 24, fontFamily: 'recoleta-regular', textAlign: 'center' }}>{resourceName}</Text>
+          <Text style={{ fontSize: 16, fontFamily: 'cabinet-grotesk-regular', textAlign: 'center' }}>By: IDONTMIND Team</Text>
         </View>
         <Pressable onPress={toggleModal}>
-          <Image source={BookmarkImage} />
+          <Image style={{ resizeMode: 'contain', height: 30, width: 30 }} source={BookmarkImage} />
         </Pressable>
 
       </View>
+
+      <View style={styles.filtersContainer}>
+        <ScrollView horizontal>
+          <Text style={{ padding: 10 }}>Tags:</Text>
+          {filters.map((item) => (
+            <TouchableOpacity
+              key={item}
+              onPress={() => {
+                if (item !== filterQuery) {
+                  setFilterQuery(item);
+                  console.log(filterQuery);
+                }
+              }}
+              style={[
+                styles.filterButton,
+                filterQuery === item && styles.filterQuery,
+              ]}
+            >
+              <Text style={filterQuery === item
+                ? styles.whitePillText : styles.blackPillText}
+              >
+                {item}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      </View>
       <ScrollView>
-        <Text>
+        <Text style={{ fontSize: 16, fontFamily: 'cabinet-grotesk-regular' }}>
           When was the last time you did something creative just for fun?
           Seriously, just for fun, with little thought or expectations about
           the end result. That’s a little tough, right? Most of the time,
@@ -99,6 +141,13 @@ function Resource({ navigation }) {
         <NewFolderModal
           modalVisibleParent={modalVisibleNewFolder}
           toggleModal={toggleModalNewFolder}
+          toggleModalCreated={toggleModalCreated}
+          setFolderName={setFolderName}
+        />
+        <FolderCreatedModal
+          modalVisibleParent={modalVisibleCreated}
+          toggleModal={toggleModalCreated}
+          newFolderName={newFolderName}
         />
 
       </ScrollView>
