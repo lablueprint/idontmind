@@ -3,7 +3,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { useEffect, useState, useContext } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import Bookmark from '../../Other/Components/Bookmark';
 import TagContext from '../Context/TagContext';
 import styles from './BookmarksStyle';
@@ -118,7 +118,7 @@ function Bookmarks({ navigation }) {
           <FlatList
             data={folderNames}
             renderItem={({ item }) => <Folder folderName={item} />}
-            keyExtractor={(item, index) => index.toString()}
+            keyExtractor={(item) => item.toString()}
             numColumns={3}
             contentContainerStyle={{ margin: -10 }}
           />

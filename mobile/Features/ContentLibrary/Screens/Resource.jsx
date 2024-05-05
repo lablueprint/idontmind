@@ -1,13 +1,12 @@
 import {
-  View, Text, TouchableOpacity, ScrollView, Pressable, Image, FlatList,
+  View, Text, TouchableOpacity, ScrollView, Pressable, Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { useEffect, useState, useContext } from 'react';
-import axios from 'axios';
+import { useState } from 'react';
 import { useRoute } from '@react-navigation/native';
 import BookmarkImage from '../../../assets/bookmark_blue.png';
 import styles from './BookmarksStyle';
-import BottomHalfModal from './BottomModal';
+import BottomHalfModal from '../Components/BottomModal';
 import NewFolderModal from '../Components/NewFolderModal';
 import FolderCreatedModal from '../Components/FolderCreatedModal';
 import Back from '../../../assets/images/back_button.png';
@@ -47,9 +46,6 @@ function Resource({ navigation }) {
         display: 'flex', flexDirection: 'column', paddingHorizontal: 25, paddingTop: 50, flex: 1,
       }}
     >
-      <TouchableOpacity color="black" onPress={navigateToPreviousRoute} style={{ paddingRight: 10, alignSelf: 'flex-start' }}>
-        <Text style={{ fontSize: 34 }}>{'<'}</Text>
-      </TouchableOpacity>
       <View
         className="title"
         style={{
@@ -59,17 +55,31 @@ function Resource({ navigation }) {
           alignItems: 'center',
           justifyContent: 'center',
           paddingBottom: 20,
+          paddingTop: 20,
         }}
       >
+        <TouchableOpacity color="black" onPress={navigateToPreviousRoute} style={{ flex: 1, paddingRight: 10, alignSelf: 'flex-start' }}>
+          <Image
+            style={{
+              resizeMode: 'contain', height: 20, width: 20, marginBottom: -10,
+            }}
+            source={Back}
+          />
+        </TouchableOpacity>
         <View style={{
-          flex: 2, display: 'flex', flexDirection: 'column',
+          flex: 8, display: 'flex', flexDirection: 'column',
         }}
         >
           <Text style={{ fontSize: 24, fontFamily: 'recoleta-regular', textAlign: 'center' }}>{resourceName}</Text>
           <Text style={{ fontSize: 16, fontFamily: 'cabinet-grotesk-regular', textAlign: 'center' }}>By: IDONTMIND Team</Text>
         </View>
         <Pressable onPress={toggleModal}>
-          <Image style={{ resizeMode: 'contain', height: 30, width: 30 }} source={BookmarkImage} />
+          <Image
+            style={{
+              flex: 1, resizeMode: 'contain', height: 30, width: 30,
+            }}
+            source={BookmarkImage}
+          />
         </Pressable>
 
       </View>
