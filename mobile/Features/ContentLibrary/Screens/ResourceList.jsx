@@ -1,14 +1,14 @@
 import {
-  View, Text, TouchableOpacity, ScrollView, Pressable, Image, FlatList, Modal,
+  View, Text, TouchableOpacity, ScrollView, Pressable, Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { useEffect, useState, useContext } from 'react';
-import axios from 'axios';
+import { useState } from 'react';
+// import axios from 'axios';
 import { useRoute } from '@react-navigation/native';
 import Bookmark from '../../Other/Components/Bookmark';
 import styles from './BookmarksStyle';
 import BookmarkImage from '../../../assets/bookmark_blue.png';
-import BottomHalfModal from './BottomModal';
+import BottomHalfModal from '../Components/BottomModal';
 import NewFolderModal from '../Components/NewFolderModal';
 import FolderCreatedModal from '../Components/FolderCreatedModal';
 import Back from '../../../assets/images/back_button.png';

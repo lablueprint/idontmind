@@ -1,24 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
-  View, Text, Modal, TouchableOpacity, StyleSheet, Image, ScrollView, Pressable,
+  View, Text, Modal, TouchableOpacity, Image, ScrollView, Pressable,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import Bookmark from '../../Other/Components/Bookmark';
 import folderDark from '../../../assets/folder_dark.png';
 import check from '../../../assets/green_check.png';
 import bookmark from '../../../assets/bookmark_dark.png';
 import add from '../../../assets/addbutton.png';
+import styles from './BottomModalStyle';
 
-function FolderModalRow({
+function FolderModalHeader({
   title, description, icon, iconSize,
 }) {
-  //   const [modalVisible, setModalVisible] = useState(false);
-  //   useEffect(() => {
-  //     // Update the local state whenever modalVisibleParent changes
-  //     setModalVisible(modalVisibleParent);
-  //     console.log('setmodal');
-  //   }, [modalVisibleParent]);
-
   return (
     <View style={styles.folderRow}>
       <Image
@@ -47,11 +40,55 @@ function FolderModalRow({
   );
 }
 
-FolderModalRow.propTypes = {
+FolderModalHeader.propTypes = {
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   icon: PropTypes.number.isRequired,
   iconSize: PropTypes.string.isRequired,
+};
+
+function FolderModalRow({
+  title, description, isAdded,
+}) {
+  const [added, setAdded] = useState(isAdded);
+  const toggleAdded = () => {
+    setAdded(!added);
+    console.log('toggle add');
+  };
+  return (
+    <View style={styles.folderRow}>
+      <Image
+        style={{
+          flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center',
+        }}
+        source={folderDark}
+      />
+      <View style={{
+        flex: 5, paddingLeft: 30,
+      }}
+      >
+        <Text style={{ fontFamily: 'cabinet-grotesk-regular', fontSize: 18 }}>{title}</Text>
+        <Text style={{ fontFamily: 'cabinet-grotesk-regular', color: '#767C7C', fontSize: 16 }}>
+          {description}
+        </Text>
+      </View>
+      <Pressable onPress={toggleAdded}>
+        <Image
+          style={{
+            flex: 1, resizeMode: 'contain', width: 30, height: 30,
+          }}
+          source={added ? check : add}
+        />
+      </Pressable>
+    </View>
+
+  );
+}
+
+FolderModalRow.propTypes = {
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  isAdded: PropTypes.bool.isRequired,
 };
 
 function BottomHalfModal({
@@ -81,7 +118,7 @@ function BottomHalfModal({
       >
         <View style={styles.modal}>
           <TouchableOpacity style={styles.header} onPress={toggleModal}>
-            <FolderModalRow title="Folder" description="Compiled for you by you." icon={bookmark} iconSize="150%" />
+            <FolderModalHeader title="Folder" description="Compiled for you by you." icon={bookmark} iconSize="150%" />
           </TouchableOpacity>
 
           <ScrollView style={styles.collections}>
@@ -97,11 +134,16 @@ function BottomHalfModal({
               </Pressable>
             </View>
             <View style={{ marginVertical: 10 }}>
-              <FolderModalRow title={page} description="Automatically saved to folder" icon={check} iconSize="60%" />
+              <FolderModalRow title={page} description="Automatically saved to folder" isAdded />
             </View>
             {folderList.map((item) => (
               <View style={{ marginVertical: 10 }}>
-                <FolderModalRow key={item[0]} title={item[0]} description={item[1]} icon={add} iconSize="60%" />
+                <FolderModalRow
+                  key={item[0]}
+                  title={item[0]}
+                  description={item[1]}
+                  isAdded={false}
+                />
               </View>
             ))}
           </ScrollView>
@@ -110,61 +152,6 @@ function BottomHalfModal({
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    position: 'absolute',
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    zindex: 2,
-  },
-  modal: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    width: '100%',
-    height: '40%',
-    borderRadius: 20,
-    backgroundColor: 'white',
-
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  header: {
-    flex: 0.1,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 30,
-    backgroundColor: '#DFE5E5',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-  },
-  collections: {
-    flex: 3,
-    display: 'flex',
-    backgroundColor: '#C6CECE',
-    flexDirection: 'column',
-    padding: 30,
-
-  },
-  collectionsHeader: {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  folderRow: {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-
-  },
-
-});
 
 export default BottomHalfModal;
 

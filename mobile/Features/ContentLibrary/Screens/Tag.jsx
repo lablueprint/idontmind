@@ -2,22 +2,18 @@ import {
   Text, View, TouchableOpacity, Image, ScrollView, Pressable,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import axios from 'axios';
-import { useContext } from 'react';
-import starImage from '../../../assets/images/star.png';
-import leftArrow from '../../../assets/images/left.png';
-import rightArrow from '../../../assets/images/right.png';
+// import axios from 'axios';
+// import { useContext } from 'react';
+
 import shapeImage from '../../../assets/images/shape.png';
 import Back from '../../../assets/images/back_button.png';
-import goldStar from '../../../assets/images/goldStar.png';
 import style from '../Components/ContentStyle';
-import TagContext from '../Context/TagContext';
-import styles from './BookmarksStyle';
+// import TagContext from '../Context/TagContext';
 import TagRectangle from '../Components/TagRectangle';
 
 export default function Tag({ navigation, route }) {
   /* index of corresponding Tag */
-  const index = route.params?.index;
+  // const index = route.params?.index;
   const routeName = route.params?.routeName;
 
   // const {
@@ -35,7 +31,6 @@ export default function Tag({ navigation, route }) {
 
   /* Checks if current tag is in users favorite list */
   // const favorited = findFavorite(_id);
-  const favorited = true; // hardcode favorited for now
 
   const hardcodedTags = ['Tag', 'Creativity', 'Energy', 'Environment', 'Exercise', 'Fitness', 'Health', 'Journaling', 'Medication']; // hardcoded for now, i think tag content list
 
@@ -46,13 +41,15 @@ export default function Tag({ navigation, route }) {
   /* Adds Tag to Users Favorites List */
   // const favoriteTag = async () => {
   //   addFavorite(_id);
-  //   await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/favoriteTag`, { tag: { id: _id, tagName }, username: 'hi' });
+  //   await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/favoriteTag`,
+  // { tag: { id: _id, tagName }, username: 'hi' });
   // };
 
   /* Remove Tag from Users Favorites List */
   // const unfavoriteTag = async () => {
   //   deleteFavorite(_id);
-  //   await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/unfavoriteTag`, { tag: { id: _id, tagName }, username: 'hi' });
+  //   await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/unfavoriteTag`,
+  // { tag: { id: _id, tagName }, username: 'hi' });
   // };
 
   /* Handles Favorite Change */
