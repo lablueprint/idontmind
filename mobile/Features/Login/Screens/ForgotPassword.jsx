@@ -26,12 +26,14 @@ function ForgotPassword({ navigation }) {
       const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/checkUserByEmail`, data);
       if (res.data.success && (res.data.user.email).toLowerCase() === email.toLowerCase()) {
         const userData = res.data.user;
+        console.log(10, userData);
         const newToken = generateSixDigitNumber();
         setCurUser(userData);
         setToken(newToken);
         setShowError(false);
 
-        navigation.navigate('Token Input', { token: newToken, email, curUser });
+        console.log(11, curUser);
+        // navigation.navigate('Token Input', { token: newToken, email, curUser });
         const response = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/sendEmail`, { email, token: newToken });
         if (response.data.success) {
           console.log('Successfully sent email!');
@@ -52,7 +54,7 @@ function ForgotPassword({ navigation }) {
     if (token && curUser) {
       navigation.navigate('Token Input', { token, email, curUser });
     }
-  }, [token, curUser]);
+  }, [token, curUser, navigation]);
 
   return (
     <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: '#E5F8F3' }}>
