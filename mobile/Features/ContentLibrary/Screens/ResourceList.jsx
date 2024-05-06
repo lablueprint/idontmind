@@ -66,8 +66,7 @@ function ResourceList({ navigation }) {
         style={{
           display: 'flex',
           flexDirection: 'row',
-          borderBottomColor: 'lightgray',
-          borderBottomWidth: 3,
+
           alignItems: 'center',
           justifyContent: 'center',
           paddingBottom: 20,
@@ -79,8 +78,8 @@ function ResourceList({ navigation }) {
         >
           {subtopicName}
         </Text>
-        <Pressable style={{ flex: 1 }} onPress={toggleModal}>
-          <Image style={{ resizeMode: 'contain', height: 40, width: 40 }} source={BookmarkImage} />
+        <Pressable style={{ flex: 0.5 }} onPress={toggleModal}>
+          <Image style={{ resizeMode: 'contain', height: 30, width: 30 }} source={BookmarkImage} />
         </Pressable>
 
       </View>

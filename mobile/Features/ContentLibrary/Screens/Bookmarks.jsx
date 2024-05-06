@@ -27,6 +27,9 @@ function Bookmarks({ navigation }) {
     const resourceName = item.Title ? item.Title : 'hardcoded title';
     navigation.navigate('Resource', { resourceName, routeName: 'Bookmarks' });
   };
+  const navigateToResourceList = (subtopicName) => {
+    navigation.navigate('Resource List', { subtopicName });
+  };
 
   const folderNames = ['folder1', 'im not creative', 'no ideas', 'cant think', 'of another', ''];
   const filters = ['All', 'Q&A', 'Personal Stories', 'Exercises', 'Articles'];
@@ -185,7 +188,7 @@ function Bookmarks({ navigation }) {
 
           {
                 hardcodedTags.map((item) => (
-                  <Pressable key={item} onPress={() => navigateToResource(item)}>
+                  <Pressable key={item} onPress={() => navigateToResourceList(item)}>
                     <TagRectangle
                         // key={resourceName}
                       tagName={item}
