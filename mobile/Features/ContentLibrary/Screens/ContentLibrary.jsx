@@ -4,6 +4,7 @@ import {
 import PropTypes from 'prop-types';
 import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 import style from '../Components/ContentStyle';
 import starImage from '../../../assets/images/star.png';
 import filterImage from '../../../assets/images/filter.png';
@@ -15,6 +16,7 @@ import SearchBar from '../../Other/Components/SearchBar';
 
 export default function ContentLibrary({ navigation }) {
   const { initTags, initFavorites } = useContext(TagContext);
+  const { email, authHeader } = useSelector((state) => state.auth);
 
   const navigateToTag = (index) => {
     navigation.navigate('Tag', { index, routeName: 'Content' });
@@ -35,7 +37,7 @@ export default function ContentLibrary({ navigation }) {
         const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/getAllTagTitles`);
 
         /* Grab user's favorite list */
-        const resFavorites = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/getFavorites`, { username: 'hi' });
+        const resFavorites = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/getFavorites`, { email }, { headers: authHeader });
 
         /* Set Context Set for Favorites */
         initFavorites(resFavorites.data);
