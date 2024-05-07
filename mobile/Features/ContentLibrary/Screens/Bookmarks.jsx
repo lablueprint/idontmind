@@ -11,6 +11,20 @@ import Folder from '../Components/Folder';
 import TagRectangle from '../Components/TagRectangle';
 import Back from '../../../assets/images/back_button.png';
 
+function FolderSection() {
+  const folderNames = ['folder1', 'im not creative', 'no ideas', 'cant think', 'of another', ''];
+  return (
+    <View style={{
+      flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', paddingVertical: 10,
+    }}
+    >
+      {folderNames.map((folderName) => (
+        <Folder key={folderName} folderName={folderName} />
+      ))}
+    </View>
+  );
+}
+
 function Bookmarks({ navigation }) {
   const [favorites, setFavorites] = useState([]);
   const hardcodedResources = [['My Resource', 'Nicole Jew'], ['My Resource 2', 'Alice Ju'], ['My Resource 3']];
@@ -31,7 +45,6 @@ function Bookmarks({ navigation }) {
     navigation.navigate('Resource List', { subtopicName });
   };
 
-  const folderNames = ['folder1', 'im not creative', 'no ideas', 'cant think', 'of another', ''];
   const filters = ['All', 'Q&A', 'Personal Stories', 'Exercises', 'Articles'];
   const [filterQuery, setFilterQuery] = useState('All');
 
@@ -53,7 +66,7 @@ function Bookmarks({ navigation }) {
   }, [Favorites]);
 
   return (
-    <ScrollView
+    <View
       className="mainContainer"
       style={{
         display: 'flex', flexDirection: 'column', paddingHorizontal: 25, paddingTop: 50, flex: 1, backgroundColor: '#BFDBD7',
@@ -74,10 +87,7 @@ function Bookmarks({ navigation }) {
       >
         <Text style={{ fontSize: 40, fontFamily: 'recoleta-medium' }}>Bookmarks</Text>
       </View>
-      <View style={{
-        display: 'flex', flexDirection: 'column', flex: 8, paddingTop: 10,
-      }}
-      >
+      <View>
         <View style={styles.filtersContainer}>
           <ScrollView horizontal>
             {filters.map((item) => (
@@ -103,6 +113,8 @@ function Bookmarks({ navigation }) {
             ))}
           </ScrollView>
         </View>
+      </View>
+      <ScrollView>
         <View style={{
           display: 'flex', flexDirection: 'row',
         }}
@@ -118,75 +130,65 @@ function Bookmarks({ navigation }) {
           </Text>
         </View>
         <View style={{ alignItems: 'center', justifyContents: 'center' }}>
-          <FlatList
-            data={folderNames}
-            renderItem={({ item }) => <Folder folderName={item} />}
-            keyExtractor={(item) => item.toString()}
-            numColumns={3}
-            contentContainerStyle={{ margin: -10 }}
-          />
+          <FolderSection />
         </View>
-      </View>
-      <View style={{ flex: 1 }} />
-      <View style={{
-        display: 'flex', flexDirection: 'column', flex: 8,
-      }}
-      >
-        <View style={{
-          display: 'flex', flexDirection: 'row', paddingTop: 20,
-        }}
-        >
-          <Text style={{ flex: 1, fontSize: 32, fontFamily: 'recoleta-medium' }}>
-            Resources
-          </Text>
-          <Text style={{
-            flex: 1, textAlign: 'right', fontSize: 14, alignSelf: 'center', fontFamily: 'cabinet-grotesk-regular',
+        <View style={{ display: 'flex', flex: 1 }}>
+          <View style={{
+            display: 'flex', flexDirection: 'column', flex: 8,
           }}
           >
-            sort by Date
-          </Text>
-        </View>
+            <View style={{
+              display: 'flex', flexDirection: 'row',
+            }}
+            >
+              <Text style={{ flex: 1, fontSize: 32, fontFamily: 'recoleta-medium' }}>
+                Resources
+              </Text>
+              <Text style={{
+                flex: 1, textAlign: 'right', fontSize: 14, alignSelf: 'center', fontFamily: 'cabinet-grotesk-regular',
+              }}
+              >
+                sort by Date
+              </Text>
+            </View>
 
-        <View style={{ width: '110%' }}>
+            <View style={{ width: '110%' }}>
 
-          {
-                hardcodedResources.map((item) => {
-                  let resourceName;
-                  return (
-                    <Pressable key={resourceName} onPress={() => navigateToResource(item)}>
-                      <Bookmark
+              {
+                hardcodedResources.map((item) => (
+                  <Pressable key={item} onPress={() => navigateToResource(item)}>
+                    <Bookmark
                         // key={resourceName}
-                        resourceName={item[0]}
-                        author={item[1]}
-                      />
-                    </Pressable>
-                  );
-                })
+                      resourceName={item[0]}
+                      author={item[1]}
+                    />
+                  </Pressable>
+                ))
               }
-        </View>
-      </View>
+            </View>
+          </View>
 
-      <View style={{
-        display: 'flex', flexDirection: 'column', flex: 8,
-      }}
-      >
-        <View style={{
-          display: 'flex', flexDirection: 'row', paddingTop: 20,
-        }}
-        >
-          <Text style={{ flex: 1, fontSize: 32, fontFamily: 'recoleta-medium' }}>
-            Tags
-          </Text>
-          <Text style={{
-            flex: 1, textAlign: 'right', fontSize: 14, alignSelf: 'center', fontFamily: 'cabinet-grotesk-regular',
+          <View style={{
+            display: 'flex', flexDirection: 'column', flex: 8,
           }}
           >
-            sort by Date
-          </Text>
-        </View>
-        <View style={{ width: '110%' }}>
+            <View style={{
+              display: 'flex', flexDirection: 'row', paddingTop: 20,
+            }}
+            >
+              <Text style={{ flex: 1, fontSize: 32, fontFamily: 'recoleta-medium' }}>
+                Tags
+              </Text>
+              <Text style={{
+                flex: 1, textAlign: 'right', fontSize: 14, alignSelf: 'center', fontFamily: 'cabinet-grotesk-regular',
+              }}
+              >
+                sort by Date
+              </Text>
+            </View>
+            <View style={{ width: '110%' }}>
 
-          {
+              {
                 hardcodedTags.map((item) => (
                   <Pressable key={item} onPress={() => navigateToResourceList(item)}>
                     <TagRectangle
@@ -196,9 +198,12 @@ function Bookmarks({ navigation }) {
                   </Pressable>
                 ))
               }
+            </View>
+
+          </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 }
 

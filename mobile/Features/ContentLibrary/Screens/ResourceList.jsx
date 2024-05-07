@@ -125,7 +125,6 @@ function ResourceList({ navigation }) {
                   resources.map((item) => (
                     <Pressable key={item[0]} onPress={() => navigateToResource(item)}>
                       <Bookmark
-                        key={item[0]}
                         resourceName={item[0]}
                         author={item[1]}
                         style={{}}

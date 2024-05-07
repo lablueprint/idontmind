@@ -137,9 +137,8 @@ function BottomHalfModal({
               <FolderModalRow title={page} description="Automatically saved to folder" isAdded />
             </View>
             {folderList.map((item) => (
-              <View style={{ marginVertical: 10 }}>
+              <View key={item[0]} style={{ marginVertical: 10 }}>
                 <FolderModalRow
-                  key={item[0]}
                   title={item[0]}
                   description={item[1]}
                   isAdded={false}

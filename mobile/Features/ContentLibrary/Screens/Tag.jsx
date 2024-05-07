@@ -1,33 +1,30 @@
 import {
-  Text, View, TouchableOpacity, Image, ScrollView, Pressable,
+  Text, View, Image, ScrollView, Pressable,
 } from 'react-native';
 import PropTypes from 'prop-types';
-// import axios from 'axios';
-// import { useContext } from 'react';
+import axios from 'axios';
+import { useContext } from 'react';
 
 import shapeImage from '../../../assets/images/shape.png';
 import Back from '../../../assets/images/back_button.png';
 import style from '../Components/ContentStyle';
-// import TagContext from '../Context/TagContext';
+import TagContext from '../Context/TagContext';
 import TagRectangle from '../Components/TagRectangle';
 
 export default function Tag({ navigation, route }) {
   /* index of corresponding Tag */
-  // const index = route.params?.index;
-  const routeName = route.params?.routeName;
+  const index = route.params?.index;
 
-  // const {
-  //   Tags, deleteFavorite, addFavorite, findFavorite,
-  // } = useContext(TagContext);
+  const {
+    Tags, deleteFavorite, addFavorite, findFavorite,
+  } = useContext(TagContext);
 
-  // /* Grabs current tag */
-  // const tag = Tags[index];
+  /* Grabs current tag */
+  const tag = Tags[index];
 
-  // const {
-  //   _id, tagName, tagBrief,
-  // } = tag;
-
-  const tagNameHardcoded = ' tagName';
+  const {
+    _id, tagName, tagBrief,
+  } = tag;
 
   /* Checks if current tag is in users favorite list */
   // const favorited = findFavorite(_id);
@@ -35,22 +32,27 @@ export default function Tag({ navigation, route }) {
   const hardcodedTags = ['Tag', 'Creativity', 'Energy', 'Environment', 'Exercise', 'Fitness', 'Health', 'Journaling', 'Medication']; // hardcoded for now, i think tag content list
 
   const navigateToPreviousRoute = () => {
-    navigation.navigate(routeName);
+    console.log('hi');
+    navigation.navigate('Content Library');
   };
 
   /* Adds Tag to Users Favorites List */
-  // const favoriteTag = async () => {
-  //   addFavorite(_id);
-  //   await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/favoriteTag`,
-  // { tag: { id: _id, tagName }, username: 'hi' });
-  // };
+  const favoriteTag = async () => {
+    addFavorite(_id);
+    await axios.post(
+      `${process.env.EXPO_PUBLIC_SERVER_URL}/tag/favoriteTag`,
+      { tag: { id: _id, tagName }, username: 'hi' },
+    );
+  };
 
   /* Remove Tag from Users Favorites List */
-  // const unfavoriteTag = async () => {
-  //   deleteFavorite(_id);
-  //   await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/unfavoriteTag`,
-  // { tag: { id: _id, tagName }, username: 'hi' });
-  // };
+  const unfavoriteTag = async () => {
+    deleteFavorite(_id);
+    await axios.post(
+      `${process.env.EXPO_PUBLIC_SERVER_URL}/tag/unfavoriteTag`,
+      { tag: { id: _id, tagName }, username: 'hi' },
+    );
+  };
 
   /* Handles Favorite Change */
   // const handleFavoriteChange = () => {
@@ -68,15 +70,13 @@ export default function Tag({ navigation, route }) {
   };
 
   return (
-    <View
+    <ScrollView
       style={[style.container, { paddingHorizontal: 25 }]}
     >
-      <View style={[style.row, { paddingTop: 100, marginBottom: -50 }]}>
-        <TouchableOpacity
+      <View style={[style.row, { paddingTop: 100 }]}>
+        <Pressable
           onPress={navigateToPreviousRoute}
-          style={[style.button, {
-            flexBasis: 37,
-          }]}
+
         >
           <Image
             style={{
@@ -84,7 +84,7 @@ export default function Tag({ navigation, route }) {
             }}
             source={Back}
           />
-        </TouchableOpacity>
+        </Pressable>
       </View>
       <View style={{
         flex: 1, flexDirection: 'column',
@@ -92,17 +92,17 @@ export default function Tag({ navigation, route }) {
       >
         <Image
           style={{
-            alignSelf: 'center', flexDirection: 'row', width: 200, flex: 3, resizeMode: 'contain',
+            alignSelf: 'center', width: 200, resizeMode: 'contain', height: 200,
           }}
           source={shapeImage}
         />
         <View
-          style={{ flex: 4 }}
+          style={{ }}
         >
           <Text
             style={{ textAlign: 'center', fontSize: 40, fontFamily: 'recoleta-regular' }}
           >
-            {tagNameHardcoded}
+            {tagName}
           </Text>
           <Text
             style={{ fontSize: 16, fontFamily: 'cabinet-grotesk-medium', marginBottom: 20 }}
@@ -113,7 +113,7 @@ export default function Tag({ navigation, route }) {
             and inner harmony.
           </Text>
           <Text
-            style={{ fontSize: 16, fontFamily: 'cabinet-grotesk-medium' }}
+            style={{ fontSize: 16, fontFamily: 'cabinet-grotesk-medium', paddingBottom: 10 }}
           >
             Click on a subtopic to see specific resources
           </Text>
@@ -123,7 +123,7 @@ export default function Tag({ navigation, route }) {
           flex: 6, width: '110%',
         }}
         >
-          <ScrollView style={{ flex: 1 }}>
+          <View style={{ flex: 1 }}>
             {
                 hardcodedTags.map((item) => (
                   <Pressable key={item} onPress={() => navigateToResourceList(item)}>
@@ -134,13 +134,13 @@ export default function Tag({ navigation, route }) {
                   </Pressable>
                 ))
               }
-          </ScrollView>
+          </View>
         </View>
 
       </View>
       <View />
 
-    </View>
+    </ScrollView>
 
   );
 }
