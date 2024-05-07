@@ -111,22 +111,11 @@ const createUser = async (req, res) => {
 const updateUser = async (req, res) => {
   const { id, updatedFields } = req.body;
   try {
-    // find the existing user by its unique identifier (e.g., _id)
-    const existingUser = await User.findById(id);
-    if (!existingUser) {
-      return res.status(404).send({ message: 'User not found' });
+    const user = await User.findByIdAndUpdate(id, updatedFields, { new: true });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
     }
-    // check if any restricted fields are present in updatedFields
-    const restrictedFields = ['id'];
-    const hasRestricted = Object.keys(updatedFields).some((f) => restrictedFields.includes(f));
-    if (hasRestricted) {
-      return res.status(403).send({ message: 'No permission to update certain fields' });
-    }
-    // update the specified fields
-    Object.assign(existingUser, updatedFields);
-    // save the updated user
-    const updatedUser = await existingUser.save();
-    return res.send(updatedUser);
+    return res.send(user);
   } catch (err) {
     console.error(err);
     return res.status(500).send(err);
@@ -142,6 +131,26 @@ const deleteUserById = async (req, res) => {
       return res.status(404).send({ message: 'User not found' });
     }
     return res.send({ message: 'User deleted successfully' });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send(err);
+  }
+};
+
+const readSpecifiedFields = async (req, res) => {
+  const { id, fields } = req.body;
+  try {
+    const existingUser = await User.findById(id);
+    if (!existingUser) {
+      return res.status(404).send({ message: 'User not found' });
+    }
+    const user = {};
+    fields.forEach((field) => {
+      if (existingUser[field] !== undefined) {
+        user[field] = existingUser[field];
+      }
+    });
+    return res.send(user);
   } catch (err) {
     console.error(err);
     return res.status(500).send(err);
@@ -250,6 +259,7 @@ module.exports = {
   getAllUsers,
   getUserById,
   updateUser,
+  readSpecifiedFields,
   deleteUserById,
   getFavorites,
   getUserChallengeDay,
