@@ -126,7 +126,7 @@ export default StyleSheet.create({
   },
   stillButt: {
     position: 'absolute',
-    bottom: 74, // why does this look huge
+    bottom: 0,
     left: 0,
     right: 0,
     alignItems: 'center',
