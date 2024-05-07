@@ -16,8 +16,8 @@ export default function Folder({
       }}
       >
         <View style={style.folderContainer}>
-          <Image style={{ resizeMode: 'contain', height: 50, width: 50 }} source={folderImg} />
-          <Text style={{ padding: 5, fontSize: 14, fontFamily: 'cabinet-grotesk-regular' }}>{folderName}</Text>
+          <Image style={{ resizeMode: 'contain', height: 40, width: 40 }} source={folderImg} />
+          <Text style={{ fontSize: 14, fontFamily: 'cabinet-grotesk-regular' }}>{folderName}</Text>
         </View>
       </Pressable>
     );
