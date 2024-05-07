@@ -151,10 +151,15 @@ const deleteUserById = async (req, res) => {
 const getFavorites = async (req, res) => {
   try {
     const { email } = req.body;
-    const user = await User.find({ email });
-    res.send(user[0].favorites);
+    const user = await User.findOne({ email });
+    if (!user) {
+      // If user does not exist, send back an empty array
+      return res.status(404).json({ message: 'User not found', favorites: [] });
+    }
+    res.send(user.favorites);
   } catch (err) {
     console.error(err);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 

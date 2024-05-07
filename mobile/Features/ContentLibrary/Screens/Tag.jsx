@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import Swiper from 'react-native-swiper';
 import axios from 'axios';
 import { useContext } from 'react';
-import { useSelector } from 'react-redux';
 import starImage from '../../../assets/images/star.png';
 import leftArrow from '../../../assets/images/left.png';
 import rightArrow from '../../../assets/images/right.png';
@@ -18,7 +17,6 @@ import TagContext from '../Context/TagContext';
 export default function Tag({ navigation, route }) {
   /* index of corresponding Tag */
   const { index, routeName } = route.params;
-  const { email, authHeader } = useSelector((state) => state.auth);
 
   const {
     Tags, deleteFavorite, addFavorite, findFavorite,
@@ -28,11 +26,11 @@ export default function Tag({ navigation, route }) {
   const tag = Tags[index];
 
   const {
-    _id, tagName, tagBrief,
+    id, tagName, tagBrief,
   } = tag;
 
   /* Checks if current tag is in users favorite list */
-  const favorited = findFavorite(_id);
+  const favorited = findFavorite(id);
 
   const navigateToPreviousRoute = () => {
     navigation.navigate(routeName);
@@ -40,20 +38,20 @@ export default function Tag({ navigation, route }) {
 
   /* Adds Tag to Users Favorites List */
   const favoriteTag = async () => {
-    addFavorite(_id);
-    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/favoriteTag`, { tag: { id: _id, tagName }, email }, { headers: authHeader });
+    addFavorite(id);
+    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/favoriteTag`, { tag: { id, tagName }, username: 'hi' });
   };
 
   /* Remove Tag from Users Favorites List */
   const unfavoriteTag = async () => {
-    deleteFavorite(_id);
-    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/unfavoriteTag`, { tag: { id: _id, tagName }, email }, { headers: authHeader });
+    deleteFavorite(id);
+    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/unfavoriteTag`, { tag: { id, tagName }, username: 'hi' });
   };
 
   /* Handles Favorite Change */
   const handleFavoriteChange = () => {
     /* checks if the tag is not not in the user's favorite list */
-    if (findFavorite(_id) === false) {
+    if (findFavorite(id) === false) {
       favoriteTag();
     } else {
       unfavoriteTag();
