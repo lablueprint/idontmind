@@ -11,7 +11,7 @@ import styles from './PushNotificationsStyle';
 import ToggleSwitch from '../Components/ToggleSwitch';
 
 function PushNotifications() {
-  const { id } = useSelector((state) => state.auth);
+  const { id, authHeader } = useSelector((state) => state.auth);
   // to track reminders that are toggled on
   const [reminderSet, setReminderSet] = useState(new Set());
   const [showPicker, setShowPicker] = useState(false);
@@ -27,7 +27,7 @@ function PushNotifications() {
       setReminderSet(temp);
     }
     const reminderArray = Array.from(temp);
-    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/updateUser`, { id, updatedFields: { 'pushNotifs.reminders': reminderArray } });
+    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/updateUser`, { id, updatedFields: { 'pushNotifs.reminders': reminderArray } }, { headers: authHeader });
   };
 
   const formatTime = (pickedDuration) => {
@@ -51,12 +51,12 @@ function PushNotifications() {
     setAlarmString(formatTime(pickedDuration));
     setShowPicker(false);
     // set the alarm
-    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/updateUser`, { id, updatedFields: { 'pushNotifs.time': pickedDuration } });
+    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/updateUser`, { id, updatedFields: { 'pushNotifs.time': pickedDuration } }, { headers: authHeader });
   };
 
   // get push notification data from user
   const fetchData = async () => {
-    const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/readSpecifiedFields`, { id, fields: ['pushNotifs'] });
+    const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/readSpecifiedFields`, { id, fields: ['pushNotifs'] }, { headers: authHeader });
     return res;
   };
 

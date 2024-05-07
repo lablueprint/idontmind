@@ -41,13 +41,13 @@ export default function Tag({ navigation, route }) {
   /* Adds Tag to Users Favorites List */
   const favoriteTag = async () => {
     addFavorite(id);
-    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/favoriteTag`, { tag: { id, tagName }, username: 'hi' });
+    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/favoriteTag`, { tag: { id, tagName }, email }, { headers: authHeader });
   };
 
   /* Remove Tag from Users Favorites List */
   const unfavoriteTag = async () => {
     deleteFavorite(id);
-    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/unfavoriteTag`, { tag: { id, tagName }, username: 'hi' });
+    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/unfavoriteTag`, { tag: { id, tagName }, email }, { headers: authHeader });
   };
 
   /* Handles Favorite Change */

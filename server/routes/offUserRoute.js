@@ -31,6 +31,8 @@ offUserRouter.post('/resetChallengeDay', offUserController.resetChallengeDay);
 
 offUserRouter.post('/increaseChallengeDay', offUserController.increaseChallengeDay);
 
+offUserRouter.post('/readSpecifiedFields', offUserController.readSpecifiedFields);
+
 offUserRouter.post('/getFavorites', offUserController.getFavorites);
 
 offUserRouter.post('/favoriteTag', offUserController.favoriteTag);

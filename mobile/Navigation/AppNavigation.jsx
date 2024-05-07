@@ -15,8 +15,8 @@ import BannedTags from '../Features/Other/Screens/BannedTags';
 import Splash from '../Features/GettingStarted/Splash';
 import Terms from '../Features/GettingStarted/Terms';
 import Loading from '../Features/Register/Loading';
-import TrendsTab from '../Trends/Components/Trends';
-import TrendsBody from '../Trends/Screens/TrendsBody';
+import TrendsTab from '../Features/Trends/Components/Trends';
+import TrendsBody from '../Features/Trends/Screens/TrendsBody';
 
 import CheckIn from '../Features/CheckIn/CheckIn';
 import Sleep from '../Features/CheckIn/Sleep';
