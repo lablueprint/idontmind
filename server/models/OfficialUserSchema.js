@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
 const officialUserSchema = new mongoose.Schema({
   firstName: {
@@ -6,11 +7,7 @@ const officialUserSchema = new mongoose.Schema({
     type: String,
   },
   lastName: {
-    required: true,
-    type: String,
-  },
-  username: {
-    required: true,
+    required: false,
     type: String,
   },
   password: {
@@ -20,6 +17,7 @@ const officialUserSchema = new mongoose.Schema({
   email: {
     required: true,
     type: String,
+    unique: true,
   },
   profilePicture: {
     required: false,
@@ -53,5 +51,22 @@ const officialUserSchema = new mongoose.Schema({
     type: Number,
   },
 });
+
+// Hashes password upon creation of user
+officialUserSchema.pre('save', async function hashPass(next) {
+  const user = this;
+  if (!user.isModified('password')) return next();
+  const hash = await bcrypt.hash(user.password, 10);
+  user.password = hash;
+  next();
+  return null;
+});
+
+// Check if password is correct
+officialUserSchema.methods.isValidPassword = async function check(password) {
+  const user = this;
+  const compare = await bcrypt.compare(password, user.password);
+  return compare;
+};
 
 module.exports = mongoose.model('OfficialUser', officialUserSchema);

@@ -4,10 +4,11 @@ import {
 import PropTypes from 'prop-types';
 import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 import style from '../Components/ContentStyle';
-import starImage from '../../../assets/star.png';
-import filterImage from '../../../assets/filter.png';
-import searchImage from '../../../assets/search.png';
+import starImage from '../../../assets/images/star.png';
+import filterImage from '../../../assets/images/filter.png';
+import searchImage from '../../../assets/images/search.png';
 import Card from '../Components/Card';
 import TagContext from '../Context/TagContext';
 // do want to change routing though:
@@ -15,9 +16,10 @@ import SearchBar from '../../Other/Components/SearchBar';
 
 export default function ContentLibrary({ navigation }) {
   const { initTags, initFavorites } = useContext(TagContext);
+  const { email, authHeader } = useSelector((state) => state.auth);
 
   const navigateToTag = (index) => {
-    navigation.navigate('Tag', { index, routeName: 'Content Library' });
+    navigation.navigate('Tag', { index, routeName: 'Content' });
   };
 
   const navigateToFavorites = () => {
@@ -35,7 +37,7 @@ export default function ContentLibrary({ navigation }) {
         const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/getAllTagTitles`);
 
         /* Grab user's favorite list */
-        const resFavorites = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/getFavorites`, { username: 'hi' });
+        const resFavorites = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/getFavorites`, { email }, { headers: authHeader });
 
         /* Set Context Set for Favorites */
         initFavorites(resFavorites.data);
@@ -88,12 +90,13 @@ export default function ContentLibrary({ navigation }) {
     setOpen(false);
   };
 
-  const handleSearch = (query) => {
+  const handleSearch = (query, type) => {
     // search logic
     if (query.trim() !== '') {
-      if (!recentSearches.includes(query.toLowerCase())) {
+      if (!recentSearches.some((search) => search.query.toLowerCase()
+      === query.toLowerCase() && search.type === type)) {
         setRecentSearches((prevSearches) => {
-          const updatedSearches = [query.toLowerCase(), ...prevSearches];
+          const updatedSearches = [{ query: query.toLowerCase(), type }, ...prevSearches];
           if (updatedSearches.length > 5) {
             updatedSearches.pop(); // Remove the last element
           }
