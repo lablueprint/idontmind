@@ -38,7 +38,7 @@ export default function FavoritesList({ navigation }) {
   };
 
   const navigateToContentLibrary = () => {
-    navigation.navigate('Content Library');
+    navigation.navigate('Content');
   };
 
   const verticalRenderItem = ({ item }) => (

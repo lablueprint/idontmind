@@ -9,11 +9,14 @@ import SignUp from '../Features/Onboarding/Screens/SignUp';
 import PersonalInfo from '../Features/Onboarding/Screens/PersonalInfo';
 import Customization from '../Features/Onboarding/Screens/Customization';
 import NavigationBar from './NavigationBar';
+import AltNavigationBar from './AltNavigationBar';
 import Filter from '../Features/Other/Screens/Filter';
 import BannedTags from '../Features/Other/Screens/BannedTags';
 import Splash from '../Features/GettingStarted/Splash';
 import Terms from '../Features/GettingStarted/Terms';
 import Loading from '../Features/Register/Loading';
+import TrendsTab from '../Trends/Components/Trends';
+import TrendsBody from '../Trends/Screens/TrendsBody';
 
 import CheckIn from '../Features/CheckIn/CheckIn';
 import Sleep from '../Features/CheckIn/Sleep';
@@ -39,14 +42,15 @@ export default function AppNavigation() {
           <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
           <Stack.Screen name="PersonalInfo" component={PersonalInfo} options={{ headerShown: false }} />
           <Stack.Screen name="Customization" component={Customization} options={{ headerShown: false }} />
-          <Stack.Screen name="NavigationBar" component={NavigationBar} options={{ headerShown: false }} />
           <Stack.Screen name="Filter" component={Filter} options={{ headerShown: false }} />
           <Stack.Screen name="BannedTags" component={BannedTags} options={{ headerShown: false }} />
+          <Stack.Screen name="Loading" component={Loading} options={{ headerShown: false }} />
+          <Stack.Screen name="Trends" component={TrendsTab} options={{ headerShown: false }} />
+          <Stack.Screen name="TrendsBody" component={TrendsBody} options={{ headerShown: false }} />
+          <Stack.Screen name="NavigationBar" component={NavigationBar} options={{ headerShown: false }} />
+          <Stack.Screen name="AltNavigationBar" component={AltNavigationBar} options={{ headerShown: false }} />
           <Stack.Screen name="Splash" component={Splash} options={{ headerShown: false }} />
           <Stack.Screen name="Terms" component={Terms} options={{ headerShown: false }} />
-          {/* <Stack.Screen name="PushNotifications" component={PushNotifications}
-           options={{ headerShown: false }} /> */}
-          <Stack.Screen name="Loading" component={Loading} options={{ headerShown: false }} />
           <Stack.Screen name="Tag" component={Tag} options={{ headerShown: false }} />
           <Stack.Screen name="Favorites" component={FavoritesList} options={{ headerShown: false }} />
           <Stack.Screen name="CheckIn" component={CheckIn} options={{ headerShown: false }} />
