@@ -22,6 +22,8 @@ import Personalization from '../Features/Tutorial/Personalization';
 import MoreResources from '../Features/Tutorial/MoreResources';
 import WrapUp from '../Features/Tutorial/WrapUp';
 import ThirtyDayOverview from '../Features/Tutorial/ThirtyDayOverview';
+import TrendsTab from '../Trends/Components/Trends';
+import TrendsBody from '../Trends/Screens/TrendsBody';
 
 import CheckIn from '../Features/CheckIn/CheckIn';
 import Sleep from '../Features/CheckIn/Sleep';
@@ -47,10 +49,13 @@ export default function AppNavigation() {
           <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
           <Stack.Screen name="PersonalInfo" component={PersonalInfo} options={{ headerShown: false }} />
           <Stack.Screen name="Customization" component={Customization} options={{ headerShown: false }} />
-          <Stack.Screen name="NavigationBar" component={NavigationBar} options={{ headerShown: false }} />
-          <Stack.Screen name="AltNavigationBar" component={AltNavigationBar} options={{ headerShown: false }} />
           <Stack.Screen name="Filter" component={Filter} options={{ headerShown: false }} />
           <Stack.Screen name="BannedTags" component={BannedTags} options={{ headerShown: false }} />
+          <Stack.Screen name="Loading" component={Loading} options={{ headerShown: false }} />
+          <Stack.Screen name="Trends" component={TrendsTab} options={{ headerShown: false }} />
+          <Stack.Screen name="TrendsBody" component={TrendsBody} options={{ headerShown: false }} />
+          <Stack.Screen name="NavigationBar" component={NavigationBar} options={{ headerShown: false }} />
+          <Stack.Screen name="AltNavigationBar" component={AltNavigationBar} options={{ headerShown: false }} />
           <Stack.Screen name="Splash" component={Splash} options={{ headerShown: false }} />
           <Stack.Screen name="Terms" component={Terms} options={{ headerShown: false }} />
           <Stack.Screen name="TutorialCheckIn1" component={TutorialCheckIn1} options={{ headerShown: false }} />
@@ -61,7 +66,6 @@ export default function AppNavigation() {
           <Stack.Screen name="ThirtyDayOverview" component={ThirtyDayOverview} options={{ headerShown: false }} />
           {/* <Stack.Screen name="PushNotifications" component={PushNotifications}
            options={{ headerShown: false }} /> */}
-          <Stack.Screen name="Loading" component={Loading} options={{ headerShown: false }} />
           <Stack.Screen name="Overview" component={Overview} options={{ headerShown: false }} />
           <Stack.Screen name="Tag" component={Tag} options={{ headerShown: false }} />
           <Stack.Screen name="Favorites" component={FavoritesList} options={{ headerShown: false }} />

@@ -4,11 +4,11 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const jwtStrategy = require('passport-jwt').Strategy;
+const JwtStrategy = require('passport-jwt').Strategy;
 const { ExtractJwt } = require('passport-jwt');
 const bodyParser = require('body-parser');
 const passport = require('./passport');
-const User = require('./models/UserSchema');
+const User = require('./models/OfficialUserSchema');
 
 const uri = process.env.MONGODB_URI;
 const port = process.env.PORT;
@@ -20,15 +20,14 @@ const jwtOptions = {
 };
 
 // Route Imports
-const testRouter = require('./routes/testRoute');
-const journalRouter = require('./routes/journalRoute');
-const postRouter = require('./routes/postRoute');
-const userRouter = require('./routes/userRoute');
+const testRouter = require('./routes/miscRoute');
 const contentRouter = require('./routes/contentRoute');
 const offJournalRouter = require('./routes/offJournalRoute');
 const offUserRouter = require('./routes/offUserRoute');
+const timeSerieRouter = require('./routes/TimeSerieRoute');
 const checkInRouter = require('./routes/checkInRoute');
 const tagRouter = require('./routes/tagRoute');
+
 // Connect to the MongoDB database
 async function connectToDatabase() {
   try {
@@ -50,12 +49,10 @@ app.use(bodyParser.urlencoded({ limit: '200mb', extended: true }));
 
 // API Routes
 app.use('/test', testRouter);
-app.use('/journals', journalRouter);
-app.use('/posts', postRouter);
-app.use('/users', userRouter);
 app.use('/content', contentRouter);
 app.use('/offUser', offUserRouter);
 app.use('/offJournal', offJournalRouter);
+app.use('/timeSerie', timeSerieRouter);
 app.use('/checkins', checkInRouter);
 app.use('/tag', tagRouter);
 
@@ -65,7 +62,7 @@ app.get('/', (req, res) => {
 
 // JWT Authentication for /protected route
 passport.use(
-  new jwtStrategy(jwtOptions, async (payload, done) => {
+  new JwtStrategy(jwtOptions, async (payload, done) => {
     try {
       const user = await User.findById(payload.id);
       if (!user) {
@@ -75,6 +72,7 @@ passport.use(
     } catch (error) {
       done(error, false);
     }
+    return null;
   }),
 );
 

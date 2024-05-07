@@ -32,11 +32,11 @@ const getTagByName = async (req, res) => {
   }
 };
 
-// req has tag object, userName
+// req has tag object, email
 const favoriteTag = async (req, res) => {
   try {
-    const { tag, username } = req.body;
-    const user = await User.findOne({ username });
+    const { tag, email } = req.body;
+    const user = await User.findOne({ email });
     // check if user exists
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
@@ -51,7 +51,7 @@ const favoriteTag = async (req, res) => {
 
     // if error checking passes, add the new tag to the favorites array
     await User.findOneAndUpdate(
-      { username },
+      { email },
       { $push: { favorites: tag } },
     );
     // find the corresponding tag document and update its isFavorite field
@@ -68,9 +68,9 @@ const favoriteTag = async (req, res) => {
 
 const unfavoriteTag = async (req, res) => {
   try {
-    const { tag, username } = req.body;
+    const { tag, email } = req.body;
     await User.findOneAndUpdate(
-      { username },
+      { email },
       { $pull: { favorites: tag } },
     );
     // find the corresponding tag document and update its isFavorite field

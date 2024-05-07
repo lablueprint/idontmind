@@ -27,11 +27,11 @@ const getAllJournals = async (req, res) => {
   }
 };
 
-// get journal by username (user who wrote it)
-const getJournalByUsername = async (req, res) => {
-  const { username } = req.body;
+// get journal by email (user who wrote it)
+const getJournalByEmail = async (req, res) => {
+  const { email } = req.body;
   try {
-    const journal = await Journal.find({ username });
+    const journal = await Journal.find({ email });
     if (!journal) {
       return res.status(404).send({ message: 'Journal not found' });
     }
@@ -53,7 +53,7 @@ const updateJournal = async (req, res) => {
       res.status(404).send({ message: 'Journal not found' });
     }
     // check if any restricted fields are present in updatedFields
-    const restrictedFields = ['creationTime', 'id'];
+    const restrictedFields = ['timestamp', 'id'];
     const hasRestricted = Object.keys(updatedFields).some((f) => restrictedFields.includes(f));
     if (hasRestricted) {
       return res.status(403).send({ message: 'No permission to update certain fields' });
@@ -87,5 +87,5 @@ const deleteJournalById = async (req, res) => {
 };
 
 module.exports = {
-  createJournal, getAllJournals, getJournalByUsername, updateJournal, deleteJournalById,
+  createJournal, getAllJournals, getJournalByEmail, updateJournal, deleteJournalById,
 };
