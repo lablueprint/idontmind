@@ -201,23 +201,46 @@ const increaseChallengeDay = async (req, res) => {
   }
 };
 
-const readSpecifiedFields = async (req, res) => {
-  const { id, fields } = req.body;
+// req has tag object, email
+const favoriteTag = async (req, res) => {
   try {
-    const existingUser = await User.findById(id);
-    if (!existingUser) {
-      return res.status(404).send({ message: 'User not found' });
+    const { tag, email } = req.body;
+    const user = await User.findOne({ email });
+    // check if user exists
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
     }
-    const user = {};
-    fields.forEach((field) => {
-      if (existingUser[field] !== undefined) {
-        user[field] = existingUser[field];
-      }
-    });
-    return res.send(user);
+    // check if the tag already exists in the favorites array
+    const tagExists = user.favorites.some((favorite) => favorite.id === tag.id);
+    if (tagExists) {
+      return res.status(400).json({ message: 'Tag already exists in favorites' });
+    }
+
+    // maybe add additional error checking for whether the requested tag id is valid?
+
+    // if error checking passes, add the new tag to the favorites array
+    const updatedUser = await User.findOneAndUpdate(
+      { email },
+      { $push: { favorites: tag } },
+    );
+    return res.status(200).json(updatedUser);
   } catch (err) {
     console.error(err);
-    return res.status(500).send(err);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+const unfavoriteTag = async (req, res) => {
+  try {
+    const { tag, email } = req.body;
+    const updatedUser = await User.findOneAndUpdate(
+      { email },
+      { $pull: { favorites: tag } },
+    );
+    return res.status(200).json(updatedUser);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -231,11 +254,12 @@ module.exports = {
   getAllUsers,
   getUserById,
   updateUser,
-  deleteUserById,
   readSpecifiedFields,
+  deleteUserById,
   getFavorites,
   getUserChallengeDay,
   resetChallengeDay,
   increaseChallengeDay,
-  readSpecifiedFields,
+  favoriteTag,
+  unfavoriteTag,
 };
