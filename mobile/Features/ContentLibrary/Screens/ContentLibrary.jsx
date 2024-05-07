@@ -34,7 +34,7 @@ export default function ContentLibrary({ navigation }) {
     const getAllTags = async () => {
       try {
         /* Grab all tags */
-        const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/getAllTagTitles`);
+        const tags = ['hi', 'social anxiety', 'relaxation', 'exercise', 'tag1', 'tag2', 'tag3'];
 
         /* Grab user's favorite list */
         const resFavorites = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/getFavorites`, { email }, { headers: authHeader });
@@ -43,10 +43,10 @@ export default function ContentLibrary({ navigation }) {
         initFavorites(resFavorites.data);
 
         /* Set Context List for Tags */
-        initTags(res.data);
+        initTags(tags);
 
         /* Set Initial Data for Render Functions */
-        setData(res.data);
+        setData(tags);
       } catch (err) {
         console.error(err);
       }

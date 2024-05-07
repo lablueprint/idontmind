@@ -63,8 +63,6 @@ const searchByTag = async (req, res) => {
   }
 };
 
-// batched data
-
 module.exports = {
   searchByKeyword, searchByTag,
 };
