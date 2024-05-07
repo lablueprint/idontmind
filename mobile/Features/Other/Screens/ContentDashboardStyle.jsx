@@ -4,16 +4,31 @@ export default StyleSheet.create({
   largeText: {
     fontFamily: 'recoleta-regular',
     fontSize: 40,
-    color: '#343A3A',
+    color: 'rgba(246, 252, 252, 1)',
+    paddingTop: 12,
   },
   medText: {
     fontFamily: 'recoleta-regular',
     fontSize: 32,
-    color: '#343A3A',
+    color: 'rgba(246, 252, 252, 1)',
+  },
+  capitalLetter: {
+    fontFamily: 'pinyon-script',
+    fontSize: 60,
+    color: 'rgba(246, 252, 252, 1)',
+    paddingRight: 5,
   },
   insights: {
     fontFamily: 'cabinet-grotesk-regular',
     fontSize: 24,
+    color: 'rgba(246, 252, 252, 1)',
+    paddingBottom: 5,
+    paddingTop: 15,
+  },
+  dailydiscovery: {
+    fontFamily: 'cabinet-grotesk-regular',
+    fontSize: 24,
+    color: 'rgba(52, 58, 58, 1)',
   },
   middleButtons: {
     backgroundColor: '#6A8784',
@@ -59,6 +74,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    paddingBottom: 10,
   },
   gearBackground: {
     backgroundColor: '#F6FCFC',

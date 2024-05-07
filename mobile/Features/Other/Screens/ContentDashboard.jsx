@@ -4,6 +4,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import gear from '../../../assets/images/gear.png';
+import background from '../../../assets/images/contentbackground.png';
 import styles from './ContentDashboardStyle';
 import rightChev from '../../../assets/images/rightChevron.png';
 
@@ -11,8 +12,18 @@ export default function ContentDashboard({ navigation }) {
   const navigateToDayChallenge = () => {
     navigation.navigate('Day Challenge');
   };
+
+  const navigateToOptions = () => {
+    navigation.navigate('Options');
+  };
+
   return (
     <ScrollView>
+      <View style={{ position: 'absolute' }}>
+        <Image
+          source={background}
+        />
+      </View>
       <View style={{
         display: 'flex', flexDirection: 'column', marginTop: 100, width: '80%', alignSelf: 'center',
       }}
@@ -20,6 +31,7 @@ export default function ContentDashboard({ navigation }) {
         <View style={{ alignItems: 'flex-end' }}>
           <TouchableOpacity
             style={styles.gearBackground}
+            onPress={navigateToOptions}
           >
             <View style={styles.gearContainer}>
               <Image
@@ -30,10 +42,14 @@ export default function ContentDashboard({ navigation }) {
           </TouchableOpacity>
         </View>
         <View style={{
-          display: 'flex', flexDirection: 'column', paddingTop: 50, fontSize: 38,
+          display: 'flex', flexDirection: 'column', fontSize: 38,
         }}
         >
-          <Text style={styles.largeText}>Welcome Daniel,</Text>
+          <View style={{ flexDirection: 'row' }}>
+            <Text style={styles.largeText}>Welcome </Text>
+            <Text style={styles.capitalLetter}>D</Text>
+            <Text style={styles.largeText}>aniel,</Text>
+          </View>
           <Text style={styles.medText}>We&apos;re so glad you&apos;re here!</Text>
         </View>
         <Text style={styles.insights}>Your Insights</Text>
@@ -71,7 +87,7 @@ export default function ContentDashboard({ navigation }) {
         </View>
         <View style={{ height: 20 }} />
         <View style={styles.dailyBookmarkLine}>
-          <Text style={styles.insights}>Daily Discovery</Text>
+          <Text style={styles.dailydiscovery}>Daily Discovery</Text>
           <TouchableOpacity>
             <Text style={styles.yourBookmarks}>Your Bookmarks</Text>
           </TouchableOpacity>
