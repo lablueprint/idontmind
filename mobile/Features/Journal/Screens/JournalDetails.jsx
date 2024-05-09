@@ -78,4 +78,5 @@ export default function JournalDetails({ navigation }) {
     </ScrollView>
 
   );
+  
 }

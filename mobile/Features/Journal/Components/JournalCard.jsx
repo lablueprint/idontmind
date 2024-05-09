@@ -16,17 +16,14 @@ export default function JournalCard({
 
   return (
     <Pressable style={styles.journalCard} onPress={handlePress}>
-      <Text>
-        username:
-        {username}
-      </Text>
-      <Text>
-        date:
+      <Text style={styles.date}>
         {date}
       </Text>
-      <Text>
-        prompt:
+      <Text style={styles.prompt}>
         {prompt}
+      </Text>
+      <Text style={styles.text}>
+        {text}
       </Text>
     </Pressable>
   ); /* Journal Card only shows username, date, and prompt;

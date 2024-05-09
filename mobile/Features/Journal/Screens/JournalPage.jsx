@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import PropTypes from 'prop-types';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRoute } from 'react';
 import axios from 'axios';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -74,6 +74,27 @@ export function JournalPage({
       setSelectedImage(result.assets[0].uri);
       setUploadImageURL(result.assets[0]);
     }
+  };
+
+  const getPrompt = (option) => {
+    if (!option) {
+      return <Text style={{ fontSize: 15, fontWeight: 'bold' }}>{randomTitle}</Text>;
+    }
+    return (
+      <TextInput
+        style={{
+          backgroundColor: '#C6CECE',
+          color: 'black',
+          padding: 10,
+          borderRadius: 5,
+          margin: 20,
+        }}
+        multiline
+        placeholder="Add Title..."
+        onChangeText={setFreeWriteTitle}
+        value={freeWriteTitle}
+      />
+    );
   };
 
   const currDate = new Date();
@@ -474,7 +495,8 @@ export default function JournalTabs({ navigation }) {
       </View>
     </View>
   );
-}
+  }
+  
 
 JournalPage.propTypes = {
   navigation: PropTypes.shape({

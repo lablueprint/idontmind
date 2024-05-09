@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import {
-  View, Text, StyleSheet, ScrollView,
+  View, Text, StyleSheet, ScrollView, ListView,
 } from 'react-native';
 // import CalendarPicker from 'react-native-calendar-picker';
 import { Calendar } from 'react-native-calendars';
@@ -22,6 +22,7 @@ export default function CalendarPage({ navigation }) {
   const [recentJournals, setRecentJournals] = useState([]);
   const [filteredJournals, setFilteredJournals] = useState([]);
   const [clickedDate, setClickedDate] = useState(false);
+  const [timestamps, setTimestamps] = useState([]);
 
   const formatDate = (dateString) => {
     const options = { month: 'long', day: 'numeric', year: 'numeric' };
@@ -45,7 +46,10 @@ export default function CalendarPage({ navigation }) {
       const result = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/journals/getAllJournals`);
       const recentJournalData = result.data.length >= 10 ? result.data.slice(-10) : result.data;
       setAllJournals(result.data);
-      setRecentJournals(recentJournalData);
+      setRecentJournals(recent_journals);
+      setTimestamps(result.data.map((journal) => journal.timestamp.substring(0, 10)));
+      timestamps.forEach((timestamp) => console.log(timestamp));
+      allJournals.forEach((journal) => console.log(journal));
     } catch (err) {
       console.error(err);
       return err;
@@ -62,6 +66,11 @@ export default function CalendarPage({ navigation }) {
     // Use the Pacific Time Zone date for further processing
     const objectDate = new Date(pacificDate);
     const todayDate = new Date();
+    // console.log('OBJECT FULL DATE:', objectDate);
+    // console.log('TODAY FULL DATE:', todayDate);
+
+    // console.log('OBJECT DAY:', objectDate.getUTCDate());
+    // console.log('TODAY DAY:', todayDate.getDate());
 
     if (selectedDate && objectDate.getTime() === selectedDate.getTime() && clickedDate) {
       setClickedDate(false);
@@ -80,6 +89,10 @@ export default function CalendarPage({ navigation }) {
       setFilteredJournals(journals.filter((journal) => datesAreOnSameDay(new Date(journal.timestamp), objectDate)));
     }
   };
+  // console.log("selected Date", selectedDate);
+  const getJournalTimestamps = () => ({
+
+  });
 
   const customDayHeaderStyles = ({ dayOfWeek, month, year }) => ({
     style: {
@@ -125,154 +138,173 @@ export default function CalendarPage({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <View style={{ backgroundColor: '#91A8D1', margin: 10 }}>
-        {/* <CalendarPicker
-          todayBackgroundColor={'blue'}
-          customDatesStyles={customDatesStyles}
-          customDayHeaderStyles={customDayHeaderStyles}
-          onDateChange={handleDateSelect}
-          headerWrapperStyle={headerWrapperStyle}
-          dayLabelsWrapper={dayLabelsWrapper}
-        /> */}
-        <Calendar
-          onDayPress={handleDateSelect}
-          markedDates={{
-            [selectedDate]: { selected: true, disableTouchEvent: true, selectedDotColor: 'orange' },
-            '2024-04-07': { selected: true },
-          }}
+      <ScrollView>
+        <View style={{ padding: 20 }}>
+          <Text>Journal Entries</Text>
+          <Calendar
+            onDayPress={handleDateSelect}
+            markedDates={{
+              selectedDate: { selected: true, disableTouchEvent: true, selectedDotColor: 'orange' },
+              // timestamps.map(timestamp => ({ timestamp: { selected: true } } )),
+              ...timestamps.reduce((acc, timestamp) => {
+                acc[timestamp] = { selected: true, selectedColor: '#BFDBD7' };
+                return acc;
+              }, {}),
+            }}
+          // customHeaderTitle
           // need to figure out styling of calendar
-          style={{
-            borderWidth: 1,
-            borderColor: 'gray',
-            height: 310,
-          }}
-          theme={{
-            calendarBackground: '#91A8D1',
-            backgroundColor: '#91A8D1',
-            textMonthFontSize: 24,
-            textMonthFontWeight: 'bold',
-            arrowColor: 'white',
-            'stylesheet.calendar.header': {
+            style={{
+              borderWidth: 1,
+              borderColor: 'gray',
+              lineHeight: '10',
+              height: 310,
+            }}
+            theme={{
+              calendarBackground: '#F6FCFC',
+              // backgroundColor: '#82A5A1',
+              textMonthFontSize: 16,
+              textMonthFontWeight: 'light',
+              arrowColor: 'black',
+              textDayFontFamily: 'monospace',
+              textMonthFontFamily: 'monospace',
+              textDayHeaderFontFamily: 'monospace',
+            // 'stylesheet.calendar.header': {
+            //   calendar: {
+            //     lineHeight: 1,
+            //   },
+            //   header: {
+            //     flexDirection: 'row',
+            //     justifyContent: 'space-between',
+            //     paddingLeft: 10,
+            //     paddingRight: 10,
+            //     marginTop: 6,
+            //     alignItems: 'left',
+            //   },
+            //   monthText: {
+            //     fontSize: 16, // Decrease the font size of month text
+            //     color: 'black',
+            //   },
+            // },
+            }}
+            stylesheet={{
               calendar: {
-                lineHeight: 20,
+              // Adjust lineHeight to reduce space between rows
+                lineHeight: 50,
               },
-              header: {
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                paddingLeft: 10,
-                paddingRight: 10,
-                marginTop: 6,
-                alignItems: 'center',
+              dayNumFontFamily: {
+              // Adjust font family for day numbers if needed
               },
-              monthText: {
-                fontSize: 16, // Decrease the font size of month text
-                fontWeight: 'bold',
+              dayNumFontSize: {
+              // Adjust font size of day numbers
+                fontSize: 16,
+              },
+              dayTextColor: {
+              // Adjust color of day numbers
+                color: 'black',
+              },
+              todayTextColor: {
+              // Adjust color of today's date
+                color: 'blue',
+              },
+              selectedDayTextColor: {
+              // Adjust color of selected date
                 color: 'white',
               },
-            },
-          }}
-          stylesheet={{
-            calendar: {
-              // Adjust lineHeight to reduce space between rows
-              lineHeight: 50,
-            },
-            dayNumFontFamily: {
-              // Adjust font family for day numbers if needed
-            },
-            dayNumFontSize: {
-              // Adjust font size of day numbers
-              fontSize: 16,
-            },
-            dayTextColor: {
-              // Adjust color of day numbers
-              color: 'black',
-            },
-            todayTextColor: {
-              // Adjust color of today's date
-              color: 'blue',
-            },
-            selectedDayTextColor: {
-              // Adjust color of selected date
-              color: 'white',
-            },
-            textDayFontFamily: {
+              textDayFontFamily: {
               // Adjust font family for day text if needed
-            },
-            textDayFontSize: {
+              },
+              textDayFontSize: {
               // Adjust font size of day text if needed
-            },
-            textDayFontWeight: {
+              },
+              textDayFontWeight: {
               // Adjust font weight of day numbers
-              fontWeight: 'bold',
-            },
-            textMonthFontFamily: {
+                fontWeight: 'bold',
+              },
+              textMonthFontFamily: {
               // Adjust font family for month text if needed
-            },
-            textMonthFontSize: {
+              },
+              textMonthFontSize: {
               // Adjust font size of month text
-              fontSize: 18,
-            },
-            textMonthFontWeight: {
+                fontSize: 18,
+              },
+              textMonthFontWeight: {
               // Adjust font weight of month text
-              fontWeight: 'bold',
-            },
-            textDayHeaderFontSize: {
+                fontWeight: 'bold',
+              },
+              textDayHeaderFontSize: {
               // Adjust font size of day header
-              fontSize: 14,
-            },
-            textDayHeaderFontWeight: {
+                fontSize: 14,
+              },
+              textDayHeaderFontWeight: {
               // Adjust font weight of day header
-              fontWeight: 'bold',
-            },
-            arrowStyle: {
+                fontWeight: 'bold',
+              },
+              arrowStyle: {
               // Adjust arrow style if needed
-            },
-          }}
-        />
-      </View>
-      {clickedDate
-        ? (
-          <View style={{ flex: 1 }}>
-            <Text>Past Entries</Text>
-            <ScrollView>
-              {filteredJournals.map((x) => (
-                <JournalCard
-                  key={x._id}
-                  username={x.username}
-                  date={formatDate(x.timestamp)}
-                  prompt={x.prompt}
-                  text={x.text}
-                  image={x.image}
-                  onPress={navigateToPastJournal}
-                />
-              ))}
-            </ScrollView>
-          </View>
-        )
-        : (
-          <View style={{ flex: 1 }}>
-            <Text>Recent Entries</Text>
-            <ScrollView>
-              {recentJournals.map((x) => (
-                <JournalCard
-                  key={x._id}
-                  username={x.username}
-                  date={formatDate(x.timestamp)}
-                  prompt={x.prompt}
-                  text={x.text}
-                  image={x.image}
-                  onPress={navigateToPastJournal}
-                />
-              ))}
-            </ScrollView>
-          </View>
-        ) }
+              },
+            }}
+          />
+        </View>
+        {clickedDate
+          ? (
+            <View style={{ paddingHorizontal: 12 }}>
+              <Text style={styles.header}>Past Entries</Text>
+              <View style={[styles.journalCardContainer, styles.journalCardHorizontal]}>
+                {[...filteredJournals].reverse().map((x) => (
+                  <JournalCard
+                    key={x._id}
+                    username={x.username}
+                    date={formatDate(x.timestamp)}
+                    prompt={x.prompt}
+                    text={x.text}
+                    image={x.image}
+                    onPress={navigateToPastJournal}
+                  />
+                /* Recent Entries */
+                ))}
+              </View>
+            </View>
+          )
+          : (
+            <View style={{ paddingHorizontal: 12 }}>
+              <Text>Recent Entries</Text>
+              <View style={[styles.journalCardContainer, styles.journalCardHorizontal]}>
+                {[...recentJournals].reverse().map((x) => (
+                  <JournalCard
+                    key={x._id}
+                    username={x.username}
+                    date={formatDate(x.timestamp)}
+                    prompt={x.prompt}
+                    text={x.text}
+                    image={x.image}
+                    onPress={navigateToPastJournal}
+                  />
+                ))}
+              </View>
+            </View>
+          ) }
+      </ScrollView>
     </View>
   );
 }
 
-CalendarPage.propTypes = {
-  navigation: PropTypes.shape({
-    navigate: PropTypes.func.isRequired,
-  }).isRequired,
-};
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    // flexWrap: "wrap",
+    backgroundColor: '#E4F6F3',
+    marginTop: 40,
+
+  },
+  journalCardContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  journalCardHorizontal: {
+    justifyContent: 'flex-start',
+  },
+
+  header: {
+    fontFamily: 'Recoleta',
+  },
+});
