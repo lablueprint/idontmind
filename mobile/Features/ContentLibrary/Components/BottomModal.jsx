@@ -4,10 +4,10 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Bookmark from '../../Other/Components/Bookmark';
-import folderDark from '../../../assets/folder_dark.png';
-import check from '../../../assets/green_check.png';
-import bookmark from '../../../assets/bookmark_dark.png';
-import add from '../../../assets/addbutton.png';
+import folderDark from '../../../assets/images/folder_dark.png';
+import check from '../../../assets/images/green_check.png';
+import bookmark from '../../../assets/images/bookmark_dark.png';
+import add from '../../../assets/images/addbutton.png';
 
 function FolderModalRow({
   title, description, icon, iconSize,

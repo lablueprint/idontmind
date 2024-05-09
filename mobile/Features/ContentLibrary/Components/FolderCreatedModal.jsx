@@ -4,8 +4,8 @@ import {
 } from 'react-native';
 
 import PropTypes from 'prop-types';
-import exit from '../../../assets/exit.png';
-import check from '../../../assets/green_check.png';
+import exit from '../../../assets/images/exit.png';
+import check from '../../../assets/images/green_check.png';
 import styles from './FolderModalStyle';
 
 function FolderCreatedModal({ modalVisibleParent, toggleModal, newFolderName }) {

@@ -6,7 +6,7 @@ import {
 import PropTypes from 'prop-types';
 import styles from './FolderModalStyle';
 
-import exit from '../../../assets/exit.png';
+import exit from '../../../assets/images/exit.png';
 
 function NewFolderModal({
   modalVisibleParent, toggleModal, toggleModalCreated, setFolderName,

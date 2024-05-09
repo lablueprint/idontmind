@@ -4,7 +4,7 @@ import {
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { useRoute } from '@react-navigation/native';
-import BookmarkImage from '../../../assets/bookmark_blue.png';
+import BookmarkImage from '../../../assets/images/bookmark_blue.png';
 import styles from './BookmarksStyle';
 import BottomHalfModal from '../Components/BottomModal';
 import NewFolderModal from '../Components/NewFolderModal';

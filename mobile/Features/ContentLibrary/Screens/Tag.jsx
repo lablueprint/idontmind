@@ -4,10 +4,10 @@ import {
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { useContext, useState } from 'react';
-import starImage from '../../../assets/star.png';
-import shapeImage from '../../../assets/shape.png';
-import cancelImage from '../../../assets/cancel.png';
-import goldStar from '../../../assets/goldStar.png';
+import starImage from '../../../assets/images/star.png';
+import shapeImage from '../../../assets/images/shape.png';
+import cancelImage from '../../../assets/images/cancel.png';
+import goldStar from '../../../assets/images/goldStar.png';
 import style from '../Components/ContentStyle';
 import TagContext from '../Context/TagContext';
 import styles from './BookmarksStyle';
