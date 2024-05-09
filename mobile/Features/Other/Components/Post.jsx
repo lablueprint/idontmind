@@ -48,10 +48,14 @@ export default function Post({
 }
 
 Post.propTypes = {
-  username: PropTypes.string.isRequired,
+  username: PropTypes.string,
   body: PropTypes.string.isRequired,
   timestamp: PropTypes.string.isRequired,
   navigation: PropTypes.shape({
     navigate: PropTypes.func,
   }).isRequired,
+};
+
+Post.defaultProps = {
+  username: null,
 };

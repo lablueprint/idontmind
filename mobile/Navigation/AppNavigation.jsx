@@ -109,7 +109,9 @@ export default function AppNavigation({ user }) {
 }
 
 AppNavigation.propTypes = {
-  user: PropTypes.shape({
-    email: PropTypes.string,
-  }).isRequired,
+  user: PropTypes.string,
+};
+
+AppNavigation.defaultProps = {
+  user: null,
 };
