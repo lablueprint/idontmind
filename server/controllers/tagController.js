@@ -14,7 +14,11 @@ const getAllTags = async (req, res) => {
 // returns tag objects with just their id, tagName, and isFavorite fields
 const getAllTagTitles = async (req, res) => {
   try {
+<<<<<<< HEAD
     const tags = await Tag.find({}).select('tagName isFavorite');
+=======
+    const tags = await Tag.find({}).select('tagName');
+>>>>>>> main
     res.send(tags);
   } catch (err) {
     console.error(err);
@@ -32,6 +36,7 @@ const getTagByName = async (req, res) => {
   }
 };
 
+<<<<<<< HEAD
 // const getContentObjects = async (req, res) => {
 //   try {
 //     const tag = await Tag.find({ name: req.body.name });
@@ -41,6 +46,8 @@ const getTagByName = async (req, res) => {
 //   }
 // };
 
+=======
+>>>>>>> main
 // req has tag object, userName
 const favoriteTag = async (req, res) => {
   try {

@@ -9,7 +9,7 @@ export const data = [
     timestamp: '2023-10-23T00:41:59.057Z',
   },
   {
-    value: 12,
+    value: 1,
     timestamp: '2023-10-23T00:41:59.057Z',
   },
   {
@@ -17,7 +17,28 @@ export const data = [
     timestamp: '2023-10-23T00:41:59.057Z',
   },
   {
-    value: 14,
+    value: 6,
+    timestamp: '2023-10-23T00:41:59.057Z',
+  }];
+export const data2 = [
+  {
+    value: 2,
+    timestamp: '2023-10-24T00:41:59.057Z',
+  },
+  {
+    value: 4,
+    timestamp: '2023-10-23T00:41:59.057Z',
+  },
+  {
+    value: 13,
+    timestamp: '2023-10-23T00:41:59.057Z',
+  },
+  {
+    value: 5,
+    timestamp: '2023-10-23T00:41:59.057Z',
+  },
+  {
+    value: 1,
     timestamp: '2023-10-23T00:41:59.057Z',
   }];
   /* Bar Data for Data Visualization */

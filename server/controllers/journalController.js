@@ -13,7 +13,7 @@ const createJournal = async (req, res) => {
 };
 
 const getAllJournals = async (req, res) => {
-  console.log("getAllJournals")
+  console.log('getAllJournals');
   try {
     const journals = await Journal.find({});
     res.send(journals);

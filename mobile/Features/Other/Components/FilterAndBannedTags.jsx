@@ -2,6 +2,7 @@ import {
   View, Text, TouchableOpacity, Button,
 } from 'react-native';
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 import FilterAndBannedTagsStyle from './FilterAndBannedTagsStyle';
 
 export default function FilterAndBannedTags({ navigation, screenOption }) {
@@ -58,3 +59,15 @@ export default function FilterAndBannedTags({ navigation, screenOption }) {
     </View>
   );
 }
+
+FilterAndBannedTags.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+    goBack: PropTypes.func,
+  }).isRequired,
+  screenOption: PropTypes.number, // I'm not seeing a great reason for this not being a boolean
+};
+
+FilterAndBannedTags.defaultProps = {
+  screenOption: 0,
+};
