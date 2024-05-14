@@ -5,6 +5,10 @@ export default function ContentDashboard({ navigation }) {
   const navigateToDayChallenge = () => {
     navigation.navigate('Day Challenge');
   };
+  const navigateToOptions = () => {
+    navigation.navigate('Options');
+  };
+
   return (
     <View style={{ display: 'flex', flexDirection: 'column' }}>
       <View style={{ display: 'flex', flexDirection: 'row' }}>
@@ -36,6 +40,14 @@ export default function ContentDashboard({ navigation }) {
           onPress={navigateToDayChallenge}
         >
           <Text style={{ fontSize: 28 }}>30 Day Challenge</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            backgroundColor: 'lightgrey', display: 'flex', flexDirection: 'column', alignItems: 'center', width: '75%', borderRadius: 25, marginTop: 100,
+          }}
+          onPress={navigateToOptions}
+        >
+          <Text style={{ fontSize: 28 }}>options</Text>
         </TouchableOpacity>
       </View>
     </View>

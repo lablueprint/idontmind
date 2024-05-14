@@ -1,5 +1,5 @@
 import {
-  Pressable, Text, View, TouchableOpacity,
+  Pressable, Text, View, TouchableOpacity, Image,
 } from 'react-native';
 import React, { useState } from 'react';
 import { Divider } from '@rneui/themed';
@@ -7,9 +7,11 @@ import { Switch } from 'react-native-switch';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { TimerPickerModal } from 'react-native-timer-picker';
 import { LinearGradient } from 'expo-linear-gradient';
+import PropTypes from 'prop-types';
 import styles from './PushNotificationsStyle';
+import Back from '../../assets/images/back.png';
 
-function PushNotificationsOptions() {
+function PushNotificationsOptions({ navigation }) {
   const [notifEnabled, setNotifEnabled] = useState(false);
   const [isEnabled, setIsEnabled] = useState(false);
   const [isEnabled2, setIsEnabled2] = useState(false);
@@ -21,6 +23,10 @@ function PushNotificationsOptions() {
   const toggleSwitch2 = () => setIsEnabled2((previousState) => !previousState);
   const toggleSwitch3 = () => setIsEnabled3((previousState) => !previousState);
   const toggleSwitch4 = () => setIsEnabled4((previousState) => !previousState);
+
+  const navigateToOptions = () => {
+    navigation.navigate('Options');
+  };
 
   const formatTime = (pickedDuration) => {
     let { hours } = pickedDuration;
@@ -50,10 +56,46 @@ function PushNotificationsOptions() {
   const [alarmString, setAlarmString] = useState(null);
 
   return (
-    <View>
-      <Text style={styles.header}>
-        Push Notifications
-      </Text>
+    <View style={{
+      flex: 1,
+      backgroundColor: '#E3F5F4',
+      padding: 20,
+      paddingTop: 100,
+    }}
+    >
+      <View style={{ borderBottomColor: '#26292E80', borderBottomWidth: 0.5, paddingBottom: 20 }}>
+        <View style={{
+          display: 'flex', flexDirection: 'row',
+        }}
+        >
+          <Pressable onPress={navigateToOptions} style={{ flex: 1, alignSelf: 'flex-start' }}>
+            <Image
+              style={{
+                resizeMode: 'contain', height: 20, width: 20,
+              }}
+              source={Back}
+            />
+          </Pressable>
+          <Text style={{
+            flex: 8, textAlign: 'left', fontSize: 18, fontFamily: 'cabinet-grotesk-bold', color: '#4A4E4E',
+          }}
+          >
+            OPTIONS
+          </Text>
+        </View>
+        <View>
+          <Text style={{
+            fontSize: 32,
+            color: '#343A3A',
+            fontFamily: 'recoleta-regular',
+            textAlign: 'left',
+            paddingTop: 10,
+          }}
+          >
+            Reset Password
+          </Text>
+        </View>
+      </View>
       <View style={styles.container}>
         <Divider
           width={1}
@@ -272,3 +314,9 @@ function PushNotificationsOptions() {
 }
 
 export default PushNotificationsOptions;
+
+PushNotificationsOptions.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+  }).isRequired,
+};

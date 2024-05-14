@@ -19,14 +19,19 @@ import PostSignInLanding from '../Features/Other/Screens/PostSignInLanding';
 import Feed from '../Features/Other/Screens/Feed';
 import CheckIn from '../Features/Other/Screens/CheckIn';
 import PushNotifications from '../Features/Settings/Screens/PushNotifications';
-import Options from '../Features/Options/Options';
 import JournalHistoryPage from '../Features/Other/Screens/JournalHistoryPage';
 import WOYM from '../Features/Register/WOYM';
 import DayChallenge from '../Features/Other/Screens/DayChallenge';
+import Options from '../Features/Options/Options';
+import PersonalInfo from '../Features/Options/PersonalInfo';
+import PushNotificationsOptions from '../Features/Options/PushNotifications';
+import ResetPassword from '../Features/Options/ResetPassword';
 
 const Stack = createStackNavigator();
-const otherNames = ['Day Challenge', 'CheckIn', 'PostSignInLanding', 'Feed', 'Notifs', 'Options', 'Journal History', 'WOYM'];
-const otherPages = [DayChallenge, CheckIn, PostSignInLanding, Feed, PushNotifications, Options, JournalHistoryPage, WOYM];
+const otherNames = ['Day Challenge', 'CheckIn', 'PostSignInLanding', 'Feed', 'Notifs',
+  'Journal History', 'WOYM', 'Options', 'PersonalInfo', 'PushNotificationsOptions', 'ResetPassword'];
+const otherPages = [DayChallenge, CheckIn, PostSignInLanding, Feed, PushNotifications,
+  JournalHistoryPage, WOYM, Options, PersonalInfo, PushNotificationsOptions, ResetPassword];
 
 function HomeWithExtraPages() {
   return (

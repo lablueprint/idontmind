@@ -24,9 +24,11 @@ function Options({ navigation }) {
   };
   const navigateToContentRecs = () => {
     console.log('content recs');
+    navigation.navigate('WOYM');
   };
   const navigateToContentAvoid = () => {
     console.log('content avoid');
+    navigation.navigate('WOYM');
   };
 
   return (

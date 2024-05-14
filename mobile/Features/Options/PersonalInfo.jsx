@@ -241,17 +241,14 @@ export default function PersonInfo({ navigation }) {
           />
         </View>
       </View>
-      <View style={styles.paginationContainer}>
-        <View style={[styles.inactivePaginationDot]} />
-        <View style={[styles.activePaginationDot]} />
-        <View style={[styles.inactivePaginationDot]} />
-      </View>
-      <View style={styles.buttonShape}>
-        <TouchableOpacity
-          onPress={navigateToCustomization}
-        >
-          <Text style={styles.buttonText}>Next</Text>
-        </TouchableOpacity>
+      <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+        <View style={styles.buttonShape}>
+          <TouchableOpacity
+            onPress={navigateToCustomization}
+          >
+            <Text style={styles.buttonText}>Save</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
