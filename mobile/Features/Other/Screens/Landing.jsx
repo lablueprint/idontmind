@@ -30,7 +30,7 @@ export default function Landing({ navigation }) {
   };
 
   const navigateToOverview = () => {
-    navigation.navigate('Overview');
+    navigation.navigate('Exercise');
   };
 
   const dispatch = useDispatch();
