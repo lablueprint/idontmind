@@ -5,7 +5,7 @@ import {
 import PropTypes from 'prop-types';
 import style from './TagRectangleStyle';
 import BookmarkWhite from '../../../assets/images/bookmark.png';
-import BookmarkDark from '../../../assets/bookmark_dark.png';
+import BookmarkDark from '../../../assets/images/bookmark_dark.png';
 
 import TagFill from '../../../assets/images/tag_fill.png';
 
