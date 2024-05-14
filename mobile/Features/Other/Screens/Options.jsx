@@ -48,9 +48,11 @@ export default function Options({ navigation }) {
       quality: 1,
     });
 
+    console.log('HLKEJFKLD', result.assets[0]);
+
     if (!result.canceled) {
       setSelectedImage(result.assets[0].uri);
-      await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/test/uploadImage`, {
+      await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/test/uploadVideo`, {
         imageObject:
        result.assets[0],
       });

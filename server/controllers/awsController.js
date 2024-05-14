@@ -44,6 +44,27 @@ const uploadImage = async (req, res) => {
   }
 };
 
+// upload a video
+const uploadVideo = async (req, res) => {
+  try {
+    const { uri, base64 } = req.body.imageObject;
+    const parts = uri.split('/');
+    const fileName = parts[parts.length - 1];
+    const videoBuffer = Buffer.from(base64, 'base64');
+    const params = {
+      Bucket: process.env.S3_BUCKET,
+      Key: fileName,
+      Body: videoBuffer,
+      ContentType: 'video/mp4',
+    };
+    await s3.putObject(params).promise();
+    res.send('Video uploaded successfully');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error uploading video');
+  }
+};
+
 module.exports = {
-  getImage, uploadImage,
+  getImage, uploadImage, uploadVideo,
 };
