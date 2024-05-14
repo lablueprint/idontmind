@@ -1,11 +1,16 @@
 import 'react-native-gesture-handler';
 import { Provider } from 'react-redux';
 import * as Font from 'expo-font';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import * as SecureStore from 'expo-secure-store';
 import AppNavigation from './Navigation/AppNavigation';
 import store from './redux/store';
+import Loading from './Features/Register/Loading';
+
+// npx expo run:ios
 
 export default function App() {
+  const [user, setUser] = useState(null);
   useEffect(() => {
     async function loadFont() {
       await Font.loadAsync({
@@ -37,9 +42,15 @@ export default function App() {
     loadFont();
   }, []);
 
+  const GetUserInformation = async () => {
+    setUser(await SecureStore.getItemAsync('user'));
+  };
+
+  GetUserInformation();
+
   return (
     <Provider store={store}>
-      <AppNavigation />
+      <AppNavigation user={user} />
     </Provider>
   );
 }

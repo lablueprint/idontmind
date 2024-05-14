@@ -1,5 +1,10 @@
+import PropTypes from 'prop-types';
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { login } from '../redux/authSlice';
 import FavoritesList from '../Features/ContentLibrary/Screens/Favorites';
 import Tag from '../Features/ContentLibrary/Screens/Tag';
 import { TagProvider } from '../Features/ContentLibrary/Context/TagContext';
@@ -28,26 +33,60 @@ import AddActivity from '../Features/CheckIn/AddActivity';
 import AddIcon from '../Features/CheckIn/AddIcon';
 import Feeling from '../Features/CheckIn/Feeling';
 import EndCheckIn from '../Features/CheckIn/EndCheckIn';
+
 // import PushNotifications from '../Features/Settings/Screens/PushNotifications';
 
 const Stack = createStackNavigator();
 
-export default function AppNavigation() {
+export default function AppNavigation({ user }) {
+  const [isLoading, setIsLoading] = useState(true);
+  const dispatch = useDispatch();
+
+  const popRedux = () => {
+    console.log(user);
+    if (!user) {
+      return;
+    }
+    dispatch(login(JSON.parse(user)));
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  }, []);
+
+  useEffect(() => {
+    popRedux();
+  }, [user]);
+
+  if (isLoading) {
+    return (<Loading />);
+  }
+
   return (
     <NavigationContainer>
       <TagProvider>
         <Stack.Navigator>
-          <Stack.Screen name="Landing" component={Landing} options={{ headerShown: false }} />
+          { user ? (
+            <Stack.Screen name="NavigationBar" component={NavigationBar} options={{ headerShown: false }} />
+          ) : (
+            <Stack.Screen name="Landing" component={Landing} options={{ headerShown: false }} />
+          )}
           <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
           <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
           <Stack.Screen name="PersonalInfo" component={PersonalInfo} options={{ headerShown: false }} />
           <Stack.Screen name="Customization" component={Customization} options={{ headerShown: false }} />
+          { user ? (
+            <Stack.Screen name="Landing" component={Landing} options={{ headerShown: false }} />
+          ) : (
+            <Stack.Screen name="NavigationBar" component={NavigationBar} options={{ headerShown: false }} />
+          )}
           <Stack.Screen name="Filter" component={Filter} options={{ headerShown: false }} />
           <Stack.Screen name="BannedTags" component={BannedTags} options={{ headerShown: false }} />
           <Stack.Screen name="Loading" component={Loading} options={{ headerShown: false }} />
           <Stack.Screen name="Trends" component={TrendsTab} options={{ headerShown: false }} />
           <Stack.Screen name="TrendsBody" component={TrendsBody} options={{ headerShown: false }} />
-          <Stack.Screen name="NavigationBar" component={NavigationBar} options={{ headerShown: false }} />
           <Stack.Screen name="AltNavigationBar" component={AltNavigationBar} options={{ headerShown: false }} />
           <Stack.Screen name="Splash" component={Splash} options={{ headerShown: false }} />
           <Stack.Screen name="Terms" component={Terms} options={{ headerShown: false }} />
@@ -68,3 +107,11 @@ export default function AppNavigation() {
     </NavigationContainer>
   );
 }
+
+AppNavigation.propTypes = {
+  user: PropTypes.string,
+};
+
+AppNavigation.defaultProps = {
+  user: null,
+};
