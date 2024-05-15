@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
-const bcrypt = require('react-native-bcrypt');
+// const bcrypt = require('react-native-bcrypt');
 const User = require('../models/OfficialUserSchema');
 const passport = require('../passport');
 
@@ -261,17 +261,13 @@ const checkUserByEmail = async (req, res) => {
 
 const resetPassword = async (req, res) => {
   try {
-    console.log(21, '?');
     const newPassword = req.body.password;
     const userID = req.body.id;
-    console.log(22, '?');
 
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(newPassword, salt);
-
-    console.log(23, hashedPassword);
-    const updatedUser = await User.findByIdAndUpdate(userID, { password: hashedPassword });
-    console.log(24, 'user updated');
+    // const salt = await bcrypt.genSalt(10);
+    // const hashedPassword = await bcrypt.hash(newPassword, salt);
+    const updatedUser = await User.findByIdAndUpdate(userID, { password: newPassword });
+    console.log('user updated');
     if (!updatedUser) {
       return res.status(404).json({ message: 'User not found' });
     }
