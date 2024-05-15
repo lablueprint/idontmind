@@ -8,6 +8,7 @@ import JournalPage from '../Features/Journal/Screens/JournalPage';
 import ContentDashboard from '../Features/Other/Screens/ContentDashboard';
 import ContentLibrary from '../Features/ContentLibrary/Screens/ContentLibrary';
 import FindHelp from '../Features/Other/Screens/FindHelp';
+
 import TrendsIcon from '../assets/navbaricons/trendsicon.png';
 import JournalIcon from '../assets/navbaricons/journalicon.png';
 import HomeIcon from '../assets/navbaricons/homeicon.png';
