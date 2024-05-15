@@ -1,3 +1,4 @@
+// TODO: To be deleted after bookmarks get backend integrated.
 import {
   Text, View, TouchableOpacity, Image, ScrollView,
 } from 'react-native';
