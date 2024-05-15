@@ -4,7 +4,23 @@ export default StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: 'white',
+    backgroundColor: '#E5F8F3',
+  },
+  title: {
+    fontFamily: 'recoleta-regular',
+    fontSize: 40,
+    color: '#343A3A',
+  },
+  subheading: {
+    fontSize: 24,
+    flex: 1,
+    fontFamily: 'recoleta-regular',
+    color: '#343A3A',
+  },
+  titleRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    maxWidth: '100%',
   },
   row: {
     flexDirection: 'row',
@@ -39,5 +55,26 @@ export default StyleSheet.create({
   },
   whiteBox: {
     backgroundColor: 'white', width: 100, height: 25, borderRadius: 8, marginBottom: 5, marginLeft: 5,
+  },
+  bookmarkBackground: {
+    backgroundColor: '#A9B2B2',
+    borderRadius: '50%',
+    height: 48,
+    width: 48,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  bookmarkContainer: {
+    objectFit: 'cover',
+  },
+  bookmark: {
+    resizeMode: 'contain',
+    width: 16,
+    height: 20,
+  },
+  search: {
+    resizeMode: 'contain',
+    width: 19,
+    height: 19,
   },
 });
