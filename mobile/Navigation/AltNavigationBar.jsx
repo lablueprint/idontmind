@@ -25,9 +25,16 @@ import JournalHistoryPage from '../Features/Other/Screens/JournalHistoryPage';
 import WOYM from '../Features/Register/WOYM';
 import DayChallenge from '../Features/Other/Screens/DayChallenge';
 
+import Bookmarks from '../Features/ContentLibrary/Screens/Bookmarks';
+import BookmarksEdgeCase from '../Features/ContentLibrary/Screens/BookmarksEdgeCase';
+import Resource from '../Features/ContentLibrary/Screens/Resource';
+import ResourceList from '../Features/ContentLibrary/Screens/ResourceList';
+import Tag from '../Features/ContentLibrary/Screens/Tag';
+
 const Stack = createStackNavigator();
 const otherNames = ['Day Challenge', 'CheckIn', 'PostSignInLanding', 'Feed', 'Notifs', 'Options', 'Journal History', 'WOYM'];
-const otherPages = [DayChallenge, CheckIn, PostSignInLanding, Feed, PushNotifications, Options, JournalHistoryPage, WOYM];
+const otherPages = [DayChallenge, CheckIn, PostSignInLanding, Feed,
+  PushNotifications, Options, JournalHistoryPage, WOYM];
 
 function HomeWithExtraPages() {
   return (
@@ -52,13 +59,39 @@ function HomeWithExtraPages() {
     </Stack.Navigator>
   );
 }
+const contentNames = ['Bookmarks', 'Bookmarks Edge Case', 'Resource', 'Resource List', 'Tag'];
+const contentPages = [Bookmarks, BookmarksEdgeCase, Resource, ResourceList, Tag];
+function ContentLibraryWithExtraPages() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Content Library"
+        component={ContentLibrary}
+        options={{
+          headerShown: false,
+        }}
+      />
+      { [...Array(contentNames.length).keys()].map((i) => (
+        <Stack.Screen
+          key={contentNames[i]}
+          name={contentNames[i]}
+          component={contentPages[i]}
+          options={{
+            headerShown: false,
+          }}
+        />
+      )) }
+    </Stack.Navigator>
+  );
+}
 
 export default function AltNavigationBar() {
   const Tab = createBottomTabNavigator();
 
   const names = ['Trends', 'Journal', 'Home', 'Content', 'Find Help'];
   const icons = [TrendsIcon, JournalIcon, HomeIcon, ContentIcon, FindHelpIcon];
-  const components = [TrendsPage, JournalPage, HomeWithExtraPages, ContentLibrary, FindHelp];
+  const components = [TrendsPage, JournalPage, HomeWithExtraPages,
+    ContentLibraryWithExtraPages, FindHelp];
 
   return (
     <Tab.Navigator

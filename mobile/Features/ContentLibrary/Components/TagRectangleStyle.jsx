@@ -1,44 +1,42 @@
 import { StyleSheet } from 'react-native';
 
-const BookmarkStyle = StyleSheet.create({
+const TagRectangleStyle = StyleSheet.create({
   container: {
     display: 'flex',
     flexDirection: 'row',
-    backgroundColor: '#546967',
+    backgroundColor: '#D2E4E3',
     marginBottom: 10,
     marginRight: 30,
-    padding: 20,
     borderRadius: 8,
+    padding: 20,
     alignItems: 'center',
     height: 70,
   },
   textContainer: {
     flex: 1,
     flexDirection: 'column',
+    fontFamily: 'cabinet-grotesk-regular',
   },
   imageContainer1: {
-    marginLeft: 0,
-    marginRight: 15,
+    marginLeft: -5,
+    marginRight: 10,
   },
   imageContainer2: {
     marginLeft: 15,
     marginRight: 5,
   },
   nameText: {
-    marginTop: 10,
-    fontWeight: 700,
+    fontWeight: 600,
     fontSize: 16,
-    fontFamily: 'cabinet-grotesk-regular',
-    color: '#F6FCFC',
-
+    fontFamily: 'cabinet-grotesk-bold',
   },
   whiteText: {
-    color: 'white',
+    color: '#343A3A',
+    fontFamily: 'cabinet-grotesk-bold',
   },
   authorText: {
-    fontFamily: 'cabinet-grotesk-regular',
-    color: '#A9B2B2',
+    marginTop: 10,
   },
 });
 
-export default BookmarkStyle;
+export default TagRectangleStyle;
