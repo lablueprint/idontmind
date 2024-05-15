@@ -44,6 +44,7 @@ export default function ContentLibrary({ navigation }) {
         initTags(res.data);
 
         /* Set Initial Data for Render Functions */
+        console.log(res.data);
         setData(res.data);
       } catch (err) {
         console.error(err);

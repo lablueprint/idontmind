@@ -15,7 +15,7 @@ const signUpUser = async (req, res, next) => {
 
     const user = new User({ email, password, firstName });
     await user.save();
-    res.json(user);
+    return res.json(user);
   } catch (error) {
     next(error);
   }
@@ -23,6 +23,7 @@ const signUpUser = async (req, res, next) => {
 
 // Signs in User and gives state id to differentiate user in backend
 const signInUser = async (req, res, next) => {
+  console.log('hello');
   passport.authenticate('local', { session: false }, (err, user, info) => {
     if (err || !user) {
       return res.status(400).json({

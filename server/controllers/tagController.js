@@ -14,11 +14,7 @@ const getAllTags = async (req, res) => {
 // returns tag objects with just their id, tagName, and isFavorite fields
 const getAllTagTitles = async (req, res) => {
   try {
-<<<<<<< HEAD
-    const tags = await Tag.find({}).select('tagName isFavorite');
-=======
     const tags = await Tag.find({}).select('tagName');
->>>>>>> main
     res.send(tags);
   } catch (err) {
     console.error(err);
@@ -36,7 +32,6 @@ const getTagByName = async (req, res) => {
   }
 };
 
-<<<<<<< HEAD
 // const getContentObjects = async (req, res) => {
 //   try {
 //     const tag = await Tag.find({ name: req.body.name });
@@ -46,8 +41,6 @@ const getTagByName = async (req, res) => {
 //   }
 // };
 
-=======
->>>>>>> main
 // req has tag object, userName
 const favoriteTag = async (req, res) => {
   try {
@@ -119,37 +112,42 @@ const createTag = async (req, res) => {
 
 // get recommended tags based on user
 const getRecommendedTags = async (req, res) => {
-    const { username } = req.body;
-    try {
-      // grab existing user
-      const existingUser = await User.findOne({username});
+  const { id } = req.body;
+  try {
+    // grab existing user
+    const existingUser = await User.findById(id);
 
-      if (!existingUser) {
-        return res.status(404).send({ message: 'User not found'});
-      }
-      console.log(existingUser);
-      console.log(existingUser.favorites);
-      console.log(existingUser.banTags);
-
-      const favoritesList = existingUser.favorites || [];
-      const banList = existingUser.banTags || [];
-
-      // combine favorites and bantag list
-      const combinedList = favoritesList.concat(banList);
-
-      // grabbing all tags that aren't in the combined list
-      const tags = await Tag.find({ tagName : { $nin : combinedList.map(tag => tag.tagName) } });
-
-      console.log(tags);
-      
-      res.send(tags);
-
-    } catch (err) {
-        console.error(err);
-        return res.status(500).json({ message: 'Internal server error'});
+    if (!existingUser) {
+      return res.status(404).send({ message: 'User not found' });
     }
+    console.log(existingUser);
+    console.log(existingUser.favorites);
+    console.log(existingUser.banTags);
+
+    const favoritesList = existingUser.favorites || [];
+    const banList = existingUser.banTags || [];
+
+    // combine favorites and bantag list
+    const combinedList = favoritesList.concat(banList);
+
+    // grabbing all tags that aren't in the combined list
+    const tags = await Tag.find({ tagName: { $nin: combinedList.map((tag) => tag.tagName) } });
+
+    console.log(tags);
+
+    return res.send(tags);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: 'Internal server error' });
   }
+};
 
 module.exports = {
-  getAllTags, getTagByName, favoriteTag, unfavoriteTag, getAllTagTitles, createTag, getRecommendedTags,
+  getAllTags,
+  getTagByName,
+  favoriteTag,
+  unfavoriteTag,
+  getAllTagTitles,
+  createTag,
+  getRecommendedTags,
 };

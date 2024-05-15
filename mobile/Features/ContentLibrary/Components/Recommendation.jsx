@@ -4,7 +4,7 @@ import {
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-
+import { useSelector } from 'react-redux';
 import starShape from '../../../assets/star.png';
 
 const style = StyleSheet.create({
@@ -51,6 +51,8 @@ const style = StyleSheet.create({
 
 export default function Recommendation() {
   const [recommendedTags, setrecommendedTags] = useState([]);
+
+  const { email, firstName, authHeader } = useSelector((state) => state.auth);
 
   const horizontalRenderItem = ({ item }) => (
     <TouchableOpacity

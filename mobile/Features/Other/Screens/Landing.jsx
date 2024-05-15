@@ -42,6 +42,7 @@ export default function Landing({ navigation }) {
         navigateToFeed();
       }
     } catch (err) {
+      console.log('ERRORED HERE');
       console.error(err.message);
     }
   };
