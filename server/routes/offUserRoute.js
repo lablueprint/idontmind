@@ -10,6 +10,7 @@ offUserRouter.post('/sendEmail', offUserController.sendEmail);
 
 offUserRouter.post('/checkUserByEmail', offUserController.checkUserByEmail);
 
+// !!! TODO: this should be changed to be semi protected
 offUserRouter.post('/resetPassword', offUserController.resetPassword);
 
 // Protects the routes below with middleware (requires authorization header aka signed in user)
