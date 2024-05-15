@@ -4,6 +4,7 @@ import {
 import PropTypes from 'prop-types';
 import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 import style from '../Components/ContentStyle';
 import starImage from '../../../assets/images/star.png';
 import filterImage from '../../../assets/images/filter.png';
@@ -12,9 +13,13 @@ import Card from '../Components/Card';
 import TagContext from '../Context/TagContext';
 // do want to change routing though:
 import SearchBar from '../../Other/Components/SearchBar';
+import Recommendation from '../Components/Recommendation';
 
 export default function ContentLibrary({ navigation }) {
   const { initTags, initFavorites } = useContext(TagContext);
+
+  /* Grabs email from redux */
+  const { email } = useSelector((state) => state.auth);
 
   const navigateToTag = (index) => {
     navigation.navigate('Tag', { index, routeName: 'Content' });
@@ -34,10 +39,11 @@ export default function ContentLibrary({ navigation }) {
         /* Grab all tags */
         const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/getAllTagTitles`);
 
+        console.log(res.data);
         /* Grab user's favorite list */
-        const resFavorites = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/getFavorites`, { username: 'hi' });
+        const resFavorites = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/getFavorites`, { email });
 
-        /* Set Context Set for Favorites */
+        // /* Set Context Set for Favorites */
         initFavorites(resFavorites.data);
 
         /* Set Context List for Tags */
@@ -173,13 +179,7 @@ export default function ContentLibrary({ navigation }) {
         </Text>
       </View>
       <View style={[style.row, { flex: 1 }]}>
-        <FlatList
-          horizontal
-          data={data}
-          renderItem={horizontalRenderItem}
-          keyExtractor={(item) => item._id}
-          showsHorizontalScrollIndicator={false}
-        />
+        <Recommendation navigateToTag={navigateToTag} />
       </View>
       <View
         style={{ borderBottomColor: 'grey', borderBottomWidth: 0.75, opacity: 0.25 }}

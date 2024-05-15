@@ -9,6 +9,7 @@ import starImage from '../../../assets/images/star.png';
 import goldStar from '../../../assets/images/goldStar.png';
 import TagContext from '../Context/TagContext';
 import shapeImage from '../../../assets/images/shape.png';
+import { useSelector } from 'react-redux';
 
 export default function Card({
   navigateToTag, index, item, orientation,
@@ -20,19 +21,22 @@ export default function Card({
   /* Grab item fields */
   const { _id, tagName } = item;
 
+  /* Grab email from redux */
+  const { email } = useSelector((state) => state.auth);
+
   /* Check if current tag is favorited */
   const favorited = findFavorite(_id);
 
   /* Adds Tag to Users Favorites List */
   const favoriteTag = async () => {
     addFavorite(_id);
-    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/favoriteTag`, { tag: { id: _id, tagName }, username: 'hi' });
+    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/favoriteTag`, { tag: { id: _id, tagName }, email });
   };
 
   /* Remove Tag from Users Favorites List */
   const unfavoriteTag = async () => {
     deleteFavorite(_id);
-    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/unfavoriteTag`, { tag: { id: _id, tagName }, username: 'hi' });
+    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/unfavoriteTag`, { tag: { id: _id, tagName }, email });
   };
 
   /* Handles Favorite Change */

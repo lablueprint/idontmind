@@ -86,8 +86,8 @@ const deleteUserById = async (req, res) => {
 
 const getFavorites = async (req, res) => {
   try {
-    const { username } = req.body;
-    const user = await User.find({ username });
+    const { email } = req.body;
+    const user = await User.find({ email });
     res.send(user[0].favorites);
   } catch (err) {
     console.error(err);

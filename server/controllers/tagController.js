@@ -44,8 +44,8 @@ const getTagByName = async (req, res) => {
 // req has tag object, userName
 const favoriteTag = async (req, res) => {
   try {
-    const { tag, username } = req.body;
-    const user = await User.findOne({ username });
+    const { tag, email } = req.body;
+    const user = await User.findOne({ email });
     // check if user exists
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
@@ -60,7 +60,7 @@ const favoriteTag = async (req, res) => {
 
     // if error checking passes, add the new tag to the favorites array
     await User.findOneAndUpdate(
-      { username },
+      { email },
       { $push: { favorites: tag } },
     );
     // find the corresponding tag document and update its isFavorite field
@@ -77,9 +77,9 @@ const favoriteTag = async (req, res) => {
 
 const unfavoriteTag = async (req, res) => {
   try {
-    const { tag, username } = req.body;
+    const { tag, email } = req.body;
     await User.findOneAndUpdate(
-      { username },
+      { email },
       { $pull: { favorites: tag } },
     );
     // find the corresponding tag document and update its isFavorite field
@@ -112,10 +112,10 @@ const createTag = async (req, res) => {
 
 // get recommended tags based on user
 const getRecommendedTags = async (req, res) => {
-  const { id } = req.body;
+  const { email } = req.body;
   try {
     // grab existing user
-    const existingUser = await User.findById(id);
+    const existingUser = await User.findOne({ email });
 
     if (!existingUser) {
       return res.status(404).send({ message: 'User not found' });
