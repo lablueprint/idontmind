@@ -30,6 +30,10 @@ export default function Landing({ navigation }) {
   };
 
   const navigateToOverview = () => {
+    navigation.navigate('Overview');
+  };
+
+  const navigateToExercise = () => {
     navigation.navigate('Exercise');
   };
 
@@ -120,6 +124,10 @@ export default function Landing({ navigation }) {
       <Button
         title="To Overview"
         onPress={navigateToOverview}
+      />
+      <Button
+        title="To Exercise Checkin Question"
+        onPress={navigateToExercise}
       />
     </View>
   );

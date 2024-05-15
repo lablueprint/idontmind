@@ -42,6 +42,8 @@ import Feeling from '../Features/CheckIn/Feeling';
 import EndCheckIn from '../Features/CheckIn/EndCheckIn';
 
 // import PushNotifications from '../Features/Settings/Screens/PushNotifications';
+// temporary until Kenny's sprint:
+import Exercise from '../Features/CheckIn/Exercise';
 
 const Stack = createStackNavigator();
 
@@ -118,6 +120,8 @@ export default function AppNavigation({ user }) {
           <Stack.Screen name="AddActivity" component={AddActivity} options={{ headerShown: false }} />
           <Stack.Screen name="AddIcon" component={AddIcon} options={{ headerShown: false }} />
           <Stack.Screen name="EndCheckIn" component={EndCheckIn} options={{ headerShown: false }} />
+
+          <Stack.Screen name="Exercise" component={Exercise} options={{ headerShown: false }} />
         </Stack.Navigator>
       </TagProvider>
     </NavigationContainer>
