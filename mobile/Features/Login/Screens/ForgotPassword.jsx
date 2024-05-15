@@ -3,9 +3,9 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
-import styles from './ForgotPasswordStyle';
 import axios from 'axios';
 import * as Crypto from 'expo-crypto';
+import styles from './ForgotPasswordStyle';
 
 function ForgotPassword({ navigation }) {
   const [email, setEmail] = useState('');
@@ -35,10 +35,10 @@ function ForgotPassword({ navigation }) {
         console.log(11, curUser);
         // navigation.navigate('Token Input', { token: newToken, email, curUser });
         const response = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/sendEmail`, { email, token: newToken });
-        if (response.data.success) {
+        if (response.data) {
           console.log('Successfully sent email!');
         } else {
-          console.log('Failed to send email:', response.data.message);
+          console.log('Failed to send email:', response);
         }
       } else {
         console.log('No user found with that email address.');
@@ -57,7 +57,10 @@ function ForgotPassword({ navigation }) {
   }, [token, curUser, navigation]);
 
   return (
-    <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: '#E5F8F3' }}>
+    <View style={{
+      flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: '#E5F8F3',
+    }}
+    >
       <View style={{ width: '83%', marginTop: '15%' }}>
         <Text style={{ fontSize: 40, fontWeight: 300 }}>
           Forgot Password?
@@ -65,7 +68,10 @@ function ForgotPassword({ navigation }) {
         <Text style={{ fontSize: 16, lineHeight: 24, marginTop: '2%' }}>
           Enter your email address to receive instructions for resetting your password.
         </Text>
-        <Text style={{ fontSize: 16, fontWeight: 600, marginTop: '15%', marginBottom: '3%', color: '#767C7C' }}>
+        <Text style={{
+          fontSize: 16, fontWeight: 600, marginTop: '15%', marginBottom: '3%', color: '#767C7C',
+        }}
+        >
           Email
         </Text>
         <TextInput

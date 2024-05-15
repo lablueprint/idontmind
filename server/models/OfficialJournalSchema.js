@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const officialJournalSchema = new mongoose.Schema({
-  username: {
+  email: {
     required: true,
     type: String,
   },
@@ -17,7 +17,7 @@ const officialJournalSchema = new mongoose.Schema({
     default: 0,
     type: Number,
   },
-  creationTime: {
+  timestamp: {
     default: new Date(),
     type: Date,
   },
