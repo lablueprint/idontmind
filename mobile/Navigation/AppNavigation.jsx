@@ -20,6 +20,13 @@ import BannedTags from '../Features/Other/Screens/BannedTags';
 import Splash from '../Features/GettingStarted/Splash';
 import Terms from '../Features/GettingStarted/Terms';
 import Loading from '../Features/Register/Loading';
+import Overview from '../Features/Tutorial/Overview';
+import TutorialCheckIn1 from '../Features/Tutorial/TutorialCheckIn1';
+import TutorialCheckIn2 from '../Features/Tutorial/TutorialCheckIn2';
+import Personalization from '../Features/Tutorial/Personalization';
+import MoreResources from '../Features/Tutorial/MoreResources';
+import WrapUp from '../Features/Tutorial/WrapUp';
+import ThirtyDayOverview from '../Features/Tutorial/ThirtyDayOverview';
 import TrendsTab from '../Trends/Components/Trends';
 import TrendsBody from '../Trends/Screens/TrendsBody';
 
@@ -35,6 +42,8 @@ import Feeling from '../Features/CheckIn/Feeling';
 import EndCheckIn from '../Features/CheckIn/EndCheckIn';
 
 // import PushNotifications from '../Features/Settings/Screens/PushNotifications';
+// temporary until Kenny's sprint:
+import Exercise from '../Features/CheckIn/Exercise';
 
 const Stack = createStackNavigator();
 
@@ -90,6 +99,15 @@ export default function AppNavigation({ user }) {
           <Stack.Screen name="AltNavigationBar" component={AltNavigationBar} options={{ headerShown: false }} />
           <Stack.Screen name="Splash" component={Splash} options={{ headerShown: false }} />
           <Stack.Screen name="Terms" component={Terms} options={{ headerShown: false }} />
+          <Stack.Screen name="TutorialCheckIn1" component={TutorialCheckIn1} options={{ headerShown: false }} />
+          <Stack.Screen name="TutorialCheckIn2" component={TutorialCheckIn2} options={{ headerShown: false }} />
+          <Stack.Screen name="Personalization" component={Personalization} options={{ headerShown: false }} />
+          <Stack.Screen name="MoreResources" component={MoreResources} options={{ headerShown: false }} />
+          <Stack.Screen name="WrapUp" component={WrapUp} options={{ headerShown: false }} />
+          <Stack.Screen name="ThirtyDayOverview" component={ThirtyDayOverview} options={{ headerShown: false }} />
+          {/* <Stack.Screen name="PushNotifications" component={PushNotifications}
+           options={{ headerShown: false }} /> */}
+          <Stack.Screen name="Overview" component={Overview} options={{ headerShown: false }} />
           <Stack.Screen name="Tag" component={Tag} options={{ headerShown: false }} />
           <Stack.Screen name="Favorites" component={FavoritesList} options={{ headerShown: false }} />
           <Stack.Screen name="CheckIn" component={CheckIn} options={{ headerShown: false }} />
@@ -102,6 +120,8 @@ export default function AppNavigation({ user }) {
           <Stack.Screen name="AddActivity" component={AddActivity} options={{ headerShown: false }} />
           <Stack.Screen name="AddIcon" component={AddIcon} options={{ headerShown: false }} />
           <Stack.Screen name="EndCheckIn" component={EndCheckIn} options={{ headerShown: false }} />
+
+          <Stack.Screen name="Exercise" component={Exercise} options={{ headerShown: false }} />
         </Stack.Navigator>
       </TagProvider>
     </NavigationContainer>
