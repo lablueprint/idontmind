@@ -29,7 +29,7 @@ import ResetPassword from '../Features/Options/ResetPassword';
 
 const Stack = createStackNavigator();
 const otherNames = ['Day Challenge', 'CheckIn', 'PostSignInLanding', 'Feed', 'Notifs',
-  'Journal History', 'WOYM', 'Options', 'PersonalInfo', 'PushNotificationsOptions', 'ResetPassword'];
+  'Journal History', 'WOYM', 'Options', 'Personal Info', 'Push Notifications Options', 'Reset Password'];
 const otherPages = [DayChallenge, CheckIn, PostSignInLanding, Feed, PushNotifications,
   JournalHistoryPage, WOYM, Options, PersonalInfo, PushNotificationsOptions, ResetPassword];
 
