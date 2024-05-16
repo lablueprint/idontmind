@@ -5,72 +5,29 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import chev from '../../assets/images/chevron-up.png';
+import data from './PillTags.json';
 import styles from './WOYMStyle';
 
 function WOYM({ navigation }) {
-  const [selectedCoping, setSelectedCoping] = useState({
-    Breathing: false,
-    'Coping Strategies': false,
-    Gratitude: false,
-    Grounding: false,
-    'Self Care': false,
-  });
-  const [selectedEWB, setSelectedEWB] = useState({
-    Anger: false,
-    Burnout: false,
-    Crying: false,
-    Emotions: false,
-    Fear: false,
-    Feelings: false,
-    Grief: false,
-    Loneliness: false,
-    Mindfulness: false,
-    Mood: false,
-    'Positive Thinking': false,
-    Stress: false,
-  });
-  const [selectedIdentity, setSelectedIdentity] = useState({
-    Identity: false,
-    Burnout: false,
-    Crying: false,
-    Emotions: false,
-    Fear: false,
-    Feelings: false,
-    Grief: false,
-    Loneliness: false,
-    Mindfulness: false,
-    Mood: false,
-    'Positive Thinking': false,
-    Stress: false,
-  });
-  const [selectedLifestyle, setSelectedLifestyle] = useState({
-    Lifestyle: false,
-    Burnout: false,
-    Crying: false,
-    Emotions: false,
-    Fear: false,
-    Feelings: false,
-    Grief: false,
-    Loneliness: false,
-    Mindfulness: false,
-    Mood: false,
-    'Positive Thinking': false,
-    Stress: false,
-  });
-  const [selectedMental, setSelectedMental] = useState({
-    Mental: false,
-    Burnout: false,
-    Crying: false,
-    Emotions: false,
-    Fear: false,
-    Feelings: false,
-    Grief: false,
-    Loneliness: false,
-    Mindfulness: false,
-    Mood: false,
-    'Positive Thinking': false,
-    Stress: false,
-  });
+  function createMaps(stringsArray) {
+    const resultMap = {};
+    stringsArray.forEach((str) => {
+      resultMap[str] = false;
+    });
+    return resultMap;
+  }
+
+  const [selectedCoping, setSelectedCoping] = useState(createMaps(data.coping));
+  const [selectedEWB, setSelectedEWB] = useState(createMaps(data.ewb));
+  const [selectedIdentity, setSelectedIdentity] = useState(createMaps(data.identity));
+  const [selectedLifestyle, setSelectedLifestyle] = useState(createMaps(data.lifestyle));
+  const [selectedMental, setSelectedMental] = useState(createMaps(data.mental));
+  const [selectedRelationships,
+    setSelectedRelationships] = useState(createMaps(data.relationships));
+  const [selectedSelf, setSelectedSelf] = useState(createMaps(data.self));
+  const [selectedSupport, setSelectedSupport] = useState(createMaps(data.support));
+  const [selectedTrauma, setSelectedTrauma] = useState(createMaps(data.trauma));
+
   const [outOf3, setOutOf3] = useState(0);
 
   const [showCoping, setShowCoping] = useState(false);
@@ -78,6 +35,10 @@ function WOYM({ navigation }) {
   const [showIdentity, setShowIdentity] = useState(false);
   const [showLifestyle, setShowLifestyle] = useState(false);
   const [showMental, setShowMental] = useState(false);
+  const [showRelationships, setShowRelationships] = useState(false);
+  const [showSelf, setShowSelf] = useState(false);
+  const [showSupport, setShowSupport] = useState(false);
+  const [showTrauma, setShowTrauma] = useState(false);
 
   const toggleCoping = (term) => {
     const temp = { ...selectedCoping };
@@ -129,6 +90,46 @@ function WOYM({ navigation }) {
     setSelectedMental(temp);
   };
 
+  const toggleRelationships = (term) => {
+    const temp = { ...selectedRelationships };
+    if (temp[term] === false) {
+      temp[term] = true;
+    } else if (temp[term] === true) {
+      temp[term] = false;
+    }
+    setSelectedRelationships(temp);
+  };
+
+  const toggleSelf = (term) => {
+    const temp = { ...selectedSelf };
+    if (temp[term] === false) {
+      temp[term] = true;
+    } else if (temp[term] === true) {
+      temp[term] = false;
+    }
+    setSelectedSelf(temp);
+  };
+
+  const toggleSupport = (term) => {
+    const temp = { ...selectedSupport };
+    if (temp[term] === false) {
+      temp[term] = true;
+    } else if (temp[term] === true) {
+      temp[term] = false;
+    }
+    setSelectedSupport(temp);
+  };
+
+  const toggleTrauma = (term) => {
+    const temp = { ...selectedTrauma };
+    if (temp[term] === false) {
+      temp[term] = true;
+    } else if (temp[term] === true) {
+      temp[term] = false;
+    }
+    setSelectedTrauma(temp);
+  };
+
   useEffect(() => {
     const copingCount = Object.values(selectedCoping).filter((value) => value).length;
     const ewbCount = Object.values(selectedEWB).filter((value) => value).length;
@@ -158,8 +159,8 @@ function WOYM({ navigation }) {
             </Text>
           </View>
           <View style={styles.pillArea}>
-            <View style={[styles.titleButton,
-              showCoping ? styles.extraMargin : styles.titleButton]}
+            <View
+              style={[styles.titleButton, showCoping ? styles.extraMargin : styles.titleButton]}
             >
               <Pressable style={styles.arrow} onPress={() => setShowCoping(!showCoping)}>
                 <Text style={styles.pillTitle}>Coping</Text>
@@ -300,6 +301,134 @@ function WOYM({ navigation }) {
                   style={[styles.pill, cope[1] ? styles.selectedPill : styles.nonselectedPill]}
                 >
                   <Pressable onPress={() => toggleMental(cope[0])}>
+                    <Text
+                      style={cope[1] ? styles.selectedPillText : styles.nonselectedPillText}
+                    >
+                      {cope[0]}
+                    </Text>
+                  </Pressable>
+                </View>
+              ))}
+            </View>
+          </View>
+          <View style={styles.pillArea}>
+            <View
+              style={[styles.titleButton, showRelationships
+                ? styles.extraMargin : styles.titleButton]}
+            >
+              <Pressable
+                style={styles.arrow}
+                onPress={() => setShowRelationships(!showRelationships)}
+              >
+                <Text style={styles.pillTitle}>Relationships</Text>
+                <View style={styles.arrowCont}>
+                  <Image
+                    source={chev}
+                    style={[styles.down, showRelationships ? styles.down : styles.rotated]}
+                  />
+                </View>
+              </Pressable>
+            </View>
+            <View style={[styles.pills, showRelationships ? styles.showIt : styles.dontShowIt]}>
+              {Object.entries(selectedRelationships).map((cope) => (
+                <View
+                  key={cope[0]}
+                  style={[styles.pill, cope[1] ? styles.selectedPill : styles.nonselectedPill]}
+                >
+                  <Pressable onPress={() => toggleRelationships(cope[0])}>
+                    <Text
+                      style={cope[1] ? styles.selectedPillText : styles.nonselectedPillText}
+                    >
+                      {cope[0]}
+                    </Text>
+                  </Pressable>
+                </View>
+              ))}
+            </View>
+          </View>
+          <View style={styles.pillArea}>
+            <View
+              style={[styles.titleButton, showSelf ? styles.extraMargin : styles.titleButton]}
+            >
+              <Pressable style={styles.arrow} onPress={() => setShowSelf(!showSelf)}>
+                <Text style={styles.pillTitle}>Self-Improvement and Growth</Text>
+                <View style={styles.arrowCont}>
+                  <Image
+                    source={chev}
+                    style={[styles.down, showSelf ? styles.down : styles.rotated]}
+                  />
+                </View>
+              </Pressable>
+            </View>
+            <View style={[styles.pills, showSelf ? styles.showIt : styles.dontShowIt]}>
+              {Object.entries(selectedSelf).map((cope) => (
+                <View
+                  key={cope[0]}
+                  style={[styles.pill, cope[1] ? styles.selectedPill : styles.nonselectedPill]}
+                >
+                  <Pressable onPress={() => toggleSelf(cope[0])}>
+                    <Text
+                      style={cope[1] ? styles.selectedPillText : styles.nonselectedPillText}
+                    >
+                      {cope[0]}
+                    </Text>
+                  </Pressable>
+                </View>
+              ))}
+            </View>
+          </View>
+          <View style={styles.pillArea}>
+            <View
+              style={[styles.titleButton, showSupport ? styles.extraMargin : styles.titleButton]}
+            >
+              <Pressable style={styles.arrow} onPress={() => setShowSupport(!showSupport)}>
+                <Text style={styles.pillTitle}>Support</Text>
+                <View style={styles.arrowCont}>
+                  <Image
+                    source={chev}
+                    style={[styles.down, showSupport ? styles.down : styles.rotated]}
+                  />
+                </View>
+              </Pressable>
+            </View>
+            <View style={[styles.pills, showSupport ? styles.showIt : styles.dontShowIt]}>
+              {Object.entries(selectedSupport).map((cope) => (
+                <View
+                  key={cope[0]}
+                  style={[styles.pill, cope[1] ? styles.selectedPill : styles.nonselectedPill]}
+                >
+                  <Pressable onPress={() => toggleSupport(cope[0])}>
+                    <Text
+                      style={cope[1] ? styles.selectedPillText : styles.nonselectedPillText}
+                    >
+                      {cope[0]}
+                    </Text>
+                  </Pressable>
+                </View>
+              ))}
+            </View>
+          </View>
+          <View style={styles.pillArea}>
+            <View
+              style={[styles.titleButton, showTrauma ? styles.extraMargin : styles.titleButton]}
+            >
+              <Pressable style={styles.arrow} onPress={() => setShowTrauma(!showTrauma)}>
+                <Text style={styles.pillTitle}>Trauma and Recovery</Text>
+                <View style={styles.arrowCont}>
+                  <Image
+                    source={chev}
+                    style={[styles.down, showTrauma ? styles.down : styles.rotated]}
+                  />
+                </View>
+              </Pressable>
+            </View>
+            <View style={[styles.pills, showTrauma ? styles.showIt : styles.dontShowIt]}>
+              {Object.entries(selectedTrauma).map((cope) => (
+                <View
+                  key={cope[0]}
+                  style={[styles.pill, cope[1] ? styles.selectedPill : styles.nonselectedPill]}
+                >
+                  <Pressable onPress={() => toggleTrauma(cope[0])}>
                     <Text
                       style={cope[1] ? styles.selectedPillText : styles.nonselectedPillText}
                     >
