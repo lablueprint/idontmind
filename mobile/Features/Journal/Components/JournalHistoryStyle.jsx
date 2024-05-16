@@ -9,15 +9,15 @@ export default StyleSheet.create({
     borderRadius: 10,
     height: 160,
     marginBottom: 12,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 2,
   },
   dateContainer: {
     // borderRadius: 10,
-    alignSelf: "flex-start",
-    backgroundColor: "#82A5A1", 
+    alignSelf: 'flex-start',
+    backgroundColor: '#BFDBD7',
     padding: 12,
     borderTopLeftRadius: 10,
     borderBottomRightRadius: 25,
@@ -25,11 +25,11 @@ export default StyleSheet.create({
     height: 39,
   },
 
-  dateText:{
-    fontFamily: "cabinet-grotesk-regular",
+  dateText: {
+    fontFamily: 'cabinet-grotesk-regular',
     fontSize: 14,
-    textAlign: "center",
-    color: "black",
+    textAlign: 'center',
+    color: 'black',
   },
 
   contentContainer: {

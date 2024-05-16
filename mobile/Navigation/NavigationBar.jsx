@@ -4,6 +4,7 @@ import Feed from '../Features/Other/Screens/Feed';
 import CheckIn from '../Features/Other/Screens/CheckIn';
 import TrendsPage from '../Trends/Screens/TrendsPage';
 import JournalTabs from '../Features/Journal/Screens/JournalPage';
+import FindHelp from '../Features/Other/Screens/FindHelp';
 import PushNotifications from '../Features/Settings/Screens/PushNotifications';
 import Options from '../Features/Other/Screens/Options';
 import WOYM from '../Features/Register/WOYM';

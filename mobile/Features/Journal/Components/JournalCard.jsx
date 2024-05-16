@@ -14,7 +14,7 @@ export default function JournalCard({
   return (
     <View style={[styles.entryContainer]}>
       <Pressable style={styles.journalCard} onPress={handlePress}>
-        <View style={type ? [styles.dateContainer, { backgroundColor: '#BFDBD7' }] : styles.dateContainer}>
+        <View style={type ? [styles.dateContainer, { backgroundColor: '#82A5A1' }] : styles.dateContainer}>
           <Text style={styles.dateText}>
             {date}
           </Text>

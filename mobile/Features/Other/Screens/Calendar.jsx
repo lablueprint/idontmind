@@ -86,8 +86,10 @@ export default function CalendarPage({ navigation }) {
 
   const getAllJournals = async () => {
     try {
-      const result = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/journals/getAllJournals`);
-      const tenRecentJournals = result.data.length >= 10 ? result.data.slice(-10) : result.data;
+      const result = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/offJournal/getAllJournals`);
+      const tenRecentJournals = result.data.length >= 10
+        ? result.data.slice(-10).reverse()
+        : result.data;
       setAllJournals(result.data);
       setRecentJournals(tenRecentJournals);
       return result.data;
@@ -161,7 +163,7 @@ export default function CalendarPage({ navigation }) {
 
   const navigateToPastJournal = (username, prompt, text, date) => {
     navigation.navigate('JournalDetails', {
-      user: username, question: prompt, body: text, day: date,
+      email: username, question: prompt, body: text, day: date,
     });
   };
 
@@ -194,7 +196,7 @@ export default function CalendarPage({ navigation }) {
                   selected: true,
                   customStyles: {
                     container: {
-                      backgroundColor: '#BFDBD7',
+                      backgroundColor: '#82A5A1',
                       width: 25,
                       height: 25,
                       borderRadius: 15,
@@ -212,7 +214,7 @@ export default function CalendarPage({ navigation }) {
                   selected: true,
                   customStyles: {
                     container: {
-                      backgroundColor: '#82A5A1',
+                      backgroundColor: '#BFDBD7',
                       width: 25,
                       height: 25,
                       borderRadius: 15,
@@ -317,11 +319,11 @@ export default function CalendarPage({ navigation }) {
                   [...filteredJournals].reverse().map((x) => (
                     <JournalCard
                       key={x._id}
-                      username={x.username}
+                      email={x.email}
                       date={formatDate(x.timestamp)}
                       prompt={x.prompt}
                       text={x.text}
-                      type={x.type}
+                      type={x.guided}
                       onPress={navigateToPastJournal}
                     />
                   ))
@@ -348,7 +350,7 @@ export default function CalendarPage({ navigation }) {
                   [...recentJournals].reverse().map((x) => (
                     <JournalCard
                       key={x._id}
-                      username={x.username}
+                      email={x.username}
                       date={formatDate(x.timestamp)}
                       prompt={x.prompt}
                       text={x.text}

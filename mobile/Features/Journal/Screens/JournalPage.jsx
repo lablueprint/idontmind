@@ -107,8 +107,8 @@ export function JournalPage({
     });
     const timestamp = pstDate;
     // const timestamp = currentdate;
-    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/journals/createJournal`, {
-      email: newUsername, prompt: newPrompt, text: newText, type: isFreeWrite, timestamp,
+    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offJournal/createJournal`, {
+      email: newUsername, prompt: newPrompt, text: newText, guided: isFreeWrite, timestamp,
     });
   }; /* function that creates a new journal entry with username, prompt, text, and timestamp and
   sends it to the MongoDB */

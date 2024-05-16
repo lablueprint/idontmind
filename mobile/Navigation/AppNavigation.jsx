@@ -31,6 +31,7 @@ import TrendsTab from '../Trends/Components/Trends';
 import TrendsBody from '../Trends/Screens/TrendsBody';
 
 import CheckIn from '../Features/CheckIn/CheckIn';
+import JournalDetails from '../Features/Journal/Screens/JournalDetails';
 import Sleep from '../Features/CheckIn/Sleep';
 import Mood from '../Features/CheckIn/Mood';
 import AddMood from '../Features/CheckIn/AddMood';
@@ -121,6 +122,7 @@ export default function AppNavigation({ user }) {
           <Stack.Screen name="AddIcon" component={AddIcon} options={{ headerShown: false }} />
           <Stack.Screen name="EndCheckIn" component={EndCheckIn} options={{ headerShown: false }} />
           <Stack.Screen name="Exercise" component={Exercise} options={{ headerShown: false }} />
+          <Stack.Screen name="JournalDetails" component={JournalDetails} options={{ headerShown: false }} />
         </Stack.Navigator>
       </TagProvider>
     </NavigationContainer>
