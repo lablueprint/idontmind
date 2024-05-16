@@ -1,15 +1,16 @@
 import { StyleSheet } from 'react-native';
+import reducer from '../../redux/authSlice';
 
 export default StyleSheet.create({
   container: {
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignSelf: 'center',
     height: '100%',
     width: '90%',
     flexDirection: 'column',
-    borderWidth: 2,
-    borderColor: 'red',
+    // borderWidth: 2,
+    // borderColor: 'red',
   },
   heading: {
     fontSize: 32,
@@ -17,40 +18,17 @@ export default StyleSheet.create({
     zIndex: 1,
     fontWeight: 400,
     textAlign: 'center',
-    marginBottom: '15%',
-  },
-  pills: {
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    alignItems: 'center',
-    alignSelf: 'center',
-  },
-  down: {
-    width: 50,
-    height: 50,
-  },
-  pill: {
-    paddingTop: 7,
-    paddingBottom: 7,
-    paddingLeft: 10,
-    paddingRight: 10,
-    margin: 5,
-    borderRadius: 99,
-  },
-  selectedPill: {
-    backgroundColor: '#374342',
-  },
-  nonselectedPill: {
-    backgroundColor: '#D2E4E3',
+    marginBottom: '25%',
+    marginTop: '40%',
   },
   continueButton: {
     width: '65%',
-    height: '6.5%',
+    height: '60.5%',
     backgroundColor: '#374342',
     borderRadius: 40,
     justifyContent: 'center',
   },
+
   buttonsContainer: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -58,8 +36,8 @@ export default StyleSheet.create({
     height: '100%',
     width: '90%',
     flexDirection: 'column',
-    borderWidth: 2,
-    borderColor: 'blue',
+    // borderWidth: 2,
+    // borderColor: 'blue',
   },
   continueText: {
     color: 'white',
@@ -77,12 +55,13 @@ export default StyleSheet.create({
   },
   image: {
     resizeMode: 'contain',
+    height: 60,
+    width: 60,
   },
-  shadowEffect: {
-    shadowColor: '#FEE7B4',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.9,
-    shadowRadius: 15,
-    elevation: 5,
+  bottomButtonsContainer: {
+    height: 100,
+    width: '100%',
+    marginBottom: '15%',
+    alignItems: 'center',
   },
 });
