@@ -1,5 +1,12 @@
-import { View, Text, TouchableOpacity } from 'react-native';
+import {
+  View, Text, TouchableOpacity, Image,
+  ScrollView,
+} from 'react-native';
 import PropTypes from 'prop-types';
+import gear from '../../../assets/images/gear.png';
+import background from '../../../assets/images/contentbackground.png';
+import styles from './ContentDashboardStyle';
+import rightChev from '../../../assets/images/rightChevron.png';
 
 export default function ContentDashboard({ navigation }) {
   const navigateToDayChallenge = () => {
@@ -10,47 +17,97 @@ export default function ContentDashboard({ navigation }) {
   };
 
   return (
-    <View style={{ display: 'flex', flexDirection: 'column' }}>
-      <View style={{ display: 'flex', flexDirection: 'row' }}>
-        <TouchableOpacity>
-          <View style={{
-            width: 25, height: 25, backgroundColor: 'lightgrey', alignSelf: 'flex-end',
-          }}
-          />
-        </TouchableOpacity>
+    <ScrollView>
+      <View style={{ position: 'absolute' }}>
+        <Image
+          source={background}
+        />
       </View>
       <View style={{
-        display: 'flex', flexDirection: 'column', paddingTop: 50, fontSize: 38,
+        display: 'flex', flexDirection: 'column', marginTop: 100, width: '80%', alignSelf: 'center',
       }}
       >
-        <Text style={{ fontSize: 38 }}>Welcome Daniel,</Text>
-        <Text style={{ fontSize: 28 }}>We&apos;re so glad you&apos;re here</Text>
-      </View>
-      <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <TouchableOpacity style={{
-          display: 'flex', backgroundColor: 'lightgray', flexDirection: 'col', alignItems: 'center', marginTop: 50, marginBottom: 50, width: '75%', borderRadius: 25,
+        <View style={{ alignItems: 'flex-end' }}>
+          <TouchableOpacity
+            style={styles.gearBackground}
+            onPress={navigateToOptions}
+          >
+            <View style={styles.gearContainer}>
+              <Image
+                source={gear}
+                style={styles.gear}
+              />
+            </View>
+          </TouchableOpacity>
+        </View>
+        <View style={{
+          display: 'flex', flexDirection: 'column', fontSize: 38,
         }}
         >
-          <Text style={{ fontSize: 28 }}>Check-In</Text>
+          <View style={{ flexDirection: 'row' }}>
+            <Text style={styles.largeText}>Welcome </Text>
+            <Text style={styles.capitalLetter}>D</Text>
+            <Text style={styles.largeText}>aniel,</Text>
+          </View>
+          <Text style={styles.medText}>We&apos;re so glad you&apos;re here!</Text>
+        </View>
+        <Text style={styles.insights}>Your Insights</Text>
+        <TouchableOpacity style={styles.moodTendencies}>
+          <Text style={styles.MTText}>Mood Tendencies</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            backgroundColor: 'lightgrey', display: 'flex', flexDirection: 'column', alignItems: 'center', width: '75%', borderRadius: 25,
-          }}
-          onPress={navigateToDayChallenge}
+        <View style={{ height: 20 }} />
+        <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <TouchableOpacity style={styles.middleButtons}>
+            <Image
+              source={rightChev}
+              style={styles.leftChev}
+            />
+            <Text style={styles.offWhite}>Check-In</Text>
+            <Image
+              source={rightChev}
+              style={styles.rightChev}
+            />
+          </TouchableOpacity>
+          <View style={{ height: 20 }} />
+          <TouchableOpacity
+            style={styles.middleButtons}
+            onPress={navigateToDayChallenge}
+          >
+            <Image
+              source={rightChev}
+              style={styles.leftChev}
+            />
+            <Text style={styles.offWhite}>30 Day Challenge</Text>
+            <Image
+              source={rightChev}
+              style={styles.rightChev}
+            />
+          </TouchableOpacity>
+        </View>
+        <View style={{ height: 20 }} />
+        <View style={styles.dailyBookmarkLine}>
+          <Text style={styles.dailydiscovery}>Daily Discovery</Text>
+          <TouchableOpacity>
+            <Text style={styles.yourBookmarks}>Your Bookmarks</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={{
+          display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
+        }}
         >
-          <Text style={{ fontSize: 28 }}>30 Day Challenge</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            backgroundColor: 'lightgrey', display: 'flex', flexDirection: 'column', alignItems: 'center', width: '75%', borderRadius: 25, marginTop: 100,
-          }}
-          onPress={navigateToOptions}
-        >
-          <Text style={{ fontSize: 28 }}>options</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.DDButtons}>
+            <Text style={styles.DDText}>Check-In</Text>
+          </TouchableOpacity>
+          <View style={{ height: 20 }} />
+          <TouchableOpacity
+            style={styles.DDButtons}
+            onPress={navigateToDayChallenge}
+          >
+            <Text style={styles.DDText}>30 Day Challenge</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 

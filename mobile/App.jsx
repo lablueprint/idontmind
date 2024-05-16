@@ -36,6 +36,7 @@ export default function App() {
         'cabinet-grotesk-medium': require('./assets/fonts/CabinetGrotesk/CabinetGrotesk-Medium.otf'),
         'cabinet-grotesk-regular': require('./assets/fonts/CabinetGrotesk/CabinetGrotesk-Regular.otf'),
         'cabinet-grotesk-thin': require('./assets/fonts/CabinetGrotesk/CabinetGrotesk-Thin.otf'),
+        'pinyon-script': require('./assets/fonts/PinyonScript/PinyonScript-Regular.ttf'),
       });
     }
 

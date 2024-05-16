@@ -8,6 +8,7 @@ import JournalPage from '../Features/Journal/Screens/JournalPage';
 import ContentDashboard from '../Features/Other/Screens/ContentDashboard';
 import ContentLibrary from '../Features/ContentLibrary/Screens/ContentLibrary';
 import FindHelp from '../Features/Other/Screens/FindHelp';
+
 import TrendsIcon from '../assets/navbaricons/trendsicon.png';
 import JournalIcon from '../assets/navbaricons/journalicon.png';
 import HomeIcon from '../assets/navbaricons/homeicon.png';
@@ -26,6 +27,12 @@ import Options from '../Features/Options/Options';
 import PersonalInfo from '../Features/Options/PersonalInfo';
 import PushNotificationsOptions from '../Features/Options/PushNotifications';
 import ResetPassword from '../Features/Options/ResetPassword';
+
+import Bookmarks from '../Features/ContentLibrary/Screens/Bookmarks';
+import BookmarksEdgeCase from '../Features/ContentLibrary/Screens/BookmarksEdgeCase';
+import Resource from '../Features/ContentLibrary/Screens/Resource';
+import ResourceList from '../Features/ContentLibrary/Screens/ResourceList';
+import Tag from '../Features/ContentLibrary/Screens/Tag';
 
 const Stack = createStackNavigator();
 const otherNames = ['Day Challenge', 'CheckIn', 'PostSignInLanding', 'Feed', 'Notifs',
@@ -56,13 +63,39 @@ function HomeWithExtraPages() {
     </Stack.Navigator>
   );
 }
+const contentNames = ['Bookmarks', 'Bookmarks Edge Case', 'Resource', 'Resource List', 'Tag'];
+const contentPages = [Bookmarks, BookmarksEdgeCase, Resource, ResourceList, Tag];
+function ContentLibraryWithExtraPages() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Content Library"
+        component={ContentLibrary}
+        options={{
+          headerShown: false,
+        }}
+      />
+      { [...Array(contentNames.length).keys()].map((i) => (
+        <Stack.Screen
+          key={contentNames[i]}
+          name={contentNames[i]}
+          component={contentPages[i]}
+          options={{
+            headerShown: false,
+          }}
+        />
+      )) }
+    </Stack.Navigator>
+  );
+}
 
 export default function AltNavigationBar() {
   const Tab = createBottomTabNavigator();
 
   const names = ['Trends', 'Journal', 'Home', 'Content', 'Find Help'];
   const icons = [TrendsIcon, JournalIcon, HomeIcon, ContentIcon, FindHelpIcon];
-  const components = [TrendsPage, JournalPage, HomeWithExtraPages, ContentLibrary, FindHelp];
+  const components = [TrendsPage, JournalPage, HomeWithExtraPages,
+    ContentLibraryWithExtraPages, FindHelp];
 
   return (
     <Tab.Navigator
