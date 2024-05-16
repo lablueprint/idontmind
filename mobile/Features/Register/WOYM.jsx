@@ -136,12 +136,19 @@ function WOYM({ navigation }) {
     const iCount = Object.values(selectedIdentity).filter((value) => value).length;
     const sCount = Object.values(selectedLifestyle).filter((value) => value).length;
     const mCount = Object.values(selectedMental).filter((value) => value).length;
-    const totalCount = copingCount + ewbCount + iCount + sCount + mCount;
+    const rCount = Object.values(selectedRelationships).filter((value) => value).length;
+    const ssCount = Object.values(selectedSelf).filter((value) => value).length;
+    const sssCount = Object.values(selectedSupport).filter((value) => value).length;
+    const tCount = Object.values(selectedTrauma).filter((value) => value).length;
+    const totalCount = copingCount + ewbCount + iCount + sCount + mCount
+    + rCount + ssCount + sssCount + tCount;
     setOutOf3(totalCount);
     if (totalCount > 3) {
       setOutOf3(3);
     }
-  }, [selectedCoping, selectedEWB, selectedLifestyle, selectedIdentity, selectedMental]);
+  }, [selectedCoping, selectedEWB, selectedLifestyle, selectedIdentity, selectedMental,
+    selectedRelationships, selectedSelf, selectedSupport, selectedTrauma,
+  ]);
 
   return (
     <View style={{ flex: 1 }}>
