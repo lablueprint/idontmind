@@ -24,11 +24,11 @@ function Options({ navigation }) {
   };
   const navigateToContentRecs = () => {
     console.log('content recs');
-    navigation.navigate('WOYM');
+    navigation.navigate('Content Recs');
   };
   const navigateToContentAvoid = () => {
     console.log('content avoid');
-    navigation.navigate('WOYM');
+    navigation.navigate('Content To Avoid');
   };
 
   return (
@@ -96,44 +96,44 @@ function Options({ navigation }) {
             />
           </View>
         </View>
-        <View style={{
-          display: 'flex', flexDirection: 'row', padding: 20, paddingTop: 30,
-        }}
-        >
-          <Text style={{
-            flex: 1, fontSize: 16, color: '#676C6C', fontFamily: 'cabinet-grotesk-regular',
+        <Pressable onPress={navigateToPersonalInformation}>
+          <View style={{
+            display: 'flex', flexDirection: 'row', padding: 20, paddingTop: 30,
           }}
           >
-            Personal Information
-          </Text>
-          <Pressable onPress={navigateToPersonalInformation}>
+            <Text style={{
+              flex: 1, fontSize: 16, color: '#676C6C', fontFamily: 'cabinet-grotesk-regular',
+            }}
+            >
+              Personal Information
+            </Text>
             <Image
               source={Right}
               style={{
                 resizeMode: 'contain', height: 20, width: 20, alignSelf: 'flex-end',
               }}
             />
-          </Pressable>
-        </View>
-        <View style={{
-          display: 'flex', flexDirection: 'row', padding: 20, paddingTop: 0,
-        }}
-        >
-          <Text style={{
-            flex: 1, fontSize: 16, color: '#676C6C', fontFamily: 'cabinet-grotesk-regular',
+          </View>
+        </Pressable>
+        <Pressable onPress={navigateToResetPassword}>
+          <View style={{
+            display: 'flex', flexDirection: 'row', padding: 20, paddingTop: 0,
           }}
           >
-            Reset Password
-          </Text>
-          <Pressable onPress={navigateToResetPassword}>
+            <Text style={{
+              flex: 1, fontSize: 16, color: '#676C6C', fontFamily: 'cabinet-grotesk-regular',
+            }}
+            >
+              Reset Password
+            </Text>
             <Image
               source={Right}
               style={{
                 resizeMode: 'contain', height: 20, width: 20, alignSelf: 'flex-end',
               }}
             />
-          </Pressable>
-        </View>
+          </View>
+        </Pressable>
         <View style={{ display: 'flex', flexDirection: 'row' }}>
           <Text style={{
             flex: 1, fontSize: 24, fontFamily: 'recoleta-regular', color: '#4A4E4E',
@@ -148,55 +148,56 @@ function Options({ navigation }) {
             />
           </View>
         </View>
-        <View style={{
-          display: 'flex', flexDirection: 'row', padding: 20, paddingTop: 30,
-        }}
-        >
-          <Text style={{
-            flex: 1, fontSize: 16, color: '#676C6C', fontFamily: 'cabinet-grotesk-regular',
+        <Pressable onPress={navigateToPushNotifs}>
+
+          <View style={{
+            display: 'flex', flexDirection: 'row', padding: 20, paddingTop: 30,
           }}
           >
-            Push Notifications
-          </Text>
-          <Pressable onPress={navigateToPushNotifs}>
+            <Text style={{
+              flex: 1, fontSize: 16, color: '#676C6C', fontFamily: 'cabinet-grotesk-regular',
+            }}
+            >
+              Push Notifications
+            </Text>
             <Image
               source={Right}
               style={{
                 resizeMode: 'contain', height: 20, width: 20, alignSelf: 'flex-end',
               }}
             />
-          </Pressable>
-        </View>
-        <View style={{
-          display: 'flex', flexDirection: 'row', padding: 20, paddingTop: 0,
-        }}
-        >
-          <Text style={{
-            flex: 1, fontSize: 16, color: '#676C6C', fontFamily: 'cabinet-grotesk-regular',
+          </View>
+        </Pressable>
+        <Pressable onPress={navigateToContentRecs}>
+          <View style={{
+            display: 'flex', flexDirection: 'row', padding: 20, paddingTop: 0,
           }}
           >
-            Content Recommendations
-          </Text>
-          <Pressable onPress={navigateToContentRecs}>
+            <Text style={{
+              flex: 1, fontSize: 16, color: '#676C6C', fontFamily: 'cabinet-grotesk-regular',
+            }}
+            >
+              Content Recommendations
+            </Text>
             <Image
               source={Right}
               style={{
                 resizeMode: 'contain', height: 20, width: 20, alignSelf: 'flex-end',
               }}
             />
-          </Pressable>
-        </View>
-        <View style={{
-          display: 'flex', flexDirection: 'row', padding: 20, paddingTop: 0,
-        }}
-        >
-          <Text style={{
-            flex: 1, fontSize: 16, color: '#676C6C', fontFamily: 'cabinet-grotesk-regular',
+          </View>
+        </Pressable>
+        <Pressable onPress={navigateToContentAvoid}>
+          <View style={{
+            display: 'flex', flexDirection: 'row', padding: 20, paddingTop: 0,
           }}
           >
-            Content To Avoid
-          </Text>
-          <Pressable onPress={navigateToContentAvoid}>
+            <Text style={{
+              flex: 1, fontSize: 16, color: '#676C6C', fontFamily: 'cabinet-grotesk-regular',
+            }}
+            >
+              Content To Avoid
+            </Text>
 
             <Image
               source={Right}
@@ -204,8 +205,8 @@ function Options({ navigation }) {
                 resizeMode: 'contain', height: 20, width: 20, alignSelf: 'flex-end',
               }}
             />
-          </Pressable>
-        </View>
+          </View>
+        </Pressable>
 
       </View>
 

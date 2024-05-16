@@ -33,12 +33,16 @@ import BookmarksEdgeCase from '../Features/ContentLibrary/Screens/BookmarksEdgeC
 import Resource from '../Features/ContentLibrary/Screens/Resource';
 import ResourceList from '../Features/ContentLibrary/Screens/ResourceList';
 import Tag from '../Features/ContentLibrary/Screens/Tag';
+import ContentRecs from '../Features/Options/ContentRecs';
+import ContentToAvoid from '../Features/Options/ContentToAvoid';
 
 const Stack = createStackNavigator();
 const otherNames = ['Day Challenge', 'CheckIn', 'PostSignInLanding', 'Feed', 'Notifs',
-  'Journal History', 'WOYM', 'Options', 'Personal Info', 'Push Notifications Options', 'Reset Password'];
+  'Journal History', 'WOYM', 'Options', 'Personal Info', 'Push Notifications Options', 'Reset Password',
+  'Content Recs', 'Content To Avoid'];
 const otherPages = [DayChallenge, CheckIn, PostSignInLanding, Feed, PushNotifications,
-  JournalHistoryPage, WOYM, Options, PersonalInfo, PushNotificationsOptions, ResetPassword];
+  JournalHistoryPage, WOYM, Options, PersonalInfo, PushNotificationsOptions, ResetPassword,
+  ContentRecs, ContentToAvoid];
 
 function HomeWithExtraPages() {
   return (

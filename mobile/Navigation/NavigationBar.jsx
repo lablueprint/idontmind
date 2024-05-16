@@ -10,6 +10,8 @@ import DayChallenge from '../Features/Other/Screens/DayChallenge';
 import PersonalInfo from '../Features/Options/PersonalInfo';
 import ResetPassword from '../Features/Options/ResetPassword';
 import PushNotificationsOptions from '../Features/Options/PushNotifications';
+import ContentRecs from '../Features/Options/ContentRecs';
+import ContentToAvoid from '../Features/Options/ContentToAvoid';
 
 import ContentDashboard from '../Features/Other/Screens/ContentDashboard';
 import Bookmarks from '../Features/ContentLibrary/Screens/Bookmarks';
@@ -33,7 +35,9 @@ export default function NavigationBar() {
       <Tab.Screen name="Personal Info" component={PersonalInfo} options={{ headerShown: false }} />
       <Tab.Screen name="Push Notifications Options" component={PushNotificationsOptions} options={{ headerShown: false }} />
       <Tab.Screen name="Reset Password" component={ResetPassword} options={{ headerShown: false }} />
-      <Tab.Screen name="WOYM" component={WOYM} options={{ headerShown: false }} />      
+      <Tab.Screen name="Content Recs" component={ContentToAvoid} options={{ headerShown: false }} />
+      <Tab.Screen name="Content To Avoid" component={ContentRecs} options={{ headerShown: false }} />
+      <Tab.Screen name="WOYM" component={WOYM} options={{ headerShown: false }} />
       <Tab.Screen name="Content Dashboard" component={ContentDashboard} options={{ headerShown: false }} />
       <Tab.Screen name="Content Library" component={ContentLibrary} options={{ headerShown: false }} />
       <Tab.Screen name="Bookmarks" component={Bookmarks} options={{ headerShown: false }} />
