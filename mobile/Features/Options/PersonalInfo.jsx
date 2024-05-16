@@ -164,25 +164,27 @@ export default function PersonInfo({ navigation }) {
   return (
     <View style={styles.container}>
       <View style={{ borderBottomColor: '#26292E80', borderBottomWidth: 0.5, paddingBottom: 20 }}>
-        <View style={{
-          display: 'flex', flexDirection: 'row',
-        }}
-        >
-          <Pressable onPress={navigateToOptions} style={{ flex: 1, alignSelf: 'flex-start' }}>
-            <Image
-              style={{
-                resizeMode: 'contain', height: 20, width: 20,
-              }}
-              source={Back}
-            />
-          </Pressable>
-          <Text style={{
-            flex: 8, textAlign: 'left', fontSize: 18, fontFamily: 'cabinet-grotesk-bold', color: '#4A4E4E',
+        <Pressable onPress={navigateToOptions}>
+          <View style={{
+            display: 'flex', flexDirection: 'row',
           }}
           >
-            OPTIONS
-          </Text>
-        </View>
+            <Pressable onPress={navigateToOptions} style={{ flex: 1, alignSelf: 'flex-start' }}>
+              <Image
+                style={{
+                  resizeMode: 'contain', height: 20, width: 20,
+                }}
+                source={Back}
+              />
+            </Pressable>
+            <Text style={{
+              flex: 8, textAlign: 'left', fontSize: 18, fontFamily: 'cabinet-grotesk-bold', color: '#4A4E4E',
+            }}
+            >
+              OPTIONS
+            </Text>
+          </View>
+        </Pressable>
         <View>
           <Text style={styles.title}>Personal Information</Text>
         </View>

@@ -10,24 +10,22 @@ import Right from '../../assets/images/right_options.png';
 import Customize from '../../assets/images/pen.png';
 
 function Options({ navigation }) {
+  const navigateToDashBoard = () => {
+    navigation.navigate('Content Dashboard');
+  };
   const navigateToPersonalInformation = () => {
-    console.log('personal info');
     navigation.navigate('Personal Info');
   };
   const navigateToResetPassword = () => {
-    console.log('reset password');
     navigation.navigate('Reset Password');
   };
   const navigateToPushNotifs = () => {
-    console.log('push notifs');
     navigation.navigate('Push Notifications Options');
   };
   const navigateToContentRecs = () => {
-    console.log('content recs');
     navigation.navigate('Content Recs');
   };
   const navigateToContentAvoid = () => {
-    console.log('content avoid');
     navigation.navigate('Content To Avoid');
   };
 
@@ -39,25 +37,27 @@ function Options({ navigation }) {
       }}
     >
       <View style={{ flex: 1, borderBottomColor: '#26292E', borderBottomWidth: 0.5 }}>
-        <View style={{
-          display: 'flex', flexDirection: 'row',
-        }}
-        >
-          <TouchableOpacity color="black" style={{ flex: 1, alignSelf: 'flex-start' }}>
-            <Image
-              style={{
-                resizeMode: 'contain', height: 20, width: 20,
-              }}
-              source={Back}
-            />
-          </TouchableOpacity>
-          <Text style={{
-            flex: 8, textAlign: 'left', fontSize: 18, fontFamily: 'cabinet-grotesk-bold', color: '#4A4E4E',
+        <Pressable onPress={navigateToDashBoard}>
+          <View style={{
+            display: 'flex', flexDirection: 'row',
           }}
           >
-            DASHBOARD
-          </Text>
-        </View>
+            <View color="black" style={{ flex: 1, alignSelf: 'flex-start' }}>
+              <Image
+                style={{
+                  resizeMode: 'contain', height: 20, width: 20,
+                }}
+                source={Back}
+              />
+            </View>
+            <Text style={{
+              flex: 8, textAlign: 'left', fontSize: 18, fontFamily: 'cabinet-grotesk-bold', color: '#4A4E4E',
+            }}
+            >
+              DASHBOARD
+            </Text>
+          </View>
+        </Pressable>
         <View style={{
           display: 'flex', flexDirection: 'row', paddingTop: 20,
         }}
