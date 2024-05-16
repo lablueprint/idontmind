@@ -1,10 +1,9 @@
 import {
-  ScrollView, Text, View, TouchableOpacity,
+  ScrollView, Text, View, TouchableOpacity, Button,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Divider } from '@rneui/themed';
-import { TimerPickerModal } from 'react-native-timer-picker';
-import { LinearGradient } from 'expo-linear-gradient';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import styles from './PushNotificationsStyle';
@@ -16,6 +15,13 @@ function PushNotifications() {
   const [reminderSet, setReminderSet] = useState(new Set());
   const [showPicker, setShowPicker] = useState(false);
   const [alarmString, setAlarmString] = useState('');
+  const [preference, setPreference] = useState(false);
+
+  const togglePreference = async () => {
+    const newPref = !preference;
+    setPreference(newPref);
+    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/updateUser`, { id, updatedFields: { checkInPreference: newPref } }, { headers: authHeader });
+  };
 
   const toggleSwitch = async (label) => {
     const temp = new Set(reminderSet);
@@ -31,9 +37,10 @@ function PushNotifications() {
   };
 
   const formatTime = (pickedDuration) => {
-    if (pickedDuration === undefined) return '';
-    let { hours } = pickedDuration;
-    const { minutes } = pickedDuration;
+    if (!pickedDuration) return '';
+    const date = new Date(pickedDuration);
+    let hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
     let relativeTime = 'Morning, ';
     let part = 'AM';
     if (hours > 12) {
@@ -41,7 +48,7 @@ function PushNotifications() {
       part = 'PM';
       relativeTime = 'Evening, ';
     }
-    if (minutes === 0) {
+    if (minutes === '00') {
       return `${relativeTime}${hours}:00${part}`;
     }
     return `${relativeTime}${hours}:${minutes}${part}`;
@@ -56,16 +63,17 @@ function PushNotifications() {
 
   // get push notification data from user
   const fetchData = async () => {
-    const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/readSpecifiedFields`, { id, fields: ['pushNotifs'] }, { headers: authHeader });
+    const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/readSpecifiedFields`, { id, fields: ['pushNotifs', 'checkInPreference'] }, { headers: authHeader });
     return res;
   };
 
   useEffect(() => {
     fetchData().then((res) => {
-      const { pushNotifs } = res.data;
+      const { pushNotifs, checkInPreference } = res.data;
       setAlarmString(formatTime(pushNotifs.time));
       const temp = new Set(pushNotifs.reminders);
       setReminderSet(temp);
+      setPreference(checkInPreference);
     });
   }, []);
 
@@ -79,14 +87,15 @@ function PushNotifications() {
           width={1}
           marginBottom={25}
         />
-
         <Text style={[styles.category, { marginTop: '5%', marginBottom: '4%' }]}>
           Daily Check-In
         </Text>
-        <Text style={{ marginBottom: 25 }}>
+        <Text>
           When should we ask you about your day?
+          <ToggleSwitch label="" value={preference} onValueChange={togglePreference} />
         </Text>
 
+        {preference && (
         <View style={[styles.timeOfDayContainer, { marginBottom: 25 }]}>
           <Text
             style={[styles.timeOfDayText, styles.timeOfDayText]}
@@ -103,21 +112,17 @@ function PushNotifications() {
               edit
             </Text>
           </TouchableOpacity>
-          <TimerPickerModal
-            visible={showPicker}
-            setIsVisible={setShowPicker}
-            onConfirm={(pickedDuration) => setDailyNotif(pickedDuration)}
-            modalTitle="Set Alarm"
-            onCancel={() => setShowPicker(false)}
-            closeOnOverlayPress
-            use12HourPicker
-            LinearGradient={LinearGradient}
-            hideSeconds
-            styles={{
-              theme: 'light',
-            }}
-          />
+          <View>
+            <DateTimePickerModal
+              isVisible={showPicker}
+              mode="time"
+              locale="en_GB"
+              onConfirm={setDailyNotif}
+              onCancel={() => setShowPicker(false)}
+            />
+          </View>
         </View>
+        )}
 
         <Text style={[styles.category, { marginTop: '5%', marginBottom: '4%' }]}>
           Daily Reminders
