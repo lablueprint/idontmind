@@ -5,6 +5,7 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { DropdownSelect } from 'react-native-input-select';
+import axios from 'axios';
 import Back from '../../assets/images/back.png';
 
 const styles = StyleSheet.create({
@@ -134,6 +135,9 @@ const styles = StyleSheet.create({
 });
 
 export default function PersonInfo({ navigation }) {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [age, setAge] = useState(0);
   const [country, setCountry] = useState('');
   const [gender, setGender] = useState('');
   const countryItems = [ // will be replaced with all countries dataset
@@ -153,8 +157,15 @@ export default function PersonInfo({ navigation }) {
     navigation.navigate('SignUp');
   };
 
-  const navigateToCustomization = () => {
-    navigation.navigate('Customization');
+  const handleSave = async () => {
+    console.log('save');
+
+    const updatedFields = {
+      firstName: name,
+      email,
+      age,
+    };
+    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/updateUser`, { updatedFieds: updatedFields });
   };
 
   const navigateToOptions = () => {
@@ -195,6 +206,8 @@ export default function PersonInfo({ navigation }) {
           <TextInput
             style={styles.inputBox}
             placeholder="Daniel Ogura"
+            value={name}
+            onChange={setName}
           />
         </View>
       </View>
@@ -204,6 +217,8 @@ export default function PersonInfo({ navigation }) {
           <TextInput
             style={styles.inputBox}
             placeholder="danielogura@gmail..com"
+            value={email}
+            onChange={setEmail}
           />
         </View>
       </View>
@@ -219,6 +234,9 @@ export default function PersonInfo({ navigation }) {
               placeholder="Age"
               // keyboardType="numeric" (fix exiting numberpad bug)
               maxLength={2}
+              value={age}
+              onChangeText={setAge}
+              keyboardType="numeric"
             />
           </View>
           <View style={styles.genderWrapper}>
@@ -246,7 +264,7 @@ export default function PersonInfo({ navigation }) {
       <View style={{ justifyContent: 'center', alignItems: 'center' }}>
         <View style={styles.buttonShape}>
           <TouchableOpacity
-            onPress={navigateToCustomization}
+            onPress={handleSave}
           >
             <Text style={styles.buttonText}>Save</Text>
           </TouchableOpacity>
