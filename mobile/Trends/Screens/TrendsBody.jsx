@@ -38,10 +38,10 @@ function TrendSection({
         onRequestClose={() => {
           setModalVisible(!modalVisible);
         }}
-      >
+      > 
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text>Hello World!</Text>
+            <Text>{energyMessage}</Text> 
             <Pressable
               style={[styles.button, styles.buttonClose]}
               onPress={() => setModalVisible(!modalVisible)}
@@ -125,28 +125,22 @@ export default function TrendsBody({ route }) {
   const { title } = route.params;
 
   useEffect(() => {
-    
     const getUserTimeSeries = async () => {
-
       try {
         const weekOffset = 1;
-        const current = new Date('2024-04-15T00:00:00');
+        const current = new Date();
         const start = new Date(current);
         const mid = new Date(current);
         const end = new Date(current);
-
-        start.setMonth(current.getMonth() + 2, 1); // May 1st
+        start.setMonth(mid.getMonth() + 1, 0);
         mid.setMonth(start.getMonth() + 1, 0); // May 30th
-        end.setMonth(mid.getMonth() + 1, 0); // May 30th
-
-        start.setDate(current.getDate() + (7 * weekOffset));
-        mid.setDate(start.getDate() + 7);
-        end.setDate(start.getDate() + 14);
- 
+        // end.setMonth(mid.getMonth() + 1, 0); // May 30th
+        start.setDate(current.getDate() - (14 * weekOffset));
+        mid.setDate(current.getDate() - (7 * weekOffset)); // 7 Days Past
+        // end.setDate(start.getDate()); // Current Date
         const startDate = start.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
         const midDate = mid.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
         const endDate = end.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-
         const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/timeSerie/getUserTimeSeries`, {
           email: 'booooooop',
           userId: 'booop',
@@ -154,11 +148,9 @@ export default function TrendsBody({ route }) {
           midDate,
           endDate,
         });
-
         const {
           PercentageAvgSleep, PercentageAvgWater, firstPeriod, secondPeriod,
         } = res.data[0];
-
         /* Default */
         setLastPeriodSleep(firstPeriod.SleepData);
         setCurrentPeriodSleep(secondPeriod.SleepData);
@@ -166,13 +158,62 @@ export default function TrendsBody({ route }) {
         setCurrentPeriodWater(secondPeriod.WaterData);
         setAvgSleepPercentage(PercentageAvgSleep);
         setAvgWaterPercentage(PercentageAvgWater);
-
       } catch (err) {
         console.error(err);
       }
     };
     getUserTimeSeries();
   }, []);
+
+  // useEffect(() => {
+    
+  //   const getUserTimeSeries = async () => {
+
+  //     try {
+  //       const weekOffset = 1;
+  //       const current = new Date('2024-04-15T00:00:00');
+  //       const start = new Date(current);
+  //       const mid = new Date(current);
+  //       const end = new Date(current);
+
+  //       start.setMonth(current.getMonth() + 2, 1); // May 1st
+  //       mid.setMonth(start.getMonth() + 1, 0); // May 30th
+  //       end.setMonth(mid.getMonth() + 1, 0); // May 30th
+
+  //       start.setDate(current.getDate() + (7 * weekOffset));
+  //       mid.setDate(start.getDate() + 7);
+  //       end.setDate(start.getDate() + 14);
+ 
+  //       const startDate = start.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+  //       const midDate = mid.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+  //       const endDate = end.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+
+  //       const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/timeSerie/getUserTimeSeries`, {
+  //         email: 'booooooop',
+  //         userId: 'booop',
+  //         startDate,
+  //         midDate,
+  //         endDate,
+  //       });
+
+  //       const {
+  //         PercentageAvgSleep, PercentageAvgWater, firstPeriod, secondPeriod,
+  //       } = res.data[0];
+
+  //       /* Default */
+  //       setLastPeriodSleep(firstPeriod.SleepData);
+  //       setCurrentPeriodSleep(secondPeriod.SleepData);
+  //       setLastPeriodWater(firstPeriod.WaterData);
+  //       setCurrentPeriodWater(secondPeriod.WaterData);
+  //       setAvgSleepPercentage(PercentageAvgSleep);
+  //       setAvgWaterPercentage(PercentageAvgWater);
+
+  //     } catch (err) {
+  //       console.error(err);
+  //     }
+  //   };
+  //   getUserTimeSeries();
+  // }, []);
 
   useEffect(() => {
     analyzeSleepQuality(currentPeriodSleep, lastPeriodSleep);
