@@ -9,6 +9,7 @@ import * as Notifications from 'expo-notifications';
 import { useNavigation } from '@react-navigation/native';
 import { Switch } from 'react-native-switch';
 import axios from 'axios';
+import left from '../../assets/images/left.png';
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -18,7 +19,7 @@ const styles = StyleSheet.create({
     gap: 30,
   },
   header: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     marginTop: '20%',
   },
   headerText: {
@@ -26,9 +27,20 @@ const styles = StyleSheet.create({
     fontWeight: 500,
     letterSpacing: -1.6,
   },
+  headerOptions: {
+    fontSize: 14,
+    marginBottom: 10,
+  },
+  headerTitle: {
+    flexDirection: 'row',
+  },
   bellIcon: {
     height: 48,
     width: 48,
+  },
+  leftIcon: {
+    height: 15,
+    width: 15,
   },
   subSection: {
     display: 'flex',
@@ -41,6 +53,8 @@ const styles = StyleSheet.create({
   },
   subSectionText: {
     fontSize: 15,
+    letterSpacing: -0.5,
+    color: '#929999',
   },
   setDefaultButton: {
     borderRadius: 99,
@@ -323,13 +337,24 @@ export default function NotificationsTest() {
   return (
     <LinearGradient colors={['#E0F1F3', '#E5F8F3']} style={[styles.mainContainer]}>
       <View style={[styles.header]}>
-        <Text style={[styles.headerText]}>
-          Push Notifications
-        </Text>
-        <Image
-          source={require('../../assets/SMASHTHATBELL.png')}
-          style={[styles.bellIcon]}
-        />
+        <View style={[styles.headerTitle, { gap: 10 }]}>
+          <Image
+            source={left}
+            style={[styles.leftIcon]}
+          />
+          <Text style={[styles.headerOptions]}>
+            OPTIONS
+          </Text>
+        </View>
+        <View style={[styles.headerTitle]}>
+          <Text style={[styles.headerText]}>
+            Push Notifications
+          </Text>
+          <Image
+            source={require('../../assets/SMASHTHATBELL.png')}
+            style={[styles.bellIcon]}
+          />
+        </View>
       </View>
       <View style={[styles.subSection]}>
         <View>
@@ -337,7 +362,7 @@ export default function NotificationsTest() {
             Daily Check-In
           </Text>
           <View style={{
-            position: 'absolute', bottom: 3, width: '45%', height: '60%', backgroundColor: '#BFDBD7',
+            position: 'absolute', bottom: 3, width: '42%', height: '60%', backgroundColor: '#BFDBD7',
           }}
           />
         </View>
