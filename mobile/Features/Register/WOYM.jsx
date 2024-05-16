@@ -3,6 +3,7 @@ import {
   Text, View, Pressable, Image,
   ScrollView,
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import PropTypes from 'prop-types';
 import chev from '../../assets/images/chevron-up.png';
 import data from './PillTags.json';
@@ -448,7 +449,24 @@ function WOYM({ navigation }) {
           </View>
         </View>
       </ScrollView>
+      <LinearGradient
+        start={{ x: 0, y: 1 }}
+        end={{ x: 0, y: 0 }}
+        style={{
+          height: 100, width: '100%', position: 'absolute', bottom: 100,
+        }}
+        colors={['#E0F1F3FF', '#E0F1F300']}
+      />
+      <LinearGradient
+        start={{ x: 0, y: 1 }}
+        end={{ x: 0, y: 0 }}
+        style={{
+          height: 100, width: '100%', position: 'absolute', bottom: 0,
+        }}
+        colors={['#E0F1F3FF', '#E0F1F3FF']}
+      />
       <View style={styles.stillButt}>
+        {/* E0F1F3 */}
         <View style={styles.nextButtContainer}>
           <Pressable
             style={[styles.nextButt, outOf3 > 2 ? styles.nextNot : styles.nextReady]}
