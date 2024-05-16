@@ -18,9 +18,9 @@ const authSlice = createSlice({
   reducers: {
     login: (state, action) => {
       console.log('login');
-      state.id = action.payload.user._id;
-      state.email = action.payload.user.email;
-      state.firstName = action.payload.user.firstName;
+      state.id = action.payload._id;
+      state.email = action.payload.email;
+      state.firstName = action.payload.firstName;
       state.token = action.payload.token;
       state.authHeader = {
         Authorization: `Bearer ${action.payload.token}`,

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import {
-  Text, View, Button, Platform, Image, Pressable,
+  Text, View, Platform, Image, Pressable,
   StyleSheet,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -96,14 +96,12 @@ const styles = StyleSheet.create({
   allToggleContainers: {
     display: 'flex',
     flexDirection: 'column',
-    gap: 22,
+    gap: 20,
   },
 });
 
 export default function NotificationsTest() {
   const [expoPushToken, setExpoPushToken] = useState('');
-  const [notification, setNotification] = useState(false);
-  const notificationListener = useRef();
   const responseListener = useRef();
   const navigation = useNavigation();
   const [isEnabled, setIsEnabled] = useState(false);
@@ -112,6 +110,16 @@ export default function NotificationsTest() {
   const [isEnabled4, setIsEnabled4] = useState(false);
   const [isEnabled5, setIsEnabled5] = useState(false);
   const [isEnabled6, setIsEnabled6] = useState(false);
+  const [checkIn, setCheckIn] = useState(false);
+
+  const identifierMap = {
+    1: '',
+    2: '',
+    3: '',
+    4: '',
+    5: '',
+    6: '',
+  };
 
   const cancelAllScheduledNotifications = async () => {
     try {
@@ -130,8 +138,8 @@ export default function NotificationsTest() {
     return timeUntilTomorrow / 1000; // to seconds
   }
 
-  function scheduleRandomNotification(delayInSeconds, message) {
-    Notifications.scheduleNotificationAsync({
+  async function scheduleRandomNotification(delayInSeconds, message, number) {
+    const identifier = await Notifications.scheduleNotificationAsync({
       content: {
         title: "Don't forget!",
         body: message,
@@ -142,17 +150,65 @@ export default function NotificationsTest() {
         repeats: false, // Set to true if you want it to repeat at the same time every day
       },
     });
+    identifierMap[number] = identifier;
   }
 
+  function cancelRandomNotification(number) {
+    Notifications.cancelScheduledNotificationAsync(identifierMap[number]);
+  }
+
+  const handleCheckIn = () => {
+    setCheckIn((previousState) => !previousState);
+  };
+
   // Handle Toggle Change
-  const handleToggleChange = async () => {
-    await cancelAllScheduledNotifications();
-    if (isEnabled) scheduleRandomNotification(5, 'Time for your water intake!');
-    if (isEnabled2) scheduleRandomNotification(7, "Don't forget your full meal!");
-    if (isEnabled3) scheduleRandomNotification(9, 'Time for some physical activity!');
-    if (isEnabled4) scheduleRandomNotification(11, 'Engage in a mood-boosting activity!');
-    if (isEnabled5) scheduleRandomNotification(13, 'Engage in a wellness-boosting activity!');
-    if (isEnabled6) scheduleRandomNotification(15, 'Continue your thirty-day detox!');
+  const handleToggleChange = async (number) => {
+    switch (number) {
+      case 1:
+        if (isEnabled) {
+          scheduleRandomNotification(5, 'Time for your water intake!', 1);
+        } else {
+          cancelRandomNotification(1);
+        }
+        break;
+      case 2:
+        if (isEnabled2) {
+          scheduleRandomNotification(7, "Don't forget your full meal!", 2);
+        } else {
+          cancelRandomNotification(2);
+        }
+        break;
+      case 3:
+        if (isEnabled3) {
+          scheduleRandomNotification(9, 'Time for some physical activity!', 3);
+        } else {
+          cancelRandomNotification(3);
+        }
+        break;
+      case 4:
+        if (isEnabled4) {
+          scheduleRandomNotification(11, 'Engage in a mood-boosting activity!', 4);          
+        } else {
+          cancelRandomNotification(4);
+        }
+        break;
+      case 5:
+        if (isEnabled5) {
+          scheduleRandomNotification(13, 'Engage in a wellness-boosting activity!', 5);        
+        } else {
+          cancelRandomNotification(5);
+        }
+        break;
+      case 6:
+        if (isEnabled6) {
+          scheduleRandomNotification(15, 'Continue your thirty-day detox!', 6);          
+        } else {
+          cancelRandomNotification(6);
+        }
+        break;
+      default:
+        console.log('This should not hit');
+    }
   };
 
   const toggleWaterIntake = () => {
@@ -180,9 +236,28 @@ export default function NotificationsTest() {
   };
 
   useEffect(() => {
-    handleToggleChange();
-  }, [isEnabled, isEnabled2, isEnabled3, isEnabled4, isEnabled5, isEnabled6]);
+    handleToggleChange(1);
+  }, [isEnabled]);
 
+  useEffect(() => {
+    handleToggleChange(2);
+  }, [isEnabled2]);
+
+  useEffect(() => {
+    handleToggleChange(3);
+  }, [isEnabled3]);
+
+  useEffect(() => {
+    handleToggleChange(4);
+  }, [isEnabled4]);
+
+  useEffect(() => {
+    handleToggleChange(5);
+  }, [isEnabled5]);
+
+  useEffect(() => {
+    handleToggleChange(6);
+  }, [isEnabled6]);
   /*
     Plan:
       - pull user id from redux
@@ -243,7 +318,7 @@ export default function NotificationsTest() {
       token = (await Notifications.getExpoPushTokenAsync({ projectId: '3336f63f-0aa8-4dd9-91ce-12da7281d317' })).data;
       console.log(token);
     } else {
-      // alert('Must use physical device for Push Notifications');
+      alert('Must use physical device for Push Notifications');
     }
 
     return token;
@@ -378,8 +453,8 @@ export default function NotificationsTest() {
             backgroundInactive="#53504C33"
             activeText=""
             inActiveText=""
-            value={null}
-            onValueChange={() => {}}
+            value={checkIn}
+            onValueChange={handleCheckIn}
             barHeight={24}
             circleSize={20}
             switchWidthMultiplier={2.6}
