@@ -25,7 +25,6 @@
       }
     },
     "web": {
-<<<<<<< HEAD
       "favicon": "./assets/favicon.png"
     },
     "extra": {
@@ -34,9 +33,5 @@
       }
     },
     "owner": "idontmind"
-=======
-      "favicon": "./assets/images/favicon.png"
-    }
->>>>>>> main
   }
 }

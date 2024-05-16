@@ -6,11 +6,8 @@ import PushNotifications from '../Features/Settings/Screens/PushNotifications';
 import Options from '../Features/Other/Screens/Options';
 import JournalHistoryPage from '../Features/Other/Screens/JournalHistoryPage';
 import WOYM from '../Features/Register/WOYM';
-<<<<<<< HEAD
 import NotificationsTest from '../Features/Settings/NotificationsTest';
-=======
 import DayChallenge from '../Features/Other/Screens/DayChallenge';
->>>>>>> main
 
 const Tab = createBottomTabNavigator();
 

@@ -20,14 +20,11 @@
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.3.0",
     "mongoose": "^7.6.3",
-<<<<<<< HEAD
-    "expo-updates": "~0.24.12"
-=======
+    "expo-updates": "~0.24.12",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
     "react-native-timer-picker": "^1.5.3"
->>>>>>> main
   },
   "devDependencies": {
     "eslint": "^8.52.0",

@@ -46,14 +46,11 @@ function PushNotifications() {
     { label: 'monthly', value: 'monthly' },
   ]);
 
-<<<<<<< HEAD
   function onDisplayNotification() {
     console.log(2);
   }
-=======
   const [showPicker, setShowPicker] = useState(false);
   const [alarmString, setAlarmString] = useState(null);
->>>>>>> main
 
   return (
     <View>
