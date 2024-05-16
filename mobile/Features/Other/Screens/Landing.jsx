@@ -25,6 +25,18 @@ export default function Landing({ navigation }) {
     navigation.navigate('CheckIn');
   };
 
+  const navigateTo30 = () => {
+    navigation.navigate('ThirtyDayOverview');
+  };
+
+  const navigateToOverview = () => {
+    navigation.navigate('Overview');
+  };
+
+  const navigateToExercise = () => {
+    navigation.navigate('Exercise');
+  };
+
   const dispatch = useDispatch();
 
   // Handles a hardcoded login for testing
@@ -34,10 +46,11 @@ export default function Landing({ navigation }) {
         email: 'sample@gmail.com',
         password: 'sample',
       };
-      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/users/signin`, userData);
+      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/signin`, userData);
       if (res.data.error) {
         console.error(res.data.error);
       } else {
+        console.log(res.data);
         dispatch(login(res.data));
         navigateToFeed();
       }
@@ -53,7 +66,7 @@ export default function Landing({ navigation }) {
         email: 'sample@gmail.com',
         password: 'sample',
       };
-      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/users/signin`, userData);
+      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/signin`, userData);
       if (res.data.error) {
         console.error(res.data.error);
       } else {
@@ -103,6 +116,18 @@ export default function Landing({ navigation }) {
       <Button
         title="To Loading"
         onPress={navigateToLoading}
+      />
+      <Button
+        title="To Thirty Day"
+        onPress={navigateTo30}
+      />
+      <Button
+        title="To Overview"
+        onPress={navigateToOverview}
+      />
+      <Button
+        title="To Exercise Checkin Question"
+        onPress={navigateToExercise}
       />
     </View>
   );

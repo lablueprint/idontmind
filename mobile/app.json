@@ -15,7 +15,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anonymous.dev-onboarding-2023"
     },
     "android": {
       "adaptiveIcon": {
@@ -26,6 +27,5 @@
     "web": {
       "favicon": "./assets/images/favicon.png"
     }
-    
   }
 }
