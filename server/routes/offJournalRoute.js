@@ -7,7 +7,7 @@ offJournalRouter.post('/createJournal', offJournalController.createJournal);
 
 offJournalRouter.get('/getAllJournals', offJournalController.getAllJournals);
 
-offJournalRouter.post('/getJournalByUsername', offJournalController.getJournalByUsername);
+offJournalRouter.post('/getJournalByEmail', offJournalController.getJournalByEmail);
 
 offJournalRouter.post('/updateJournal', offJournalController.updateJournal);
 

@@ -7,10 +7,8 @@ import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import styles from '../Components/JournalStyle';
 import { useRoute } from '@react-navigation/native';
-
-
+import styles from '../Components/JournalStyle';
 
 export function JournalPage({
   navigation, freeWrite, isHistory,
@@ -93,7 +91,7 @@ export function JournalPage({
       />
     );
   };
-  console.log("free write title", freeWriteTitle);
+  console.log('free write title', freeWriteTitle);
 
   const currDate = new Date();
 
@@ -101,7 +99,7 @@ export function JournalPage({
   const username = 'Nicole'; // set prompt and username to constants at the moment, but should be able to get that info dynamically
 
   const addNewJournal = async (newUsername, newPrompt, newText, isFreeWrite) => {
-    console.log("is free write: ", isFreeWrite);
+    console.log('is free write: ', isFreeWrite);
     handlePopUp();
     const currentdate = new Date();
     const pstDate = currentdate.toLocaleString('en-US', {
@@ -110,7 +108,7 @@ export function JournalPage({
     const timestamp = pstDate;
     // const timestamp = currentdate;
     await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/journals/createJournal`, {
-      username: newUsername, prompt: newPrompt, text: newText, type: isFreeWrite, timestamp,
+      email: newUsername, prompt: newPrompt, text: newText, type: isFreeWrite, timestamp,
     });
   }; /* function that creates a new journal entry with username, prompt, text, and timestamp and
   sends it to the MongoDB */
@@ -161,7 +159,7 @@ export function JournalPage({
 
   const handleTextChange = (inputText) => {
     setText(inputText);
-    navigation.navigate('PostDetails', {randomTitle, inputText});
+    navigation.navigate('PostDetails', { randomTitle, inputText });
   };
 
   /* render it in two different ways depending on if isHistory(if false, editable text box, if
@@ -315,64 +313,64 @@ export default function JournalTabs({ navigation }) {
   const route = useRoute();
   const isHistory = route.params?.isHistory;
 
-  console.log("IN THE ACTUAL TAB JOURNAL T")
-  console.log("Tab is history", isHistory);
+  console.log('IN THE ACTUAL TAB JOURNAL T');
+  console.log('Tab is history', isHistory);
   const navigateToCalendar = () => {
     navigation.navigate('Calendar');
   };
 
   const Tab = createMaterialTopTabNavigator();
-  if (!isHistory){ return (
-    <View style={{ flex: 1 }}>
-      <View style={{ flexDirection: 'row', alignSelf: 'flex-end', marginTop: 20 }}>
-        <TouchableOpacity style={{ margin: 10 }} onPress={navigateToCalendar}>
-          <Image
-            style={{ width: 30, height: 31 }}
-            source={require('../../../assets/calendar.png')}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity style={{ margin: 10 }}>
-          <Image
-            style={{ width: 20, height: 31 }}
-            source={require('../../../assets/images/search.png')}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity style={{ marginRight: 40, margin: 10 }}>
-          <Image
-            style={{ width: 20, height: 31 }}
-            source={require('../../../assets/images/filter.png')}
-          />
-        </TouchableOpacity>
-      </View>
-
-      <Tab.Navigator>
-        <Tab.Screen name="Guided Prompt" component={GuidedPrompt} />
-        <Tab.Screen name="Free Write" component={FreeWrite} />
-      </Tab.Navigator>
-    </View>
-  );
-  }
-  else{
+  if (!isHistory) {
     return (
-      <ScrollView style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <View style={styles.container}>
-          {getPrompt(freeWrite)}
-          <View style={styles.textBox}>
-            <ScrollView automaticallyAdjustKeyboardInsets>
-              <Text>Hi</Text>
-              <Text>{body}</Text>
-            </ScrollView>
-          </View>
+      <View style={{ flex: 1 }}>
+        <View style={{ flexDirection: 'row', alignSelf: 'flex-end', marginTop: 20 }}>
+          <TouchableOpacity style={{ margin: 10 }} onPress={navigateToCalendar}>
+            <Image
+              style={{ width: 30, height: 31 }}
+              source={require('../../../assets/calendar.png')}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity style={{ margin: 10 }}>
+            <Image
+              style={{ width: 20, height: 31 }}
+              source={require('../../../assets/images/search.png')}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity style={{ marginRight: 40, margin: 10 }}>
+            <Image
+              style={{ width: 20, height: 31 }}
+              source={require('../../../assets/images/filter.png')}
+            />
+          </TouchableOpacity>
         </View>
-  
-        <Button
-          title="To Past Journal Entries"
-          onPress={navigateToJournalHistory}
-        />
-      </ScrollView>
-  
+
+        <Tab.Navigator>
+          <Tab.Screen name="Guided Prompt" component={GuidedPrompt} />
+          <Tab.Screen name="Free Write" component={FreeWrite} />
+        </Tab.Navigator>
+      </View>
     );
   }
+
+  return (
+    <ScrollView style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <View style={styles.container}>
+        {getPrompt(freeWrite)}
+        <View style={styles.textBox}>
+          <ScrollView automaticallyAdjustKeyboardInsets>
+            <Text>Hi</Text>
+            <Text>{body}</Text>
+          </ScrollView>
+        </View>
+      </View>
+
+      <Button
+        title="To Past Journal Entries"
+        onPress={navigateToJournalHistory}
+      />
+    </ScrollView>
+
+  );
 }
 
 JournalPage.propTypes = {
