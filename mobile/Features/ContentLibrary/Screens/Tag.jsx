@@ -2,9 +2,7 @@ import {
   Text, View, Image, ScrollView, Pressable,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import axios from 'axios';
 import { useContext } from 'react';
-import { useSelector } from 'react-redux';
 
 import shapeImage from '../../../assets/images/shape.png';
 import Back from '../../../assets/images/back_button.png';
@@ -14,48 +12,29 @@ import TagRectangle from '../Components/TagRectangle';
 
 export default function Tag({ navigation, route }) {
   /* index of corresponding Tag */
-  const { index, routeName } = route.params;
+  const { index } = route.params;
 
   const {
-    Tags, deleteFavorite, addFavorite, findFavorite,
+    Tags,
   } = useContext(TagContext);
 
   /* Grabs current tag */
   const tag = Tags[index];
 
   const {
-    id, tagName, tagBrief,
+    tagName,
   } = tag;
 
   /* Checks if current tag is in users favorite list */
-  const favorited = findFavorite(_id);
+  // const favorited = findFavorite(id);
+  // const favorited = findFavorite(_id);
+
+  const hardcodedTags = ['Tag', 'Creativity', 'Energy', 'Environment', 'Exercise', 'Fitness', 'Health', 'Journaling', 'Medication']; // hardcoded for now, i think tag content list
 
   const navigateToPreviousRoute = () => {
     console.log('hi');
     navigation.navigate('Content Library');
   };
-
-  /* Adds Tag to Users Favorites List */
-  const favoriteTag = async () => {
-    addFavorite(id);
-    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/favoriteTag`, { tag: { id, tagName }, email }, { headers: authHeader });
-  };
-
-  /* Remove Tag from Users Favorites List */
-  const unfavoriteTag = async () => {
-    deleteFavorite(id);
-    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/unfavoriteTag`, { tag: { id, tagName }, email }, { headers: authHeader });
-  };
-
-  /* Handles Favorite Change */
-  // const handleFavoriteChange = () => {
-  //   /* checks if the tag is not not in the user's favorite list */
-  //   if (findFavorite(id) === false) {
-  //     favoriteTag();
-  //   } else {
-  //     unfavoriteTag();
-  //   }
-  // };
 
   const navigateToResourceList = (subtopicName) => {
     console.log(subtopicName);
