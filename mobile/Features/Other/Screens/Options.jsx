@@ -1,10 +1,11 @@
 import {
   ScrollView, View, Text, TouchableOpacity, Image, StyleSheet,
 } from 'react-native';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import Video, { VideoRef } from 'react-native-video';
 import OptionStyle from './OptionStyle';
 
 export default function Options({ navigation }) {
@@ -38,6 +39,14 @@ export default function Options({ navigation }) {
   });
 
   const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedVideo, setSelectedVideo] = useState(null);
+
+  // const videoRef = useRef < VideoRef > (null);
+
+  // if (videoRef.current) {
+  //   // Access properties or methods of the Video component
+  //   console.log(videoRef.current.Constants);
+  // }
 
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -51,11 +60,18 @@ export default function Options({ navigation }) {
     console.log('HLKEJFKLD', result.assets[0]);
 
     if (!result.canceled) {
-      setSelectedImage(result.assets[0].uri);
-      await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/test/uploadVideo`, {
-        imageObject:
-       result.assets[0],
-      });
+      const mediaType = result.assets[0].type;
+      if (mediaType === 'video') {
+        setSelectedVideo(result.assets[0].uri);
+        await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/test/uploadVideo`, {
+          imageObject: result.assets[0],
+        });
+      } else {
+        setSelectedImage(result.assets[0].uri);
+        await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/test/uploadImage`, {
+          imageObject: result.assets[0],
+        });
+      }
     }
   };
 
@@ -87,6 +103,15 @@ export default function Options({ navigation }) {
           style={{ width: 200, height: 200 }}
         />
       ) : ''}
+      {selectedVideo
+      && (
+      <Video
+        source={{ uri: selectedVideo }}
+        style={{ flex: 1, height: 200 }}
+        controls
+        // ref={(ref) => { videoRef.current = ref; }}
+      />
+      )}
       <TouchableOpacity style={uploadPhotoStyles.container} onPress={pickImage}>
         <Text>+</Text>
       </TouchableOpacity>
