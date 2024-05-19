@@ -13,6 +13,9 @@ export default function PostDetails({ navigation, route }) {
   const [newText, setNewText] = useState(text);
   const [isTyping, setIsTyping] = useState(false);
   const [isInitialRender, setIsInitialRender] = useState(true); // Flag for initial render
+  const handleKeyboardHide = () => {
+    setIsTyping(false);
+  };
 
   useEffect(() => {
     textInputRef.current.focus();
@@ -46,42 +49,38 @@ export default function PostDetails({ navigation, route }) {
     setText(inputText);
   };
 
-  const handleKeyboardHide = () => {
-    setIsTyping(false);
-  };
-
   const handleTextInputFocus = () => {
     setIsTyping(true);
   };
 
   return (
     <View style={{ flex: 1, backgroundColor: '#E0F1F3' }}>
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+      <ScrollView contentContainerStyle={{ alignItems: 'center', flexGrow: 1 }}>
         <View
           style={{
             marginTop: 50,
             alignItems: 'center',
-            width: '100%',
+            width: '95%',
             height: '100%',
           }}
         >
+          {freeWrite ? (
+            <Text style={{ fontSize: 12, fontWeight: 'bold' }}>
+              {freeWriteTitle}
+            </Text>
+          ) : (
+            <Text style={{ fontSize: 30, marginBottom: 20 }}>
+              {randomTitle}
+            </Text>
+          )}
           <View style={{ alignItems: 'center' }}>
             <View
               style={{
-                marginTop: 20,
-                width: '80%',
-                height: '80%',
+                width: '85%',
+                height: '90%',
+                alignItems: 'center',
               }}
             >
-              {freeWrite ? (
-                <Text style={{ fontSize: 12, fontWeight: 'bold' }}>
-                  {freeWriteTitle}
-                </Text>
-              ) : (
-                <Text style={{ fontSize: 30, marginBottom: 20 }}>
-                  {randomTitle}
-                </Text>
-              )}
               <TextInput
                 ref={textInputRef}
                 multiline

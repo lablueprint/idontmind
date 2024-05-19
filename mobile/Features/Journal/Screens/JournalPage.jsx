@@ -1,20 +1,17 @@
 import {
-  ScrollView, Text, View, Button, TextInput,
-  Modal, TouchableOpacity, Pressable, Image, Dimensions,
+  ScrollView, Text, View, TextInput,
+  Modal, TouchableOpacity, Pressable, Image,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import PropTypes from 'prop-types';
-import React, { useState, useEffect, useRoute } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import axios from 'axios';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { LinearGradient } from 'expo-linear-gradient';
-import styles from '../Components/JournalStyle';
 
 export function JournalPage({
   navigation, freeWrite,
 }) {
-  const windowHeight = Dimensions.get('window').height;
-
   const [selectedImage, setSelectedImage] = useState('');
   // const [viewImage, setViewImage] = useState(false);
   const [uploadImageURL, setUploadImageURL] = useState(null);
@@ -26,6 +23,8 @@ export function JournalPage({
   const [text, setText] = useState(''); // state for the text the user types in
   const [confirmPopUp, setConfirmPopUp] = useState(false); /* state that tells if
   the confirm popup is showing or not */
+  const [pointerEvents, setPointerEvents] = useState('none');
+  const textInputRef = useRef(null);
 
   const handlePopUp = () => {
     setConfirmPopUp(!confirmPopUp);
@@ -76,28 +75,11 @@ export function JournalPage({
     }
   };
 
-  const getPrompt = (option) => {
-    if (!option) {
-      return <Text style={{ fontSize: 15, fontWeight: 'bold' }}>{randomTitle}</Text>;
-    }
-    return (
-      <TextInput
-        style={{
-          backgroundColor: '#C6CECE',
-          color: 'black',
-          padding: 10,
-          borderRadius: 5,
-          margin: 20,
-        }}
-        multiline
-        placeholder="Add Title..."
-        onChangeText={setFreeWriteTitle}
-        value={freeWriteTitle}
-      />
-    );
-  };
-
   const currDate = new Date();
+
+  const handleBlur = () => {
+    setPointerEvents('none');
+  };
 
   // const prompt = 'Create a journal post!';
   const username = 'Nicole'; // set prompt and username to constants at the moment, but should be able to get that info dynamically
@@ -133,29 +115,10 @@ export function JournalPage({
       // Handle error
     }
   };
-  /*   function that creates a new journal entry with username, prompt, text, and timestamp and
-  sends it to the MongoDB */
-
-  const navigateToJournalHistory = () => {
-    navigation.navigate('Journal History');
-  }; // navigate to Journal History page
-
-  // const getFilenameFromUri = (uri) => {
-  //   if (uri) {
-  //     const uriParts = uri.split('/');
-  //     return uriParts[uriParts.length - 1];
-  //   }
-  //   return '';
-  // };
 
   const removeImage = () => {
     setSelectedImage('');
-    // setViewImage(false);
   };
-
-  // const handleFilenamePress = () => {
-  //   setViewImage(!viewImage);
-  // };
 
   const wordsLen = (str) => {
     const array = str.match(/\S+/g);
@@ -185,16 +148,13 @@ export function JournalPage({
 
   const formattedDate = formatDate(currDate);
 
-  /* render it in two different ways depending on if isHistory(if false, editable text box, if
-  true, uneditable text box with previously written text) */
-  // if (!isHistory) {
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1, backgroundColor: '#E5F8F3'}}>
+    <ScrollView contentContainerStyle={{ flexGrow: 1, backgroundColor: '#E5F8F3' }}>
       <LinearGradient
         colors={['#E0F1F3', '#E5F8F3']}
-        style={{ flex: 1 }}
+        style={{ flex: 1}}
       >
-        <View style={{ flex: 1, alignItems: 'center', paddingTop: 15 }}>
+        <View style={{ flex: 1, alignItems: 'center', paddingTop: 15}}>
           <View style={{
             flex: 1, width: '88%', flexDirection: 'row', alignItems: 'flex-start',
           }}
@@ -208,12 +168,12 @@ export function JournalPage({
               style={{
                 backgroundColor: '#C6CECE',
                 color: 'black',
-                fontSize: 16,
+                fontSize: 13,
                 paddingTop: 15,
-                padding: 10,
+                padding: 17,
                 borderRadius: 8,
                 marginTop: 5,
-                width: '88%',
+                width: '85%',
                 height: 50,
                 flex: 1,
               }}
@@ -225,7 +185,7 @@ export function JournalPage({
             />
           ) : (
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <View style={{ width: '88%' }}>
+              <View style={{ width: '85%' }}>
                 <Text style={{ color: 'rgba(0, 0, 0, 1)', fontSize: 30, marginLeft: 15 }}>{randomTitle}</Text>
               </View>
               <Pressable onPress={generateRandomPrompt}>
@@ -239,19 +199,27 @@ export function JournalPage({
             </View>
 
           )}
-          <TextInput
-            multiline
-            placeholder="Type here..."
-            placeholderTextColor="#676C6C"
-            onFocus={() => navigation.navigate('PostDetails', {
+          <TouchableOpacity
+          style={{flex: 1}}
+            activeOpacity={1}
+            onPress={() => navigation.navigate('PostDetails', {
               randomTitle, text, setText, generateRandomPrompt, freeWriteTitle, freeWrite,
             })}
-            onChangeText={(inputText) => setText(inputText)}
-            value={text}
-            style={{
-              flex: 1, padding: 20, paddingTop: 20, fontSize: 13, backgroundColor: '#C6CECE', margin: 15, minWidth: '88%', minHeight: 400, alignItems: 'center', borderRadius: 8,
-            }}
-          />
+          >
+            <TextInput
+              multiline
+              placeholder="Type here..."
+              placeholderTextColor="#676C6C"
+              ref={textInputRef}
+              onChangeText={(inputText) => setText(inputText)}
+              pointerEvents={pointerEvents}
+              onBlur={handleBlur}
+              value={text}
+              style={{
+                flex: 1, padding: 20, paddingTop: 20, fontSize: 13, backgroundColor: '#C6CECE', margin: 15, minWidth: '85%', minHeight: 350, alignItems: 'center', borderRadius: 8,
+              }}
+            />
+          </TouchableOpacity>
           <View style={{
             marginBottom: 15, width: '88%', flexDirection: 'row', alignItems: 'flex-start',
           }}
@@ -287,7 +255,10 @@ export function JournalPage({
                 </View>
               )
                 : (
-                  <View style={{ flex: 1, position: 'relative', alignItems: 'center', paddingBottom: 10 }}>
+                  <View style={{
+                    flex: 1, position: 'relative', alignItems: 'center', paddingBottom: 10,
+                  }}
+                  >
                     <View style={{ width: '100%', flexDirection: 'row', alignItems: 'flex-start' }}>
                       <View style={{ flex: 1 }}>
                         <Text style={{ fontSize: 13, marginBottom: 18 }}>Attachments</Text>
@@ -300,7 +271,10 @@ export function JournalPage({
                       />
                     </TouchableOpacity>
                     <View style={{ position: 'relative' }}>
-                      <Image source={{ uri: selectedImage }} style={{ width: 200, height: 200, borderRadius: 8 }} />
+                      <Image
+                        source={{ uri: selectedImage }}
+                        style={{ width: 200, height: 200, borderRadius: 8 }}
+                      />
                       <TouchableOpacity onPress={removeImage} style={{ position: 'absolute', top: -8, right: -20 }}>
                         <Image
                           style={{ width: 20, height: 20, marginRight: 10 }}
@@ -316,7 +290,6 @@ export function JournalPage({
             alignItems: 'center', flex: 1, marginTop: 10, marginBottom: 30, width: '60%',
           }}
           >
-          
             <TouchableOpacity
               onPress={handlePopUp}
               style={{
@@ -325,7 +298,7 @@ export function JournalPage({
             >
               <Text style={{ fontSize: 14, color: '#E0F1F3' }}> Submit Journal</Text>
             </TouchableOpacity>
-          
+
           </View>
 
         </View>
@@ -337,23 +310,26 @@ export function JournalPage({
             }}
           >
             <View style={{
-              paddingVertical: 26, paddingHorizontal: 31, borderRadius: 16, backgroundColor: '#DFE5E5',
+              alignItems: 'center',paddingVertical: 26, paddingHorizontal: 31, borderRadius: 16, backgroundColor: '#DFE5E5', width: '85%', minHeight: '34%'
             }}
             >
-              <View style={{ alignItems: 'center' }}>
+              <View style={{ alignItems: 'center', flex: 1 }}>
                 <Text style={{
-                  margin: 5, fontSize: 18, fontWeight: 'bold', color: '#343A3A',
+                  fontSize: 14, fontWeight: 'bold', color: '#343A3A',
                 }}
                 >
                   Submit Journal Entry?
                 </Text>
+               
                 <Text style={{
-                  marginBottom: 25, width: '50%', fontSize: 16, color: '#929999',
+                 marginTop: 3, textAlign: 'center', maxWidth: '70%', fontSize: 12, color: '#929999',flex:1,
                 }}
                 >
                   You can always go back to edit past entries later
                 </Text>
+     
               </View>
+            
               {freeWrite ? (
                 <Pressable
                   style={{
@@ -366,20 +342,21 @@ export function JournalPage({
               ) : (
                 <Pressable
                   style={{
-                    margin: 10, borderRadius: 99, alignItems: 'center', justifyContent: 'center', height: 50, backgroundColor: '#546967',
+                    margin: 10, borderRadius: 99, alignItems: 'center', justifyContent: 'center', height: 40, backgroundColor: '#374342', width:'94%'
                   }}
                   onPress={() => addNewJournal(username, randomTitle, text, uploadImageURL)}
                 >
-                  <Text style={{ fontSize: 18, fontWeight: 700, color: '#F6FCFC' }}>Submit Now</Text>
+                  <Text style={{ fontSize: 14, fontWeight: 500, color: '#F6FCFC'}}>Submit Now</Text>
                 </Pressable>
               )}
+        
               <Pressable
                 style={{
-                  margin: 10, borderRadius: 99, alignItems: 'center', justifyContent: 'center', height: 50, borderWidth: 2, borderColor: '#546967',
+                  margin: 5, borderRadius: 99, alignItems: 'center', justifyContent: 'center', height: 40, borderWidth: 2, borderColor: '#546967', width:'94%'
                 }}
                 onPress={handlePopUp}
               >
-                <Text style={{ fontSize: 18, fontWeight: 700 }}>Cancel</Text>
+                <Text style={{ fontSize: 14, fontWeight: 500 }}>Cancel</Text>
               </Pressable>
             </View>
           </TouchableOpacity>
@@ -448,7 +425,7 @@ function CustomTabBar({ state, descriptors, navigation }) {
             onPress={onPress}
             style={tabStyles}
           >
-            <Text style={{ color: isFocused ? '#000000' : '#E5F8F3', fontSize: 14}}>{label}</Text>
+            <Text style={{ color: isFocused ? '#000000' : '#E5F8F3', fontSize: 14 }}>{label}</Text>
           </View>
 
         );
@@ -464,13 +441,21 @@ export default function JournalTabs({ navigation }) {
 
   const Tab = createMaterialTopTabNavigator();
   return (
-    <View style={{ flex: 1, backgroundColor: '#E5F8F3'}}>
+    <View style={{ flex: 1, backgroundColor: '#E5F8F3' }}>
       <LinearGradient
         colors={['#374342', '#546967']}
         style={{ flex: 0.15 }}
       >
-        <View style={{ flexDirection: 'row', alignSelf: 'flex-end', marginTop: 30, marginRight: 25}}>
-          <TouchableOpacity style={{ alignItems: 'center', justifyContent: 'center', borderRadius: 30, width: 38, height: 38, margin: 10, backgroundColor: '#B6B6B6CC' }} onPress={navigateToCalendar}>
+        <View style={{
+          flexDirection: 'row', alignSelf: 'flex-end', marginTop: 30, marginRight: 25,
+        }}
+        >
+          <TouchableOpacity
+            style={{
+              alignItems: 'center', justifyContent: 'center', borderRadius: 30, width: 38, height: 38, margin: 10, backgroundColor: '#B6B6B6CC',
+            }}
+            onPress={navigateToCalendar}
+          >
             <Image
               style={{ width: 20, height: 20 }}
               source={require('../../../assets/calendar.png')}
@@ -479,13 +464,13 @@ export default function JournalTabs({ navigation }) {
         </View>
       </LinearGradient>
 
-      <View style={{ flex: 0.9, backgroundColor: '#E5F8F3'}}>
+      <View style={{ flex: 0.9, backgroundColor: '#E5F8F3' }}>
         <Tab.Navigator tabBar={CustomTabBar}>
           <Tab.Screen
             name="Guided Prompt"
             component={GuidedPrompt}
-            options={{ tabBarIndicatorStyle: { width: 50 }}}
-        
+            options={{ tabBarIndicatorStyle: { width: 50 } }}
+
           />
           <Tab.Screen
             name="Free Write"
@@ -495,8 +480,7 @@ export default function JournalTabs({ navigation }) {
       </View>
     </View>
   );
-  }
-  
+}
 
 JournalPage.propTypes = {
   navigation: PropTypes.shape({
