@@ -9,6 +9,9 @@ import axios from 'axios';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { LinearGradient } from 'expo-linear-gradient';
 
+const recoletaFont = '../../../assets/fonts/Recoleta/Recoleta-Regular';
+const cabinetGrotesk = '../../../assets/fonts/CabinetGrotesk/CabinetGrotesk-Regular';
+
 export function JournalPage({
   navigation, freeWrite,
 }) {
@@ -128,18 +131,6 @@ export function JournalPage({
     return array.length;
   };
 
-  const timeHours = currDate.getHours();
-  const timeMinutes = currDate.getMinutes();
-
-  const formatMinutes = (minutes) => (minutes < 10 ? '0' : '') + minutes;
-
-  const militaryToStandard = (hours) => {
-    if (hours > '12') {
-      return (hours - '12');
-    }
-    return hours;
-  };
-
   const formatDate = (dateString) => {
     const options = { month: 'long', day: 'numeric', year: 'numeric' };
     const formattedDate = new Date(dateString).toLocaleDateString(undefined, options);
@@ -152,21 +143,21 @@ export function JournalPage({
     <ScrollView contentContainerStyle={{ flexGrow: 1, backgroundColor: '#E5F8F3' }}>
       <LinearGradient
         colors={['#E0F1F3', '#E5F8F3']}
-        style={{ flex: 1}}
+        style={{ flex: 1 }}
       >
-        <View style={{ flex: 1, alignItems: 'center', paddingTop: 15}}>
+        <View style={{ flex: 1, alignItems: 'center', paddingTop: 15 }}>
           <View style={{
             flex: 1, width: '88%', flexDirection: 'row', alignItems: 'flex-start',
           }}
           >
             <View style={{ flex: 1 }}>
-              <Text style={{ fontSize: 14 }}>{`${formattedDate}, ${militaryToStandard(timeHours)}:${formatMinutes(timeMinutes)}`}</Text>
+              <Text style={{ marginLeft: 5, fontSize: 14, fontFamily: cabinetGrotesk }}>{`${formattedDate}`}</Text>
             </View>
           </View>
           {freeWrite ? (
             <TextInput
               style={{
-                backgroundColor: '#C6CECE',
+                backgroundColor: '#F6FCFC',
                 color: 'black',
                 fontSize: 13,
                 paddingTop: 15,
@@ -176,6 +167,15 @@ export function JournalPage({
                 width: '85%',
                 height: 50,
                 flex: 1,
+                fontFamily: cabinetGrotesk,
+                shadowColor: '#000',
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.1,
+                shadowRadius: 4,
+
               }}
               multiline
               placeholder="Optional: Add Title..."
@@ -186,7 +186,12 @@ export function JournalPage({
           ) : (
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <View style={{ width: '85%' }}>
-                <Text style={{ color: 'rgba(0, 0, 0, 1)', fontSize: 30, marginLeft: 15 }}>{randomTitle}</Text>
+                <Text style={{
+                  color: 'rgba(0, 0, 0, 1)', fontSize: 30, marginLeft: 15, fontFamily: recoletaFont,
+                }}
+                >
+                  {randomTitle}
+                </Text>
               </View>
               <Pressable onPress={generateRandomPrompt}>
                 <Image
@@ -200,7 +205,7 @@ export function JournalPage({
 
           )}
           <TouchableOpacity
-          style={{flex: 1}}
+            style={{ flex: 1 }}
             activeOpacity={1}
             onPress={() => navigation.navigate('PostDetails', {
               randomTitle, text, setText, generateRandomPrompt, freeWriteTitle, freeWrite,
@@ -216,16 +221,37 @@ export function JournalPage({
               onBlur={handleBlur}
               value={text}
               style={{
-                flex: 1, padding: 20, paddingTop: 20, fontSize: 13, backgroundColor: '#C6CECE', margin: 15, minWidth: '85%', minHeight: 350, alignItems: 'center', borderRadius: 8,
+                fontFamily: cabinetGrotesk,
+                flex: 1,
+                padding: 20,
+                paddingTop: 20,
+                fontSize: 13,
+                backgroundColor: '#F6FCFC',
+                marginBottom: 3,
+                marginTop: 10,
+                minWidth: '85%',
+                minHeight: 350,
+                alignItems: 'center',
+                borderRadius: 8,
+                shadowColor: '#000',
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.1, // Adjust the opacity to change the intensity of the shadow
+                shadowRadius: 4,
               }}
             />
           </TouchableOpacity>
           <View style={{
-            marginBottom: 15, width: '88%', flexDirection: 'row', alignItems: 'flex-start',
+            marginBottom: 10, width: '88%', flexDirection: 'row', alignItems: 'flex-start',
           }}
           >
             <View style={{ flex: 1 }}>
-              <Text style={{ fontSize: 12, textAlign: 'left' }}>
+              <Text style={{
+                marginLeft: 8, fontSize: 12, textAlign: 'left', fontFamily: cabinetGrotesk,
+              }}
+              >
                 word count:
                 {' '}
                 {wordsLen(text)}
@@ -235,7 +261,22 @@ export function JournalPage({
 
           <View
             style={{
-              marginBottom: 15, padding: 20, width: '88%', minHeight: 80, borderRadius: 8, backgroundColor: '#C6CECE', alignItems: 'center', justifyContent: 'center', marginTop: 10,
+              marginBottom: 15,
+              padding: 20,
+              width: '85%',
+              minHeight: 80,
+              borderRadius: 8,
+              backgroundColor: '#F6FCFC',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginTop: 10,
+              shadowColor: '#000',
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.1, // Adjust the opacity to change the intensity of the shadow
+              shadowRadius: 4,
             }}
           >
 
@@ -249,8 +290,13 @@ export function JournalPage({
                     />
                   </TouchableOpacity>
                   <View>
-                    <Text style={{ textAlign: 'center', fontSize: 10, color: 'rgba(0, 0, 0, 1)' }}>Add Attachment</Text>
-                    <Text style={{ fontSize: 10, color: 'rgba(103, 108, 108, 1)' }}>(photo/video supported)</Text>
+                    <Text style={{
+                      fontFamily: cabinetGrotesk, textAlign: 'center', fontSize: 10, color: 'rgba(0, 0, 0, 1)',
+                    }}
+                    >
+                      Add Attachment
+                    </Text>
+                    <Text style={{ fontFamily: cabinetGrotesk, fontSize: 10, color: 'rgba(103, 108, 108, 1)' }}>(photo/video supported)</Text>
                   </View>
                 </View>
               )
@@ -261,7 +307,7 @@ export function JournalPage({
                   >
                     <View style={{ width: '100%', flexDirection: 'row', alignItems: 'flex-start' }}>
                       <View style={{ flex: 1 }}>
-                        <Text style={{ fontSize: 13, marginBottom: 18 }}>Attachments</Text>
+                        <Text style={{ fontFamily: cabinetGrotesk, fontSize: 13, marginBottom: 18 }}>Attachments</Text>
                       </View>
                     </View>
                     <TouchableOpacity style={{ position: 'absolute', top: 0, right: 0 }}>
@@ -296,7 +342,7 @@ export function JournalPage({
                 width: '100%', height: 50, backgroundColor: '#546967', alignItems: 'center', justifyContent: 'center', borderRadius: 99,
               }}
             >
-              <Text style={{ fontSize: 14, color: '#E0F1F3' }}> Submit Journal</Text>
+              <Text style={{ fontFamily: cabinetGrotesk, fontSize: 14, color: '#E0F1F3' }}> Submit Journal</Text>
             </TouchableOpacity>
 
           </View>
@@ -310,7 +356,7 @@ export function JournalPage({
             }}
           >
             <View style={{
-              alignItems: 'center',paddingVertical: 26, paddingHorizontal: 31, borderRadius: 16, backgroundColor: '#DFE5E5', width: '85%', minHeight: '34%'
+              alignItems: 'center', paddingVertical: 26, paddingHorizontal: 31, borderRadius: 16, backgroundColor: '#DFE5E5', width: '85%', minHeight: '34%',
             }}
             >
               <View style={{ alignItems: 'center', flex: 1 }}>
@@ -320,43 +366,53 @@ export function JournalPage({
                 >
                   Submit Journal Entry?
                 </Text>
-               
+
                 <Text style={{
-                 marginTop: 3, textAlign: 'center', maxWidth: '70%', fontSize: 12, color: '#929999',flex:1,
+                  marginTop: 3, textAlign: 'center', maxWidth: '70%', fontSize: 12, color: '#929999', flex: 1,
                 }}
                 >
                   You can always go back to edit past entries later
                 </Text>
-     
+
               </View>
-            
+
               {freeWrite ? (
                 <Pressable
                   style={{
-                    margin: 10, borderRadius: 99, alignItems: 'center', justifyContent: 'center', height: 50, backgroundColor: '#546967',
+                    margin: 10, borderRadius: 99, alignItems: 'center', justifyContent: 'center', height: 40, backgroundColor: '#374342', minWidth: '95%',
                   }}
                   onPress={() => addNewJournal(username, freeWriteTitle, text, uploadImageURL)}
                 >
-                  <Text style={{ fontWeight: 'bold', color: '#F6FCFC', fontSize: 18 }}>Submit Now</Text>
+                  <Text style={{
+                    fontWeight: 'bold', color: '#F6FCFC', fontSize: 14, fontFamily: cabinetGrotesk,
+                  }}
+                  >
+                    Submit Now
+                  </Text>
                 </Pressable>
               ) : (
                 <Pressable
                   style={{
-                    margin: 10, borderRadius: 99, alignItems: 'center', justifyContent: 'center', height: 40, backgroundColor: '#374342', width:'94%'
+                    margin: 10, borderRadius: 99, alignItems: 'center', justifyContent: 'center', height: 40, backgroundColor: '#374342', width: '94%',
                   }}
                   onPress={() => addNewJournal(username, randomTitle, text, uploadImageURL)}
                 >
-                  <Text style={{ fontSize: 14, fontWeight: 500, color: '#F6FCFC'}}>Submit Now</Text>
+                  <Text style={{
+                    fontSize: 14, fontWeight: 500, color: '#F6FCFC', fontFamily: cabinetGrotesk,
+                  }}
+                  >
+                    Submit Now
+                  </Text>
                 </Pressable>
               )}
-        
+
               <Pressable
                 style={{
-                  margin: 5, borderRadius: 99, alignItems: 'center', justifyContent: 'center', height: 40, borderWidth: 2, borderColor: '#546967', width:'94%'
+                  margin: 5, borderRadius: 99, alignItems: 'center', justifyContent: 'center', height: 40, borderWidth: 2, borderColor: '#546967', width: '94%',
                 }}
                 onPress={handlePopUp}
               >
-                <Text style={{ fontSize: 14, fontWeight: 500 }}>Cancel</Text>
+                <Text style={{ fontSize: 14, fontWeight: 500, fontFamily: cabinetGrotesk }}>Cancel</Text>
               </Pressable>
             </View>
           </TouchableOpacity>
@@ -415,7 +471,6 @@ function CustomTabBar({ state, descriptors, navigation }) {
           borderBottomLeftRadius: 8,
           borderBottomRightRadius: 8,
           paddingBottom: 5,
-
         };
 
         return (
@@ -425,7 +480,12 @@ function CustomTabBar({ state, descriptors, navigation }) {
             onPress={onPress}
             style={tabStyles}
           >
-            <Text style={{ color: isFocused ? '#000000' : '#E5F8F3', fontSize: 14 }}>{label}</Text>
+            <Text style={{
+              color: isFocused ? '#000000' : '#E5F8F3', fontSize: 14, fontFamily: cabinetGrotesk, fontWeight: 500,
+            }}
+            >
+              {label}
+            </Text>
           </View>
 
         );
@@ -482,6 +542,13 @@ export default function JournalTabs({ navigation }) {
   );
 }
 
+CustomTabBar.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
+  state: PropTypes.string.isRequired,
+  descriptors: PropTypes.string.isRequired,
+}
 JournalPage.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,

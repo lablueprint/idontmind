@@ -5,6 +5,10 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 
+const recoletaFont = '../../../assets/fonts/Recoleta/Recoleta-Regular';
+
+const cabinetGrotesk = '../../../assets/fonts/CabinetGrotesk/CabinetGrotesk-Regular';
+
 export default function PostDetails({ navigation, route }) {
   const {
     randomTitle, text, setText, freeWriteTitle, freeWrite,
@@ -60,23 +64,23 @@ export default function PostDetails({ navigation, route }) {
           style={{
             marginTop: 50,
             alignItems: 'center',
-            width: '95%',
+            width: '88%',
             height: '100%',
           }}
         >
           {freeWrite ? (
-            <Text style={{ fontSize: 12, fontWeight: 'bold' }}>
+            <Text style={{ fontSize: 30,fontFamily: recoletaFont, marginBottom: 20}}>
               {freeWriteTitle}
             </Text>
           ) : (
-            <Text style={{ fontSize: 30, marginBottom: 20 }}>
+            <Text style={{ fontFamily: recoletaFont, fontSize: 30, marginBottom: 20 }}>
               {randomTitle}
             </Text>
           )}
           <View style={{ alignItems: 'center' }}>
             <View
               style={{
-                width: '85%',
+                width: '95%',
                 height: '90%',
                 alignItems: 'center',
               }}
@@ -85,6 +89,7 @@ export default function PostDetails({ navigation, route }) {
                 ref={textInputRef}
                 multiline
                 placeholder="Continue typing..."
+                placeholderTextColor='#343A3A'
                 onChangeText={handleTextChange}
                 value={newText}
                 onFocus={handleTextInputFocus}
@@ -92,13 +97,21 @@ export default function PostDetails({ navigation, route }) {
                 style={{
                   flex: 1,
                   fontSize: 13,
-                  fontWeight: 'bold',
-                  backgroundColor: '#C6CECE',
+                  fontFamily: cabinetGrotesk,
+                  fontWeight: 500,
+                  backgroundColor: '#F6FCFC',
                   borderRadius: 8,
-                  padding: 30,
-                  paddingTop: 30,
+                  padding: 25,
+                  paddingTop: 25,
                   height: '80%',
                   minWidth: '100%',
+                  shadowColor: '#000',
+                  shadowOffset: {
+                    width: 0,
+                    height: 2,
+                  },
+                  shadowOpacity: 0.1, // Adjust the opacity to change the intensity of the shadow
+                  shadowRadius: 4,
                 }}
               />
             </View>

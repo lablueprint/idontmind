@@ -17,9 +17,24 @@ export default function Landing({ navigation }) {
   const navigateToFeed = () => {
     navigation.navigate('NavigationBar');
   };
+  const navigateToAltFeed = () => {
+    navigation.navigate('AltNavigationBar');
+  };
 
   const navigateToCheckIn = () => {
     navigation.navigate('CheckIn');
+  };
+
+  const navigateTo30 = () => {
+    navigation.navigate('ThirtyDayOverview');
+  };
+
+  const navigateToOverview = () => {
+    navigation.navigate('Overview');
+  };
+
+  const navigateToExercise = () => {
+    navigation.navigate('Exercise');
   };
 
   const dispatch = useDispatch();
@@ -31,12 +46,32 @@ export default function Landing({ navigation }) {
         email: 'sample@gmail.com',
         password: 'sample',
       };
-      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/users/signin`, userData);
+      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/signin`, userData);
+      if (res.data.error) {
+        console.error(res.data.error);
+      } else {
+        console.log(res.data);
+        dispatch(login(res.data));
+        navigateToFeed();
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  // Handles a hardcoded login for testing
+  const handlenNewHardcodedLogin = async () => {
+    try {
+      const userData = {
+        email: 'sample@gmail.com',
+        password: 'sample',
+      };
+      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/signin`, userData);
       if (res.data.error) {
         console.error(res.data.error);
       } else {
         dispatch(login(res.data));
-        navigateToFeed();
+        navigateToAltFeed();
       }
     } catch (err) {
       console.error(err.message);
@@ -67,6 +102,10 @@ export default function Landing({ navigation }) {
         onPress={handleHardcodedLogin}
       />
       <Button
+        title="Hardcoded Sign In (with new nav bar)"
+        onPress={handlenNewHardcodedLogin}
+      />
+      <Button
         title="To Splash"
         onPress={navigateToSplash}
       />
@@ -77,6 +116,18 @@ export default function Landing({ navigation }) {
       <Button
         title="To Loading"
         onPress={navigateToLoading}
+      />
+      <Button
+        title="To Thirty Day"
+        onPress={navigateTo30}
+      />
+      <Button
+        title="To Overview"
+        onPress={navigateToOverview}
+      />
+      <Button
+        title="To Exercise Checkin Question"
+        onPress={navigateToExercise}
       />
     </View>
   );

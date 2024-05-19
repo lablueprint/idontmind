@@ -11,7 +11,7 @@ export default function JournalHistoryPage({ navigation }) {
   const [img, setImg] = useState(null);
 
   const getPastJournals = async () => {
-    const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/journals/getAllJournals`);
+    const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/offJournal/getAllJournals`);
     setJournals(res.data);
   }; // fetch all the journal entries and set the journals array accordingly
 
@@ -48,7 +48,7 @@ to show up in 'recent entries' */
           {journals.map((x) => (
             <JournalCard
               key={x._id}
-              username={x.username}
+              email={x.email}
               date={x.timestamp}
               prompt={x.prompt}
               text={x.text}
