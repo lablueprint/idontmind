@@ -6,8 +6,7 @@ import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import style from '../Components/ContentStyle';
-import starImage from '../../../assets/images/star.png';
-import filterImage from '../../../assets/images/filter.png';
+import bookmark from '../../../assets/images/bookmark_fill.png';
 import searchImage from '../../../assets/images/search.png';
 import Card from '../Components/Card';
 import TagContext from '../Context/TagContext';
@@ -17,16 +16,16 @@ import Recommendation from '../Components/Recommendation';
 
 export default function ContentLibrary({ navigation }) {
   const { initTags, initFavorites } = useContext(TagContext);
+  const { email, authHeader } = useSelector((state) => state.auth);
 
   /* Grabs email from redux */
-  const { email } = useSelector((state) => state.auth);
 
   const navigateToTag = (index) => {
     navigation.navigate('Tag', { index, routeName: 'Content' });
   };
 
   const navigateToFavorites = () => {
-    navigation.navigate('Favorites');
+    navigation.navigate('Bookmarks');
   };
 
   /* List of Tags */
@@ -41,7 +40,7 @@ export default function ContentLibrary({ navigation }) {
 
         console.log(res.data);
         /* Grab user's favorite list */
-        const resFavorites = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/getFavorites`, { email });
+        const resFavorites = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/getFavorites`, { email }, { headers: authHeader });
 
         // /* Set Context Set for Favorites */
         initFavorites(resFavorites.data);
@@ -59,16 +58,6 @@ export default function ContentLibrary({ navigation }) {
     getAllTags();
   }, []);
 
-  /* RenderItem function for Horizontal Card Carousel */
-  const horizontalRenderItem = ({ item, index }) => (
-    <Card
-      navigateToTag={navigateToTag}
-      index={index}
-      item={item}
-      orientation="horizontal"
-    />
-  );
-
   /* RenderItem function for Vertical Card Carousel */
   const verticalRenderItem = ({ item, index }) => (
     <Card
@@ -83,10 +72,6 @@ export default function ContentLibrary({ navigation }) {
 
   const [isOpen, setOpen] = useState(false);
   const [recentSearches, setRecentSearches] = useState([]);
-
-  const navigateToFilter = () => {
-    navigation.navigate('Filter');
-  };
 
   const openSearch = () => {
     setOpen(true);
@@ -125,57 +110,44 @@ export default function ContentLibrary({ navigation }) {
     <View
       style={[style.container, { paddingLeft: 25 }]}
     >
-      <View style={[style.row, { paddingTop: 75, flexBasis: 125, backgroundColor: 'white' }]}>
-        <Text style={{ fontSize: 30, flex: 3, paddingLeft: 5 }}>content</Text>
-        <View
-          style={[style.container, { flex: 3 }]}
-        >
-          <TouchableOpacity
-            onPress={() => navigateToFavorites()}
-            style={[style.button, {
-              flexBasis: 37, justifyContent: 'center', backgroundColor: 'lightgray', width: 110, flexDirection: 'row',
-            }]}
-          >
-            <Image
-              style={{
-                width: 20, height: 20, marginTop: 7, marginRight: 3, opacity: 0.4,
-              }}
-              source={starImage}
-            />
-            <Text
-              style={{
-                textAlign: 'center', fontSize: 16, marginTop: 9, marginRight: 2,
-              }}
+      <View style={[style.titleRow, { paddingTop: 75, flexBasis: 125, backgroundColor: 'white' }]}>
+        <Text style={style.title}>Content</Text>
+        <View style={style.row}>
+          <View>
+            <TouchableOpacity
+              onPress={() => navigateToFavorites()}
+              style={style.bookmarkBackground}
             >
-              favorites
-            </Text>
-
-          </TouchableOpacity>
-        </View>
-        <View style={{ flex: 2, flexDirection: 'row', marginTop: 5 }}>
-          <TouchableOpacity onPress={openSearch}>
-            <Image
-              style={{ width: 20, height: 31, marginRight: 15 }}
-              source={searchImage}
-            />
-            <SearchBar
-              visible={isOpen}
-              onClose={closeSearch}
-              onSearch={handleSearch}
-              recentSearches={recentSearches}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={navigateToFilter}>
-            <Image
-              style={{ width: 20, height: 31 }}
-              source={filterImage}
-            />
-          </TouchableOpacity>
+              <View style={style.bookmarkContainer}>
+                <Image
+                  source={bookmark}
+                  style={style.bookmark}
+                />
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View style={{ width: 12 }} />
+          <View>
+            <TouchableOpacity onPress={openSearch} style={style.bookmarkBackground}>
+              <View style={style.bookmarkContainer}>
+                <Image
+                  source={searchImage}
+                  style={style.search}
+                />
+              </View>
+              <SearchBar
+                visible={isOpen}
+                onClose={closeSearch}
+                onSearch={handleSearch}
+                recentSearches={recentSearches}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
       <View style={[style.row, { flexBasis: 35 }]}>
-        <Text style={{ fontSize: 16, flex: 1, color: 'gray' }}>
-          recommended for you
+        <Text style={style.subheading}>
+          Recommended for You
         </Text>
       </View>
       <View style={[style.row, { flex: 1 }]}>
@@ -184,7 +156,12 @@ export default function ContentLibrary({ navigation }) {
       <View
         style={{ borderBottomColor: 'grey', borderBottomWidth: 0.75, opacity: 0.25 }}
       />
-      <View style={[style.row, { flex: 2, paddingTop: 25 }]}>
+      <View style={[style.row, { flexBasis: 35 }]}>
+        <Text style={style.subheading}>
+          All Categories
+        </Text>
+      </View>
+      <View style={[style.row, { flex: 2, paddingTop: 15 }]}>
         <FlatList
           data={data}
           renderItem={verticalRenderItem}

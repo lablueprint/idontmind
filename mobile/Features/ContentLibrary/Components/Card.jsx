@@ -4,12 +4,12 @@ import {
 import PropTypes from 'prop-types';
 import { useContext } from 'react';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 import style from './ContentStyle';
 import starImage from '../../../assets/images/star.png';
 import goldStar from '../../../assets/images/goldStar.png';
 import TagContext from '../Context/TagContext';
 import shapeImage from '../../../assets/images/shape.png';
-import { useSelector } from 'react-redux';
 
 export default function Card({
   navigateToTag, index, item, orientation,

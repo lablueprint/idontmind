@@ -4,7 +4,7 @@ import {
 import PropTypes from 'prop-types';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useState } from 'react';
-import TrendImage from '../../assets/TrendImage.png';
+import TrendImage from '../../assets/images/TrendImage.png';
 
 const style = StyleSheet.create({
   header_container: {

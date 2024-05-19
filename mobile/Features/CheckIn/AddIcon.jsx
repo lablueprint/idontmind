@@ -12,10 +12,6 @@ function AddIcon({ navigation }) {
   const route = useRoute();
   const activityPassedIn = route.params?.activity;
 
-  // set progress
-  const numPages = route.params?.numPages;
-  const progress = 2 / numPages;
-
   // array of rows
   // each row contains color, image pairs
   const colorToPicture = [
@@ -29,12 +25,11 @@ function AddIcon({ navigation }) {
 
   // also navigate back to the original activity screen and pass the activity and color chosen
   const continueButton = () => {
-    navigation.navigate('Activity', { numPages, activityPassedIn, iconChosen: colorChosen });
+    navigation.navigate('Activity', { activityPassedIn, iconChosen: colorChosen });
   };
 
   return (
     <View style={styles.container}>
-      <ProgressBar progress={progress} width={200} style={{ top: '5%' }} />
       <View style={styles.heading}>
         <Text>
           now, select an icon to represent this option.

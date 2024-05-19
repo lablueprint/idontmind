@@ -5,7 +5,6 @@ import {
   LogBox,
 } from 'react-native';
 import { useRoute } from '@react-navigation/native';
-import ProgressBar from 'react-native-progress/Bar';
 import PropTypes from 'prop-types';
 import styles from './MoodStyle';
 
@@ -16,10 +15,6 @@ LogBox.ignoreLogs([
 function AddActivity({ navigation }) {
   // get parameters from route
   const route = useRoute();
-  const numPages = route.params?.numPages;
-  // set progress
-  const progress = 2 / numPages;
-
   // text for new activity
   const [text, setText] = useState('');
 
@@ -27,7 +22,7 @@ function AddActivity({ navigation }) {
    the user typed in, and numPages */
   const goToAddIcon = () => {
     navigation.navigate('AddIcon', {
-      activity: text, numPages,
+      activity: text,
     });
   };
   const handleInputChange = (input) => {
@@ -36,7 +31,6 @@ function AddActivity({ navigation }) {
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
-        <ProgressBar progress={progress} width={200} style={{ top: '5%' }} />
         <View style={styles.heading}>
           <Text>
             type out a custom option here!

@@ -41,7 +41,7 @@ const getTagByName = async (req, res) => {
 //   }
 // };
 
-// req has tag object, userName
+// req has tag object, email
 const favoriteTag = async (req, res) => {
   try {
     const { tag, email } = req.body;

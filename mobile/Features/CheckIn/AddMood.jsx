@@ -5,7 +5,6 @@ import {
   LogBox,
 } from 'react-native';
 import { useRoute } from '@react-navigation/native';
-import ProgressBar from 'react-native-progress/Bar';
 import PropTypes from 'prop-types';
 import styles from './MoodStyle';
 
@@ -16,17 +15,13 @@ LogBox.ignoreLogs([
 function AddMood({ navigation }) {
   // get parameters from route
   const route = useRoute();
-  const numPages = route.params?.numPages;
-  // set progress
-  const progress = 1 / numPages;
-
   // text for new mood
   const [text, setText] = useState('');
 
   // navigate to AddColor with setAddedMoods, addedMoods, the mood the user typed in, and numPages
   const goToAddColor = () => {
     navigation.navigate('AddColor', {
-      mood: text, numPages,
+      mood: text,
     });
   };
   const handleInputChange = (input) => {
@@ -35,7 +30,6 @@ function AddMood({ navigation }) {
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
-        <ProgressBar progress={progress} width={200} style={{ top: '5%' }} />
         <View style={styles.heading}>
           <Text>
             type out a custom emotion here!
