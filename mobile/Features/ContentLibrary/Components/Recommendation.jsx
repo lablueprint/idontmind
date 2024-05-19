@@ -32,7 +32,7 @@ export default function Recommendation({ navigateToTag }) {
     getRecommendedTags();
   }, []);
   return (
-    <View>
+    <View style={{ width: '100%' }}>
       <FlatList
         horizontal
         data={recommendedTags}
