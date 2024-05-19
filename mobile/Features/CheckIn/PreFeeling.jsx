@@ -5,7 +5,6 @@ import {
 import { Image } from 'expo-image';
 import Slider from '@react-native-community/slider';
 import PropTypes from 'prop-types';
-import ProgressBar from 'react-native-progress/Bar';
 import { useRoute } from '@react-navigation/native';
 import styles from './PreFeelingStyles';
 
@@ -49,7 +48,6 @@ function Feeling({ navigation }) {
   return (
     <View style={{ backgroundColor: '#E5F8F3' }}>
       <View style={styles.container}>
-        <ProgressBar progress={progress} width={200} style={{ top: '-10%' }} />
         <Text style={styles.heading}>
           How are you feeling today, really?
         </Text>

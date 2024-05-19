@@ -20,11 +20,16 @@ export default StyleSheet.create({
     marginBottom: '15%',
   },
   pills: {
+    marginTop: '4%',
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    alignItems: 'center',
+    // alignItems: 'center',
     alignSelf: 'center',
+    // justifyContent: 'center',
+    width: '87%',
+    // borderWidth: 2,
+    // borderColor: 'green',
   },
   down: {
     width: 50,
@@ -35,7 +40,7 @@ export default StyleSheet.create({
     paddingBottom: 7,
     paddingLeft: 10,
     paddingRight: 10,
-    margin: 5,
+    margin: 7,
     borderRadius: 99,
   },
   selectedPill: {

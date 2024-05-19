@@ -1,32 +1,27 @@
 import React, { useState } from 'react';
 import {
-  Text, View, Pressable, TouchableOpacity, Dimensions,
+  Text, View, Pressable, Dimensions,
 } from 'react-native';
-import { Image } from 'expo-image';
-import Slider from '@react-native-community/slider';
-import PropTypes from 'prop-types';
-import ProgressBar from 'react-native-progress/Bar';
 import { useRoute } from '@react-navigation/native';
+import PropTypes from 'prop-types';
 import styles from './MealStyles';
 
-export default function Meal(navigation) {
+export default function Meal({ navigation }) {
   const route = useRoute();
   const numPages = route.params?.numPages;
 
-  const handleYes = () => {
-    navigation.navigate('back', { numPages });
-  };
+  const [selectedOption, setSelectedOption] = useState(null);
 
-  const handleNo = () => {
-    navigation.navigate('back', { numPages });
+  const handleSelect = (option) => {
+    setSelectedOption(prevOption => (prevOption === option ? null : option));
   };
 
   const continueButton = () => {
-    navigation.navigate('back', { numPages });
+    navigation.navigate('AddMood');
   };
 
   const skipButton = () => {
-    navigation.navigate('back', { numPages });
+    navigation.navigate('AddMood');
   };
 
   return (
@@ -36,15 +31,34 @@ export default function Meal(navigation) {
           Have you had a full meal recently?
         </Text>
         <View style={{width: '90%', alignItems: 'center', justifyContent: 'flex-start', marginTop: '6%' }}>
-          <Pressable style={styles.yesButton} onPress={handleYes}>
+          <Pressable
+            style={[
+              styles.yesButton,
+              selectedOption === 'yes' ? styles.selectedButton : styles.deselectedButton,
+            ]}
+            onPress={() => handleSelect('yes')}
+          >
             <Text style={styles.continueText}>Yes, I have!</Text>
           </Pressable>
-          <Pressable style={styles.noButton} onPress={handleNo}>
+          <Pressable
+            style={[
+              styles.noButton,
+              selectedOption === 'no' ? styles.selectedButton : styles.deselectedButton,
+            ]}
+            onPress={() => handleSelect('no')}
+          >
             <Text style={styles.continueText}>No, not yet</Text>
           </Pressable>
         </View>
         <View style={{width: '90%', alignItems: 'center', marginTop: '-35%'}}>
-          <Pressable style={styles.continueButton} onPress={continueButton}>
+          <Pressable
+            style={[
+              styles.continueButton,
+              !selectedOption && styles.continueButtonDisabled,
+            ]}
+            onPress={continueButton}
+            disabled={!selectedOption}
+          >
             <Text style={styles.continueText}>Continue</Text>
           </Pressable>
           <Pressable onPress={skipButton}>

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Text, View, Pressable, Image, Dimensions } from 'react-native';
+import { Text, View, Pressable, Dimensions } from 'react-native';
 import Slider from '@react-native-community/slider';
 import PropTypes from 'prop-types';
+import { Image } from 'expo-image';
 import ProgressBar from 'react-native-progress/Bar';
 import { useRoute } from '@react-navigation/native';
 import styles from './SleepStyle';
@@ -29,14 +30,19 @@ function Sleep({ navigation }) {
     'Worst',
   ];
 
-  const [slider, setSlider] = useState(0);
+  const initialSliderValue = 2;
+  const [slider, setSlider] = useState(initialSliderValue);
+  const [hasMovedSlider, setHasMovedSlider] = useState(false);
 
   const onSliderChange = (sliderValue) => {
     setSlider(sliderValue);
+    if (!hasMovedSlider) {
+      setHasMovedSlider(true);
+    }
   };
 
   const continueButton = () => {
-    if (slider !== 0) {
+    if (hasMovedSlider) {
       navigation.navigate('Meal', {
         sleepScore: slider,
       });
@@ -57,8 +63,8 @@ function Sleep({ navigation }) {
       <View style={styles.content}>
         <View style={styles.rating}>
           {captions.map((caption, index) => (
-            <View style={styles.singularRating}>
-              <Text key={index} style={styles.singularRating2}>{caption}</Text>
+            <View key={index} style={styles.singularRating}>
+              <Text style={styles.singularRating2}>{caption}</Text>
             </View>
           ))}
         </View>
@@ -73,6 +79,7 @@ function Sleep({ navigation }) {
               thumbTintColor="#374342"
               onValueChange={onSliderChange}
               step={1}
+              value={initialSliderValue}
               vertical
             />
           </View>
@@ -93,8 +100,17 @@ function Sleep({ navigation }) {
         </View>
       </View>
       <View style={styles.buttons}>
-        <Pressable style={styles.continueButton} onPress={continueButton}>
-          <Text style={styles.continueText}>Continue</Text>
+        <Pressable
+          style={[
+            styles.continueButton,
+            { backgroundColor: hasMovedSlider ? '#374342' : '#C6CECE' },
+          ]}
+          onPress={continueButton}
+          disabled={!hasMovedSlider}
+        >
+          <Text style={[styles.continueText, { color: hasMovedSlider ? '#FFFFFF' : '#000000' }]}>
+            Continue
+          </Text>
         </Pressable>
         <Pressable onPress={skipButton}>
           <Text style={styles.skip}>Skip</Text>

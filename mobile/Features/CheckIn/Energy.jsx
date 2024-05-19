@@ -5,7 +5,6 @@ import {
 import { Image } from 'expo-image';
 import Slider from '@react-native-community/slider';
 import PropTypes from 'prop-types';
-import ProgressBar from 'react-native-progress/Bar';
 import { useRoute } from '@react-navigation/native';
 import styles from './EnergyStyles';
 
@@ -33,9 +32,13 @@ function Energy({ navigation }) {
   ];
 
   const [slider, setSlider] = useState(2);
+  const [sliderMoved, setSliderMoved] = useState(false);
 
   const onSliderChange = (sliderValue) => {
     setSlider(sliderValue);
+    if (!sliderMoved) {
+      setSliderMoved(true);
+    }
   };
 
   const continueButton = () => {
@@ -83,8 +86,17 @@ function Energy({ navigation }) {
           />
         </View>
         <View style={styles.bottomButtonsContainer}>
-          <Pressable style={styles.continueButton} onPress={continueButton}>
-            <Text style={styles.continueText}>Continue</Text>
+          <Pressable
+            style={[
+              styles.continueButton,
+              { backgroundColor: sliderMoved ? '#374342' : '#C6CECE' },
+            ]}
+            onPress={continueButton}
+            disabled={!sliderMoved}
+          >
+            <Text style={[styles.continueText, { color: sliderMoved ? '#FFFFFF' : '#000000' }]}>
+              Continue
+            </Text>
           </Pressable>
           <TouchableOpacity onPress={skipButton} style={styles.skip}>
             <Text>

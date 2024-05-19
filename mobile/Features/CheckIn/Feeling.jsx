@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, View, Pressable, TouchableOpacity, Dimensions } from 'react-native';
 import { Image } from 'expo-image';
 import Slider from '@react-native-community/slider';
@@ -24,8 +24,8 @@ function Feeling({ navigation }) {
   ];
 
   const captions = [
-    'Sad',
-    'Meh',
+    'Worst',
+    'Poor',
     'Okay',
     'Good',
     'Great',
@@ -33,34 +33,34 @@ function Feeling({ navigation }) {
 
   const [selectedCoping, setSelectedCoping] = useState({
     calm: false,
+    satisfied: false,
+    relaxed: false,
     unfazed: false,
-    numb: false,
-    cloudy: false,
-    calm1: false,
-    unfazed1: false,
-    numb1: false,
-    cloudy1: false,
-    calm2: false,
-    unfazed2: false,
-    numb2: false,
-    cloudy2: false,
-    calm3: false,
-    unfazed3: false,
-    numb3: false,
-    cloudy3: false,
+    peaceful: false,
+    serene: false,
+    grateful: false,
+    positive: false,
+    cheery: false,
+    pleasant: false,
+    optimistic: false,
+    happy: false,
+    charged: false,
+    joyful: false,
+    content: false,
   });
+
+  const [slider, setSlider] = useState(moodValue !== undefined ? moodValue : 2);
+  const [isContinueEnabled, setIsContinueEnabled] = useState(false);
+
+  useEffect(() => {
+    setIsContinueEnabled(Object.values(selectedCoping).some((value) => value));
+  }, [selectedCoping]);
 
   const toggleCoping = (term) => {
     const temp = { ...selectedCoping };
-    if (temp[term] === false) {
-      temp[term] = true;
-    } else if (temp[term] === true) {
-      temp[term] = false;
-    }
+    temp[term] = !temp[term];
     setSelectedCoping(temp);
   };
-
-  const [slider, setSlider] = useState(moodValue !== undefined ? moodValue : 2);
 
   const onSliderChange = (sliderValue) => {
     if (moodValue === undefined) {
@@ -69,7 +69,7 @@ function Feeling({ navigation }) {
   };
 
   const continueButton = () => {
-    if (Object.values(selectedCoping).some((value) => value)) {
+    if (isContinueEnabled) {
       navigation.navigate('Energy', { numPages, moodValueChosen: slider, moodsChosen: selectedCoping });
     }
   };
@@ -125,7 +125,7 @@ function Feeling({ navigation }) {
         </View>
         <View style={styles.heading}>
           <View>
-            <Text>Select at least 1 mood to continue.</Text>
+            <Text style={{ fontSize: 16, textAlign: 'center', marginTop: '15%' }}>Select at least 1 mood word to continue.</Text>
           </View>
           <View style={styles.pills}>
             {Object.entries(selectedCoping).map((cope) => (
@@ -140,8 +140,15 @@ function Feeling({ navigation }) {
             ))}
           </View>
         </View>
-        <Pressable style={styles.continueButton} onPress={continueButton}>
-          <Text style={styles.continueText}>Continue</Text>
+        <Pressable
+          style={[
+            styles.continueButton,
+            { backgroundColor: isContinueEnabled ? '#374342' : '#C6CECE' },
+          ]}
+          onPress={continueButton}
+          disabled={!isContinueEnabled}
+        >
+          <Text style={[styles.continueText, { color: isContinueEnabled ? '#FFFFFF' : '#000000' }]}>Continue</Text>
         </Pressable>
         <TouchableOpacity onPress={skipButton} style={styles.skip}>
           <Text>
