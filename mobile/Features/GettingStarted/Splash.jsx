@@ -6,7 +6,7 @@ import IDMlogo from '../../assets/images/idontmindlogo.png';
 import styles from './SplashStyle';
 
 function Splash({ navigation }) {
-  const navigateToSplash = () => {
+  const navigateToTerms = () => {
     navigation.navigate('Terms');
   };
 
@@ -16,17 +16,19 @@ function Splash({ navigation }) {
       <Text style={styles.underLogo}>
         The short-term relationship that&apos;s good for your mental health.
       </Text>
-      <Text style={styles.termsPrivacy}>
-        <Text>By registering or signing in, you are agreeing to our</Text>
-        <TouchableOpacity onPress={navigateToSplash}>
-          <Text>Terms of Service</Text>
-        </TouchableOpacity>
-        <Text>and</Text>
-        <TouchableOpacity onPress={navigateToSplash}>
-          <Text>Privacy Policy</Text>
-        </TouchableOpacity>
-        <Text>.</Text>
-      </Text>
+      <View style={styles.termsPrivacy}>
+        <Text style={styles.termsText}>By registering or signing in, you are agreeing to our</Text>
+        <View style={styles.termsNext}>
+          <TouchableOpacity onPress={navigateToTerms}>
+            <Text style={styles.buttonWord}>Terms of Service </Text>
+          </TouchableOpacity>
+          <Text>and</Text>
+          <TouchableOpacity onPress={navigateToTerms}>
+            <Text style={styles.buttonWord}> Privacy Policy</Text>
+          </TouchableOpacity>
+          <Text>.</Text>
+        </View>
+      </View>
       <Pressable style={styles.getStarted}>
         <Text>Get Started</Text>
       </Pressable>

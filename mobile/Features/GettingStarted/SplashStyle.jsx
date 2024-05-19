@@ -3,8 +3,9 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
   container: {
     height: '100%',
-    width: '100%',
+    width: '80%',
     alignItems: 'center',
+    alignSelf: 'center',
     justifyContent: 'center',
     flexDirection: 'column',
   },
@@ -16,9 +17,23 @@ export default StyleSheet.create({
     textAlign: 'center',
     marginBottom: 100,
   },
-  termsPrivacy: {
+  termsText: {
     textAlign: 'center',
+  },
+  termsPrivacy: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  termsNext: {
     marginBottom: 30,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+  },
+  buttonWords: {
+    alignContent: 'flex-end',
+    textDecorationLine: 'underline',
   },
   getStarted: {
     alignItems: 'center',
