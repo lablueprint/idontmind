@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import {
-  View, Text, StyleSheet, ScrollView,
+  View, StyleSheet, ScrollView,
 } from 'react-native';
 // import CalendarPicker from 'react-native-calendar-picker';
-import { Calendar, LocaleConfig } from 'react-native-calendars';
+import { Calendar } from 'react-native-calendars';
 import axios from 'axios';
 import JournalCard from '../../Journal/Components/JournalCard';
 
@@ -13,8 +13,6 @@ export default function CalendarPage({ navigation }) {
   const [filteredJournals, setFilteredJournals] = useState([]);
 
   const datesAreOnSameDay = (first, second) => {
-    console.log(`journal's date: ${first.getDate()}`);
-    console.log(`selected date: ${second.getDate()}`);
     if (first && second) {
       return (
         first.getFullYear() === second.getFullYear()
