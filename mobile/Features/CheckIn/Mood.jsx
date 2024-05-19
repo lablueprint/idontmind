@@ -3,20 +3,15 @@ import {
   Text, View, Pressable, Image,
 } from 'react-native';
 import { useRoute } from '@react-navigation/native';
-import ProgressBar from 'react-native-progress/Bar';
 import PropTypes from 'prop-types';
 import nicole from '../../assets/images/sleepFace.png';
 import styles from './MoodStyle';
 
 function Mood({ navigation }) {
-  // get numPages from route, set progress to 1 / numpages
   const route = useRoute();
-  const numPages = route.params?.numPages;
   const newMood = route.params?.moodPassedIn;
   const newColor = route.params?.colorChosen;
 
-  const progress = 1 / numPages;
-  // addedMoods array to keep track of the new moods the user has added
   const [addedMoods, setAddedMoods] = useState([]);
   const [moodChosen, setMoodChosen] = useState('');
 
@@ -30,11 +25,11 @@ function Mood({ navigation }) {
   }, [newMood, newColor]);
 
   const continueButton = () => {
-    navigation.navigate('Activity', { numPages, moodChosen });
+    navigation.navigate('Activity', { moodChosen });
   };
 
   const skipButton = () => {
-    navigation.navigate('Activity', { numPages });
+    navigation.navigate('Activity');
   };
 
   // later implement functionality for pressing on a mood button:
@@ -47,7 +42,7 @@ function Mood({ navigation }) {
   /* pressing the plus button takes user to AddMood screen, passes in setAddedMoods
   and addedMoods so user can edit the addedMoods array */
   const addMood = () => {
-    navigation.navigate('AddMood', { numPages });
+    navigation.navigate('AddMood');
   };
 
   // moodImages is an array of each of the rows
@@ -133,7 +128,6 @@ function Mood({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <ProgressBar progress={progress} width={200} style={{ top: '5%' }} />
       <View style={styles.heading}>
         <Text>
           how are you feeling today, really?
