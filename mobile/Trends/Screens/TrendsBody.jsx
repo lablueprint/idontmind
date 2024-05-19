@@ -1,5 +1,5 @@
 import {
-  View, Text, ScrollView, Button, Modal, Pressable, StyleSheet,
+  React, View, Text, ScrollView, Modal, Pressable, TouchableOpacity, Image,
 } from 'react-native';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -7,9 +7,14 @@ import { LineChart } from 'react-native-gifted-charts';
 import PropTypes from 'prop-types';
 import { LinearGradient } from 'expo-linear-gradient';
 import TrendsHeader from '../Components/TrendsHeader';
+import Bookmark from '../../Features/Other/Components/Bookmark';
+import styles from './TrendsPageStyles';
 
+// note need to change mood to energy?? (energy is strings but mood is #s)
+// note rn water intake in mongo db is used for mood
+// mood, sleep, energy, water
 function TrendSection({
-  header, description, data, data2, avg, sleepMessage, energyMessage,
+  header, description, data, data2, avg, moodMessage, sleepMessage, energyMessage,
 }) {
   let result = '';
   if (avg < 0) {
@@ -18,49 +23,12 @@ function TrendSection({
     result = `${Math.round(avg)}% increase `;
   }
   console.log('result: ', result);
-  const [modalVisible, setModalVisible] = useState(false);
-
-  const handleTrendPress = () => {
-    setModalVisible(true);
-  };
 
   return (
     <View style={{
       display: 'flex', flexDirection: 'column', gap: 10,
     }}
     >
-      <View>
-        <Modal
-          animationType="slide"
-          transparent
-          visible={modalVisible}
-          onRequestClose={() => {
-            setModalVisible(!modalVisible);
-          }}
-        >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text>{energyMessage}</Text>
-              <Pressable
-                style={[styles.button, styles.buttonClose]}
-                onPress={() => setModalVisible(!modalVisible)}
-              >
-                <Text style={styles.textStyle}>Hide Modal</Text>
-              </Pressable>
-            </View>
-          </View>
-        </Modal>
-      </View>
-      <View>
-        { sleepMessage || energyMessage
-          ? (
-            <View>
-              <Text>We noticed some changes in your activity data in the past week!</Text>
-              <Button title="Click For Info" onPress={handleTrendPress} />
-            </View>
-          )
-          : null}
-      </View>
       <Text style={{ fontSize: 24 }}>{header}</Text>
       <Text style={{ fontSize: 14 }}>{description}</Text>
       <LineChart
@@ -110,6 +78,9 @@ TrendSection.propTypes = {
     }).isRequired,
   ).isRequired,
   avg: PropTypes.number.isRequired,
+  moodMessage: PropTypes.string.isRequired,
+  sleepMessage: PropTypes.string.isRequired,
+  energyMessage: PropTypes.string.isRequired,
 };
 
 export default function TrendsBody({ route }) {
@@ -119,6 +90,7 @@ export default function TrendsBody({ route }) {
   const [currentPeriodWater, setCurrentPeriodWater] = useState([]);
   const [avgSleepPercentage, setAvgSleepPercentage] = useState(0);
   const [avgWaterPercentage, setAvgWaterPercentage] = useState(0);
+  const [moodMessage, setMoodMessage] = useState(null);
   const [sleepMessage, setSleepMessage] = useState(null);
   const [energyMessage, setEnergyMessage] = useState(null);
 
@@ -141,6 +113,9 @@ export default function TrendsBody({ route }) {
         const startDate = start.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
         const midDate = mid.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
         const endDate = end.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+        console.log('startdate: ', startDate);
+        console.log('middate: ', midDate);
+        console.log('enddate: ', endDate);
         const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/timeSerie/getUserTimeSeries`, {
           email: 'booooooop',
           userId: 'booop',
@@ -161,7 +136,7 @@ export default function TrendsBody({ route }) {
 
         console.log('Last period sleep: ', lastPeriodSleep);
         console.log('Current period sleep: ', currentPeriodSleep);
-        console.log('Last period water: ', lastPeriodSleep);
+        console.log('Last period water: ', lastPeriodWater);
         console.log('Current period water: ', currentPeriodWater);
       } catch (err) {
         console.error(err);
@@ -170,63 +145,49 @@ export default function TrendsBody({ route }) {
     getUserTimeSeries();
   }, []);
 
-  // useEffect(() => {
-
-  //   const getUserTimeSeries = async () => {
-
-  //     try {
-  //       const weekOffset = 1;
-  //       const current = new Date('2024-04-15T00:00:00');
-  //       const start = new Date(current);
-  //       const mid = new Date(current);
-  //       const end = new Date(current);
-
-  //       start.setMonth(current.getMonth() + 2, 1); // May 1st
-  //       mid.setMonth(start.getMonth() + 1, 0); // May 30th
-  //       end.setMonth(mid.getMonth() + 1, 0); // May 30th
-
-  //       start.setDate(current.getDate() + (7 * weekOffset));
-  //       mid.setDate(start.getDate() + 7);
-  //       end.setDate(start.getDate() + 14);
-
-  //       const startDate = start.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-  //       const midDate = mid.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-  //       const endDate = end.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-
-  //       const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/timeSerie/getUserTimeSeries`, {
-  //         email: 'booooooop',
-  //         userId: 'booop',
-  //         startDate,
-  //         midDate,
-  //         endDate,
-  //       });
-
-  //       const {
-  //         PercentageAvgSleep, PercentageAvgWater, firstPeriod, secondPeriod,
-  //       } = res.data[0];
-
-  //       /* Default */
-  //       setLastPeriodSleep(firstPeriod.SleepData);
-  //       setCurrentPeriodSleep(secondPeriod.SleepData);
-  //       setLastPeriodWater(firstPeriod.WaterData);
-  //       setCurrentPeriodWater(secondPeriod.WaterData);
-  //       setAvgSleepPercentage(PercentageAvgSleep);
-  //       setAvgWaterPercentage(PercentageAvgWater);
-
-  //     } catch (err) {
-  //       console.error(err);
-  //     }
-  //   };
-  //   getUserTimeSeries();
-  // }, []);
+  useEffect(() => {
+    analyzeMood(currentPeriodWater, lastPeriodWater);
+  }, [currentPeriodWater, lastPeriodWater]);
 
   useEffect(() => {
     analyzeSleepQuality(currentPeriodSleep, lastPeriodSleep);
   }, [currentPeriodSleep, lastPeriodSleep]);
 
-  useEffect(() => {
-    analyzeEnergyLevels(currentPeriodWater, lastPeriodWater);
-  }, [currentPeriodWater, lastPeriodWater]);
+  // add analyze energy when you add this to mongo db
+  // useEffect(() => {
+  //   analyzeEnergyLevels(currentPeriodWater, lastPeriodWater);
+  // }, [currentPeriodWater, lastPeriodWater]);
+
+  function analyzeMood(currentData, lastData) {
+    // combine both datasets to handle a 10-day span
+    const combinedData = lastData.slice(-3).concat(currentData);
+
+    // check for poor sleep quality over the last 5 days
+    const lowMood = combinedData.slice(-5).every((day) => day.value >= 1 && day.value <= 4);
+    if (lowMood) {
+      setMoodMessage('Consistently Low Mood (5+ nights): Suggest resources on managing low mood or depression, such as mindfulness exercises, physical activity, or seeking professional help.');
+      console.log('Mood message', moodMessage);
+      return;
+    }
+
+    // check for average sleep quality over the last 10 days
+    const moderateMood = combinedData.every((day) => day.value >= 5 && day.value <= 7);
+    if (moderateMood) {
+      setMoodMessage('Moderate Sleep (10+ nights): Encourage exploration of activities that can enhance mood, like creative hobbies or social engagement.');
+      console.log('Mood message', moodMessage);
+      return;
+    }
+
+    // check for good sleep quality over the last 5 days
+    const highMood = combinedData.slice(-5).every((day) => day.value >= 8);
+    if (highMood) {
+      setMoodMessage('High Mood (5+ nights):  Provide content on maintaining positive mental health and resilience-building practices.');
+      console.log('Mood message', moodMessage);
+      return;
+    }
+    // delete this later:
+    console.log('No specific mood pattern detected. Continue monitoring.');
+  }
 
   function analyzeSleepQuality(currentData, lastData) {
     // combine both datasets to handle a 10-day span
@@ -260,7 +221,8 @@ export default function TrendsBody({ route }) {
   }
 
   function analyzeEnergyLevels(currentData, lastData) {
-    // note: need to check for if there aren't enough entries to check (like if there weren't 5 past days, you can't do .slice(-5))
+    // note: need to check for if there aren't enough entries to check
+    // (like if there weren't 5 past days, you can't do .slice(-5))
     // combine both datasets to handle a 10-day span
     const combinedData = lastData.slice(-3).concat(currentData);
 
@@ -288,13 +250,71 @@ export default function TrendsBody({ route }) {
     console.log('No specific energy level pattern detected. Continue monitoring.');
   }
 
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const handleTrendPress = () => {
+    setModalVisible(true);
+  };
+
   return (
     <ScrollView>
       <LinearGradient colors={['#E0F1F3', '#E5F8F3']} style={{ gap: 35, paddingTop: 50, paddingHorizontal: 30 }}>
         <TrendsHeader title={title} />
-        <TrendSection header="Energy Levels" description="Discovering how mood and sleep intertwine offers valuable insights for a healthier, happier you." data={lastPeriodWater} data2={currentPeriodWater} avg={avgWaterPercentage} sleepMessage={sleepMessage} energyMessage={energyMessage} />
+        <View>
+          <Modal
+            animationType="slide"
+            transparent
+            visible={modalVisible}
+            onRequestClose={() => {
+              setModalVisible(!modalVisible);
+            }}
+          >
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <View style={styles.modalHeader}>
+                  <Text style={styles.modalTitle}>Activity Levels</Text>
+                  <Pressable
+                    style={[styles.button, styles.buttonClose]}
+                    onPress={() => setModalVisible(!modalVisible)}
+                  >
+                    <Text style={styles.textStyle}>X  </Text>
+                  </Pressable>
+                </View>
+                <Text>{moodMessage}</Text>
+                <Text>{sleepMessage}</Text>
+                <Text>{energyMessage}</Text>
+                <Bookmark
+                  key="resourceName (replace)"
+                  resourceName="resourceName (replace)"
+                  author="author (replace)"
+                />
+                <TouchableOpacity style={styles.findHelpButton}>
+                  <Text style={styles.textStyle}>Find Help</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
+        </View>
+        <View>
+          { moodMessage || sleepMessage || energyMessage
+            ? (
+              <View style={{ flexDirection: 'row' }}>
+                <Text style={{ flexShrink: 1 }}>
+                  We noticed some changes in your activity data in the past week!
+                </Text>
+                <TouchableOpacity onPress={handleTrendPress}>
+                  <Image
+                    source={require('../../assets/images/little-guy-notif.png')}
+                    style={styles.infoImage}
+                  />
+                </TouchableOpacity>
+              </View>
+            )
+            : null}
+        </View>
+        <TrendSection header="Energy Levels" description="Discovering how mood and sleep intertwine offers valuable insights for a healthier, happier you." data={lastPeriodWater} data2={currentPeriodWater} avg={avgWaterPercentage} moodMessage={moodMessage} sleepMessage={sleepMessage} energyMessage={energyMessage} />
         <View style={{ marginBottom: 75 }}>
-          <TrendSection header="Sleep Quality" description="Discovering how mood and sleep intertwine offers valuable insights for a healthier, happier you." data={lastPeriodSleep} data2={currentPeriodSleep} avg={avgSleepPercentage} />
+          <TrendSection header="Sleep Quality" description="Discovering how mood and sleep intertwine offers valuable insights for a healthier, happier you." data={lastPeriodSleep} data2={currentPeriodSleep} avg={avgSleepPercentage} moodMessage={moodMessage} sleepMessage={sleepMessage} energyMessage={energyMessage} />
         </View>
       </LinearGradient>
     </ScrollView>
@@ -309,40 +329,3 @@ TrendsBody.propTypes = {
     }).isRequired,
   }).isRequired,
 };
-
-const styles = StyleSheet.create({
-  centeredView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 22,
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 35,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-  },
-  buttonClose: {
-    backgroundColor: '#2196F3',
-  },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-});

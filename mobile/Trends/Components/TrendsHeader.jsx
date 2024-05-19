@@ -14,7 +14,7 @@ const style = StyleSheet.create({
     width: '100%',
     height: 40,
     position: 'fixed',
-    marginBottom: 20,
+    // marginBottom: 20,
   },
   header_text_container: {
     height: '150%',
