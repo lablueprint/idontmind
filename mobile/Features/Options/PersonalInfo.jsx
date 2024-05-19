@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { DropdownSelect } from 'react-native-input-select';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 import Back from '../../assets/images/back.png';
 
 const styles = StyleSheet.create({
@@ -135,6 +136,7 @@ const styles = StyleSheet.create({
 });
 
 export default function PersonInfo({ navigation }) {
+  const { id, authHeader } = useSelector((state) => state.auth);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [age, setAge] = useState(0);
@@ -153,6 +155,12 @@ export default function PersonInfo({ navigation }) {
     { label: 'Other', value: 'other' },
   ];
 
+  const handleNameChange = (input) => {
+    setName(input);
+  };
+  const handleEmailChange = (input) => {
+    setEmail(input);
+  };
   const navigateToSignUp = () => {
     navigation.navigate('SignUp');
   };
@@ -165,7 +173,15 @@ export default function PersonInfo({ navigation }) {
       email,
       age,
     };
-    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/updateUser`, { updatedFieds: updatedFields });
+    console.log(id);
+    console.log(updatedFields);
+
+    try {
+      const response = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/updateUser`, { id, updatedFields }, { headers: authHeader });
+      console.log('Response:', response.data);
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   const navigateToOptions = () => {
@@ -207,7 +223,7 @@ export default function PersonInfo({ navigation }) {
             style={styles.inputBox}
             placeholder="Daniel Ogura"
             value={name}
-            onChange={setName}
+            onChangeText={handleNameChange}
           />
         </View>
       </View>
@@ -218,7 +234,7 @@ export default function PersonInfo({ navigation }) {
             style={styles.inputBox}
             placeholder="danielogura@gmail..com"
             value={email}
-            onChange={setEmail}
+            onChangeText={handleEmailChange}
           />
         </View>
       </View>
