@@ -3,7 +3,6 @@ import {
   Text, View, Pressable,
 } from 'react-native';
 import { useRoute } from '@react-navigation/native';
-import ProgressBar from 'react-native-progress/Bar';
 import PropTypes from 'prop-types';
 import styles from './AddColorStyles';
 
@@ -11,10 +10,6 @@ function AddColor({ navigation }) {
   // get parameters from route (moodPassedIn and numPages)
   const route = useRoute();
   const moodPassedIn = route.params?.mood;
-
-  // set progress
-  const numPages = route.params?.numPages;
-  const progress = 1 / numPages;
 
   // array of rows
   // each row contains color, image pairs
@@ -29,12 +24,11 @@ function AddColor({ navigation }) {
 
   // also navigate back to the original mood screen and pass the mood and color chosen
   const continueButton = () => {
-    navigation.navigate('Mood', { numPages, moodPassedIn, colorChosen });
+    navigation.navigate('Mood', { moodPassedIn, colorChosen });
   };
 
   return (
     <View style={styles.container}>
-      <ProgressBar progress={progress} width={200} style={{ top: '5%' }} />
       <View style={styles.heading}>
         <Text>
           now, select a color to represent this mood!
