@@ -38,7 +38,10 @@ import AddColor from '../Features/CheckIn/AddColor';
 import Activity from '../Features/CheckIn/Activity';
 import AddActivity from '../Features/CheckIn/AddActivity';
 import AddIcon from '../Features/CheckIn/AddIcon';
+import PreFeeling from '../Features/CheckIn/PreFeeling';
 import Feeling from '../Features/CheckIn/Feeling';
+import Energy from '../Features/CheckIn/Energy';
+import Meal from '../Features/CheckIn/Meal';
 import EndCheckIn from '../Features/CheckIn/EndCheckIn';
 
 // import PushNotifications from '../Features/Settings/Screens/PushNotifications';
@@ -113,6 +116,9 @@ export default function AppNavigation({ user }) {
           <Stack.Screen name="CheckIn" component={CheckIn} options={{ headerShown: false }} />
           <Stack.Screen name="Sleep" component={Sleep} options={{ headerShown: false }} />
           <Stack.Screen name="Feeling" component={Feeling} options={{ headerShown: false }} />
+          <Stack.Screen name="Pre Feeling" component={PreFeeling} options={{ headerShown: false }} />
+          <Stack.Screen name="Energy" component={Energy} options={{ headerShown: false }} />
+          <Stack.Screen name="Meal" component={Meal} options={{ headerShown: false }} />
           <Stack.Screen name="Mood" component={Mood} options={{ headerShown: false }} />
           <Stack.Screen name="AddMood" component={AddMood} options={{ headerShown: false }} />
           <Stack.Screen name="AddColor" component={AddColor} options={{ headerShown: false }} />

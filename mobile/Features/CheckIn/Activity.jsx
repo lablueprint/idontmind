@@ -3,7 +3,6 @@ import {
   Text, View, Pressable, Image,
 } from 'react-native';
 import { useRoute } from '@react-navigation/native';
-import ProgressBar from 'react-native-progress/Bar';
 import PropTypes from 'prop-types';
 import nicole from '../../assets/images/sleepFace.png';
 import styles from './MoodStyle';
@@ -11,15 +10,11 @@ import styles from './MoodStyle';
 function Activity({ navigation }) {
   // get numPages from route, set progress to 2 / numpages
   const route = useRoute();
-  const numPages = route.params?.numPages;
   const newActivity = route.params?.activityPassedIn;
   const newIcon = route.params?.iconChosen;
   const moodsChosen = route.params?.moodsChosen;
   const moodValueChosen = route.params?.moodValueChosen;
-  const progress = 2 / numPages;
-  // addedActivities array to keep track of the new activities the user has added
   const [addedActivities, setAddedActivities] = useState([]);
-  // activityChosen state to keep track of what actiivty the user selects
   const [activityChosen, setActivityChosen] = useState('');
 
   useEffect(() => {
@@ -33,14 +28,14 @@ function Activity({ navigation }) {
 
   const continueButton = () => {
     if (activityChosen !== '') {
-      navigation.navigate('Sleep', {
-        numPages, moodsChosen, moodValueChosen, activityChosen,
+      navigation.navigate('back', {
+        moodsChosen, moodValueChosen, activityChosen,
       });
     }
   };
 
   const skipButton = () => {
-    navigation.navigate('Sleep', { numPages, moodsChosen, moodValueChosen });
+    navigation.navigate('back', { moodsChosen, moodValueChosen });
   };
 
   // later implement functionality for pressing on a activity button:
@@ -52,7 +47,7 @@ function Activity({ navigation }) {
 
   /* pressing the plus button takes user to AddActivity screen */
   const addActivity = () => {
-    navigation.navigate('AddActivity', { numPages });
+    navigation.navigate('AddActivity');
   };
 
   // activityImages is an array of each of the rows
@@ -138,7 +133,6 @@ function Activity({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <ProgressBar progress={progress} width={200} style={{ top: '5%' }} />
       <View style={styles.heading}>
         <Text>
           what brought you joy today?

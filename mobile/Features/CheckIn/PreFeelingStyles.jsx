@@ -19,36 +19,6 @@ export default StyleSheet.create({
     textAlign: 'center',
     marginBottom: '15%',
   },
-  pills: {
-    marginTop: '4%',
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    // alignItems: 'center',
-    alignSelf: 'center',
-    // justifyContent: 'center',
-    width: '87%',
-    // borderWidth: 2,
-    // borderColor: 'green',
-  },
-  down: {
-    width: 50,
-    height: 50,
-  },
-  pill: {
-    paddingTop: 7,
-    paddingBottom: 7,
-    paddingLeft: 10,
-    paddingRight: 10,
-    margin: 7,
-    borderRadius: 99,
-  },
-  selectedPill: {
-    backgroundColor: '#374342',
-  },
-  nonselectedPill: {
-    backgroundColor: '#D2E4E3',
-  },
   continueButton: {
     width: '65%',
     height: '6.5%',
@@ -63,8 +33,8 @@ export default StyleSheet.create({
     height: '100%',
     width: '90%',
     flexDirection: 'column',
-    borderWidth: 2,
-    borderColor: 'blue',
+    // borderWidth: 2,
+    // borderColor: 'blue',
   },
   continueText: {
     color: 'white',

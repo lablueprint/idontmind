@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import PostSignInLanding from '../Features/Other/Screens/PostSignInLanding';
 import Feed from '../Features/Other/Screens/Feed';
-import CheckIn from '../Features/Other/Screens/CheckIn';
+import CheckIn from '../Features/CheckIn/CheckIn';
 import PushNotifications from '../Features/Settings/Screens/PushNotifications';
 import Options from '../Features/Options/Options';
 import JournalHistoryPage from '../Features/Other/Screens/JournalHistoryPage';
