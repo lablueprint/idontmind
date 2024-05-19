@@ -14,7 +14,7 @@ import styles from './TrendsPageStyles';
 // note rn water intake in mongo db is used for mood
 // mood, sleep, energy, water
 function TrendSection({
-  header, description, data, data2, avg, moodMessage, sleepMessage, energyMessage,
+  header, description, data, data2, avg,
 }) {
   let result = '';
   if (avg < 0) {
@@ -22,7 +22,6 @@ function TrendSection({
   } else {
     result = `${Math.round(avg)}% increase `;
   }
-  console.log('result: ', result);
 
   return (
     <View style={{
@@ -78,9 +77,9 @@ TrendSection.propTypes = {
     }).isRequired,
   ).isRequired,
   avg: PropTypes.number.isRequired,
-  moodMessage: PropTypes.string.isRequired,
-  sleepMessage: PropTypes.string.isRequired,
-  energyMessage: PropTypes.string.isRequired,
+  // moodMessage: PropTypes.string.isRequired,
+  // sleepMessage: PropTypes.string.isRequired,
+  // energyMessage: PropTypes.string.isRequired,
 };
 
 export default function TrendsBody({ route }) {
@@ -113,9 +112,7 @@ export default function TrendsBody({ route }) {
         const startDate = start.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
         const midDate = mid.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
         const endDate = end.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-        console.log('startdate: ', startDate);
-        console.log('middate: ', midDate);
-        console.log('enddate: ', endDate);
+
         const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/timeSerie/getUserTimeSeries`, {
           email: 'booooooop',
           userId: 'booop',
@@ -123,6 +120,7 @@ export default function TrendsBody({ route }) {
           midDate,
           endDate,
         });
+
         const {
           PercentageAvgSleep, PercentageAvgWater, firstPeriod, secondPeriod,
         } = res.data[0];
@@ -134,10 +132,10 @@ export default function TrendsBody({ route }) {
         setAvgSleepPercentage(PercentageAvgSleep);
         setAvgWaterPercentage(PercentageAvgWater);
 
-        console.log('Last period sleep: ', lastPeriodSleep);
-        console.log('Current period sleep: ', currentPeriodSleep);
-        console.log('Last period water: ', lastPeriodWater);
-        console.log('Current period water: ', currentPeriodWater);
+        // console.log('Last period sleep: ', lastPeriodSleep);
+        // console.log('Current period sleep: ', currentPeriodSleep);
+        // console.log('Last period water: ', lastPeriodWater);
+        // console.log('Current period water: ', currentPeriodWater);
       } catch (err) {
         console.error(err);
       }
@@ -145,25 +143,16 @@ export default function TrendsBody({ route }) {
     getUserTimeSeries();
   }, []);
 
-  useEffect(() => {
-    analyzeMood(currentPeriodWater, lastPeriodWater);
-  }, [currentPeriodWater, lastPeriodWater]);
-
-  useEffect(() => {
-    analyzeSleepQuality(currentPeriodSleep, lastPeriodSleep);
-  }, [currentPeriodSleep, lastPeriodSleep]);
-
-  // add analyze energy when you add this to mongo db
-  // useEffect(() => {
-  //   analyzeEnergyLevels(currentPeriodWater, lastPeriodWater);
-  // }, [currentPeriodWater, lastPeriodWater]);
-
   function analyzeMood(currentData, lastData) {
     // combine both datasets to handle a 10-day span
-    const combinedData = lastData.slice(-3).concat(currentData);
+    const totalEntries = 10;
+    const currentLength = currentData.length;
+    const lastEntriesNeeded = totalEntries - currentLength;
+    const combinedData = lastData.slice(-lastEntriesNeeded).concat(currentData);
 
     // check for poor sleep quality over the last 5 days
     const lowMood = combinedData.slice(-5).every((day) => day.value >= 1 && day.value <= 4);
+    console.log('mood combinedData.slice(-5): ', combinedData.slice(-5));
     if (lowMood) {
       setMoodMessage('Consistently Low Mood (5+ nights): Suggest resources on managing low mood or depression, such as mindfulness exercises, physical activity, or seeking professional help.');
       console.log('Mood message', moodMessage);
@@ -187,14 +176,19 @@ export default function TrendsBody({ route }) {
     }
     // delete this later:
     console.log('No specific mood pattern detected. Continue monitoring.');
+    setMoodMessage(null);
   }
 
   function analyzeSleepQuality(currentData, lastData) {
     // combine both datasets to handle a 10-day span
-    const combinedData = lastData.slice(-3).concat(currentData);
+    const totalEntries = 10;
+    const currentLength = currentData.length;
+    const lastEntriesNeeded = totalEntries - currentLength;
+    const combinedData = lastData.slice(-lastEntriesNeeded).concat(currentData);
 
     // check for poor sleep quality over the last 5 days
     const poorSleep = combinedData.slice(-5).every((day) => day.value >= 1 && day.value <= 4);
+    console.log('sleep combinedData.slice(-5): ', combinedData.slice(-5));
     if (poorSleep) {
       setSleepMessage('Poor Sleep Quality (5+ nights): Offer sleep hygiene tips, relaxation techniques before bed, and suggest limiting screen time in the evening.');
       console.log('Sleep message', sleepMessage);
@@ -218,13 +212,17 @@ export default function TrendsBody({ route }) {
     }
     // delete this later:
     console.log('No specific sleep quality pattern detected. Continue monitoring.');
+    setSleepMessage(null);
   }
 
   function analyzeEnergyLevels(currentData, lastData) {
     // note: need to check for if there aren't enough entries to check
     // (like if there weren't 5 past days, you can't do .slice(-5))
     // combine both datasets to handle a 10-day span
-    const combinedData = lastData.slice(-3).concat(currentData);
+    const totalEntries = 10;
+    const currentLength = currentData.length;
+    const lastEntriesNeeded = totalEntries - currentLength;
+    const combinedData = lastData.slice(-lastEntriesNeeded).concat(currentData);
 
     // check for consistently low energy over the last 5 days
     const lowEnergy = combinedData.slice(-5).every((day) => day.level === 'Low');
@@ -248,7 +246,28 @@ export default function TrendsBody({ route }) {
     }
     // delete this later:
     console.log('No specific energy level pattern detected. Continue monitoring.');
+    setEnergyMessage(null);
   }
+
+  useEffect(() => {
+    if (currentPeriodWater.length && lastPeriodWater.length) {
+      analyzeMood(currentPeriodWater, lastPeriodWater);
+    }
+  }, [currentPeriodWater, lastPeriodWater]);
+
+  useEffect(() => {
+    if (currentPeriodSleep.length && lastPeriodSleep.length) {
+      analyzeSleepQuality(currentPeriodSleep, lastPeriodSleep);
+    }
+  }, [currentPeriodSleep, lastPeriodSleep]);
+
+  // uncomment this once we have the data for energy levels
+  // (energy levels should be string data, not #s)
+  // useEffect(() => {
+  //   if (currentPeriodWater.length && lastPeriodWater.length) {
+  //     analyzeEnergyLevels(currentPeriodWater, lastPeriodWater);
+  //   }
+  // }, [currentPeriodWater, lastPeriodWater]);
 
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -312,7 +331,7 @@ export default function TrendsBody({ route }) {
             )
             : null}
         </View>
-        <TrendSection header="Energy Levels" description="Discovering how mood and sleep intertwine offers valuable insights for a healthier, happier you." data={lastPeriodWater} data2={currentPeriodWater} avg={avgWaterPercentage} moodMessage={moodMessage} sleepMessage={sleepMessage} energyMessage={energyMessage} />
+        <TrendSection header="Energy Levels" description="Discovering how mood and sleep intertwine offers valuable insights for a healthier, happier you." data={lastPeriodWater} data2={currentPeriodWater} avg={avgWaterPercentage} />
         <View style={{ marginBottom: 75 }}>
           <TrendSection header="Sleep Quality" description="Discovering how mood and sleep intertwine offers valuable insights for a healthier, happier you." data={lastPeriodSleep} data2={currentPeriodSleep} avg={avgSleepPercentage} moodMessage={moodMessage} sleepMessage={sleepMessage} energyMessage={energyMessage} />
         </View>
