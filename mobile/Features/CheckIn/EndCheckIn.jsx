@@ -35,6 +35,7 @@ function EndCheckIn({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>go away, diya</Text>
+      <Text>Congrats! You’ve completed today’s check in!</Text>
       <Image
         source={require('../../assets/images/shape.png')}
       />
@@ -43,7 +44,7 @@ function EndCheckIn({ navigation }) {
           <Text>END CHECK-IN</Text>
         </Pressable>
         <Pressable onPress={navigateToLanding}>
-          <Text>CONTINUE TO LANDING</Text>
+          <Text>Continue to Dashboard</Text>
         </Pressable>
       </View>
     </View>

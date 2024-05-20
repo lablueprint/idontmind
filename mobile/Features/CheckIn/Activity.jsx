@@ -10,10 +10,20 @@ import styles from './MoodStyle';
 function Activity({ navigation }) {
   // get numPages from route, set progress to 2 / numpages
   const route = useRoute();
+
+  // note: these are undefined if you go here from the Meal page
   const newActivity = route.params?.activityPassedIn;
   const newIcon = route.params?.iconChosen;
+  // console.log(newActivity);
+  // console.log(newIcon);
+
+  const numPages = route.params?.numPages;
+  const moodValue = route.params?.moodValue;
   const moodsChosen = route.params?.moodsChosen;
-  const moodValueChosen = route.params?.moodValueChosen;
+  const energyChosen = route.params?.energyChosen;
+  const sleepScore = route.params?.sleepScore;
+  const hasHadMeal = route.params?.hasHadMeal;
+
   const [addedActivities, setAddedActivities] = useState([]);
   const [activityChosen, setActivityChosen] = useState('');
 
@@ -28,14 +38,32 @@ function Activity({ navigation }) {
 
   const continueButton = () => {
     if (activityChosen !== '') {
-      navigation.navigate('back', {
-        moodsChosen, moodValueChosen, activityChosen,
+      // navigation.navigate('back', {
+      //   moodsChosen, moodValueChosen, activityChosen,
+      // });
+      navigation.navigate('EndCheckIn', {
+        numPages,
+        moodValue,
+        moodsChosen,
+        energyChosen,
+        sleepScore,
+        hasHadMeal,
+        activityChosen,
       });
     }
   };
 
   const skipButton = () => {
-    navigation.navigate('back', { moodsChosen, moodValueChosen });
+    // navigation.navigate('back', { moodsChosen, moodValueChosen });
+    navigation.navigate('EndCheckIn', {
+      numPages,
+      moodValue,
+      moodsChosen,
+      energyChosen,
+      sleepScore,
+      hasHadMeal,
+      activityChosen,
+    });
   };
 
   // later implement functionality for pressing on a activity button:

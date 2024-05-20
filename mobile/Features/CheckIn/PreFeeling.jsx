@@ -38,11 +38,12 @@ function Feeling({ navigation }) {
   };
 
   const continueButton = () => {
-    navigation.navigate('Feeling', { numPages, moodValueChosen: slider });
+    navigation.navigate('Feeling', { numPages, moodValueChosen: slider + 1 });
   };
 
   const skipButton = () => {
-    navigation.navigate('Feeling', { numPages, moodValueChosen: slider });
+    // note: if we skip, what do we set mood as for this day? should it be null or 2
+    navigation.navigate('Feeling', { numPages, moodValueChosen: slider + 1 });
   };
 
   return (
@@ -58,12 +59,13 @@ function Feeling({ navigation }) {
                 styles.imageContainer,
                 { width: 40 + (slider === index ? 20 : 0), height: 40 + (slider === index ? 20 : 0) },
                 slider === index ? styles.shadowEffect : null,
-              ]}>
+              ]}
+              >
                 <Image
                   source={image}
                   style={[
                     styles.image,
-                    { width: 40 + (slider === index ? 20 : 0), height: 40 + (slider === index ? 20 : 0) }
+                    { width: 40 + (slider === index ? 20 : 0), height: 40 + (slider === index ? 20 : 0) },
                   ]}
                 />
               </View>
@@ -73,7 +75,7 @@ function Feeling({ navigation }) {
           ))}
         </View>
         <Slider
-          style={{ width: width * 0.9, marginTop: 20, }}
+          style={{ width: width * 0.9, marginTop: 20 }}
           minimumValue={0}
           maximumValue={4}
           step={1}

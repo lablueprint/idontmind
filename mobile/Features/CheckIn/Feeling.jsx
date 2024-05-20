@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, Pressable, TouchableOpacity, Dimensions } from 'react-native';
+import {
+  Text, View, Pressable, TouchableOpacity, Dimensions,
+} from 'react-native';
 import { Image } from 'expo-image';
 import Slider from '@react-native-community/slider';
 import PropTypes from 'prop-types';
@@ -96,7 +98,8 @@ function Feeling({ navigation }) {
                   height: 40 + (slider === moodValue ? 20 : 0),
                 },
                 slider === moodValue ? styles.shadowEffect : null,
-              ]}>
+              ]}
+              >
                 <Image
                   source={images[moodValue]}
                   style={[

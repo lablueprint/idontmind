@@ -11,6 +11,8 @@ import styles from './EnergyStyles';
 function Energy({ navigation }) {
   const route = useRoute();
   const numPages = route.params?.numPages;
+  const moodValue = route.params?.moodValueChosen;
+  const moodsChosen = route.params?.moodsChosen;
   const progress = 1 / numPages;
 
   const { width } = Dimensions.get('window');
@@ -42,11 +44,15 @@ function Energy({ navigation }) {
   };
 
   const continueButton = () => {
-    navigation.navigate('Sleep', { numPages, moodValueChosen: slider });
+    navigation.navigate('Sleep', {
+      numPages, moodValue, moodsChosen, energyChosen: slider + 1,
+    });
   };
 
   const skipButton = () => {
-    navigation.navigate('Sleep', { numPages, moodValueChosen: slider });
+    navigation.navigate('Sleep', {
+      numPages, moodValue, moodsChosen, energyChosen: slider + 1,
+    });
   };
 
   return (
@@ -56,14 +62,18 @@ function Energy({ navigation }) {
           <Text style={styles.heading}>
             How would you describe your energy today?
           </Text>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: width * 0.8, alignSelf: 'center' }}>
+          <View style={{
+            flexDirection: 'row', justifyContent: 'space-between', width: width * 0.8, alignSelf: 'center',
+          }}
+          >
             {images.map((image, index) => (
               <View key={index} style={{ alignItems: 'center' }}>
                 <View style={[
                   styles.imageContainer,
                   { width: 40, height: 40 },
                   index <= slider ? styles.shadowEffect : null,
-                ]}>
+                ]}
+                >
                   <Image
                     source={index <= slider ? image : require('../../assets/images/bolt0.png')}
                     style={styles.image}
@@ -72,7 +82,12 @@ function Energy({ navigation }) {
               </View>
             ))}
           </View>
-          <Text style={{ marginTop: '10%', fontSize: 40, fontWeight: 'bold', textAlign: 'center' }}>{captions[slider]}</Text>
+          <Text style={{
+            marginTop: '10%', fontSize: 40, fontWeight: 'bold', textAlign: 'center',
+          }}
+          >
+            {captions[slider]}
+          </Text>
           <Slider
             style={{ width: width * 0.9, marginTop: 20 }}
             minimumValue={0}

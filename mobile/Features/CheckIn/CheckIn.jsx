@@ -13,17 +13,20 @@ function CheckIn({ navigation }) {
   };
 
   const continueToDashBoard = () => {
-    console.log("back");
+    navigation.navigate('Landing');
   };
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#E5F8F3' }}>
+    <View style={{
+      flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#E5F8F3',
+    }}
+    >
       <View style={[styles.checkInContentContainer, { marginBottom: '40%' }]}>
         <Text style={styles.welcomeText}>Hi Daniel!</Text>
         <Text style={styles.welcomeText}>What is your</Text>
         <Text style={styles.welcomeText}>mood like today?</Text>
         <View style={styles.highlight} />
-        <View style={[styles.checkInButtonsContainer, { marginTop: '10%' }]} >
+        <View style={[styles.checkInButtonsContainer, { marginTop: '10%' }]}>
           <Pressable style={styles.beginCheckInButton} onPress={beginCheckIn}>
             <Text style={styles.beginCheckInText}>Begin Check-In</Text>
           </Pressable>

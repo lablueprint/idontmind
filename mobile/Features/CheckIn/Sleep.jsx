@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { Text, View, Pressable, Dimensions } from 'react-native';
+import {
+  Text, View, Pressable, Dimensions,
+} from 'react-native';
 import Slider from '@react-native-community/slider';
 import PropTypes from 'prop-types';
 import { Image } from 'expo-image';
@@ -10,6 +12,9 @@ import styles from './SleepStyle';
 function Sleep({ navigation }) {
   const route = useRoute();
   const numPages = route.params?.numPages;
+  const moodValue = route.params?.moodValue;
+  const moodsChosen = route.params?.moodsChosen;
+  const energyChosen = route.params?.energyChosen;
   const progress = 3 / numPages;
 
   const { width } = Dimensions.get('window');
@@ -42,15 +47,23 @@ function Sleep({ navigation }) {
   };
 
   const continueButton = () => {
-    if (hasMovedSlider) {
-      navigation.navigate('Meal', {
-        sleepScore: slider,
-      });
-    }
+    navigation.navigate('Meal', {
+      numPages,
+      moodValue,
+      moodsChosen,
+      energyChosen,
+      sleepScore: 5 - slider,
+    });
   };
 
   const skipButton = () => {
-    navigation.navigate('Meal');
+    navigation.navigate('Meal', {
+      numPages,
+      moodValue,
+      moodsChosen,
+      energyChosen,
+      sleepScore: 5 - slider,
+    });
   };
 
   return (
@@ -86,14 +99,17 @@ function Sleep({ navigation }) {
         </View>
         <View style={styles.faces}>
           {images.map((image, index) => (
-            <View key={index} style={[
-              styles.singularFace,
-              { width: 80 + (slider === index ? 20 : 0), height: 70 + (slider === index ? 20 : 0) },
-              slider === index ? styles.shadowEffect : null,
-            ]}>
+            <View
+              key={index}
+              style={[
+                styles.singularFace,
+                { width: 80 + (slider === index ? 20 : 0), height: 70 + (slider === index ? 20 : 0) },
+                slider === index ? styles.shadowEffect : null,
+              ]}
+            >
               <Image
                 source={image}
-                style={{ width: 30 + (slider === index ? 20 : 0), height: 30 + (slider === index ? 40 : 0), overflow: 'visible', }}
+                style={{ width: 30 + (slider === index ? 20 : 0), height: 30 + (slider === index ? 40 : 0), overflow: 'visible' }}
               />
             </View>
           ))}
