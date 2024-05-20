@@ -77,7 +77,7 @@ function Feeling({ navigation }) {
   };
 
   const skipButton = () => {
-    navigation.navigate('Energy', { numPages, moodValueChosen: slider });
+    navigation.navigate('Energy', { numPages, moodValueChosen: slider, moodsChosen: selectedCoping });
   };
 
   return (
