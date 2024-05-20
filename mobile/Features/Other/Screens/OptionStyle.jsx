@@ -4,6 +4,28 @@ const OptionStyle = StyleSheet.create({
   container: {
     marginTop: 30,
     marginLeft: 30,
+    height: '130%',
+  },
+
+  imageContainer: {
+    height: 50,
+    width: '90%',
+    borderRadius: 10,
+    backgroundColor: 'lightgrey',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 16,
+  },
+
+  image: {
+    width: 200,
+    height: 200,
+    marginBottom: 16,
+  },
+
+  video: {
+    width: 200,
+    height: 200,
   },
 
   title: {
@@ -18,7 +40,6 @@ const OptionStyle = StyleSheet.create({
   arrow: {
     fontSize: 20,
     marginLeft: '40%',
-
   },
 
   box: {

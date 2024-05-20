@@ -1,11 +1,11 @@
+import React, { useState, useRef, useEffect } from 'react';
 import {
-  ScrollView, View, Text, TouchableOpacity, Image, StyleSheet,
+  ScrollView, View, Text, TouchableOpacity, Image, Button,
 } from 'react-native';
-import { useState, useRef } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import Video, { VideoRef } from 'react-native-video';
+import { useVideoPlayer, VideoView } from 'expo-video';
 import OptionStyle from './OptionStyle';
 
 export default function Options({ navigation }) {
@@ -20,33 +20,8 @@ export default function Options({ navigation }) {
     }
   };
 
-  const uploadPhotoStyles = StyleSheet.create({
-    container: {
-      height: '10%',
-      width: '90%',
-      borderRadius: 10,
-      backgroundColor: 'lightgrey',
-      alignItems: 'center',
-      justifyContent: 'center',
-      marginBottom: 16,
-    },
-    image: {
-      width: 100,
-      height: 100,
-      marginBottom: 16,
-      borderRadius: 50,
-    },
-  });
-
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedVideo, setSelectedVideo] = useState(null);
-
-  // const videoRef = useRef < VideoRef > (null);
-
-  // if (videoRef.current) {
-  //   // Access properties or methods of the Video component
-  //   console.log(videoRef.current.Constants);
-  // }
 
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -56,8 +31,6 @@ export default function Options({ navigation }) {
       aspect: [4, 3],
       quality: 1,
     });
-
-    console.log('HLKEJFKLD', result.assets[0]);
 
     if (!result.canceled) {
       const mediaType = result.assets[0].type;
@@ -75,10 +48,29 @@ export default function Options({ navigation }) {
     }
   };
 
+  const videoSource = selectedVideo || '';
+  const ref = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const player = useVideoPlayer(videoSource, (p) => {
+    const temp = p;
+    temp.loop = true;
+    temp.play();
+  });
+
+  useEffect(() => {
+    const subscription = player.addListener('playingChange', (ip) => {
+      setIsPlaying(ip);
+    });
+
+    return () => {
+      subscription.remove();
+    };
+  }, [player]);
+
   return (
     <ScrollView contentContainerStyle={OptionStyle.container}>
-      <Text style={OptionStyle.title}> options </Text>
-      <Text style={OptionStyle.personalData}> personal data </Text>
+      <Text style={OptionStyle.title}>options</Text>
+      <Text style={OptionStyle.personalData}>personal data</Text>
       {options.map((option, index) => (
         <View key={option}>
           {index === 3 && <Text style={OptionStyle.customize}> customize </Text>}
@@ -93,30 +85,39 @@ export default function Options({ navigation }) {
           </View>
         </View>
       ))}
-      {/* <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Button title="Pick an image from camera roll" onPress={pickImage} />
-        {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
-      </View> */}
-      {selectedImage !== '' ? (
-        <Image
-          source={{ uri: selectedImage }}
-          style={{ width: 200, height: 200 }}
-        />
-      ) : ''}
-      {selectedVideo
-      && (
-      <Video
-        source={{ uri: selectedVideo }}
-        style={{ flex: 1, height: 200 }}
-        controls
-        // ref={(ref) => { videoRef.current = ref; }}
-      />
-      )}
-      <TouchableOpacity style={uploadPhotoStyles.container} onPress={pickImage}>
+
+      <View>
+        {selectedImage && (
+          <Image
+            source={{ uri: selectedImage }}
+            style={OptionStyle.image}
+          />
+        )}
+        {selectedVideo && (
+        <>
+          <VideoView
+            ref={ref}
+            style={OptionStyle.video}
+            player={player}
+          />
+          <Button
+            title={isPlaying ? 'Pause' : 'Play'}
+            onPress={() => {
+              if (isPlaying) {
+                player.pause();
+              } else {
+                player.play();
+              }
+              setIsPlaying(!isPlaying);
+            }}
+          />
+        </>
+        )}
+      </View>
+      <TouchableOpacity style={OptionStyle.imageContainer} onPress={pickImage}>
         <Text>+</Text>
       </TouchableOpacity>
     </ScrollView>
-
   );
 }
 
