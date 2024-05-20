@@ -212,6 +212,28 @@ const readSpecifiedFields = async (req, res) => {
   }
 };
 
+const createFavoritedFolder = async (req, res) => {
+  const {
+    id, folderName, tags, resources,
+  } = req.body;
+  try {
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).send({ message: 'User not found' });
+    }
+    const newFolder = {
+      tags: tags || [],
+      resources: resources || [],
+    };
+
+    user.favoritedFolders.set(folderName, newFolder);
+    return res.send({ favoritedFolders: user.favoritedFolders });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send(err);
+  }
+};
+
 module.exports = {
   signInUser,
   signUpUser,
