@@ -4,7 +4,7 @@ import {
   Image, ImageBackground, View, Dimensions,
 } from 'react-native';
 import TrendsPage from '../Trends/Screens/TrendsPage';
-import JournalPage from '../Features/Journal/Screens/JournalPage';
+import JournalTabs from '../Features/Journal/Screens/JournalPage';
 import ContentDashboard from '../Features/Other/Screens/ContentDashboard';
 import ContentLibrary from '../Features/ContentLibrary/Screens/ContentLibrary';
 import FindHelp from '../Features/Other/Screens/FindHelp';
@@ -90,7 +90,7 @@ export default function AltNavigationBar() {
 
   const names = ['Trends', 'Journal', 'Home', 'Content', 'Find Help'];
   const icons = [TrendsIcon, JournalIcon, HomeIcon, ContentIcon, FindHelpIcon];
-  const components = [TrendsPage, JournalPage, HomeWithExtraPages,
+  const components = [TrendsPage, JournalTabs, HomeWithExtraPages,
     ContentLibraryWithExtraPages, FindHelp];
 
   return (

@@ -20,6 +20,8 @@ import BannedTags from '../Features/Other/Screens/BannedTags';
 import Splash from '../Features/GettingStarted/Splash';
 import Terms from '../Features/GettingStarted/Terms';
 import Loading from '../Features/Register/Loading';
+import JournalDetails from '../Features/Journal/Screens/JournalDetails';
+import PostDetails from '../Features/Journal/Screens/PostDetails';
 import Overview from '../Features/Tutorial/Overview';
 import TutorialCheckIn1 from '../Features/Tutorial/TutorialCheckIn1';
 import TutorialCheckIn2 from '../Features/Tutorial/TutorialCheckIn2';
@@ -126,6 +128,8 @@ export default function AppNavigation({ user }) {
           <Stack.Screen name="AddActivity" component={AddActivity} options={{ headerShown: false }} />
           <Stack.Screen name="AddIcon" component={AddIcon} options={{ headerShown: false }} />
           <Stack.Screen name="EndCheckIn" component={EndCheckIn} options={{ headerShown: false }} />
+          <Stack.Screen name="JournalDetails" component={JournalDetails} options={{ headerShown: false }} />
+          <Stack.Screen name="PostDetails" component={PostDetails} options={{ headerShown: false }} />
 
           <Stack.Screen name="Exercise" component={Exercise} options={{ headerShown: false }} />
         </Stack.Navigator>

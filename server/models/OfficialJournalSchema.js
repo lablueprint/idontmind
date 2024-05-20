@@ -33,6 +33,10 @@ const officialJournalSchema = new mongoose.Schema({
     default: [],
     type: [String],
   },
+  image: {
+    required: false,
+    type: String,
+  },
 });
 
 module.exports = mongoose.model('OfficialJournal', officialJournalSchema);

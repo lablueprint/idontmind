@@ -27,6 +27,7 @@ export default function JournalHistoryPage({ navigation }) {
 to show up in 'recent entries' */
 
   const navigateToPastJournal = (text) => {
+    console.log("navigate to past journal", text);
     navigation.navigate('Journal', { body: text, isHistory: true });
   }; /* navigate to the past journal entry, isHistory
    is set to true (uneditable text box with the corresponding prompt) */
