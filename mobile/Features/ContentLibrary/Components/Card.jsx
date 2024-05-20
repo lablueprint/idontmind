@@ -10,7 +10,6 @@ import starImage from '../../../assets/images/star.png';
 import goldStar from '../../../assets/images/goldStar.png';
 import TagContext from '../Context/TagContext';
 import shapeImage from '../../../assets/images/shape.png';
-
 export default function Card({
   navigateToTag, index, item, orientation,
 }) {
