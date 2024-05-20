@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
-// const bcrypt = require('react-native-bcrypt');
+// const BcryptReactNative = require('bcrypt-react-native');
 const User = require('../models/OfficialUserSchema');
 const passport = require('../passport');
 
@@ -215,6 +215,7 @@ const readSpecifiedFields = async (req, res) => {
 };
 
 const sendEmail = async (req, res) => {
+  console.log(33, req.body)
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     host: 'smtp.gmail.com',
@@ -265,7 +266,8 @@ const resetPassword = async (req, res) => {
     const userID = req.body.id;
 
     // const salt = await bcrypt.genSalt(10);
-    // const hashedPassword = await bcrypt.hash(newPassword, salt);
+    // const salt = await BcryptReactNative.getSalt(10);
+    // const hashedPassword = await BcryptReactNative.hash(salt, newPassword);
     const updatedUser = await User.findByIdAndUpdate(userID, { password: newPassword });
     console.log('user updated');
     if (!updatedUser) {

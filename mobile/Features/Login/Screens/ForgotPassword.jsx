@@ -1,7 +1,8 @@
 import {
-  Pressable, Text, View, TextInput, StyleSheet,
+  Pressable, Text, View, TextInput,
 } from 'react-native';
 import PropTypes from 'prop-types';
+import { Image } from 'expo-image';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import * as Crypto from 'expo-crypto';
@@ -52,7 +53,7 @@ function ForgotPassword({ navigation }) {
 
   useEffect(() => {
     if (token && curUser) {
-      navigation.navigate('Token Input', { token, email, curUser });
+      navigation.navigate('TokenInput', { token, email, curUser });
     }
   }, [token, curUser, navigation]);
 
@@ -61,11 +62,15 @@ function ForgotPassword({ navigation }) {
       flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: '#E5F8F3',
     }}
     >
+      <Image
+        source={require('../../../assets/images/package.png')}
+        style={{height: '32%', width: '32%', overflow: 'visible', zIndex: -1, position: 'absolute', bottom: '54%'}}
+      />
       <View style={{ width: '83%', marginTop: '15%' }}>
         <Text style={{ fontSize: 40, fontWeight: 300 }}>
           Forgot Password?
         </Text>
-        <Text style={{ fontSize: 16, lineHeight: 24, marginTop: '2%' }}>
+        <Text style={{ fontSize: 16, lineHeight: 24, marginTop: '4%' }}>
           Enter your email address to receive instructions for resetting your password.
         </Text>
         <Text style={{

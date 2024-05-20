@@ -26,14 +26,14 @@ export default StyleSheet.create({
     top: '90%',
   },
   sendButton: {
-    width: '48%',
+    width: '65%',
     borderRadius: 99,
-    backgroundColor: '#C8C8C8',
-    paddingVertical: 14,
+    backgroundColor: '#374342',
+    paddingVertical: 20,
   },
   sendButtonText: {
     alignSelf: 'center',
-    color: '#7A7A7A',
+    color: 'white',
     fontSize: 14,
     fontWeight: 600,
   },

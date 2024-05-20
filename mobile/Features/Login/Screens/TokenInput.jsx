@@ -1,8 +1,9 @@
 import {
-  Text, View, TouchableOpacity, Button,
+  Text, View, TouchableOpacity
 } from 'react-native';
 import Modal from "react-native-modal";
 import PropTypes from 'prop-types';
+import { Image } from 'expo-image';
 import { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import {
@@ -43,6 +44,7 @@ function TokenInput({ route, navigation }) {
       setCountdown(1800);
       setTokenExpired(false);
       const response = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/sendEmail`, { email, token: newToken });
+      console.log(5, response.data);
       if (response.data.success) {
         console.log('Email sent successfully with new token.');
       } else {
@@ -54,7 +56,7 @@ function TokenInput({ route, navigation }) {
   };
 
   if (parseInt(value, 10) === token) {
-    navigation.navigate('Reset Password', { curUser });
+    navigation.navigate('ResetPassword', { curUser });
     setValue('');
   }
 
@@ -80,6 +82,10 @@ function TokenInput({ route, navigation }) {
   return (
     <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: '#E5F8F3' }}>
       <View style={{ width: '83%', marginTop: '15%' }}>
+        <Image
+          source={require('../../../assets/images/package.png')}
+          style={{height: '92%', width: '92%', overflow: 'visible', zIndex: -1, position: 'absolute', bottom: '77%'}}
+        />
         <Text style={{ fontSize: 40, fontWeight: 300, marginBottom: '1%' }}>
           Reset Password
         </Text>
@@ -135,7 +141,7 @@ function TokenInput({ route, navigation }) {
                 <TouchableOpacity 
                   onPress={() => {
                     setShowModal(false);
-                    navigation.navigate('Forgot Password');
+                    navigation.navigate('ForgotPassword');
                   }}
                   style={{ flex: 1, justifyContent: 'center', alignItems: 'center', width: '100%', height: '90%'}}
                 >

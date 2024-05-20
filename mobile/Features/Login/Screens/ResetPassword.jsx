@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Pressable, Text, View, TextInput, StyleSheet,
+  Pressable, Text, View, TextInput,
 } from 'react-native';
 import PropTypes from 'prop-types';
+import { Image } from 'expo-image';
 import axios from 'axios';
 import { MaterialIcons } from '@expo/vector-icons'; 
 import styles from './ResetPasswordStyle';
@@ -41,8 +42,12 @@ function ResetPassword({ route, navigation }) {
 
   return (
     <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: '#E5F8F3' }}>
-      <View style={{ width: '83%', marginTop: '15%' }}>
-        <Text style={{ fontSize: 40, fontWeight: 300, marginBottom: '5%' }}>
+      <View style={{ width: '83%', marginTop: '40%' }}>
+        <Image
+          source={require('../../../assets/images/package.png')}
+          style={{height: '78%', width: '78%', overflow: 'visible', zIndex: -1, position: 'absolute', bottom: '70%', marginLeft: '10%'}}
+        />
+        <Text style={{ fontSize: 40, fontWeight: 300, marginBottom: '10%'}}>
           Reset Password
         </Text>
         <Text style={{ fontSize: 16, fontWeight: 500, marginBottom: '2%', color: '#767C7C' }}>
@@ -90,7 +95,7 @@ function ResetPassword({ route, navigation }) {
           onPress={handleResetSubmit}
           disabled={!passwordsMatch}
         >
-          <Text style={styles.sendButtonText}>Confirm Change</Text>
+          <Text style={[styles.sendButtonText, !passwordsMatch && { color: 'black' }]}>Confirm Change</Text>
         </Pressable>
       </View>
     </View>

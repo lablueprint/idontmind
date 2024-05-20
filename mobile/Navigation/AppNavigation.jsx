@@ -29,6 +29,9 @@ import WrapUp from '../Features/Tutorial/WrapUp';
 import ThirtyDayOverview from '../Features/Tutorial/ThirtyDayOverview';
 import TrendsTab from '../Trends/Components/Trends';
 import TrendsBody from '../Trends/Screens/TrendsBody';
+import ForgotPassword from '../Features/Login/Screens/ForgotPassword';
+import TokenInput from '../Features/Login/Screens/TokenInput';
+import ResetPassword from '../Features/Login/Screens/ResetPassword';
 
 import CheckIn from '../Features/CheckIn/CheckIn';
 import Sleep from '../Features/CheckIn/Sleep';
@@ -107,6 +110,9 @@ export default function AppNavigation({ user }) {
           <Stack.Screen name="Personalization" component={Personalization} options={{ headerShown: false }} />
           <Stack.Screen name="MoreResources" component={MoreResources} options={{ headerShown: false }} />
           <Stack.Screen name="WrapUp" component={WrapUp} options={{ headerShown: false }} />
+          <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{ headerShown: false }} />
+          <Stack.Screen name="TokenInput" component={TokenInput} options={{ headerShown: false }} />
+          <Stack.Screen name="ResetPassword" component={ResetPassword} options={{ headerShown: false }} />
           <Stack.Screen name="ThirtyDayOverview" component={ThirtyDayOverview} options={{ headerShown: false }} />
           {/* <Stack.Screen name="PushNotifications" component={PushNotifications}
            options={{ headerShown: false }} /> */}
