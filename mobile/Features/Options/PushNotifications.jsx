@@ -95,7 +95,7 @@ function PushNotificationsOptions({ navigation }) {
             paddingTop: 10,
           }}
           >
-            Reset Password
+            Push Notifications
           </Text>
         </View>
       </View>
