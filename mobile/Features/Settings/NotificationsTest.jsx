@@ -13,6 +13,7 @@ import WheelPicker from 'react-native-wheely';
 import ToggleSwitch from './Components/ToggleSwitch';
 import left from '../../assets/images/left.png';
 import cancelImage from '../../assets/images/cancel.png';
+import sunImage from '../../assets/images/Sun.png';
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -109,9 +110,9 @@ const styles = StyleSheet.create({
   },
   modalView: {
     width: '80%',
-    backgroundColor: 'white',
+    backgroundColor: '#E0F1F3',
     borderRadius: 20,
-    padding: 35,
+    padding: 28,
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
@@ -132,6 +133,9 @@ const styles = StyleSheet.create({
   },
   timeText: {
     marginTop: 15,
+    color: '#929999',
+    fontWeight: 'bold',
+    fontSize: 16,
   },
   pText: {
     marginBottom: 20,
@@ -567,6 +571,11 @@ export default function NotificationsTest() {
               <View style={styles.headerRow}>
                 <Text style={[styles.modalHeader, styles.textAlignLeft]}>
                   Check-In
+                  <View style={{ margin: 4 }} />
+                  <Image
+                    style={styles.cancelImage}
+                    source={sunImage}
+                  />
                 </Text>
                 <Pressable
                   onPress={() => { setShowPicker(false); setCheckIn(false); }}
@@ -593,18 +602,23 @@ export default function NotificationsTest() {
               </Text>
               <View style={{ flexDirection: 'row' }}>
                 <WheelPicker
+                  selectedIndicatorStyle={{
+                    backgroundColor: 'rgba(83, 80, 76, 0.10)', borderRadius: 0, right: 0, width: 100,
+                  }}
                   style={{ flex: 1 }}
                   selectedIndex={selectedHour}
                   options={hours}
                   onChange={(index) => setSelectedHour(index)}
                 />
                 <WheelPicker
+                  selectedIndicatorStyle={{ backgroundColor: 'rgba(83, 80, 76, 0.10)', borderRadius: 0 }}
                   style={{ flex: 1 }}
                   selectedIndex={selectedMinute}
                   options={minutes}
                   onChange={(index) => setSelectedMinute(index)}
                 />
                 <WheelPicker
+                  selectedIndicatorStyle={{ backgroundColor: 'rgba(83, 80, 76, 0.10)', borderRadius: 0, width: 100 }}
                   style={{ flex: 1 }}
                   selectedIndex={selectedDay}
                   options={day}
