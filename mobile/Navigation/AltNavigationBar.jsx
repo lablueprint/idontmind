@@ -33,7 +33,7 @@ import Tag from '../Features/ContentLibrary/Screens/Tag';
 const Stack = createStackNavigator();
 const otherNames = ['Day Challenge', 'CheckIn', 'PostSignInLanding', 'Feed', 'Notifs', 'Options', 'Journal History', 'WOYM'];
 const otherPages = [DayChallenge, CheckIn, PostSignInLanding, Feed,
-  PushNotifications, Options, JournalHistoryPage, WOYM];
+  Options, JournalHistoryPage, WOYM];
 
 function HomeWithExtraPages() {
   return (
