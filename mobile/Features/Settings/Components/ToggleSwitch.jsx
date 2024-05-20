@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, Switch } from 'react-native';
+import { View, Text } from 'react-native';
+import { Switch } from 'react-native-switch';
 import PropTypes from 'prop-types';
 import styles from '../Screens/PushNotificationsStyle';
 
@@ -9,24 +10,22 @@ function ToggleSwitch({ label, value, onValueChange }) {
   };
 
   return (
-    <View style={{ marginBottom: 25 }}>
-      <View style={styles.timeOfDayContainer}>
-        <Text style={styles.timeOfDayText}>
-          {label}
-        </Text>
-        <Switch
-          backgroundActive="#404040"
-          backgroundInactive="lightgray"
-          activeText=""
-          inActiveText=""
-          value={value}
-          onValueChange={handleValueChange}
-          barHeight={24}
-          circleSize={22}
-          switchWidthMultiplier={2.3}
-          circleBorderWidth={0}
-        />
-      </View>
+    <View style={styles.toggleContainer}>
+      <Text style={styles.toggleContainerText}>
+        {label}
+      </Text>
+      <Switch
+        backgroundActive="#404040"
+        backgroundInactive="#53504C33"
+        activeText=""
+        inActiveText=""
+        value={value}
+        onValueChange={handleValueChange}
+        barHeight={24}
+        circleSize={20}
+        switchWidthMultiplier={2.6}
+        circleBorderWidth={0}
+      />
     </View>
   );
 }

@@ -1,9 +1,8 @@
 import {
-  ScrollView, Text, View, TouchableOpacity, Button,
+  ScrollView, Text, View, TouchableOpacity,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Divider } from '@rneui/themed';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import styles from './PushNotificationsStyle';
@@ -113,13 +112,13 @@ function PushNotifications() {
             </Text>
           </TouchableOpacity>
           <View>
-            <DateTimePickerModal
+            {/* <DateTimePickerModal
               isVisible={showPicker}
               mode="time"
               locale="en_GB"
               onConfirm={setDailyNotif}
               onCancel={() => setShowPicker(false)}
-            />
+            /> */}
           </View>
         </View>
         )}
@@ -133,94 +132,12 @@ function PushNotifications() {
         </Text>
 
         <View>
-          <View style={[styles.timeOfDayContainer, { marginBottom: 25 }]}>
-            <Text style={styles.timeOfDayText}>
-              time of day
-            </Text>
-            <Switch
-              backgroundActive="#404040"
-              backgroundInactive="lightgray"
-              activeText=""
-              inActiveText=""
-              value={isEnabled3}
-              onValueChange={toggleSwitch3}
-              barHeight={24}
-              circleSize={22}
-              switchWidthMultiplier={2.3}
-              circleBorderWidth={0}
-            />
-          </View>
-          <View style={styles.timeOfDayContainer}>
-            <Text style={styles.timeOfDayText}>
-              time of day
-            </Text>
-            <Switch
-              backgroundActive="#404040"
-              backgroundInactive="lightgray"
-              activeText=""
-              inActiveText=""
-              value={isEnabled4}
-              onValueChange={toggleSwitch4}
-              barHeight={24}
-              circleSize={22}
-              switchWidthMultiplier={2.3}
-              circleBorderWidth={0}
-            />
-          </View>
-          <Text style={[styles.category, { marginTop: '9%', marginBottom: '1%' }]}>
-            CATEGORY
-          </Text>
-          <View style={[styles.timeOfDayContainer, { zIndex: 2 }]}>
-            <Text style={styles.timeOfDayText}>
-              category of reminder
-            </Text>
-            <DropDownPicker
-              open={open}
-              value={value}
-              items={items}
-              setOpen={setOpen}
-              setValue={setValue}
-              setItems={setItems}
-              placeholder="weekly"
-              showArrowIcon
-              style={{ width: 105, backgroundColor: 'transparent', borderWidth: 0 }}
-              containerStyle={{ width: 105, borderTopWidth: 0 }}
-              dropDownContainerStyle={{ borderTopWidth: 0, backgroundColor: 'white' }}
-            />
-          </View>
-          <View style={[styles.timeOfDayContainer, { zIndex: 1 }]}>
-            <Text style={styles.timeOfDayText}>
-              category of reminder
-            </Text>
-            <DropDownPicker
-              open={open2}
-              value={value2}
-              items={items}
-              setOpen={setOpen2}
-              setValue={setValue2}
-              setItems={setItems}
-              placeholder="weekly"
-              showArrowIcon
-              style={{ width: 105, backgroundColor: 'transparent', borderWidth: 0 }}
-              containerStyle={{ width: 105, borderTopWidth: 0 }}
-              dropDownContainerStyle={{ borderTopWidth: 0, backgroundColor: 'white' }}
-            />
-          </View>
-          <View style={[styles.timeOfDayContainer, { marginTop: '7%' }]}>
-            <Pressable
-              title="set default"
-              style={styles.setDefaultButton}
-            >
-              <Text style={styles.setDefaultText}>set default</Text>
-            </Pressable>
-            <Pressable
-              title="save"
-              style={styles.saveButton}
-              onPressIn={onDisplayNotification}
-            >
-              <Text style={styles.saveText}>save</Text>
-            </Pressable>
-          </View>
+          <ToggleSwitch label="Water Intake" value={reminderSet.has('Water Intake')} onValueChange={toggleSwitch} />
+          <ToggleSwitch label="Full Meal" value={reminderSet.has('Full Meal')} onValueChange={toggleSwitch} />
+          <ToggleSwitch label="Physical Activity" value={reminderSet.has('Physical Activity')} onValueChange={toggleSwitch} />
+          <ToggleSwitch label="Mood-Boosting Activity" value={reminderSet.has('Mood-Boosting Activity')} onValueChange={toggleSwitch} />
+          <ToggleSwitch label="Wellness-Boosting Activity" value={reminderSet.has('Wellness-Boosting Activity')} onValueChange={toggleSwitch} />
+          <ToggleSwitch label="Thirty Day Detox" value={reminderSet.has('Thirty Day Detox')} onValueChange={toggleSwitch} />
         </View>
       </View>
     </ScrollView>

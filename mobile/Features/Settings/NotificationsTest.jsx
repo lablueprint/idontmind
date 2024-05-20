@@ -1,15 +1,18 @@
 import { useState, useEffect, useRef } from 'react';
 import {
-  Text, View, Platform, Image, Pressable,
-  StyleSheet,
+  Text, View, Platform, Image, Pressable, Modal, StyleSheet, ScrollView,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import { useNavigation } from '@react-navigation/native';
 import { Switch } from 'react-native-switch';
+import { useSelector } from 'react-redux';
 import axios from 'axios';
+import WheelPicker from 'react-native-wheely';
+import ToggleSwitch from './Components/ToggleSwitch';
 import left from '../../assets/images/left.png';
+import cancelImage from '../../assets/images/cancel.png';
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -98,19 +101,82 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     gap: 20,
   },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  modalView: {
+    width: '80%',
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
+  },
+  textAlignLeft: {
+    textAlign: 'left',
+    alignSelf: 'stretch', // Ensures the text takes up full width for left alignment
+  },
+  timeText: {
+    marginTop: 15,
+  },
+  pText: {
+    marginBottom: 20,
+  },
+  line: {
+    width: '100%',
+    height: 1,
+    backgroundColor: '#929999',
+    marginVertical: 15,
+  },
+  modalHeader: {
+    fontSize: 25,
+    fontWeight: 'bold',
+  },
+  headerRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+  },
+  cancelImage: {
+    marginRight: 3,
+    height: 25,
+    width: 25,
+    alignSelf: 'flex-start',
+  },
 });
 
 export default function NotificationsTest() {
+  const { id, authHeader } = useSelector((state) => state.auth);
   const [expoPushToken, setExpoPushToken] = useState('');
   const responseListener = useRef();
   const navigation = useNavigation();
-  const [isEnabled, setIsEnabled] = useState(false);
-  const [isEnabled2, setIsEnabled2] = useState(false);
-  const [isEnabled3, setIsEnabled3] = useState(false);
-  const [isEnabled4, setIsEnabled4] = useState(false);
-  const [isEnabled5, setIsEnabled5] = useState(false);
-  const [isEnabled6, setIsEnabled6] = useState(false);
   const [checkIn, setCheckIn] = useState(false);
+  const [showPicker, setShowPicker] = useState(false);
+  const [reminderSet, setReminderSet] = useState(new Set());
+  const allLabels = ['Water Intake', 'Full Meal', 'Physical Activity', 'Mood-Boosting Activity', 'Wellness-Boosting Activity', 'Thirty Day Detox'];
+  const notificationMessages = [
+    'Time for your water intake!',
+    "Don't forget your full meal!",
+    'Time for some physical activity!',
+    'Engage in a mood-boosting activity!',
+    'Engage in a wellness-boosting activity!',
+    'Continue your thirty-day detox!',
+  ];
 
   const identifierMap = {
     1: '',
@@ -157,107 +223,59 @@ export default function NotificationsTest() {
     Notifications.cancelScheduledNotificationAsync(identifierMap[number]);
   }
 
-  const handleCheckIn = () => {
-    setCheckIn((previousState) => !previousState);
-  };
-
-  // Handle Toggle Change
-  const handleToggleChange = async (number) => {
-    switch (number) {
-      case 1:
-        if (isEnabled) {
-          scheduleRandomNotification(5, 'Time for your water intake!', 1);
-        } else {
-          cancelRandomNotification(1);
-        }
-        break;
-      case 2:
-        if (isEnabled2) {
-          scheduleRandomNotification(7, "Don't forget your full meal!", 2);
-        } else {
-          cancelRandomNotification(2);
-        }
-        break;
-      case 3:
-        if (isEnabled3) {
-          scheduleRandomNotification(9, 'Time for some physical activity!', 3);
-        } else {
-          cancelRandomNotification(3);
-        }
-        break;
-      case 4:
-        if (isEnabled4) {
-          scheduleRandomNotification(11, 'Engage in a mood-boosting activity!', 4);          
-        } else {
-          cancelRandomNotification(4);
-        }
-        break;
-      case 5:
-        if (isEnabled5) {
-          scheduleRandomNotification(13, 'Engage in a wellness-boosting activity!', 5);        
-        } else {
-          cancelRandomNotification(5);
-        }
-        break;
-      case 6:
-        if (isEnabled6) {
-          scheduleRandomNotification(15, 'Continue your thirty-day detox!', 6);          
-        } else {
-          cancelRandomNotification(6);
-        }
-        break;
-      default:
-        console.log('This should not hit');
+  const handleCheckIn = async () => {
+    if (checkIn) {
+      setShowPicker(false);
+    } else {
+      setShowPicker(true);
     }
+    const newPref = !checkIn;
+    setCheckIn(newPref);
+    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/updateUser`, { id, updatedFields: { checkInPreference: newPref } }, { headers: authHeader });
   };
 
-  const toggleWaterIntake = () => {
-    setIsEnabled((previousState) => !previousState);
+  const toggleSwitch = async (label) => {
+    const labelIndex = allLabels.indexOf(label) + 1;
+    const temp = new Set(reminderSet);
+    if (reminderSet.has(label)) {
+      temp.delete(label);
+      setReminderSet(temp);
+      cancelRandomNotification(labelIndex);
+    } else {
+      temp.add(label);
+      setReminderSet(temp);
+      const randomDelay = Math.floor(Math.random() * 10) + 1;
+      scheduleRandomNotification(randomDelay, notificationMessages[labelIndex - 1], labelIndex);
+    }
+    const reminderArray = Array.from(temp);
+    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/updateUser`, { id, updatedFields: { 'pushNotifs.reminders': reminderArray } }, { headers: authHeader });
   };
 
-  const toggleFullMeal = () => {
-    setIsEnabled2((previousState) => !previousState);
+  const enableAllToggles = async () => {
+    const newSet = new Set(reminderSet);
+    allLabels.forEach((label) => {
+      newSet.add(label);
+      const randomDelay = Math.floor(Math.random() * 10) + 1;
+      const labelIndex = allLabels.indexOf(label) + 1;
+      scheduleRandomNotification(randomDelay, notificationMessages[labelIndex - 1], labelIndex);
+    });
+    setReminderSet(newSet);
+    const reminderArray = Array.from(newSet);
+    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/updateUser`, { id, updatedFields: { 'pushNotifs.reminders': reminderArray } }, { headers: authHeader });
   };
 
-  const togglePhysicalActivity = () => {
-    setIsEnabled3((previousState) => !previousState);
+  const disableAllToggles = async () => {
+    const newSet = new Set(reminderSet);
+    allLabels.forEach((label) => {
+      newSet.delete(label);
+      const labelIndex = allLabels.indexOf(label) + 1;
+      cancelRandomNotification(labelIndex);
+    });
+    setReminderSet(newSet);
+    const reminderArray = Array.from(newSet);
+    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/updateUser`, { id, updatedFields: { 'pushNotifs.reminders': reminderArray } }, { headers: authHeader });
   };
 
-  const toggleMoodBoostingActivity = () => {
-    setIsEnabled4((previousState) => !previousState);
-  };
-
-  const toggleWellnessBoostingActivity = () => {
-    setIsEnabled5((previousState) => !previousState);
-  };
-
-  const toggleThirtyDayDetox = () => {
-    setIsEnabled6((previousState) => !previousState);
-  };
-
-  useEffect(() => {
-    handleToggleChange(1);
-  }, [isEnabled]);
-
-  useEffect(() => {
-    handleToggleChange(2);
-  }, [isEnabled2]);
-
-  useEffect(() => {
-    handleToggleChange(3);
-  }, [isEnabled3]);
-
-  useEffect(() => {
-    handleToggleChange(4);
-  }, [isEnabled4]);
-
-  useEffect(() => {
-    handleToggleChange(5);
-  }, [isEnabled5]);
-
-  useEffect(() => {
-    handleToggleChange(6);
-  }, [isEnabled6]);
   /*
     Plan:
       - pull user id from redux
@@ -272,23 +290,6 @@ export default function NotificationsTest() {
 
   // get time to 5:15PM -->
 
-  const enableAllToggles = () => {
-    setIsEnabled(true);
-    setIsEnabled2(true);
-    setIsEnabled3(true);
-    setIsEnabled4(true);
-    setIsEnabled5(true);
-    setIsEnabled6(true);
-  };
-
-  const disableAllToggles = () => {
-    setIsEnabled(false);
-    setIsEnabled2(false);
-    setIsEnabled3(false);
-    setIsEnabled4(false);
-    setIsEnabled5(false);
-    setIsEnabled6(false);
-  };
   // asks user for permission and generates token for user
   async function registerForPushNotificationsAsync() {
     let token;
@@ -327,7 +328,8 @@ export default function NotificationsTest() {
   // schedules push notification infinitely
   async function schedulePushNotification(title, body) {
     try {
-      // const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/getAllUsers`); // replace with get user by _id route
+      // const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/getAllUsers`);
+      // replace with get user by _id route
       // set the dailyReminder time and reminder frequency in variables
       // let dailyReminderTime = data.body.dailyReminderTime
       // let reminderFrequency = data.body.dataFrequency
@@ -409,204 +411,235 @@ export default function NotificationsTest() {
     // };
   }, []);
 
+  const hours = Array.from({ length: 12 }, (_, i) => i + 1);
+  const minutes = Array.from({ length: 12 }, (_, i) => {
+    const value = i * 5;
+    return value < 10 ? `0${value}` : `${value}`;
+  });
+  const day = ['am', 'pm'];
+
+  const [selectedHour, setSelectedHour] = useState(0);
+  const [selectedMinute, setSelectedMinute] = useState(0);
+  const [selectedDay, setSelectedDay] = useState(0);
+
+  const setDailyNotif = async () => {
+    setShowPicker(false);
+    setCheckIn(true);
+    // set the alarm
+    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/updateUser`, { id, updatedFields: { 'pushNotifs.time': { hours: selectedHour, minutes: selectedMinute, day: selectedDay } } }, { headers: authHeader });
+  };
+
+  // get push notification data from user
+  const fetchData = async () => {
+    const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/readSpecifiedFields`, { id, fields: ['pushNotifs', 'checkInPreference'] }, { headers: authHeader });
+    return res;
+  };
+
+  const getTimeOfDay = () => {
+    const hour = parseInt(hours[selectedHour], 10);
+    if (selectedDay === 0) { // AM
+      if (hour === 12 || hour <= 11) {
+        return 'Morning';
+      }
+    } else { // PM
+      if (hour === 12 || (hour >= 0 && hour <= 4)) {
+        return 'Afternoon';
+      }
+      return 'Evening';
+    }
+    return 'Evening';
+  };
+
+  useEffect(() => {
+    fetchData().then((res) => {
+      const { pushNotifs, checkInPreference } = res.data;
+      setSelectedHour(pushNotifs.time.hours);
+      setSelectedMinute(pushNotifs.time.minutes);
+      setSelectedDay(pushNotifs.time.day);
+      const temp = new Set(pushNotifs.reminders);
+      setReminderSet(temp);
+      setCheckIn(checkInPreference);
+    });
+  }, []);
+
   return (
-    <LinearGradient colors={['#E0F1F3', '#E5F8F3']} style={[styles.mainContainer]}>
-      <View style={[styles.header]}>
-        <View style={[styles.headerTitle, { gap: 10 }]}>
-          <Image
-            source={left}
-            style={[styles.leftIcon]}
-          />
-          <Text style={[styles.headerOptions]}>
-            OPTIONS
+    <ScrollView>
+      <LinearGradient colors={['#E0F1F3', '#E5F8F3']} style={[styles.mainContainer]}>
+        <View style={[styles.header]}>
+          <View style={[styles.headerTitle, { gap: 10 }]}>
+            <Image
+              source={left}
+              style={[styles.leftIcon]}
+            />
+            <Text style={[styles.headerOptions]}>
+              OPTIONS
+            </Text>
+          </View>
+          <View style={[styles.headerTitle]}>
+            <Text style={[styles.headerText]}>
+              Push Notifications
+            </Text>
+            <Image
+              source={require('../../assets/SMASHTHATBELL.png')}
+              style={[styles.bellIcon]}
+            />
+          </View>
+        </View>
+        <View style={[styles.subSection]}>
+          <View>
+            <Text style={[styles.subSectionHeader]}>
+              Daily Check-In
+            </Text>
+            <View style={{
+              position: 'absolute', bottom: 3, width: '42%', height: '60%', backgroundColor: '#BFDBD7',
+            }}
+            />
+          </View>
+          <Text style={[styles.subSectionText]}>
+            When should we ask you about your day?
+          </Text>
+          <View style={styles.toggleContainer}>
+            <Text style={styles.toggleContainerText}>
+              {getTimeOfDay()}
+              ,
+              {' '}
+              {hours[selectedHour]}
+              :
+              {minutes[selectedMinute]}
+              {day[selectedDay]}
+            </Text>
+            <Switch
+              backgroundActive="#404040"
+              backgroundInactive="#53504C33"
+              activeText=""
+              inActiveText=""
+              value={checkIn}
+              onValueChange={handleCheckIn}
+              barHeight={24}
+              circleSize={20}
+              switchWidthMultiplier={2.6}
+              circleBorderWidth={0}
+            />
+          </View>
+        </View>
+        <View style={[styles.subSection]}>
+          <View>
+            <Text style={[styles.subSectionHeader]}>
+              Daily Reminders
+            </Text>
+            <View style={{
+              position: 'absolute', bottom: 3, width: '45%', height: '60%', backgroundColor: '#BFDBD7',
+            }}
+            />
+          </View>
+          <Text style={[styles.subSectionText]}>
+            Feel free to toggle the option for us to randomly send a notification
+            throughout the day to help remind you of certain activities.
           </Text>
         </View>
-        <View style={[styles.headerTitle]}>
-          <Text style={[styles.headerText]}>
-            Push Notifications
-          </Text>
-          <Image
-            source={require('../../assets/SMASHTHATBELL.png')}
-            style={[styles.bellIcon]}
-          />
-        </View>
-      </View>
-      <View style={[styles.subSection]}>
-        <View>
-          <Text style={[styles.subSectionHeader]}>
-            Daily Check-In
-          </Text>
-          <View style={{
-            position: 'absolute', bottom: 3, width: '42%', height: '60%', backgroundColor: '#BFDBD7',
-          }}
-          />
-        </View>
-        <Text style={[styles.subSectionText]}>
-          When should we ask you about your day?
-        </Text>
-        <View style={styles.toggleContainer}>
-          <Text style={styles.toggleContainerText}>
-            Morning, 8:15am
-          </Text>
-          <Switch
-            backgroundActive="#404040"
-            backgroundInactive="#53504C33"
-            activeText=""
-            inActiveText=""
-            value={checkIn}
-            onValueChange={handleCheckIn}
-            barHeight={24}
-            circleSize={20}
-            switchWidthMultiplier={2.6}
-            circleBorderWidth={0}
-          />
-        </View>
-      </View>
-      <View style={[styles.subSection]}>
-        <View>
-          <Text style={[styles.subSectionHeader]}>
-            Daily Reminders
-          </Text>
-          <View style={{
-            position: 'absolute', bottom: 3, width: '45%', height: '60%', backgroundColor: '#BFDBD7',
-          }}
-          />
-        </View>
-        <Text style={[styles.subSectionText]}>
-          Feel free to toggle the option for us to randomly send a notification
-          throughout the day to help remind you of certain activities.
-        </Text>
-      </View>
-      <View style={styles.buttonContainer}>
-        <Pressable
-          title="enable all notifications"
-          style={styles.setDefaultButton}
-          onPressIn={enableAllToggles}
-        >
-          <Text style={styles.setDefaultText}>Enable All</Text>
-        </Pressable>
-        <LinearGradient
-          colors={['#374342', '#546967']}
-          style={styles.saveButton}
-        >
+        <View style={styles.buttonContainer}>
           <Pressable
-            title="disable all notifications"
-            onPressIn={disableAllToggles}
+            title="enable all notifications"
+            style={styles.setDefaultButton}
+            onPressIn={enableAllToggles}
           >
-            <Text style={styles.saveText}>Disable All</Text>
+            <Text style={styles.setDefaultText}>Enable All</Text>
           </Pressable>
-        </LinearGradient>
-      </View>
-      <View style={styles.allToggleContainers}>
-        <View style={styles.toggleContainer}>
-          <Text style={styles.toggleContainerText}>
-            Water Intake
-          </Text>
-          <Switch
-            backgroundActive="#404040"
-            backgroundInactive="#53504C33"
-            activeText=""
-            inActiveText=""
-            value={isEnabled}
-            onValueChange={toggleWaterIntake}
-            barHeight={24}
-            circleSize={20}
-            switchWidthMultiplier={2.6}
-            circleBorderWidth={0}
-          />
+          <LinearGradient
+            colors={['#374342', '#546967']}
+            style={styles.saveButton}
+          >
+            <Pressable
+              title="disable all notifications"
+              onPressIn={disableAllToggles}
+            >
+              <Text style={styles.saveText}>Disable All</Text>
+            </Pressable>
+          </LinearGradient>
         </View>
-        <View style={styles.toggleContainer}>
-          <Text style={styles.toggleContainerText}>
-            Full Meal
-          </Text>
-          <Switch
-            backgroundActive="#404040"
-            backgroundInactive="#53504C33"
-            activeText=""
-            inActiveText=""
-            value={isEnabled2}
-            onValueChange={toggleFullMeal}
-            barHeight={24}
-            circleSize={20}
-            switchWidthMultiplier={2.6}
-            circleBorderWidth={0}
-          />
+        <Modal
+          animationType="slide"
+          transparent
+          visible={showPicker}
+        >
+          <View style={styles.centeredView}>
+            <View style={[styles.greenbg, styles.modalView, { height: '65%' }]}>
+              <View style={styles.headerRow}>
+                <Text style={[styles.modalHeader, styles.textAlignLeft]}>
+                  Check-In
+                </Text>
+                <Pressable
+                  onPress={() => { setShowPicker(false); setCheckIn(false); }}
+                >
+                  <Image
+                    style={styles.cancelImage}
+                    source={cancelImage}
+                  />
+                </Pressable>
+              </View>
+              <Text style={[styles.textAlignLeft, styles.timeText]}>
+                {hours[selectedHour]}
+                :
+                {minutes[selectedMinute]}
+                {day[selectedDay]}
+              </Text>
+              <View style={styles.line} />
+              <Text style={[styles.textAlignLeft, styles.subSectionHeader]}>Surprise Me!</Text>
+              <Text style={[styles.subSectionText, styles.textAlignLeft, styles.pText]}>
+                Receive a notification at a random time during the day.
+              </Text>
+              <Text style={[styles.subSectionHeader, styles.modalText, styles.textAlignLeft]}>
+                Set a time.
+              </Text>
+              <View style={{ flexDirection: 'row' }}>
+                <WheelPicker
+                  style={{ flex: 1 }}
+                  selectedIndex={selectedHour}
+                  options={hours}
+                  onChange={(index) => setSelectedHour(index)}
+                />
+                <WheelPicker
+                  style={{ flex: 1 }}
+                  selectedIndex={selectedMinute}
+                  options={minutes}
+                  onChange={(index) => setSelectedMinute(index)}
+                />
+                <WheelPicker
+                  style={{ flex: 1 }}
+                  selectedIndex={selectedDay}
+                  options={day}
+                  onChange={(index) => setSelectedDay(index)}
+                />
+              </View>
+              <LinearGradient
+                colors={['#374342', '#546967']}
+                style={styles.saveButton}
+              >
+                <Pressable
+                  title="set reminder"
+                  onPressIn={setDailyNotif}
+                >
+                  <Text style={styles.saveText}>Set Reminder</Text>
+                </Pressable>
+              </LinearGradient>
+            </View>
+          </View>
+        </Modal>
+        <View style={styles.allToggleContainers}>
+          <ToggleSwitch label="Water Intake" value={reminderSet.has(allLabels[0])} onValueChange={toggleSwitch} />
+          <ToggleSwitch label="Full Meal" value={reminderSet.has(allLabels[1])} onValueChange={toggleSwitch} />
+          <ToggleSwitch label="Physical Activity" value={reminderSet.has(allLabels[2])} onValueChange={toggleSwitch} />
+          <ToggleSwitch label="Mood-Boosting Activity" value={reminderSet.has(allLabels[3])} onValueChange={toggleSwitch} />
+          <ToggleSwitch label="Wellness-Boosting Activity" value={reminderSet.has(allLabels[4])} onValueChange={toggleSwitch} />
+          <ToggleSwitch label="Thirty Day Detox" value={reminderSet.has(allLabels[5])} onValueChange={toggleSwitch} />
         </View>
-        <View style={styles.toggleContainer}>
-          <Text style={styles.toggleContainerText}>
-            Physical Activity
-          </Text>
-          <Switch
-            backgroundActive="#404040"
-            backgroundInactive="#53504C33"
-            activeText=""
-            inActiveText=""
-            value={isEnabled3}
-            onValueChange={togglePhysicalActivity}
-            barHeight={24}
-            circleSize={20}
-            switchWidthMultiplier={2.6}
-            circleBorderWidth={0}
-          />
-        </View>
-        <View style={styles.toggleContainer}>
-          <Text style={styles.toggleContainerText}>
-            Mood-Boosting Activity
-          </Text>
-          <Switch
-            backgroundActive="#404040"
-            backgroundInactive="#53504C33"
-            activeText=""
-            inActiveText=""
-            value={isEnabled4}
-            onValueChange={toggleMoodBoostingActivity}
-            barHeight={24}
-            circleSize={20}
-            switchWidthMultiplier={2.6}
-            circleBorderWidth={0}
-          />
-        </View>
-        <View style={styles.toggleContainer}>
-          <Text style={styles.toggleContainerText}>
-            Wellness-Boosting Activity
-          </Text>
-          <Switch
-            backgroundActive="#404040"
-            backgroundInactive="#53504C33"
-            activeText=""
-            inActiveText=""
-            value={isEnabled5}
-            onValueChange={toggleWellnessBoostingActivity}
-            barHeight={24}
-            circleSize={20}
-            switchWidthMultiplier={2.6}
-            circleBorderWidth={0}
-          />
-        </View>
-        <View style={styles.toggleContainer}>
-          <Text style={styles.toggleContainerText}>
-            Thirty Day Detox
-          </Text>
-          <Switch
-            backgroundActive="#404040"
-            backgroundInactive="#53504C33"
-            activeText=""
-            inActiveText=""
-            value={isEnabled6}
-            onValueChange={toggleThirtyDayDetox}
-            barHeight={24}
-            circleSize={20}
-            switchWidthMultiplier={2.6}
-            circleBorderWidth={0}
-          />
-        </View>
-      </View>
-      <Text>
-        Your expo push token:
-        {' '}
-        {expoPushToken}
-      </Text>
-    </LinearGradient>
+        {/* <Text>
+          Your expo push token:
+          {' '}
+          {expoPushToken}
+        </Text> */}
+      </LinearGradient>
+    </ScrollView>
   );
 }
 

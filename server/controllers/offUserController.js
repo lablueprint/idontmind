@@ -138,6 +138,7 @@ const deleteUserById = async (req, res) => {
 };
 
 const readSpecifiedFields = async (req, res) => {
+  console.log('HERE');
   const { id, fields } = req.body;
   try {
     const existingUser = await User.findById(id);
