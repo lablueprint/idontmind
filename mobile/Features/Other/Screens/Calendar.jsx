@@ -110,7 +110,7 @@ export default function CalendarPage({ navigation }) {
 
     allJournals.forEach((journal) => {
       const timestamp = new XDate(journal.timestamp).toString('yyyy-MM-dd');
-      if (journal.type) {
+      if (journal.guided) {
         freeTimestampsArray.push(timestamp);
       } else {
         guidedTimestampsArray.push(timestamp);
@@ -354,7 +354,7 @@ export default function CalendarPage({ navigation }) {
                       date={formatDate(x.timestamp)}
                       prompt={x.prompt}
                       text={x.text}
-                      type={x.type}
+                      type={x.guided}
                       onPress={navigateToPastJournal}
                     />
                   ))
