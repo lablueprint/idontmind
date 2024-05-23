@@ -12,6 +12,14 @@ function Splash({ navigation }) {
     navigation.navigate('Terms');
   };
 
+  const navigateToSignup = () => {
+    navigation.navigate('SignUp');
+  };
+
+  const navigateToLogin = () => {
+    navigation.navigate('Login');
+  };
+
   return (
     <View style={styles.outer}>
       <LinearGradient
@@ -49,12 +57,12 @@ function Splash({ navigation }) {
               end={{ x: 1, y: 0.5 }}
               style={styles.gradient}
             >
-              <Pressable style={styles.getStarted}>
+              <Pressable style={styles.getStarted} onPress={navigateToSignup}>
                 <Text style={styles.gsText}>Get Started</Text>
               </Pressable>
             </LinearGradient>
           </View>
-          <Pressable style={styles.signIn}>
+          <Pressable style={styles.signIn} onPress={navigateToLogin}>
             <Text style={styles.siText}>Sign In</Text>
           </Pressable>
         </View>
