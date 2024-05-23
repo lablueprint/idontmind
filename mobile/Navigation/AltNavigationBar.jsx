@@ -21,7 +21,7 @@ import Feed from '../Features/Other/Screens/Feed';
 import CheckIn from '../Features/Other/Screens/CheckIn';
 import Options from '../Features/Other/Screens/Options';
 import JournalHistoryPage from '../Features/Other/Screens/JournalHistoryPage';
-import WOYM from '../Features/Register/WOYM';
+// import WOYM from '../Features/Register/WOYM';
 import DayChallenge from '../Features/Other/Screens/DayChallenge';
 
 import Bookmarks from '../Features/ContentLibrary/Screens/Bookmarks';

@@ -5,11 +5,11 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import PropTypes from 'prop-types';
-import chev from '../../assets/images/chevron-up.png';
+import chev from '../../../assets/images/chevron-up.png';
 import data from './PillTags.json';
 import styles from './WOYMStyle';
 
-function WOYM({ navigation }) {
+function DontCareSee({ navigation }) {
   function createMaps(stringsArray) {
     const resultMap = {};
     stringsArray.forEach((str) => {
@@ -28,8 +28,6 @@ function WOYM({ navigation }) {
   const [selectedSelf, setSelectedSelf] = useState(createMaps(data.self));
   const [selectedSupport, setSelectedSupport] = useState(createMaps(data.support));
   const [selectedTrauma, setSelectedTrauma] = useState(createMaps(data.trauma));
-
-  const [outOf3, setOutOf3] = useState(0);
 
   const [showCoping, setShowCoping] = useState(false);
   const [showEWB, setShowEWB] = useState(false);
@@ -131,25 +129,9 @@ function WOYM({ navigation }) {
     setSelectedTrauma(temp);
   };
 
-  useEffect(() => {
-    const copingCount = Object.values(selectedCoping).filter((value) => value).length;
-    const ewbCount = Object.values(selectedEWB).filter((value) => value).length;
-    const iCount = Object.values(selectedIdentity).filter((value) => value).length;
-    const sCount = Object.values(selectedLifestyle).filter((value) => value).length;
-    const mCount = Object.values(selectedMental).filter((value) => value).length;
-    const rCount = Object.values(selectedRelationships).filter((value) => value).length;
-    const ssCount = Object.values(selectedSelf).filter((value) => value).length;
-    const sssCount = Object.values(selectedSupport).filter((value) => value).length;
-    const tCount = Object.values(selectedTrauma).filter((value) => value).length;
-    const totalCount = copingCount + ewbCount + iCount + sCount + mCount
-    + rCount + ssCount + sssCount + tCount;
-    setOutOf3(totalCount);
-    if (totalCount > 3) {
-      setOutOf3(3);
-    }
-  }, [selectedCoping, selectedEWB, selectedLifestyle, selectedIdentity, selectedMental,
-    selectedRelationships, selectedSelf, selectedSupport, selectedTrauma,
-  ]);
+  const navigateToOverview = () => {
+    navigation.navigate('Overview');
+  };
 
   return (
     <View style={{ flex: 1 }}>
@@ -157,13 +139,12 @@ function WOYM({ navigation }) {
         <View style={styles.container}>
           <View>
             <Text style={styles.heading}>
-              What&apos;s on your mind?
+              Anything you don&apos;t care to see for now?
             </Text>
           </View>
           <View>
             <Text style={styles.subheading}>
-              Select at least three tags you&apos;re interested in receiving curated content for.
-              You can always change this later.
+              It&apos;s okay to mind sometimes. Let us know if there&apos;s any content you want us to exclude from your feed. You can always change this later.
             </Text>
           </View>
           <View style={styles.pillArea}>
@@ -227,8 +208,8 @@ function WOYM({ navigation }) {
             </View>
           </View>
           <View style={styles.pillArea}>
-            <View style={[styles.titleButton,
-              showIdentity ? styles.extraMargin : styles.titleButton]}
+            <View
+              style={[styles.titleButton, showIdentity ? styles.extraMargin : styles.titleButton]}
             >
               <Pressable style={styles.arrow} onPress={() => setShowIdentity(!showIdentity)}>
                 <Text style={styles.pillTitle}>Identity and Self-Perception</Text>
@@ -258,8 +239,8 @@ function WOYM({ navigation }) {
             </View>
           </View>
           <View style={styles.pillArea}>
-            <View style={[styles.titleButton,
-              showLifestyle ? styles.extraMargin : styles.titleButton]}
+            <View
+              style={[styles.titleButton, showLifestyle ? styles.extraMargin : styles.titleButton]}
             >
               <Pressable style={styles.arrow} onPress={() => setShowLifestyle(!showLifestyle)}>
                 <Text style={styles.pillTitle}>Lifestyle and Wellness</Text>
@@ -289,8 +270,8 @@ function WOYM({ navigation }) {
             </View>
           </View>
           <View style={styles.pillArea}>
-            <View style={[styles.titleButton,
-              showMental ? styles.extraMargin : styles.titleButton]}
+            <View
+              style={[styles.titleButton, showMental ? styles.extraMargin : styles.titleButton]}
             >
               <Pressable style={styles.arrow} onPress={() => setShowMental(!showMental)}>
                 <Text style={styles.pillTitle}>Mental Health Conditions</Text>
@@ -469,23 +450,19 @@ function WOYM({ navigation }) {
         {/* E0F1F3 */}
         <View style={styles.nextButtContainer}>
           <Pressable
-            style={[styles.nextButt, outOf3 > 2 ? styles.nextNot : styles.nextReady]}
+            onPress={navigateToOverview}
+            style={[styles.nextButt, styles.nextNot]}
           >
             <View style={styles.row}>
               <Text style={[styles.nextText,
-                outOf3 > 2 ? styles.nextTextNot : styles.nextTextReady]}
+                styles.nextTextNot]}
               >
                 Next
               </Text>
               <Text style={[styles.nextText,
-                outOf3 > 2 ? styles.nextTextNot : styles.nextTextReady,
-                outOf3 > 2 ? styles.dontShowIt : styles.showIt]}
-              >
-                {' '}
-                (
-                {outOf3}
-                /3)
-              </Text>
+                styles.nextTextNot,
+                styles.dontShowIt]}
+              />
             </View>
           </Pressable>
         </View>
@@ -496,11 +473,11 @@ function WOYM({ navigation }) {
   );
 }
 
-export default WOYM;
+export default DontCareSee;
 
 // navigation is currently not used
 // but will be used when integrated with other files in the register pipeline
-WOYM.propTypes = {
+DontCareSee.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func,
   }).isRequired,
