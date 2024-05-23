@@ -158,20 +158,20 @@ const readSpecifiedFields = async (req, res) => {
   }
 };
 
-const getFavorites = async (req, res) => {
-  try {
-    const { email } = req.body;
-    const user = await User.findOne({ email });
-    if (!user) {
-      // If user does not exist, send back an empty array
-      return res.status(404).json({ message: 'User not found', favorites: [] });
-    }
-    res.send(user.favorites);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Internal server error' });
-  }
-};
+// const getFavorites = async (req, res) => {
+//   try {
+//     const { email } = req.body;
+//     const user = await User.findOne({ email });
+//     if (!user) {
+//       // If user does not exist, send back an empty array
+//       return res.status(404).json({ message: 'User not found', favorites: [] });
+//     }
+//     res.send(user.favorites);
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ message: 'Internal server error' });
+//   }
+// };
 
 // get current user's challenge
 const getUserChallengeDay = async (req, res) => {
@@ -208,47 +208,47 @@ const increaseChallengeDay = async (req, res) => {
 };
 
 // req has tag object, email
-const favoriteTag = async (req, res) => {
-  try {
-    const { tag, email } = req.body;
-    const user = await User.findOne({ email });
-    // check if user exists
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-    // check if the tag already exists in the favorites array
-    const tagExists = user.favorites.some((favorite) => favorite.id === tag.id);
-    if (tagExists) {
-      return res.status(400).json({ message: 'Tag already exists in favorites' });
-    }
+// const favoriteTag = async (req, res) => {
+//   try {
+//     const { tag, email } = req.body;
+//     const user = await User.findOne({ email });
+//     // check if user exists
+//     if (!user) {
+//       return res.status(404).json({ message: 'User not found' });
+//     }
+//     // check if the tag already exists in the favorites array
+//     const tagExists = user.favorites.some((favorite) => favorite.id === tag.id);
+//     if (tagExists) {
+//       return res.status(400).json({ message: 'Tag already exists in favorites' });
+//     }
 
-    // maybe add additional error checking for whether the requested tag id is valid?
+//     // maybe add additional error checking for whether the requested tag id is valid?
 
-    // if error checking passes, add the new tag to the favorites array
-    const updatedUser = await User.findOneAndUpdate(
-      { email },
-      { $push: { favorites: tag } },
-    );
-    return res.status(200).json(updatedUser);
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({ message: 'Internal server error' });
-  }
-};
+//     // if error checking passes, add the new tag to the favorites array
+//     const updatedUser = await User.findOneAndUpdate(
+//       { email },
+//       { $push: { favorites: tag } },
+//     );
+//     return res.status(200).json(updatedUser);
+//   } catch (err) {
+//     console.error(err);
+//     return res.status(500).json({ message: 'Internal server error' });
+//   }
+// };
 
-const unfavoriteTag = async (req, res) => {
-  try {
-    const { tag, email } = req.body;
-    const updatedUser = await User.findOneAndUpdate(
-      { email },
-      { $pull: { favorites: tag } },
-    );
-    return res.status(200).json(updatedUser);
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({ message: 'Internal server error' });
-  }
-};
+// const unfavoriteTag = async (req, res) => {
+//   try {
+//     const { tag, email } = req.body;
+//     const updatedUser = await User.findOneAndUpdate(
+//       { email },
+//       { $pull: { favorites: tag } },
+//     );
+//     return res.status(200).json(updatedUser);
+//   } catch (err) {
+//     console.error(err);
+//     return res.status(500).json({ message: 'Internal server error' });
+//   }
+// };
 
 module.exports = {
   signInUser,
@@ -262,10 +262,10 @@ module.exports = {
   updateUser,
   readSpecifiedFields,
   deleteUserById,
-  getFavorites,
+  // getFavorites,
   getUserChallengeDay,
   resetChallengeDay,
   increaseChallengeDay,
-  favoriteTag,
-  unfavoriteTag,
+  // favoriteTag,
+  // unfavoriteTag,
 };
