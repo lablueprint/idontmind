@@ -1,9 +1,8 @@
 import {
-  Text, View, Pressable, TouchableOpacity, Image, ImageBackground,
+  Text, View, Pressable, TouchableOpacity, Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import IDMlogo from '../../assets/images/idontmindlogo.png';
-import bg from '../../assets/images/splash-bg.jpeg';
 import styles from './SplashStyle';
 
 function Splash({ navigation }) {
@@ -12,7 +11,7 @@ function Splash({ navigation }) {
   };
 
   return (
-    <ImageBackground source={bg}>
+    <View style={styles.outer}>
       <View style={styles.container}>
         <Image source={IDMlogo} style={styles.logo} />
         <Text style={styles.underLogo}>
@@ -26,7 +25,7 @@ function Splash({ navigation }) {
             <TouchableOpacity onPress={navigateToTerms}>
               <Text style={styles.buttonWord}>Terms of Service </Text>
             </TouchableOpacity>
-            <Text>and</Text>
+            <Text style={styles.termsText}>and</Text>
             <TouchableOpacity onPress={navigateToTerms}>
               <Text style={styles.buttonWord}> Privacy Policy</Text>
             </TouchableOpacity>
@@ -40,7 +39,7 @@ function Splash({ navigation }) {
           <Text>Sign In</Text>
         </Pressable>
       </View>
-    </ImageBackground>
+    </View>
   );
 }
 
