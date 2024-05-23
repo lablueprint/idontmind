@@ -4,6 +4,7 @@ import {
 import { Image } from 'expo-image';
 import PropTypes from 'prop-types';
 import styles from './CheckInStyles';
+import lilGuy from '../../assets/images/lilGuy.png';
 
 function CheckIn({ navigation }) {
   const numPages = 4.0;
@@ -13,17 +14,20 @@ function CheckIn({ navigation }) {
   };
 
   const continueToDashBoard = () => {
-    console.log("back");
+    console.log('back');
   };
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#E5F8F3' }}>
+    <View style={{
+      flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#E5F8F3',
+    }}
+    >
       <View style={[styles.checkInContentContainer, { marginBottom: '40%' }]}>
         <Text style={styles.welcomeText}>Hi Daniel!</Text>
         <Text style={styles.welcomeText}>What is your</Text>
         <Text style={styles.welcomeText}>mood like today?</Text>
         <View style={styles.highlight} />
-        <View style={[styles.checkInButtonsContainer, { marginTop: '10%' }]} >
+        <View style={[styles.checkInButtonsContainer, { marginTop: '10%' }]}>
           <Pressable style={styles.beginCheckInButton} onPress={beginCheckIn}>
             <Text style={styles.beginCheckInText}>Begin Check-In</Text>
           </Pressable>
@@ -33,7 +37,7 @@ function CheckIn({ navigation }) {
         </View>
       </View>
       <Image
-        source={require('../../assets/images/lilGuy.png')}
+        source={lilGuy}
         style={styles.checkInMascot}
       />
     </View>

@@ -13,9 +13,9 @@
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
     "@fortawesome/react-native-fontawesome": "^0.3.0",
     "@notifee/react-native": "^7.8.2",
-    "@react-native-community/slider": "4.5.2",
     "@react-native-async-storage/async-storage": "^1.23.1",
     "@react-native-community/datetimepicker": "8.0.1",
+    "@react-native-community/slider": "4.5.2",
     "@react-navigation/bottom-tabs": "^6.5.11",
     "@react-navigation/material-top-tabs": "^6.6.6",
     "@react-navigation/native": "^6.1.9",
@@ -35,9 +35,6 @@
     "expo-linear-gradient": "~13.0.2",
     "expo-notifications": "^0.28.3",
     "expo-secure-store": "~13.0.1",
-    "expo-status-bar": "~1.12.1",
-    "expo-font": "~12.0.5",
-    "expo-image": "^1.12.9",
     "expo-splash-screen": "~0.27.4",
     "expo-status-bar": "~1.12.1",
     "expo-updates": "^0.25.14",
@@ -79,7 +76,7 @@
     "react-scripts": "^5.0.1",
     "redux-persist": "^6.0.0",
     "roll-picker-native": "^1.0.3",
-    "typescript": "^5.3.3"
+    "typescript": "^4.9.5"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

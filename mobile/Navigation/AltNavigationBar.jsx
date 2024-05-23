@@ -3,7 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import {
   Image, ImageBackground, View, Dimensions,
 } from 'react-native';
-import TrendsPage from '../Trends/Screens/TrendsPage';
+import TrendsPage from '../Features/Trends/Screens/TrendsPage';
 import JournalTabs from '../Features/Journal/Screens/JournalPage';
 import ContentDashboard from '../Features/Other/Screens/ContentDashboard';
 import ContentLibrary from '../Features/ContentLibrary/Screens/ContentLibrary';
