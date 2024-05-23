@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { Image } from 'expo-image';
 import axios from 'axios';
 import { MaterialIcons } from '@expo/vector-icons'; 
+import { FontAwesome } from '@expo/vector-icons';
 import styles from './ResetPasswordStyle';
 
 function ResetPassword({ route, navigation }) {
@@ -13,9 +14,16 @@ function ResetPassword({ route, navigation }) {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordsMatch, setPasswordsMatch] = useState(true);
-  const [showMessage, setShowMessage] = useState(false);
+  const [allConditionsMet, setAllConditionsMet] = useState(false);
+  const [showPasswordConditions, setShowPasswordConditions] = useState(false);
+  const [showConfirmPasswordCondition, setShowConfirmPasswordCondition] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const [hasLowercase, setHasLowercase] = useState(false);
+  const [hasUppercase, setHasUppercase] = useState(false);
+  const [hasNumberOrSymbol, setHasNumberOrSymbol] = useState(false);
+  const [isMinLength, setIsMinLength] = useState(false);
 
   const handleResetSubmit = async () => {
     try {
@@ -33,11 +41,19 @@ function ResetPassword({ route, navigation }) {
   };
 
   useEffect(() => {
-    if (password === '' || confirmPassword === '') {
-      setPasswordsMatch(false);
-    } else {
-      setPasswordsMatch(password === confirmPassword);
-    }
+    setPasswordsMatch(password === confirmPassword);
+
+    const hasLower = /[a-z]/.test(password);
+    const hasUpper = /[A-Z]/.test(password);
+    const hasNumOrSym = /[\d\W]/.test(password);
+    const isMinLen = password.length >= 8;
+
+    setHasLowercase(hasLower);
+    setHasUppercase(hasUpper);
+    setHasNumberOrSymbol(hasNumOrSym);
+    setIsMinLength(isMinLen);
+
+    setAllConditionsMet(hasLower && hasUpper && hasNumOrSym && isMinLen);
   }, [password, confirmPassword]);
 
   return (
@@ -58,6 +74,10 @@ function ResetPassword({ route, navigation }) {
             <TextInput
               style={{width: '70%'}}
               placeholder="Enter password"
+              onFocus={() => {
+                setShowPasswordConditions(true);
+                setShowConfirmPasswordCondition(false);
+              }}
               onChangeText={setPassword}
               value={password}
               secureTextEntry={!showPassword}
@@ -67,6 +87,22 @@ function ResetPassword({ route, navigation }) {
             </Pressable>
           </View>
         </View>
+        {showPasswordConditions && (
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', marginTop: 10 }}>
+            <View style={{ width: '50%' }}>
+              <PasswordRequirement isValid={hasLowercase} text="A lowercase letter" />
+            </View>
+            <View style={{ width: '50%' }}>
+              <PasswordRequirement isValid={hasUppercase} text="An uppercase letter" />
+            </View>
+            <View style={{ width: '50%' }}>
+              <PasswordRequirement isValid={hasNumberOrSymbol} text="A number or symbol" />
+            </View>
+            <View style={{ width: '50%' }}>
+              <PasswordRequirement isValid={isMinLength} text="At least 8 characters" />
+            </View>
+          </View>
+        )}
         <Text style={{ fontSize: 16, fontWeight: 500, marginBottom: '2%', marginTop: '6%', color: '#767C7C' }}>
           Confirm Password
         </Text>
@@ -75,10 +111,11 @@ function ResetPassword({ route, navigation }) {
             <TextInput
               style={{width: '70%'}}
               placeholder="Confirm password"
-              onChangeText={(text) => {
-                setConfirmPassword(text);
-                setShowMessage(text.length > 0);
+              onFocus={() => {
+                setShowPasswordConditions(false);
+                setShowConfirmPasswordCondition(true);
               }}
+              onChangeText={setConfirmPassword}
               value={confirmPassword}
               secureTextEntry={!showConfirmPassword}
             />
@@ -87,20 +124,37 @@ function ResetPassword({ route, navigation }) {
             </Pressable>
           </View>
         </View>
+        {showConfirmPasswordCondition && (
+          <View style={{ marginTop: 10 }}>
+            <PasswordRequirement isValid={passwordsMatch} text="Passwords match" />
+          </View>
+        )}
       </View>
       <View style={styles.sendButtonContainer}>
         <Pressable
           title="Send Button"
-          style={[styles.sendButton, !passwordsMatch && { backgroundColor: '#C8C8C8', opacity: 0.5 }]}
+          style={[styles.sendButton, (!passwordsMatch || !allConditionsMet) && { backgroundColor: '#C8C8C8', opacity: 0.5 }]}
           onPress={handleResetSubmit}
-          disabled={!passwordsMatch}
+          disabled={!passwordsMatch || !allConditionsMet}
         >
-          <Text style={[styles.sendButtonText, !passwordsMatch && { color: 'black' }]}>Confirm Change</Text>
+          <Text style={[styles.sendButtonText, (!passwordsMatch || !allConditionsMet) && { color: 'black' }]}>Confirm Change</Text>
         </Pressable>
       </View>
     </View>
   );
 }
+
+const PasswordRequirement = ({ isValid, text }) => (
+  <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5 }}>
+    <FontAwesome name={isValid ? 'check-circle' : 'times-circle'} size={16} color={isValid ? 'green' : '#9B290F'} />
+    <Text style={{ fontSize: 13, marginLeft: 10, color: '#676C6C'}}>{text}</Text>
+  </View>
+);
+
+PasswordRequirement.propTypes = {
+  isValid: PropTypes.bool.isRequired,
+  text: PropTypes.string.isRequired,
+};
 
 ResetPassword.propTypes = {
   navigation: PropTypes.shape({

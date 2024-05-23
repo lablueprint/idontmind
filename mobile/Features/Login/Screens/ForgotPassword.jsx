@@ -86,7 +86,7 @@ function ForgotPassword({ navigation }) {
           value={email}
         />
         {showError ? (
-          <Text style={{ color: 'red', marginTop: 10 }}>Email does not exist.</Text>
+          <Text style={{ color: '#9B290F', marginTop: 10 }}>We don’t seem to recognize that account.</Text>
         ) : null}
       </View>
       <View style={styles.sendButtonContainer}>

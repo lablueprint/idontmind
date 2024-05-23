@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
-// const BcryptReactNative = require('bcrypt-react-native');
+const bcrypt = require('bcrypt');
 const User = require('../models/OfficialUserSchema');
 const passport = require('../passport');
 
@@ -264,12 +264,10 @@ const resetPassword = async (req, res) => {
   try {
     const newPassword = req.body.password;
     const userID = req.body.id;
-
-    // const salt = await bcrypt.genSalt(10);
-    // const salt = await BcryptReactNative.getSalt(10);
-    // const hashedPassword = await BcryptReactNative.hash(salt, newPassword);
-    const updatedUser = await User.findByIdAndUpdate(userID, { password: newPassword });
-    console.log('user updated');
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+    const updatedUser = await User.findByIdAndUpdate(userID, { password: hashedPassword });
+    console.log('User updated');
     if (!updatedUser) {
       return res.status(404).json({ message: 'User not found' });
     }
@@ -277,7 +275,7 @@ const resetPassword = async (req, res) => {
     return res.status(200).json({ message: 'Password reset successfully', success: true });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ success: false, message: 'Internal server error boo' });
+    return res.status(500).json({ success: false, message: 'Internal server error' });
   }
 };
 

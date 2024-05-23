@@ -48,7 +48,7 @@ function TokenInput({ route, navigation }) {
       if (response.data.success) {
         console.log('Email sent successfully with new token.');
       } else {
-        console.error('Failed to send email with new token:', response.data.message);
+        console.log('Failed to send email with new token:', response.data.message);
       }
     } catch (error) {
       console.error('Error generating or sending token:', error);
