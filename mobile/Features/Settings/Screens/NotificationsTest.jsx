@@ -10,10 +10,11 @@ import { Switch } from 'react-native-switch';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import WheelPicker from 'react-native-wheely';
-import ToggleSwitch from './Components/ToggleSwitch';
-import left from '../../assets/images/left.png';
-import cancelImage from '../../assets/images/cancel.png';
-import sunImage from '../../assets/images/Sun.png';
+import ToggleSwitch from '../Components/ToggleSwitch';
+import left from '../../../assets/images/left.png';
+import cancelImage from '../../../assets/images/cancel.png';
+import sunImage from '../../../assets/images/Sun.png';
+import bellImage from '../../../assets/images/SMASHTHATBELL.png';
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -484,7 +485,7 @@ export default function NotificationsTest() {
               Push Notifications
             </Text>
             <Image
-              source={require('../../assets/SMASHTHATBELL.png')}
+              source={bellImage}
               style={[styles.bellIcon]}
             />
           </View>

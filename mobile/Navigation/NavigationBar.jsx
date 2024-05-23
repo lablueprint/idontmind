@@ -5,13 +5,12 @@ import CheckIn from '../Features/CheckIn/CheckIn';
 import Options from '../Features/Other/Screens/Options';
 import JournalHistoryPage from '../Features/Other/Screens/JournalHistoryPage';
 import WOYM from '../Features/Register/WOYM';
-import NotificationsTest from '../Features/Settings/NotificationsTest';
+import NotificationsTest from '../Features/Settings/Screens/NotificationsTest';
 import ContentDashboard from '../Features/Other/Screens/ContentDashboard';
 import Bookmarks from '../Features/ContentLibrary/Screens/Bookmarks';
 import BookmarksEdgeCase from '../Features/ContentLibrary/Screens/BookmarksEdgeCase';
 import Resource from '../Features/ContentLibrary/Screens/Resource';
 import ResourceList from '../Features/ContentLibrary/Screens/ResourceList';
-import Tag from '../Features/ContentLibrary/Screens/Tag';
 import ContentLibrary from '../Features/ContentLibrary/Screens/ContentLibrary';
 
 const Tab = createBottomTabNavigator();
@@ -32,7 +31,6 @@ export default function NavigationBar() {
       <Tab.Screen name="Bookmarks Edge Case" component={BookmarksEdgeCase} options={{ headerShown: false }} />
       <Tab.Screen name="Resource" component={Resource} options={{ headerShown: false }} />
       <Tab.Screen name="Resource List" component={ResourceList} options={{ headerShown: false }} />
-      <Tab.Screen name="Tag" component={Tag} options={{ headerShown: false }} />
 
     </Tab.Navigator>
   );

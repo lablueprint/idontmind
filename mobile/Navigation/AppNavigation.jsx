@@ -6,7 +6,6 @@ import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { login } from '../redux/authSlice';
 import FavoritesList from '../Features/ContentLibrary/Screens/Favorites';
-import Tag from '../Features/ContentLibrary/Screens/Tag';
 import { TagProvider } from '../Features/ContentLibrary/Context/TagContext';
 import Landing from '../Features/Other/Screens/Landing';
 import Login from '../Features/Onboarding/Screens/Login';
@@ -44,7 +43,7 @@ import Energy from '../Features/CheckIn/Energy';
 import Meal from '../Features/CheckIn/Meal';
 import EndCheckIn from '../Features/CheckIn/EndCheckIn';
 import Exercise from '../Features/CheckIn/Exercise';
-import NotificationsTest from '../Features/Settings/NotificationsTest';
+import NotificationsTest from '../Features/Settings/Screens/NotificationsTest';
 
 const Stack = createStackNavigator();
 
@@ -108,7 +107,6 @@ export default function AppNavigation({ user }) {
           <Stack.Screen name="ThirtyDayOverview" component={ThirtyDayOverview} options={{ headerShown: false }} />
           <Stack.Screen name="Notifications Test" component={NotificationsTest} options={{ headerShown: false }} />
           <Stack.Screen name="Overview" component={Overview} options={{ headerShown: false }} />
-          <Stack.Screen name="Tag" component={Tag} options={{ headerShown: false }} />
           <Stack.Screen name="Favorites" component={FavoritesList} options={{ headerShown: false }} />
           <Stack.Screen name="CheckIn" component={CheckIn} options={{ headerShown: false }} />
           <Stack.Screen name="Sleep" component={Sleep} options={{ headerShown: false }} />
