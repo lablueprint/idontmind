@@ -148,13 +148,109 @@ const deleteUserById = async (req, res) => {
   }
 };
 
+// const getFavorites = async (req, res) => {
+//   try {
+//     const { email } = req.body;
+//     const user = await User.find({ email });
+//     res.send(user[0].favorites);
+//   } catch (err) {
+//     console.error(err);
+//   }
+// };
+
 const getFavorites = async (req, res) => {
+  console.log('get favorites');
+  const { id } = req.query;
   try {
-    const { email } = req.body;
-    const user = await User.find({ email });
-    res.send(user[0].favorites);
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).send({ message: 'User not found' });
+    }
+
+    const favoritesData = {
+      bannedTags: user.banTags,
+      favoritedTags: user.favoritedTags,
+      favoritedResources: user.favoritedResources,
+      favoritedFolders: Object.fromEntries(user.favoritedFolders),
+    };
+
+    return res.send(favoritesData);
   } catch (err) {
     console.error(err);
+    return res.status(500).send(err);
+  }
+};
+
+const favoriteTag = async (req, res) => {
+  console.log('favorite tag');
+  const { id, tag } = req.body;
+  try {
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).send({ message: 'User not found' });
+    }
+    if (!user.favoritedTags.includes(tag)) user.favoritedTags.push(tag);
+    await user.save();
+
+    return res.send(user.favoritedTags);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send(err);
+  }
+};
+
+const unfavoriteTag = async (req, res) => {
+  console.log('unfavorite tag');
+  const { id, tag } = req.body;
+  try {
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).send({ message: 'User not found' });
+    }
+    user.favoritedTags = user.favoritedTags.filter((t) => t !== tag);
+    await user.save();
+
+    return res.send(user.favoritedTags);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send(err);
+  }
+};
+
+const favoriteResource = async (req, res) => {
+  console.log('favorite resource');
+  const { id, resource } = req.body;
+  try {
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).send({ message: 'User not found' });
+    }
+    // only add to favoriteResources if not already there
+    if (!user.favoritedResources.includes(resource)) user.favoritedResources.push(resource);
+    await user.save();
+
+    return res.send(user.favoritedResources);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send(err);
+  }
+};
+
+const unfavoriteResource = async (req, res) => {
+  console.log('unfavorite resource');
+  const { id, resource } = req.body;
+  try {
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).send({ message: 'User not found' });
+    }
+    user.favoritedResources = user.favoritedResources.filter((r) => r !== resource);
+    await user.save();
+
+    return res.send(user.favoritedResources);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send(err);
   }
 };
 
@@ -212,28 +308,6 @@ const readSpecifiedFields = async (req, res) => {
   }
 };
 
-const createFavoritedFolder = async (req, res) => {
-  const {
-    id, folderName, tags, resources,
-  } = req.body;
-  try {
-    const user = await User.findById(id);
-    if (!user) {
-      return res.status(404).send({ message: 'User not found' });
-    }
-    const newFolder = {
-      tags: tags || [],
-      resources: resources || [],
-    };
-
-    user.favoritedFolders.set(folderName, newFolder);
-    return res.send({ favoritedFolders: user.favoritedFolders });
-  } catch (err) {
-    console.error(err);
-    return res.status(500).send(err);
-  }
-};
-
 module.exports = {
   signInUser,
   signUpUser,
@@ -246,6 +320,10 @@ module.exports = {
   updateUser,
   deleteUserById,
   getFavorites,
+  favoriteTag,
+  unfavoriteTag,
+  favoriteResource,
+  unfavoriteResource,
   getUserChallengeDay,
   resetChallengeDay,
   increaseChallengeDay,

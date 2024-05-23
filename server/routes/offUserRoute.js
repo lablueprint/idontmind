@@ -21,6 +21,8 @@ offUserRouter.get('/getUserById', offUserController.getUserById);
 
 offUserRouter.get('/getAllUsers', offUserController.getAllUsers);
 
+offUserRouter.get('/getFavorites', offUserController.getFavorites);
+
 offUserRouter.post('/updateUser', offUserController.updateUser);
 
 offUserRouter.post('/deleteUserById', offUserController.deleteUserById);
@@ -34,5 +36,13 @@ offUserRouter.post('/resetChallengeDay', offUserController.resetChallengeDay);
 offUserRouter.post('/increaseChallengeDay', offUserController.increaseChallengeDay);
 
 offUserRouter.post('/readSpecifiedFields', offUserController.readSpecifiedFields);
+
+offUserRouter.post('/favoriteTag', offUserController.favoriteTag);
+
+offUserRouter.post('/unfavoriteTag', offUserController.unfavoriteTag);
+
+offUserRouter.post('/favoriteResource', offUserController.favoriteResource);
+
+offUserRouter.post('/unfavoriteResource', offUserController.unfavoriteResource);
 
 module.exports = offUserRouter;
