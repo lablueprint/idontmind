@@ -8,6 +8,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import axios from 'axios';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useSelector } from 'react-redux';
 
 const recoletaFont = '../../../assets/fonts/Recoleta/Recoleta-Regular';
 const cabinetGrotesk = '../../../assets/fonts/CabinetGrotesk/CabinetGrotesk-Regular';
@@ -16,12 +17,12 @@ export function JournalPage({
   navigation, freeWrite,
 }) {
   const [selectedImage, setSelectedImage] = useState('');
-  // const [viewImage, setViewImage] = useState(false);
   const [uploadImageURL, setUploadImageURL] = useState(null);
   const [prompts, setPrompts] = useState([]);
   const [randomTitle, setRandomTitle] = useState();
   const [freeWriteTitle, setFreeWriteTitle] = useState('');
-  // console.log('randomTitle:', randomTitle);
+
+  const newEmail = useSelector((state) => state.auth.email);
 
   const [text, setText] = useState(''); // state for the text the user types in
   const [confirmPopUp, setConfirmPopUp] = useState(false); /* state that tells if
@@ -84,41 +85,6 @@ export function JournalPage({
     setPointerEvents('none');
   };
 
-  // const prompt = 'Create a journal post!';
-  const username = 'Nicole'; // set prompt and username to constants at the moment, but should be able to get that info dynamically
-
-  const addNewJournal = async (newUsername, newPrompt, newText, newUploadImage) => {
-    try {
-      handlePopUp();
-      const currentdate = new Date();
-      const pstDate = currentdate.toLocaleString('en-US', {
-        timeZone: 'America/Los_Angeles',
-      });
-      const timestamp = pstDate;
-      // Add try-catch block to handle potential errors in axios requests
-      try {
-        await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/journals/createJournal`, {
-          username: newUsername, prompt: newPrompt, text: newText, timestamp, image: selectedImage,
-        });
-      } catch (error) {
-        console.error(error);
-        // Handle error
-      }
-      try {
-        axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/test/uploadImage`, {
-          imageObject: newUploadImage,
-        });
-        console.log('uploadeded image', newUploadImage);
-      } catch (error) {
-        console.error(error);
-        // Handle error
-      }
-    } catch (error) {
-      console.error(error);
-      // Handle error
-    }
-  };
-
   const removeImage = () => {
     setSelectedImage('');
   };
@@ -138,6 +104,45 @@ export function JournalPage({
   };
 
   const formattedDate = formatDate(currDate);
+  const newWordCount = wordsLen(text);
+  const newTime = currDate.getTime();
+
+  const addNewJournal = async (newPrompt, newText, newUploadImage) => {
+    try {
+      handlePopUp();
+      // const pstDate = currentdate.toLocaleString('en-US', {
+      //   timeZone: 'America/Los_Angeles',
+      // });
+
+      try {
+        await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offJournal/createJournal`, {
+          email: newEmail,
+          prompt: newPrompt,
+          text: newText,
+          wordCount: newWordCount,
+          creationTime: newTime,
+          modifiedTime: newTime,
+          guided: !(freeWrite),
+          image: selectedImage,
+        });
+      } catch (error) {
+        console.error(error);
+        // Handle error
+      }
+      try {
+        axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/test/uploadImage`, {
+          imageObject: newUploadImage,
+        });
+        console.log('uploadeded image', newUploadImage);
+      } catch (error) {
+        console.error(error);
+        // Handle error
+      }
+    } catch (error) {
+      console.error(error);
+      // Handle error
+    }
+  };
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1, backgroundColor: '#E5F8F3' }}>
@@ -381,7 +386,7 @@ export function JournalPage({
                   style={{
                     margin: 10, borderRadius: 99, alignItems: 'center', justifyContent: 'center', height: 40, backgroundColor: '#374342', minWidth: '95%',
                   }}
-                  onPress={() => addNewJournal(username, freeWriteTitle, text, uploadImageURL)}
+                  onPress={() => addNewJournal(freeWriteTitle, text, uploadImageURL)}
                 >
                   <Text style={{
                     fontWeight: 'bold', color: '#F6FCFC', fontSize: 14, fontFamily: cabinetGrotesk,
@@ -395,7 +400,7 @@ export function JournalPage({
                   style={{
                     margin: 10, borderRadius: 99, alignItems: 'center', justifyContent: 'center', height: 40, backgroundColor: '#374342', width: '94%',
                   }}
-                  onPress={() => addNewJournal(username, randomTitle, text, uploadImageURL)}
+                  onPress={() => addNewJournal(randomTitle, text, uploadImageURL)}
                 >
                   <Text style={{
                     fontSize: 14, fontWeight: 500, color: '#F6FCFC', fontFamily: cabinetGrotesk,
@@ -548,7 +553,7 @@ CustomTabBar.propTypes = {
   }).isRequired,
   state: PropTypes.string.isRequired,
   descriptors: PropTypes.string.isRequired,
-}
+};
 JournalPage.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
