@@ -6,7 +6,6 @@ import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { login } from '../redux/authSlice';
 import FavoritesList from '../Features/ContentLibrary/Screens/Favorites';
-import Tag from '../Features/ContentLibrary/Screens/Tag';
 import { TagProvider } from '../Features/ContentLibrary/Context/TagContext';
 import Landing from '../Features/Other/Screens/Landing';
 import Login from '../Features/Onboarding/Screens/Login';
@@ -29,8 +28,8 @@ import Personalization from '../Features/Tutorial/Personalization';
 import MoreResources from '../Features/Tutorial/MoreResources';
 import WrapUp from '../Features/Tutorial/WrapUp';
 import ThirtyDayOverview from '../Features/Tutorial/ThirtyDayOverview';
-import TrendsTab from '../Trends/Components/Trends';
-import TrendsBody from '../Trends/Screens/TrendsBody';
+import TrendsTab from '../Features/Trends/Components/Trends';
+import TrendsBody from '../Features/Trends/Screens/TrendsBody';
 
 import CheckIn from '../Features/CheckIn/CheckIn';
 import Sleep from '../Features/CheckIn/Sleep';
@@ -45,10 +44,8 @@ import Feeling from '../Features/CheckIn/Feeling';
 import Energy from '../Features/CheckIn/Energy';
 import Meal from '../Features/CheckIn/Meal';
 import EndCheckIn from '../Features/CheckIn/EndCheckIn';
-
-// import PushNotifications from '../Features/Settings/Screens/PushNotifications';
-// temporary until Kenny's sprint:
 import Exercise from '../Features/CheckIn/Exercise';
+import NotificationsTest from '../Features/Settings/Screens/NotificationsTest';
 
 const Stack = createStackNavigator();
 
@@ -110,10 +107,8 @@ export default function AppNavigation({ user }) {
           <Stack.Screen name="MoreResources" component={MoreResources} options={{ headerShown: false }} />
           <Stack.Screen name="WrapUp" component={WrapUp} options={{ headerShown: false }} />
           <Stack.Screen name="ThirtyDayOverview" component={ThirtyDayOverview} options={{ headerShown: false }} />
-          {/* <Stack.Screen name="PushNotifications" component={PushNotifications}
-           options={{ headerShown: false }} /> */}
+          <Stack.Screen name="Notifications Test" component={NotificationsTest} options={{ headerShown: false }} />
           <Stack.Screen name="Overview" component={Overview} options={{ headerShown: false }} />
-          <Stack.Screen name="Tag" component={Tag} options={{ headerShown: false }} />
           <Stack.Screen name="Favorites" component={FavoritesList} options={{ headerShown: false }} />
           <Stack.Screen name="CheckIn" component={CheckIn} options={{ headerShown: false }} />
           <Stack.Screen name="Sleep" component={Sleep} options={{ headerShown: false }} />
