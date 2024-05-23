@@ -69,7 +69,7 @@ export default function PostDetails({ navigation, route }) {
           }}
         >
           {freeWrite ? (
-            <Text style={{ fontSize: 30,fontFamily: recoletaFont, marginBottom: 20}}>
+            <Text style={{ fontSize: 30, fontFamily: recoletaFont, marginBottom: 20 }}>
               {freeWriteTitle}
             </Text>
           ) : (
@@ -89,7 +89,7 @@ export default function PostDetails({ navigation, route }) {
                 ref={textInputRef}
                 multiline
                 placeholder="Continue typing..."
-                placeholderTextColor='#343A3A'
+                placeholderTextColor="#343A3A"
                 onChangeText={handleTextChange}
                 value={newText}
                 onFocus={handleTextInputFocus}
