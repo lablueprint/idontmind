@@ -43,10 +43,8 @@ import Feeling from '../Features/CheckIn/Feeling';
 import Energy from '../Features/CheckIn/Energy';
 import Meal from '../Features/CheckIn/Meal';
 import EndCheckIn from '../Features/CheckIn/EndCheckIn';
-
-// import PushNotifications from '../Features/Settings/Screens/PushNotifications';
-// temporary until Kenny's sprint:
 import Exercise from '../Features/CheckIn/Exercise';
+import NotificationsTest from '../Features/Settings/NotificationsTest';
 
 const Stack = createStackNavigator();
 
@@ -108,8 +106,7 @@ export default function AppNavigation({ user }) {
           <Stack.Screen name="MoreResources" component={MoreResources} options={{ headerShown: false }} />
           <Stack.Screen name="WrapUp" component={WrapUp} options={{ headerShown: false }} />
           <Stack.Screen name="ThirtyDayOverview" component={ThirtyDayOverview} options={{ headerShown: false }} />
-          {/* <Stack.Screen name="PushNotifications" component={PushNotifications}
-           options={{ headerShown: false }} /> */}
+          <Stack.Screen name="Notifications Test" component={NotificationsTest} options={{ headerShown: false }} />
           <Stack.Screen name="Overview" component={Overview} options={{ headerShown: false }} />
           <Stack.Screen name="Tag" component={Tag} options={{ headerShown: false }} />
           <Stack.Screen name="Favorites" component={FavoritesList} options={{ headerShown: false }} />
