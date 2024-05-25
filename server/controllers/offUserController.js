@@ -215,7 +215,7 @@ const readSpecifiedFields = async (req, res) => {
 };
 
 const sendEmail = async (req, res) => {
-  console.log(33, req.body)
+  console.log(33, req.body);
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     host: 'smtp.gmail.com',

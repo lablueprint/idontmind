@@ -35,9 +35,11 @@ function ForgotPassword({ navigation }) {
 
         console.log(11, curUser);
         // navigation.navigate('Token Input', { token: newToken, email, curUser });
-        const response = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/sendEmail`, { email, token: newToken });
+        // email param must be a verified email on aws because of sandbox mode
+        const response = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/test/sendEmail`, { email, token: newToken });
         if (response.data) {
           console.log('Successfully sent email!');
+          console.log(response.data);
         } else {
           console.log('Failed to send email:', response);
         }
@@ -64,7 +66,9 @@ function ForgotPassword({ navigation }) {
     >
       <Image
         source={require('../../../assets/images/package.png')}
-        style={{height: '32%', width: '32%', overflow: 'visible', zIndex: -1, position: 'absolute', bottom: '54%'}}
+        style={{
+          height: '32%', width: '32%', overflow: 'visible', zIndex: -1, position: 'absolute', bottom: '54%',
+        }}
       />
       <View style={{ width: '83%', marginTop: '15%' }}>
         <Text style={{ fontSize: 40, fontWeight: 300 }}>

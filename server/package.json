@@ -10,6 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-ses": "^3.582.0",
+    "@react-email/render": "^0.0.14",
     "aws-sdk": "^2.1563.0",
     "bcrypt": "^5.1.1",
     "bcrypt-react-native": "^1.1.1",
