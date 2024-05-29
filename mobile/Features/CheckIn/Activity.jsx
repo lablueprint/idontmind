@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import {
-  Text, View, Pressable, Image,
+  Text, View, Pressable, Image, ScrollView,
 } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 import nicole from '../../assets/images/sleepFace.png';
 import styles from './MoodStyle';
 
@@ -13,8 +14,8 @@ function Activity({ navigation }) {
   const route = useRoute();
 
   // note: these are undefined if you go here from the Meal page
-  const newActivity = route.params?.activityPassedIn;
-  const newIcon = route.params?.iconChosen;
+  // const newActivity = route.params?.activityPassedIn;
+  // const newIcon = route.params?.iconChosen;
   // console.log(newActivity);
   // console.log(newIcon);
 
@@ -25,17 +26,35 @@ function Activity({ navigation }) {
   const [sleepScore, setSleepScore] = useState(route.params?.sleepScore);
   const [hasHadMeal, setHasHadMeal] = useState(route.params?.hasHadMeal);
 
+  const [customActivities, setCustomActivities] = useState([]);
   const [addedActivities, setAddedActivities] = useState([]);
   const [activityChosen, setActivityChosen] = useState('');
 
+  const { email, id, authHeader } = useSelector((state) => state.auth);
+
+  const fetchCustomActivities = async () => {
+    try {
+      const response = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/timeSerie/getCustomActivities`, {
+        headers: authHeader,
+        params: { email },
+      });
+      setCustomActivities(response.data.customActivities);
+    } catch (err) {
+      console.error('Failed to fetch custom activities:', err);
+    }
+  };
+
   useEffect(() => {
-    // update addedActivities with the route parameters from the AddIcon screen (activity and icon)
-    if (newActivity) {
-      const newAddedActivities = [...addedActivities];
-      newAddedActivities.push([newActivity, newIcon]);
+    fetchCustomActivities();
+  }, [activityChosen, addedActivities]);
+
+  useEffect(() => {
+    if (route.params?.activityPassedIn && customActivities.length + addedActivities.length < 3) {
+      const newAddedActivities = [...addedActivities,
+        [route.params.activityPassedIn, route.params.iconChosen]];
       setAddedActivities(newAddedActivities);
     }
-  }, [newActivity, newIcon]);
+  }, [route.params]);
 
   useEffect(() => {
     console.log('Route Params:', route.params);
@@ -44,8 +63,8 @@ function Activity({ navigation }) {
   const submitData = async (chosenActivity) => {
     const data = {
       metadata: {
-        email: 'fiona',
-        userId: 'sampleUserId',
+        email,
+        userId: id,
       },
       timestamp: new Date(),
       numPages,
@@ -58,7 +77,7 @@ function Activity({ navigation }) {
     };
 
     try {
-      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/timeSerie/insertTimeSeries`, data);
+      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/timeSerie/insertTimeSeries`, data, { headers: authHeader });
       console.log('Response:', res); // Log the response
       if (res.status === 201) {
         navigation.navigate('EndCheckIn');
@@ -69,8 +88,6 @@ function Activity({ navigation }) {
       console.error('Failed to fetch:', err);
       if (err.response) {
         console.error('Error response data:', err.response.data);
-        console.error('Error response status:', err.response.status);
-        console.error('Error response headers:', err.response.headers);
       } else if (err.request) {
         console.error('Error request:', err.request);
       } else {
@@ -98,8 +115,21 @@ function Activity({ navigation }) {
 
   /* pressing the plus button takes user to AddActivity screen */
   const addActivity = () => {
-    navigation.navigate('AddActivity');
+    if (customActivities.length < 3) {
+      navigation.navigate('AddActivity');
+    } else {
+      alert('You can only add up to 3 custom activities.');
+    }
   };
+
+  const renderActivities = (activities) => (
+    activities.map(({ activity, icon }, index) => (
+      <Pressable key={index} style={styles.singularMood} onPress={() => pressActivity(activity)}>
+        <View style={{ width: 120, height: 120, backgroundColor: icon }} />
+        <Text>{activity}</Text>
+      </Pressable>
+    ))
+  );
 
   // activityImages is an array of each of the rows
   // each row contains activity, image pairs
@@ -109,12 +139,13 @@ function Activity({ navigation }) {
     [['RIZZED', nicole], ['DATED', nicole], ['GAMED', nicole]],
   ];
 
+  // Render the activities including the custom ones
   // depending on how many activities have been added, the bottom row will look different
-  let bottomRow;
-  if (addedActivities.length === 0) {
-    bottomRow = (
-      <View style={styles.moodRow}>
-        <Pressable onPress={addActivity} styles={styles.singularMood}>
+
+  const renderAddActivityButton = () => {
+    if (customActivities.length + addedActivities.length < 3) {
+      return (
+        <Pressable onPress={addActivity} style={styles.singularMood}>
           <Text style={{
             borderWidth: 2, borderColor: 'black', padding: 20, backgroundColor: 'lightblue',
           }}
@@ -122,91 +153,33 @@ function Activity({ navigation }) {
             +
           </Text>
         </Pressable>
-      </View>
-    );
-  }
-  if (addedActivities.length === 1) {
-    bottomRow = (
-      <View style={styles.moodRow}>
-        <Pressable style={styles.addedMood} onPress={() => pressActivity(addedActivities[0][0])}>
-          <View style={{ width: 120, height: 120, backgroundColor: addedActivities[0][1] }} />
-          <Text>{addedActivities[0][0]}</Text>
-        </Pressable>
-        <Pressable onPress={addActivity} styles={styles.addeMood}>
-          <Text style={{
-            borderWidth: 2, borderColor: 'black', padding: 20, backgroundColor: 'lightblue',
-          }}
-          >
-            +
-          </Text>
-        </Pressable>
-      </View>
-    );
-  } else if (addedActivities.length === 2) {
-    bottomRow = (
-      <View style={styles.moodRow}>
-        <Pressable style={styles.singularMood} onPress={() => pressActivity(addedActivities[0][0])}>
-          <View style={{ width: 120, height: 120, backgroundColor: addedActivities[0][1] }} />
-          <Text>{addedActivities[0][0]}</Text>
-        </Pressable>
-        <Pressable onPress={addActivity} styles={styles.singularMood}>
-          <Text style={{
-            borderWidth: 2, borderColor: 'black', padding: 20, backgroundColor: 'lightblue',
-          }}
-          >
-            +
-          </Text>
-        </Pressable>
-        <Pressable style={styles.singularMood} onPress={() => pressActivity(addedActivities[1][0])}>
-          <View style={{ width: 120, height: 120, backgroundColor: addedActivities[1][1] }} />
-          <Text>{addedActivities[1][0]}</Text>
-        </Pressable>
-      </View>
-    );
-  } else if (addedActivities.length === 3) {
-    bottomRow = (
-      <View style={styles.moodRow}>
-        <Pressable style={styles.singularMood} onPress={() => pressActivity(addedActivities[0][0])}>
-          <View style={{ width: 120, height: 120, backgroundColor: addedActivities[0][1] }} />
-          <Text>{addedActivities[0][0]}</Text>
-        </Pressable>
-        <Pressable style={styles.singularMood} onPress={() => pressActivity(addedActivities[1][0])}>
-          <View style={{ width: 120, height: 120, backgroundColor: addedActivities[1][1] }} />
-          <Text>{addedActivities[1][0]}</Text>
-        </Pressable>
-        <Pressable style={styles.singularMood} onPress={() => pressActivity(addedActivities[2][0])}>
-          <View style={{ width: 120, height: 120, backgroundColor: addedActivities[2][1] }} />
-          <Text>{addedActivities[2][0]}</Text>
-        </Pressable>
-      </View>
-    );
-  }
+      );
+    }
+    return null;
+  };
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.heading}>
         <Text>
           what brought you joy today?
         </Text>
       </View>
       <View style={styles.content}>
-        {activityImages.map((row) => (
-          <View key={row} style={styles.moodRow}>
-            {row.map((pair) => (
-              <Pressable
-                key={pair}
-                style={styles.singularMood}
-                onPress={() => pressActivity(pair[0])}
-              >
-                <Image
-                  source={pair[1]}
-                />
-                <Text>{pair[0]}</Text>
+        {activityImages.map((row, rowIndex) => (
+          <View key={rowIndex} style={styles.moodRow}>
+            {row.map(([activity, icon]) => (
+              <Pressable key={activity} style={styles.singularMood} onPress={() => pressActivity(activity)}>
+                <Image source={icon} />
+                <Text>{activity}</Text>
               </Pressable>
             ))}
           </View>
         ))}
-        {bottomRow}
+        <View style={styles.moodRow}>
+          {renderActivities(customActivities)}
+          {renderAddActivityButton()}
+        </View>
       </View>
       <View style={styles.buttons}>
         <Pressable onPress={continueButton}>
@@ -216,7 +189,7 @@ function Activity({ navigation }) {
           <Text>SKIP</Text>
         </Pressable>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
