@@ -1,4 +1,6 @@
 const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
+const bcrypt = require('bcrypt');
 const User = require('../models/OfficialUserSchema');
 const passport = require('../passport');
 
@@ -250,6 +252,71 @@ const increaseChallengeDay = async (req, res) => {
 //   }
 // };
 
+const sendEmail = async (req, res) => {
+  console.log(33, req.body)
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false,
+    auth: {
+      user: process.env.GMAIL,
+      pass: process.env.GMAIL_PASSWORD,
+    },
+  });
+
+  const mailOptions = {
+    from: process.env.GMAIL,
+    to: req.body.email,
+    subject: 'Password Reset Token',
+    text: `Your password reset token is: ${req.body.token}`,
+  };
+
+  try {
+    const info = await transporter.sendMail(mailOptions);
+    res.send(true);
+  } catch (error) {
+    console.error('Error sending email:', error);
+    return false;
+  }
+};
+
+const checkUserByEmail = async (req, res) => {
+  try {
+    let { email } = req.body;
+    email = email.toLowerCase();
+    const existingUser = await User.findOne({ email });
+
+    if (!existingUser) {
+      console.error('User not found');
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+    return res.status(200).json({ success: true, user: existingUser });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+};
+
+const resetPassword = async (req, res) => {
+  try {
+    const newPassword = req.body.password;
+    const userID = req.body.id;
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+    const updatedUser = await User.findByIdAndUpdate(userID, { password: hashedPassword });
+    console.log('User updated');
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    return res.status(200).json({ message: 'Password reset successfully', success: true });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+};
+
 module.exports = {
   signInUser,
   signUpUser,
@@ -266,6 +333,10 @@ module.exports = {
   getUserChallengeDay,
   resetChallengeDay,
   increaseChallengeDay,
+  readSpecifiedFields,
+  checkUserByEmail,
+  sendEmail,
+  resetPassword,
   // favoriteTag,
   // unfavoriteTag,
 };

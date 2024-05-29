@@ -16,6 +16,8 @@ export default StyleSheet.create({
   },
   title: {
     fontSize: 40,
+    marginTop: 150,
+    marginRight: '22%',
   },
   inputContainer: {
     marginTop: 20,
@@ -41,12 +43,13 @@ export default StyleSheet.create({
   },
   buttonShape: {
     backgroundColor: '#C0C0C0',
-    borderRadius: 20,
+    borderRadius: 40,
     paddingVertical: 10,
     paddingHorizontal: 40,
     marginTop: 20,
     width: 258,
-    height: 70,
+    top: 120,
+    height: 60,
   },
   buttonText: {
     color: 'black',

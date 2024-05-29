@@ -1,5 +1,5 @@
 import {
-  Text, View, TextInput, TouchableOpacity,
+  Text, View, TextInput, TouchableOpacity, Image,
 } from 'react-native';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
@@ -21,6 +21,10 @@ export default function Login({ navigation }) {
 
   const navigateToLanding = () => {
     navigation.navigate('Landing');
+  };
+
+  const handleForget = () => {
+    navigation.navigate('ForgotPassword');
   };
 
   const handleLogin = async () => {
@@ -56,6 +60,10 @@ export default function Login({ navigation }) {
       <TouchableOpacity onPress={navigateToLanding} style={styles.arrowContainer}>
         <Icon name="arrow-left" size={30} color="black" />
       </TouchableOpacity>
+      <Image
+        source={require('../../../assets/images/security.png')}
+        style={{width: '32%', height: '32%', zIndex: -1, overflow: 'visible', position: 'absolute', bottom: '52%'}}
+      />
       <Text style={styles.title}>Welcome back!</Text>
       <View style={styles.inputContainer}>
         <Text>Email</Text>
@@ -82,6 +90,13 @@ export default function Login({ navigation }) {
             <Icon name={showPassword ? 'eye' : 'eye-slash'} size={20} color="black" style={styles.eyeIcon} />
           </TouchableOpacity>
         </View>
+      </View>
+      <View style={{flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'flex-end', width: '90%', marginTop: '2%'}}>
+        <TouchableOpacity
+          onPress={handleForget}
+        >
+          <Text>Forgot?</Text>
+        </TouchableOpacity>
       </View>
       <TouchableOpacity
         onPress={handleLogin}

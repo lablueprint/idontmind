@@ -26,6 +26,9 @@ import Personalization from '../Features/Tutorial/Personalization';
 import MoreResources from '../Features/Tutorial/MoreResources';
 import WrapUp from '../Features/Tutorial/WrapUp';
 import ThirtyDayOverview from '../Features/Tutorial/ThirtyDayOverview';
+import ForgotPassword from '../Features/Login/Screens/ForgotPassword';
+import TokenInput from '../Features/Login/Screens/TokenInput';
+import ResetPassword from '../Features/Login/Screens/ResetPassword';
 import TrendsTab from '../Features/Trends/Components/Trends';
 import TrendsBody from '../Features/Trends/Screens/TrendsBody';
 
@@ -104,6 +107,9 @@ export default function AppNavigation({ user }) {
           <Stack.Screen name="Personalization" component={Personalization} options={{ headerShown: false }} />
           <Stack.Screen name="MoreResources" component={MoreResources} options={{ headerShown: false }} />
           <Stack.Screen name="WrapUp" component={WrapUp} options={{ headerShown: false }} />
+          <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{ headerShown: false }} />
+          <Stack.Screen name="TokenInput" component={TokenInput} options={{ headerShown: false }} />
+          <Stack.Screen name="ResetPassword" component={ResetPassword} options={{ headerShown: false }} />
           <Stack.Screen name="ThirtyDayOverview" component={ThirtyDayOverview} options={{ headerShown: false }} />
           <Stack.Screen name="Notifications Test" component={NotificationsTest} options={{ headerShown: false }} />
           <Stack.Screen name="Overview" component={Overview} options={{ headerShown: false }} />
