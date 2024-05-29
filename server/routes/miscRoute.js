@@ -17,4 +17,6 @@ miscRouter.get('/getImage', awsController.getImage);
 
 miscRouter.post('/uploadImage', awsController.uploadImage);
 
+miscRouter.post('/uploadVideo', awsController.uploadVideo);
+
 module.exports = miscRouter;

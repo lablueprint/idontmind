@@ -44,6 +44,28 @@ const uploadImage = async (req, res) => {
   }
 };
 
+// upload a video
+const uploadVideo = async (req, res) => {
+  try {
+    const { uri } = req.body.imageObject;
+    const parts = uri.split('/');
+    const fileName = parts[parts.length - 1];
+
+    const params = {
+      Bucket: process.env.S3_BUCKET,
+      Key: fileName,
+      Body: uri,
+      ContentType: 'video/quicktime',
+    };
+
+    await s3.upload(params).promise();
+    res.send('Video uploaded successfully');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error uploading video');
+  }
+};
+
 module.exports = {
-  getImage, uploadImage,
+  getImage, uploadImage, uploadVideo,
 };
