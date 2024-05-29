@@ -44,9 +44,9 @@ export function TagProvider({ children }) {
     setTags(allTags);
   };
 
-  const findTag = (_id) => {
+  const findTag = (id) => {
     for (let index = 0; index < Tags.length; index += 1) {
-      if (Tags[index]._id === _id) {
+      if (Tags[index].id === id) {
         return index;
       }
     }

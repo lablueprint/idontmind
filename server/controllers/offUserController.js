@@ -113,22 +113,11 @@ const createUser = async (req, res) => {
 const updateUser = async (req, res) => {
   const { id, updatedFields } = req.body;
   try {
-    // find the existing user by its unique identifier (e.g., _id)
-    const existingUser = await User.findById(id);
-    if (!existingUser) {
-      return res.status(404).send({ message: 'User not found' });
+    const user = await User.findByIdAndUpdate(id, updatedFields, { new: true });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
     }
-    // check if any restricted fields are present in updatedFields
-    const restrictedFields = ['id'];
-    const hasRestricted = Object.keys(updatedFields).some((f) => restrictedFields.includes(f));
-    if (hasRestricted) {
-      return res.status(403).send({ message: 'No permission to update certain fields' });
-    }
-    // update the specified fields
-    Object.assign(existingUser, updatedFields);
-    // save the updated user
-    const updatedUser = await existingUser.save();
-    return res.send(updatedUser);
+    return res.send(user);
   } catch (err) {
     console.error(err);
     return res.status(500).send(err);
@@ -150,15 +139,41 @@ const deleteUserById = async (req, res) => {
   }
 };
 
-const getFavorites = async (req, res) => {
+const readSpecifiedFields = async (req, res) => {
+  console.log('HERE');
+  const { id, fields } = req.body;
   try {
-    const { email } = req.body;
-    const user = await User.find({ email });
-    res.send(user[0].favorites);
+    const existingUser = await User.findById(id);
+    if (!existingUser) {
+      return res.status(404).send({ message: 'User not found' });
+    }
+    const user = {};
+    fields.forEach((field) => {
+      if (existingUser[field] !== undefined) {
+        user[field] = existingUser[field];
+      }
+    });
+    return res.send(user);
   } catch (err) {
     console.error(err);
+    return res.status(500).send(err);
   }
 };
+
+// const getFavorites = async (req, res) => {
+//   try {
+//     const { email } = req.body;
+//     const user = await User.findOne({ email });
+//     if (!user) {
+//       // If user does not exist, send back an empty array
+//       return res.status(404).json({ message: 'User not found', favorites: [] });
+//     }
+//     res.send(user.favorites);
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ message: 'Internal server error' });
+//   }
+// };
 
 // get current user's challenge
 const getUserChallengeDay = async (req, res) => {
@@ -194,25 +209,48 @@ const increaseChallengeDay = async (req, res) => {
   }
 };
 
-const readSpecifiedFields = async (req, res) => {
-  const { id, fields } = req.body;
-  try {
-    const existingUser = await User.findById(id);
-    if (!existingUser) {
-      return res.status(404).send({ message: 'User not found' });
-    }
-    const user = {};
-    fields.forEach((field) => {
-      if (existingUser[field] !== undefined) {
-        user[field] = existingUser[field];
-      }
-    });
-    return res.send(user);
-  } catch (err) {
-    console.error(err);
-    return res.status(500).send(err);
-  }
-};
+// req has tag object, email
+// const favoriteTag = async (req, res) => {
+//   try {
+//     const { tag, email } = req.body;
+//     const user = await User.findOne({ email });
+//     // check if user exists
+//     if (!user) {
+//       return res.status(404).json({ message: 'User not found' });
+//     }
+//     // check if the tag already exists in the favorites array
+//     const tagExists = user.favorites.some((favorite) => favorite.id === tag.id);
+//     if (tagExists) {
+//       return res.status(400).json({ message: 'Tag already exists in favorites' });
+//     }
+
+//     // maybe add additional error checking for whether the requested tag id is valid?
+
+//     // if error checking passes, add the new tag to the favorites array
+//     const updatedUser = await User.findOneAndUpdate(
+//       { email },
+//       { $push: { favorites: tag } },
+//     );
+//     return res.status(200).json(updatedUser);
+//   } catch (err) {
+//     console.error(err);
+//     return res.status(500).json({ message: 'Internal server error' });
+//   }
+// };
+
+// const unfavoriteTag = async (req, res) => {
+//   try {
+//     const { tag, email } = req.body;
+//     const updatedUser = await User.findOneAndUpdate(
+//       { email },
+//       { $pull: { favorites: tag } },
+//     );
+//     return res.status(200).json(updatedUser);
+//   } catch (err) {
+//     console.error(err);
+//     return res.status(500).json({ message: 'Internal server error' });
+//   }
+// };
 
 const sendEmail = async (req, res) => {
   console.log(33, req.body)
@@ -289,8 +327,9 @@ module.exports = {
   getAllUsers,
   getUserById,
   updateUser,
+  readSpecifiedFields,
   deleteUserById,
-  getFavorites,
+  // getFavorites,
   getUserChallengeDay,
   resetChallengeDay,
   increaseChallengeDay,
@@ -298,4 +337,6 @@ module.exports = {
   checkUserByEmail,
   sendEmail,
   resetPassword,
+  // favoriteTag,
+  // unfavoriteTag,
 };
