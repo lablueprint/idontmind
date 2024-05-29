@@ -2,7 +2,6 @@ import {
   Text, View, Image, ScrollView, Pressable,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import axios from 'axios';
 import { useContext } from 'react';
 
 import shapeImage from '../../../assets/images/shape.png';
@@ -13,20 +12,21 @@ import TagRectangle from '../Components/TagRectangle';
 
 export default function Tag({ navigation, route }) {
   /* index of corresponding Tag */
-  const index = route.params?.index;
+  const { index } = route.params;
 
   const {
-    Tags, deleteFavorite, addFavorite, findFavorite,
+    Tags,
   } = useContext(TagContext);
 
   /* Grabs current tag */
   const tag = Tags[index];
 
   const {
-    _id, tagName, tagBrief,
+    tagName,
   } = tag;
 
   /* Checks if current tag is in users favorite list */
+  // const favorited = findFavorite(id);
   // const favorited = findFavorite(_id);
 
   const hardcodedTags = ['Tag', 'Creativity', 'Energy', 'Environment', 'Exercise', 'Fitness', 'Health', 'Journaling', 'Medication']; // hardcoded for now, i think tag content list
@@ -35,34 +35,6 @@ export default function Tag({ navigation, route }) {
     console.log('hi');
     navigation.navigate('Content Library');
   };
-
-  /* Adds Tag to Users Favorites List */
-  const favoriteTag = async () => {
-    addFavorite(_id);
-    await axios.post(
-      `${process.env.EXPO_PUBLIC_SERVER_URL}/tag/favoriteTag`,
-      { tag: { id: _id, tagName }, username: 'hi' },
-    );
-  };
-
-  /* Remove Tag from Users Favorites List */
-  const unfavoriteTag = async () => {
-    deleteFavorite(_id);
-    await axios.post(
-      `${process.env.EXPO_PUBLIC_SERVER_URL}/tag/unfavoriteTag`,
-      { tag: { id: _id, tagName }, username: 'hi' },
-    );
-  };
-
-  /* Handles Favorite Change */
-  // const handleFavoriteChange = () => {
-  //   /* checks if the tag is not not in the user's favorite list */
-  //   if (findFavorite(_id) === false) {
-  //     favoriteTag();
-  //   } else {
-  //     unfavoriteTag();
-  //   }
-  // };
 
   const navigateToResourceList = (subtopicName) => {
     console.log(subtopicName);
