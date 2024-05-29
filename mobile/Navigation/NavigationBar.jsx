@@ -13,6 +13,7 @@ import Resource from '../Features/ContentLibrary/Screens/Resource';
 import ResourceList from '../Features/ContentLibrary/Screens/ResourceList';
 import ContentLibrary from '../Features/ContentLibrary/Screens/ContentLibrary';
 import CalendarPage from '../Features/Other/Screens/Calendar';
+import Options from '../Features/Other/Screens/Options';
 
 const Tab = createBottomTabNavigator();
 
@@ -25,6 +26,7 @@ export default function NavigationBar() {
       <Tab.Screen name="Trends" component={TrendsPage} options={{ headerShown: true }} />
       <Tab.Screen name="Journal" component={JournalTabs} options={{ headerShown: false }} />
       <Tab.Screen name="WOYM" component={WOYM} options={{ headerShown: false }} />
+      <Tab.Screen name="AWS Test" component={Options} options={{ headerShown: true }} />
       <Tab.Screen name="Notifications Test" component={NotificationsTest} options={{ headerShown: false }} />
       <Tab.Screen name="Content Dashboard" component={ContentDashboard} options={{ headerShown: false }} />
       <Tab.Screen name="Calendar" component={CalendarPage} options={{ headerShown: false }} />

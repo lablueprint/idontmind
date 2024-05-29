@@ -196,7 +196,7 @@ export function JournalPage({
                   style={{
                     height: 20, width: 20, marginRight: 15, marginBottom: 10,
                   }}
-                  source={require('../../../assets/iterate.png')}
+                  source={require('../../../assets/images/iterate.png')}
                 />
               </Pressable>
             </View>
@@ -327,7 +327,7 @@ export default function JournalTabs({ navigation }) {
           <TouchableOpacity style={{ margin: 10 }} onPress={navigateToCalendar}>
             <Image
               style={{ width: 30, height: 31 }}
-              source={require('../../../assets/calendar.png')}
+              source={require('../../../assets/images/calendar.png')}
             />
           </TouchableOpacity>
           <TouchableOpacity style={{ margin: 10 }}>
