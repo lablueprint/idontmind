@@ -3,7 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import {
   Image, ImageBackground, View, Dimensions,
 } from 'react-native';
-import TrendsPage from '../Trends/Screens/TrendsPage';
+import TrendsPage from '../Features/Trends/Screens/TrendsPage';
 import JournalPage from '../Features/Journal/Screens/JournalPage';
 import ContentDashboard from '../Features/Other/Screens/ContentDashboard';
 import ContentLibrary from '../Features/ContentLibrary/Screens/ContentLibrary';
@@ -19,7 +19,6 @@ import BlackCircle from '../assets/navbaricons/blackcircle.png';
 import PostSignInLanding from '../Features/Other/Screens/PostSignInLanding';
 import Feed from '../Features/Other/Screens/Feed';
 import CheckIn from '../Features/Other/Screens/CheckIn';
-import PushNotifications from '../Features/Settings/Screens/PushNotifications';
 import Options from '../Features/Other/Screens/Options';
 import JournalHistoryPage from '../Features/Other/Screens/JournalHistoryPage';
 import WOYM from '../Features/Register/WOYM';
@@ -30,11 +29,12 @@ import BookmarksEdgeCase from '../Features/ContentLibrary/Screens/BookmarksEdgeC
 import Resource from '../Features/ContentLibrary/Screens/Resource';
 import ResourceList from '../Features/ContentLibrary/Screens/ResourceList';
 import Tag from '../Features/ContentLibrary/Screens/Tag';
+import NotificationsTest from '../Features/Settings/Screens/NotificationsTest';
 
 const Stack = createStackNavigator();
 const otherNames = ['Day Challenge', 'CheckIn', 'PostSignInLanding', 'Feed', 'Notifs', 'Options', 'Journal History', 'WOYM'];
-const otherPages = [DayChallenge, CheckIn, PostSignInLanding, Feed,
-  PushNotifications, Options, JournalHistoryPage, WOYM];
+const otherPages = [DayChallenge, CheckIn, PostSignInLanding, Feed, NotificationsTest,
+  Options, JournalHistoryPage, WOYM];
 
 function HomeWithExtraPages() {
   return (

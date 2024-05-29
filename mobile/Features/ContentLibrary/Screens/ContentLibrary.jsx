@@ -35,7 +35,7 @@ export default function ContentLibrary({ navigation }) {
     const getAllTags = async () => {
       try {
         /* Grab all tags */
-        const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/getAllTagTitles`);
+        const tags = [{ id: '0', tagName: 'hi' }, { id: '1', tagName: 'social anxiety' }, { id: '2', tagName: 'relaxation' }, { id: '3', tagName: 'exercise' }, { id: '4', tagName: 'tag1' }, { id: '5', tagName: 'tag2' }, { id: '6', tagName: 'tag3' }];
 
         /* Grab user's favorite list */
         const resFavorites = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/getFavorites`, { email }, { headers: authHeader });
@@ -44,10 +44,10 @@ export default function ContentLibrary({ navigation }) {
         initFavorites(resFavorites.data);
 
         /* Set Context List for Tags */
-        initTags(res.data);
+        initTags(tags);
 
         /* Set Initial Data for Render Functions */
-        setData(res.data);
+        setData(tags);
       } catch (err) {
         console.error(err);
       }
@@ -166,7 +166,7 @@ export default function ContentLibrary({ navigation }) {
           horizontal
           data={data}
           renderItem={horizontalRenderItem}
-          keyExtractor={(item) => item._id}
+          keyExtractor={(item) => item.id}
           showsHorizontalScrollIndicator={false}
         />
       </View>
@@ -182,7 +182,7 @@ export default function ContentLibrary({ navigation }) {
         <FlatList
           data={data}
           renderItem={verticalRenderItem}
-          keyExtractor={(item) => item._id}
+          keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator={false}
         />
       </View>
