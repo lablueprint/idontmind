@@ -6,23 +6,18 @@ import { useRoute } from '@react-navigation/native';
 import axios from 'axios';
 
 function EndCheckIn({ navigation }) {
-  const route = useRoute();
-  const moodsChosen = route.params?.moodsChosen;
-  const moodValueChosen = route.params?.moodValueChosen;
-  const activityChosen = route.params?.activityChosen;
-  const sleepScore = route.params?.sleepScore;
   const handleEnd = async () => {
     try {
       navigation.navigate('Landing');
-      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/checkins/createCheckIn`, {
-        moodsText: moodsChosen,
-        moodScore: moodValueChosen,
-        activityText: activityChosen,
-        sleepScore,
-      });
-      if (res.data.error) {
-        console.error(res.data.error);
-      }
+      // const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/checkins/createCheckIn`, {
+      //   moodsText: moodsChosen,
+      //   moodScore: moodValueChosen,
+      //   activityText: activityChosen,
+      //   sleepScore,
+      // });
+      // if (res.data.error) {
+      //   console.error(res.data.error);
+      // }
     } catch (error) {
       console.error('Error:', error);
     }

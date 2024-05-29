@@ -43,7 +43,7 @@ function Feeling({ navigation }) {
 
   const skipButton = () => {
     // note: if we skip, what do we set mood as for this day? should it be null or 2
-    navigation.navigate('Feeling', { numPages, moodValueChosen: slider + 1 });
+    navigation.navigate('Feeling', { numPages, moodValueChosen: null });
   };
 
   return (

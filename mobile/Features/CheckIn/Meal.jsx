@@ -33,14 +33,13 @@ export default function Meal({ navigation }) {
   };
 
   const skipButton = () => {
-    const hasHadMeal = (selectedOption === 'yes');
     navigation.navigate('Activity', {
       numPages,
       moodValue,
       moodsChosen,
       energyChosen,
       sleepScore,
-      hasHadMeal,
+      hasHadMeal: null,
     });
   };
 

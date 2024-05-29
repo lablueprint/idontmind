@@ -62,7 +62,7 @@ function Sleep({ navigation }) {
       moodValue,
       moodsChosen,
       energyChosen,
-      sleepScore: 5 - slider,
+      sleepScore: null,
     });
   };
 

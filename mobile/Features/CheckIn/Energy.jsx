@@ -51,7 +51,7 @@ function Energy({ navigation }) {
 
   const skipButton = () => {
     navigation.navigate('Sleep', {
-      numPages, moodValue, moodsChosen, energyChosen: slider + 1,
+      numPages, moodValue, moodsChosen, energyChosen: null,
     });
   };
 

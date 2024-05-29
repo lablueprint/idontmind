@@ -1,5 +1,23 @@
 const TimeSerie = require('../models/TimeSerieSchema');
 
+const insertTimeSeries = async (req, res) => {
+  const data = req.body;
+
+  try {
+    const newTimeSeries = new TimeSerie(data);
+    await newTimeSeries.save();
+    console.log('Data saved:', data); // Add logging here
+    res.status(201).send({ message: 'Time series data saved successfully' });
+  } catch (err) {
+    console.error('Error saving data:', err); // Add logging here
+    res.status(500).send({ error: 'Failed to save time series data' });
+  }
+};
+
+module.exports = {
+  insertTimeSeries,
+};
+
 const getUserTimeSeries = async (req, res) => {
   console.log('getUserTimeSeries');
 
@@ -348,5 +366,5 @@ const InsertManyExamples = async (req, res) => {
 };
 
 module.exports = {
-  InsertManyExamples, getUserTimeSeries,
+  insertTimeSeries, InsertManyExamples, getUserTimeSeries,
 };

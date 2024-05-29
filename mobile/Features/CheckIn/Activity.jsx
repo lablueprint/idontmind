@@ -4,6 +4,7 @@ import {
 } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 import nicole from '../../assets/images/sleepFace.png';
 import styles from './MoodStyle';
 
@@ -17,12 +18,12 @@ function Activity({ navigation }) {
   // console.log(newActivity);
   // console.log(newIcon);
 
-  const numPages = route.params?.numPages;
-  const moodValue = route.params?.moodValue;
-  const moodsChosen = route.params?.moodsChosen;
-  const energyChosen = route.params?.energyChosen;
-  const sleepScore = route.params?.sleepScore;
-  const hasHadMeal = route.params?.hasHadMeal;
+  const [numPages, setNumPages] = useState(route.params?.numPages);
+  const [moodValue, setMoodValue] = useState(route.params?.moodValue);
+  const [moodsChosen, setMoodsChosen] = useState(route.params?.moodsChosen);
+  const [energyChosen, setEnergyChosen] = useState(route.params?.energyChosen);
+  const [sleepScore, setSleepScore] = useState(route.params?.sleepScore);
+  const [hasHadMeal, setHasHadMeal] = useState(route.params?.hasHadMeal);
 
   const [addedActivities, setAddedActivities] = useState([]);
   const [activityChosen, setActivityChosen] = useState('');
@@ -36,34 +37,56 @@ function Activity({ navigation }) {
     }
   }, [newActivity, newIcon]);
 
-  const continueButton = () => {
-    if (activityChosen !== '') {
-      // navigation.navigate('back', {
-      //   moodsChosen, moodValueChosen, activityChosen,
-      // });
-      navigation.navigate('EndCheckIn', {
-        numPages,
-        moodValue,
-        moodsChosen,
-        energyChosen,
-        sleepScore,
-        hasHadMeal,
-        activityChosen,
-      });
-    }
-  };
+  useEffect(() => {
+    console.log('Route Params:', route.params);
+  }, [route.params]);
 
-  const skipButton = () => {
-    // navigation.navigate('back', { moodsChosen, moodValueChosen });
-    navigation.navigate('EndCheckIn', {
+  const submitData = async (chosenActivity) => {
+    const data = {
+      metadata: {
+        email: 'fiona',
+        userId: 'sampleUserId',
+      },
+      timestamp: new Date(),
       numPages,
       moodValue,
       moodsChosen,
       energyChosen,
       sleepScore,
       hasHadMeal,
-      activityChosen,
-    });
+      activityChosen: chosenActivity,
+    };
+
+    try {
+      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/timeSerie/insertTimeSeries`, data);
+      console.log('Response:', res); // Log the response
+      if (res.status === 201) {
+        navigation.navigate('EndCheckIn');
+      } else {
+        console.error('Failed to save data:', res.statusText);
+      }
+    } catch (err) {
+      console.error('Failed to fetch:', err);
+      if (err.response) {
+        console.error('Error response data:', err.response.data);
+        console.error('Error response status:', err.response.status);
+        console.error('Error response headers:', err.response.headers);
+      } else if (err.request) {
+        console.error('Error request:', err.request);
+      } else {
+        console.error('Error message:', err.message);
+      }
+    }
+  };
+
+  const continueButton = () => {
+    if (activityChosen !== '') {
+      submitData(activityChosen);
+    }
+  };
+
+  const skipButton = () => {
+    submitData(null);
   };
 
   // later implement functionality for pressing on a activity button:
