@@ -36,12 +36,22 @@ const authSlice = createSlice({
       state.authHeader = null;
       SecureStore.deleteItemAsync('user');
     },
+    setFirstNameField: (state, action) => {
+      console.log('set First Name');
+      state.firstName = action.payload.firstName;
+      // Update user object in Secure Store
+      const obj = JSON.parse(SecureStore.getItem('user'));
+      obj.user.firstName = action.payload.firstName;
+      console.log(obj);
+      SecureStore.setItemAsync('user', JSON.stringify(obj));
+    },
   },
 });
 
 export const {
   login,
   logout,
+  setFirstNameField,
 } = authSlice.actions;
 
 const { reducer } = authSlice;

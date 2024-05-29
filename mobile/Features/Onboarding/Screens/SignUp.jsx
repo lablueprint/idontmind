@@ -3,9 +3,12 @@ import {
 } from 'react-native';
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
+import { useDispatch } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { login } from '../../../redux/authSlice';
 import styles from '../Components/OnboardingStyling';
 
 export default function SignUp({ navigation }) {
@@ -18,6 +21,7 @@ export default function SignUp({ navigation }) {
   const [showPasswordRequirements, setShowPasswordRequirements] = useState(false);
   const [showPasswordMatch, setShowPasswordMatch] = useState(false);
   const [buttonEnabled, setButtonEnabled] = useState(false);
+  const dispatch = useDispatch();
 
   const navigateToPersonalInfo = () => {
     navigation.navigate('PersonalInfo', { email, password });
@@ -110,10 +114,24 @@ export default function SignUp({ navigation }) {
         console.error('Password conditions not met');
         return;
       }
-
+      // Ensures all emails are lowercase when stored in backend
+      const userEmail = email.toLowerCase();
+      const userData = {
+        email: userEmail,
+        password,
+      };
+      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/signup`, userData);
+      if (res.data.error) {
+        console.error(res.data.error);
+      } else { // If sign up is successful
+        const res2 = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/signin`, userData);
+        // Sets current state variables for session
+        dispatch(login(res2.data));
+      }
       handleNextButton();
     } catch (err) {
       console.error(err.message);
+      // Handle if email already exists?
     }
   };
 

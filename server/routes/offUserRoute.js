@@ -5,6 +5,7 @@ const offUserController = require('../controllers/offUserController');
 
 offUserRouter.post('/signin', offUserController.signInUser);
 offUserRouter.post('/signup', offUserController.signUpUser);
+offUserRouter.post('/setPersonalInfo', offUserController.setPersonalInfo);
 
 // Protects the routes below with middleware (requires authorization header aka signed in user)
 offUserRouter.use(offUserController.authenticatePassport);
@@ -14,6 +15,8 @@ offUserRouter.get('/get', (req, res) => {
   res.send('Get API');
 });
 offUserRouter.get('/protected', offUserController.authenticatePassport, offUserController.welcomeUser);
+
+
 
 offUserRouter.post('/createUser', offUserController.createUser);
 

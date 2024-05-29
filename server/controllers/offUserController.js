@@ -5,7 +5,7 @@ const passport = require('../passport');
 // Creates user with given email, password, and to send to backend
 const signUpUser = async (req, res, next) => {
   try {
-    const { email, password, firstName } = req.body;
+    const { email, password } = req.body;
 
     const userAlreadyExists = await User.findOne({ email });
 
@@ -13,7 +13,7 @@ const signUpUser = async (req, res, next) => {
       return res.status(400).send({ message: 'This user already has an account' });
     }
 
-    const user = new User({ email, password, firstName });
+    const user = new User({ email, password });
     await user.save();
     res.json(user);
   } catch (error) {
@@ -41,6 +41,18 @@ const signInUser = async (req, res, next) => {
       return res.json({ user, token });
     });
   })(req, res, next);
+};
+
+const setPersonalInfo = async (req, res) => {
+  const {
+    email, firstName, age, country, gender,
+  } = req.body;
+  try {
+    const user = await User.findOneAndUpdate({ email }, { firstName });
+    res.send(user);
+  } catch (e) {
+    console.error(e);
+  }
 };
 
 const welcomeUser = (req, res) => {
@@ -268,4 +280,5 @@ module.exports = {
   increaseChallengeDay,
   // favoriteTag,
   // unfavoriteTag,
+  setPersonalInfo,
 };

@@ -1,7 +1,9 @@
 import {
   View, Text, TouchableOpacity, Image,
 } from 'react-native';
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import * as SecureStore from 'expo-secure-store';
 import home from '../../assets/images/home.png';
 import styles from './OverviewStyle';
 
@@ -9,6 +11,18 @@ export default function Overview({ navigation }) {
   const next = () => {
     navigation.navigate('TutorialCheckIn1');
   };
+    // Save last visited screen in Secure Storage
+  useEffect(() => {
+    const saveLastScreen = async () => {
+      try {
+        await SecureStore.setItemAsync('lastScreen', 'Overview');
+      } catch (e) {
+        console.error('unable to set screen in storage: ', e);
+      }
+    };
+
+    saveLastScreen();
+  }, []);
   return (
     <View style={{
       display: 'flex', flexDirection: 'column', marginTop: 100, width: '80%', alignSelf: 'center',

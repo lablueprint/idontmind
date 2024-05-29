@@ -3,9 +3,13 @@ import {
 } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
+import * as SecureStore from 'expo-secure-store';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { DropdownSelect } from 'react-native-input-select';
+import { setFirstNameField } from '../../../redux/authSlice';
 import styles from '../Components/OnboardingStyling';
 
 export default function PersonalInfo({ navigation }) {
@@ -15,6 +19,8 @@ export default function PersonalInfo({ navigation }) {
   const [country, setCountry] = useState('');
   const [gender, setGender] = useState('');
   const [buttonEnabled, setButtonEnabled] = useState(false);
+  const dispatch = useDispatch();
+  const { email } = useSelector((state) => state.auth);
   const countryItems = [ // will be replaced with all countries dataset
     { label: 'Albania', value: 'albania' },
     { label: 'Korea', value: 'korea' },
@@ -33,7 +39,7 @@ export default function PersonalInfo({ navigation }) {
   };
 
   const navigateToCustomization = () => {
-    navigation.navigate('Customization', { loginInfo: route.params, firstName });
+    navigation.navigate('WOYM');
   };
 
   const areStatesDefaulted = () => (firstName === '' || age === '' || country === '' || gender === '');
@@ -46,17 +52,46 @@ export default function PersonalInfo({ navigation }) {
     }
   };
 
-  const handleNextButton = () => {
-    if (!areStatesDefaulted()) {
+  const handleNextButton = async () => {
+    try {
+      if (areStatesDefaulted()) {
+        console.error('Not all information selected');
+        return;
+      }
+      const userData = {
+        email,
+        firstName,
+        age,
+        country,
+        gender,
+      };
+      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/setPersonalInfo`, userData);
+      if (res.data.error) {
+        console.error(res.data.error);
+      }
+      dispatch(setFirstNameField({ firstName }));
       navigateToCustomization();
-    } else {
-      console.error('Not all information selected');
+    } catch (e) {
+      console.error('Failed to set personal information: ', e);
     }
   };
 
   useEffect(() => {
     notAllConditionsMet();
   }, [firstName, age, country, gender]);
+
+  // Save last visited screen in Secure Storage
+  useEffect(() => {
+    const saveLastScreen = async () => {
+      try {
+        await SecureStore.setItemAsync('lastScreen', 'PersonalInfo');
+      } catch (e) {
+        console.error('unable to set screen in storage: ', e);
+      }
+    };
+
+    saveLastScreen();
+  }, []);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
