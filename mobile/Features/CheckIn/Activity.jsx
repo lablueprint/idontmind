@@ -19,6 +19,7 @@ function Activity({ navigation }) {
   const [energyChosen, setEnergyChosen] = useState(route.params?.energyChosen);
   const [sleepScore, setSleepScore] = useState(route.params?.sleepScore);
   const [hasHadMeal, setHasHadMeal] = useState(route.params?.hasHadMeal);
+  const [water, setWater] = useState(route.params?.water);
   const [exercise, setExercise] = useState(route.params?.exercise);
 
   const [customActivities, setCustomActivities] = useState([]);
@@ -70,6 +71,7 @@ function Activity({ navigation }) {
       energyChosen,
       sleepScore,
       hasHadMeal,
+      water,
       exercise,
       activityChosen: chosenActivity,
     };
