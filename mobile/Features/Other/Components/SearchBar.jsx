@@ -57,7 +57,7 @@ export default function SearchBar({
             setValue={setValue}
             setItems={setItems}
             style={{ marginLeft: '62%', width: '35%' }}
-            dropDownContainerStyle={{ backgroundColor: 'white', marginLeft: '62%', width: '17%' }}
+            dropDownContainerStyle={{ backgroundColor: 'white', marginLeft: '62%', width: '35%' }}
             onChangeValue={async () => {
               if (enterPressed) { await handleSearch(searchQuery, filterQuery); }
             }}

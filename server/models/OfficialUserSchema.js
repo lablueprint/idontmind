@@ -35,9 +35,10 @@ const officialUserSchema = new mongoose.Schema({
     default: [],
     type: [Object],
   },
-  checkInPreferences: {
-    default: {},
-    type: Object,
+  // true if want to get notifs, false if not
+  checkInPreference: {
+    default: true,
+    type: Boolean,
   },
   pushNotifs: {
     default: {

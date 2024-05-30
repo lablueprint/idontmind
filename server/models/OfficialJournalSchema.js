@@ -25,13 +25,14 @@ const officialJournalSchema = new mongoose.Schema({
     default: new Date(),
     type: Date,
   },
-  guided: {
-    default: true,
-    type: Boolean,
-  },
   tags: {
     default: [],
     type: [String],
+  },
+  type: {
+    default: true,
+    required: true,
+    type: Boolean,
   },
 });
 
