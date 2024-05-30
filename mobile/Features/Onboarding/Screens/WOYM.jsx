@@ -451,6 +451,7 @@ function WOYM({ navigation }) {
               ))}
             </View>
           </View>
+          <View style={styles.space} />
         </View>
       </ScrollView>
       <LinearGradient

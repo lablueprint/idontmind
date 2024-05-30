@@ -428,6 +428,7 @@ function DontCareSee({ navigation }) {
               ))}
             </View>
           </View>
+          <View style={styles.space} />
         </View>
       </ScrollView>
       <LinearGradient
