@@ -32,8 +32,8 @@ export default function FavoritesList({ navigation }) {
     foo();
   }, [Favorites]);
 
-  const navigateToTag = (_id) => {
-    const index = findTag(_id);
+  const navigateToTag = (id) => {
+    const index = findTag(id);
     navigation.navigate('Tag', { index, routeName: 'Favorites' });
   };
 
@@ -44,7 +44,7 @@ export default function FavoritesList({ navigation }) {
   const verticalRenderItem = ({ item }) => (
     <TouchableOpacity
       style={[style.verticalCard]}
-      onPress={() => navigateToTag(item._id)}
+      onPress={() => navigateToTag(item.id)}
     >
       <Text
         style={[style.verticalText]}
@@ -99,7 +99,7 @@ export default function FavoritesList({ navigation }) {
           renderItem={verticalRenderItem}
           numColumns={2}
           horizontal={false}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item}
           showsVerticalScrollIndicator={false}
         />
       </View>
