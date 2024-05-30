@@ -5,13 +5,13 @@ import {
 import { useEffect, useState } from 'react';
 import { useRoute } from '@react-navigation/native';
 import PropTypes from 'prop-types';
-import running from '../../assets/images/running.png';
-import walking from '../../assets/images/walking.png';
-import standing from '../../assets/images/standing.png';
+import waterMore from '../../assets/images/water-more.png';
+import waterMiddle from '../../assets/images/water-middle.png';
+import waterLess from '../../assets/images/water-less.png';
 import styles from './ExerciseStyle';
 
 export default function Exercise({ navigation }) {
-  const [exercise, setExercise] = useState('');
+  const [water, setWater] = useState('');
 
   const route = useRoute();
   const numPages = route.params?.numPages;
@@ -20,10 +20,9 @@ export default function Exercise({ navigation }) {
   const energyChosen = route.params?.energyChosen;
   const sleepScore = route.params?.sleepScore;
   const hasHadMeal = route.params?.hasHadMeal;
-  const water = route.params?.water;
 
   const continueButton = () => {
-    navigation.navigate('Activity', {
+    navigation.navigate('Exercise', {
       numPages,
       moodValue,
       moodsChosen,
@@ -31,26 +30,24 @@ export default function Exercise({ navigation }) {
       sleepScore,
       hasHadMeal,
       water,
-      exercise,
     });
   };
 
   const skipButton = () => {
-    navigation.navigate('Activity', {
+    navigation.navigate('Exercise', {
       numPages,
       moodValue,
       moodsChosen,
       energyChosen,
       sleepScore,
       hasHadMeal,
-      water,
-      exercise: null,
+      water: null,
     });
   };
 
   useEffect(() => {
-    console.log(exercise);
-  }, [exercise]);
+    console.log(water);
+  }, [water]);
 
   return (
     <ScrollView>
@@ -58,25 +55,25 @@ export default function Exercise({ navigation }) {
         display: 'flex', flexDirection: 'column', marginTop: 100, width: '80%', alignSelf: 'center',
       }}
       >
-        <Text style={styles.question}>How much exercise did you get today?</Text>
+        <Text style={styles.question}>How much water have you had today?</Text>
         <View style={styles.buttonRow}>
-          <TouchableOpacity style={styles.buttonCol} onPress={() => setExercise('notMuch')}>
+          <TouchableOpacity style={styles.buttonCol} onPress={() => setWater('notEnough')}>
             <Image
-              source={standing}
+              source={waterLess}
               style={styles.buttonImg}
             />
-            <Text style={styles.buttonText}>Not Much</Text>
+            <Text style={styles.buttonText}>Not Enough</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.buttonCol} onPress={() => setExercise('some')}>
+          <TouchableOpacity style={styles.buttonCol} onPress={() => setWater('some')}>
             <Image
-              source={walking}
+              source={waterMiddle}
               style={styles.buttonImg}
             />
             <Text style={styles.buttonText}>Some</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.buttonCol} onPress={() => setExercise('aLot')}>
+          <TouchableOpacity style={styles.buttonCol} onPress={() => setWater('aLot')}>
             <Image
-              source={running}
+              source={waterMore}
               style={styles.buttonImg}
             />
             <Text style={styles.buttonText}>A Lot</Text>

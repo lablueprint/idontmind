@@ -15,6 +15,7 @@ const TimeSerie = new mongoose.Schema(
     energyChosen: Number,
     sleepScore: Number,
     hasHadMeal: Boolean,
+    water: String,
     exercise: String,
     activityChosen: String,
   },
