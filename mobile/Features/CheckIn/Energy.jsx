@@ -43,6 +43,13 @@ function Energy({ navigation }) {
     }
   };
 
+  const onImagePress = (index) => {
+    setSlider(index);
+    if (!sliderMoved) {
+      setSliderMoved(true);
+    }
+  };
+
   const continueButton = () => {
     navigation.navigate('Sleep', {
       numPages, moodValue, moodsChosen, energyChosen: slider + 1,
@@ -67,19 +74,21 @@ function Energy({ navigation }) {
           }}
           >
             {images.map((image, index) => (
-              <View key={index} style={{ alignItems: 'center' }}>
-                <View style={[
-                  styles.imageContainer,
-                  { width: 40, height: 40 },
-                  index <= slider ? styles.shadowEffect : null,
-                ]}
-                >
-                  <Image
-                    source={index <= slider ? image : require('../../assets/images/bolt0.png')}
-                    style={styles.image}
-                  />
+              <Pressable key={index} onPress={() => onImagePress(index)}>
+                <View key={index} style={{ alignItems: 'center' }}>
+                  <View style={[
+                    styles.imageContainer,
+                    { width: 40, height: 40 },
+                    index <= slider ? styles.shadowEffect : null,
+                  ]}
+                  >
+                    <Image
+                      source={index <= slider ? image : require('../../assets/images/bolt0.png')}
+                      style={styles.image}
+                    />
+                  </View>
                 </View>
-              </View>
+              </Pressable>
             ))}
           </View>
           <Text style={{

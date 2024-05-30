@@ -6,18 +6,12 @@ import { useRoute } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-import nicole from '../../assets/images/sleepFace.png';
+import sleepFace from '../../assets/images/sleepFace.png';
 import styles from './MoodStyle';
 
 function Activity({ navigation }) {
   // get numPages from route, set progress to 2 / numpages
   const route = useRoute();
-
-  // note: these are undefined if you go here from the Meal page
-  // const newActivity = route.params?.activityPassedIn;
-  // const newIcon = route.params?.iconChosen;
-  // console.log(newActivity);
-  // console.log(newIcon);
 
   const [numPages, setNumPages] = useState(route.params?.numPages);
   const [moodValue, setMoodValue] = useState(route.params?.moodValue);
@@ -25,6 +19,7 @@ function Activity({ navigation }) {
   const [energyChosen, setEnergyChosen] = useState(route.params?.energyChosen);
   const [sleepScore, setSleepScore] = useState(route.params?.sleepScore);
   const [hasHadMeal, setHasHadMeal] = useState(route.params?.hasHadMeal);
+  const [exercise, setExercise] = useState(route.params?.exercise);
 
   const [customActivities, setCustomActivities] = useState([]);
   const [addedActivities, setAddedActivities] = useState([]);
@@ -39,6 +34,7 @@ function Activity({ navigation }) {
         params: { email },
       });
       setCustomActivities(response.data.customActivities);
+      setAddedActivities(customActivities);
     } catch (err) {
       console.error('Failed to fetch custom activities:', err);
     }
@@ -46,13 +42,14 @@ function Activity({ navigation }) {
 
   useEffect(() => {
     fetchCustomActivities();
-  }, [activityChosen, addedActivities]);
+  }, [activityChosen]);
 
   useEffect(() => {
-    if (route.params?.activityPassedIn && customActivities.length + addedActivities.length < 3) {
+    if (route.params?.activityPassedIn && customActivities.length < 3) {
       const newAddedActivities = [...addedActivities,
         [route.params.activityPassedIn, route.params.iconChosen]];
       setAddedActivities(newAddedActivities);
+      setCustomActivities(newAddedActivities);
     }
   }, [route.params]);
 
@@ -73,6 +70,7 @@ function Activity({ navigation }) {
       energyChosen,
       sleepScore,
       hasHadMeal,
+      exercise,
       activityChosen: chosenActivity,
     };
 
@@ -106,8 +104,6 @@ function Activity({ navigation }) {
     submitData(null);
   };
 
-  // later implement functionality for pressing on a activity button:
-
   const pressActivity = (activity) => {
     setActivityChosen(activity);
     console.log(activity);
@@ -122,28 +118,53 @@ function Activity({ navigation }) {
     }
   };
 
+  const deleteActivity = async (activityId) => {
+    try {
+      const res = await axios.delete(`${process.env.EXPO_PUBLIC_SERVER_URL}/timeSerie/deleteCustomActivity/${activityId}`, { headers: authHeader });
+      if (res.status === 200) {
+        setCustomActivities(customActivities.filter((activity) => activity._id !== activityId));
+        setAddedActivities(addedActivities.filter((activity) => activity._id !== activityId));
+      }
+    } catch (err) {
+      console.error('Failed to delete activity:', err);
+      alert('Failed to delete activity.');
+    }
+  };
+
   const renderActivities = (activities) => (
-    activities.map(({ activity, icon }, index) => (
-      <Pressable key={index} style={styles.singularMood} onPress={() => pressActivity(activity)}>
-        <View style={{ width: 120, height: 120, backgroundColor: icon }} />
-        <Text>{activity}</Text>
-      </Pressable>
+    activities.map((activityObj, index) => (
+      <View key={activityObj._id} style={styles.singularMood}>
+        <Pressable onPress={() => pressActivity(activityObj.activity)}>
+          <View style={{ width: 120, height: 120, backgroundColor: activityObj.icon }} />
+          <Text>{activityObj.activity}</Text>
+        </Pressable>
+        <Pressable
+          onPress={() => deleteActivity(activityObj._id)}
+          style={{
+            marginLeft: 5, padding: 5, backgroundColor: 'white', borderRadius: 10,
+          }}
+        >
+          <Text>X</Text>
+        </Pressable>
+      </View>
     ))
   );
 
   // activityImages is an array of each of the rows
   // each row contains activity, image pairs
   const activityImages = [
-    [['JUMPED', nicole], ['DANCED', nicole], ['RUN', nicole]],
-    [['DASHED', nicole], ['CONSUMED', nicole], ['LAUNCHED', nicole]],
-    [['RIZZED', nicole], ['DATED', nicole], ['GAMED', nicole]],
+    [['JUMPED', sleepFace], ['DANCED', sleepFace], ['RUN', sleepFace]],
+    [['DASHED', sleepFace], ['CONSUMED', sleepFace], ['LAUNCHED', sleepFace]],
+    [['RIZZED', sleepFace], ['DATED', sleepFace], ['GAMED', sleepFace]],
   ];
 
   // Render the activities including the custom ones
   // depending on how many activities have been added, the bottom row will look different
 
   const renderAddActivityButton = () => {
-    if (customActivities.length + addedActivities.length < 3) {
+    console.log('customActivities.length', customActivities.length);
+    console.log('addedActivities.length', addedActivities.length);
+    if (customActivities.length < 3) {
       return (
         <Pressable onPress={addActivity} style={styles.singularMood}>
           <Text style={{

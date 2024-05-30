@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import PropTypes from 'prop-types';
-import nicole from '../../assets/images/sleepFace.png';
+import sleepFace from '../../assets/images/sleepFace.png';
 import styles from './MoodStyle';
 
 function Mood({ navigation }) {
@@ -48,9 +48,9 @@ function Mood({ navigation }) {
   // moodImages is an array of each of the rows
   // each row contains mood, image pairs
   const moodImages = [
-    [['NEUTRAL', nicole], ['HAPPY', nicole], ['SAD', nicole]],
-    [['UGLY', nicole], ['MAD', nicole], ['DELIGHTED', nicole]],
-    [['DEPRESSED', nicole], ['STRESSED', nicole], ['OVERWHELMED', nicole]],
+    [['NEUTRAL', sleepFace], ['HAPPY', sleepFace], ['SAD', sleepFace]],
+    [['UGLY', sleepFace], ['MAD', sleepFace], ['DELIGHTED', sleepFace]],
+    [['DEPRESSED', sleepFace], ['STRESSED', sleepFace], ['OVERWHELMED', sleepFace]],
   ];
 
   // depending on how many moods have been added, the bottom row will look different

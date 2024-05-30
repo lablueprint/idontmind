@@ -3,6 +3,7 @@ import {
   ScrollView,
 } from 'react-native';
 import { useEffect, useState } from 'react';
+import { useRoute } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import running from '../../assets/images/running.png';
 import walking from '../../assets/images/walking.png';
@@ -11,6 +12,38 @@ import styles from './ExerciseStyle';
 
 export default function Exercise({ navigation }) {
   const [exercise, setExercise] = useState('');
+
+  const route = useRoute();
+  const numPages = route.params?.numPages;
+  const moodValue = route.params?.moodValue;
+  const moodsChosen = route.params?.moodsChosen;
+  const energyChosen = route.params?.energyChosen;
+  const sleepScore = route.params?.sleepScore;
+  const hasHadMeal = route.params?.hasHadMeal;
+
+  const continueButton = () => {
+    navigation.navigate('Activity', {
+      numPages,
+      moodValue,
+      moodsChosen,
+      energyChosen,
+      sleepScore,
+      hasHadMeal,
+      exercise,
+    });
+  };
+
+  const skipButton = () => {
+    navigation.navigate('Activity', {
+      numPages,
+      moodValue,
+      moodsChosen,
+      energyChosen,
+      sleepScore,
+      hasHadMeal,
+      exercise: null,
+    });
+  };
 
   useEffect(() => {
     console.log(exercise);
@@ -47,10 +80,10 @@ export default function Exercise({ navigation }) {
           </TouchableOpacity>
         </View>
         <View>
-          <TouchableOpacity style={styles.continue}>
+          <TouchableOpacity style={styles.continue} onPress={continueButton}>
             <Text style={styles.contText}>Continue</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.skip}>
+          <TouchableOpacity style={styles.skip} onPress={skipButton}>
             <Text style={styles.skipText}>Skip</Text>
           </TouchableOpacity>
         </View>

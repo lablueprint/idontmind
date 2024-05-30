@@ -46,6 +46,13 @@ function Sleep({ navigation }) {
     }
   };
 
+  const onImagePress = (index) => {
+    setSlider(index);
+    if (!hasMovedSlider) {
+      setHasMovedSlider(true);
+    }
+  };
+
   const continueButton = () => {
     navigation.navigate('Meal', {
       numPages,
@@ -92,26 +99,28 @@ function Sleep({ navigation }) {
               thumbTintColor="#374342"
               onValueChange={onSliderChange}
               step={1}
-              value={initialSliderValue}
+              value={slider}
               vertical
             />
           </View>
         </View>
         <View style={styles.faces}>
           {images.map((image, index) => (
-            <View
-              key={index}
-              style={[
-                styles.singularFace,
-                { width: 80 + (slider === index ? 20 : 0), height: 70 + (slider === index ? 20 : 0) },
-                slider === index ? styles.shadowEffect : null,
-              ]}
-            >
-              <Image
-                source={image}
-                style={{ width: 30 + (slider === index ? 20 : 0), height: 30 + (slider === index ? 40 : 0), overflow: 'visible' }}
-              />
-            </View>
+            <Pressable key={index} onPress={() => onImagePress(index)} style={styles.faces}>
+              <View
+                key={index}
+                style={[
+                  styles.singularFace,
+                  { width: 80 + (slider === index ? 20 : 0), height: 70 + (slider === index ? 20 : 0) },
+                  slider === index ? styles.shadowEffect : null,
+                ]}
+              >
+                <Image
+                  source={image}
+                  style={{ width: 30 + (slider === index ? 20 : 0), height: 30 + (slider === index ? 40 : 0), overflow: 'visible' }}
+                />
+              </View>
+            </Pressable>
           ))}
         </View>
       </View>

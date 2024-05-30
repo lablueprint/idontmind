@@ -22,7 +22,7 @@ export default function Meal({ navigation }) {
 
   const continueButton = () => {
     const hasHadMeal = (selectedOption === 'yes');
-    navigation.navigate('Activity', {
+    navigation.navigate('Exercise', {
       numPages,
       moodValue,
       moodsChosen,
@@ -33,7 +33,7 @@ export default function Meal({ navigation }) {
   };
 
   const skipButton = () => {
-    navigation.navigate('Activity', {
+    navigation.navigate('Exercise', {
       numPages,
       moodValue,
       moodsChosen,
