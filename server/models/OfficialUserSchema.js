@@ -51,6 +51,22 @@ const officialUserSchema = new mongoose.Schema({
     default: 0,
     type: Number,
   },
+  gender: {
+    default: '',
+    type: String,
+  },
+  country: {
+    default: '',
+    type: String,
+  },
+  age: {
+    default: 0,
+    type: Number,
+  },
+  InterestedTags: {
+    default: [],
+    type: [String],
+  },
 });
 
 // Hashes password upon creation of user

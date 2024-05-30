@@ -3,6 +3,8 @@ import {
   Text, View, Pressable, Image,
   ScrollView,
 } from 'react-native';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
 import * as SecureStore from 'expo-secure-store';
 import { LinearGradient } from 'expo-linear-gradient';
 import PropTypes from 'prop-types';
@@ -18,7 +20,8 @@ function DontCareSee({ navigation }) {
     });
     return resultMap;
   }
-
+  const { email } = useSelector((state) => state.auth);
+  const [banList, setBanList] = useState([]);
   const [selectedCoping, setSelectedCoping] = useState(createMaps(data.coping));
   const [selectedEWB, setSelectedEWB] = useState(createMaps(data.ewb));
   const [selectedIdentity, setSelectedIdentity] = useState(createMaps(data.identity));
@@ -44,8 +47,15 @@ function DontCareSee({ navigation }) {
     const temp = { ...selectedCoping };
     if (temp[term] === false) {
       temp[term] = true;
+      const tempArr = [...banList];
+      tempArr.push(term);
+      setBanList(tempArr);
     } else if (temp[term] === true) {
       temp[term] = false;
+      const tempArr = [...banList];
+      const index = tempArr.indexOf(term);
+      tempArr.splice(index, 1);
+      setBanList(tempArr);
     }
     setSelectedCoping(temp);
   };
@@ -54,8 +64,15 @@ function DontCareSee({ navigation }) {
     const temp = { ...selectedEWB };
     if (temp[term] === false) {
       temp[term] = true;
+      const tempArr = [...banList];
+      tempArr.push(term);
+      setBanList(tempArr);
     } else if (temp[term] === true) {
       temp[term] = false;
+      const tempArr = [...banList];
+      const index = tempArr.indexOf(term);
+      tempArr.splice(index, 1);
+      setBanList(tempArr);
     }
     setSelectedEWB(temp);
   };
@@ -64,8 +81,15 @@ function DontCareSee({ navigation }) {
     const temp = { ...selectedIdentity };
     if (temp[term] === false) {
       temp[term] = true;
+      const tempArr = [...banList];
+      tempArr.push(term);
+      setBanList(tempArr);
     } else if (temp[term] === true) {
       temp[term] = false;
+      const tempArr = [...banList];
+      const index = tempArr.indexOf(term);
+      tempArr.splice(index, 1);
+      setBanList(tempArr);
     }
     setSelectedIdentity(temp);
   };
@@ -74,8 +98,15 @@ function DontCareSee({ navigation }) {
     const temp = { ...selectedLifestyle };
     if (temp[term] === false) {
       temp[term] = true;
+      const tempArr = [...banList];
+      tempArr.push(term);
+      setBanList(tempArr);
     } else if (temp[term] === true) {
       temp[term] = false;
+      const tempArr = [...banList];
+      const index = tempArr.indexOf(term);
+      tempArr.splice(index, 1);
+      setBanList(tempArr);
     }
     setSelectedLifestyle(temp);
   };
@@ -84,8 +115,15 @@ function DontCareSee({ navigation }) {
     const temp = { ...selectedMental };
     if (temp[term] === false) {
       temp[term] = true;
+      const tempArr = [...banList];
+      tempArr.push(term);
+      setBanList(tempArr);
     } else if (temp[term] === true) {
       temp[term] = false;
+      const tempArr = [...banList];
+      const index = tempArr.indexOf(term);
+      tempArr.splice(index, 1);
+      setBanList(tempArr);
     }
     setSelectedMental(temp);
   };
@@ -94,8 +132,15 @@ function DontCareSee({ navigation }) {
     const temp = { ...selectedRelationships };
     if (temp[term] === false) {
       temp[term] = true;
+      const tempArr = [...banList];
+      tempArr.push(term);
+      setBanList(tempArr);
     } else if (temp[term] === true) {
       temp[term] = false;
+      const tempArr = [...banList];
+      const index = tempArr.indexOf(term);
+      tempArr.splice(index, 1);
+      setBanList(tempArr);
     }
     setSelectedRelationships(temp);
   };
@@ -104,8 +149,15 @@ function DontCareSee({ navigation }) {
     const temp = { ...selectedSelf };
     if (temp[term] === false) {
       temp[term] = true;
+      const tempArr = [...banList];
+      tempArr.push(term);
+      setBanList(tempArr);
     } else if (temp[term] === true) {
       temp[term] = false;
+      const tempArr = [...banList];
+      const index = tempArr.indexOf(term);
+      tempArr.splice(index, 1);
+      setBanList(tempArr);
     }
     setSelectedSelf(temp);
   };
@@ -114,8 +166,15 @@ function DontCareSee({ navigation }) {
     const temp = { ...selectedSupport };
     if (temp[term] === false) {
       temp[term] = true;
+      const tempArr = [...banList];
+      tempArr.push(term);
+      setBanList(tempArr);
     } else if (temp[term] === true) {
       temp[term] = false;
+      const tempArr = [...banList];
+      const index = tempArr.indexOf(term);
+      tempArr.splice(index, 1);
+      setBanList(tempArr);
     }
     setSelectedSupport(temp);
   };
@@ -124,14 +183,33 @@ function DontCareSee({ navigation }) {
     const temp = { ...selectedTrauma };
     if (temp[term] === false) {
       temp[term] = true;
+      const tempArr = [...banList];
+      tempArr.push(term);
+      setBanList(tempArr);
     } else if (temp[term] === true) {
       temp[term] = false;
+      const tempArr = [...banList];
+      const index = tempArr.indexOf(term);
+      tempArr.splice(index, 1);
+      setBanList(tempArr);
     }
     setSelectedTrauma(temp);
   };
 
   const navigateToOverview = () => {
     navigation.navigate('Overview');
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/setBanTags`, { email, banTags: banList });
+      if (res.data) {
+        console.log('Successfully uploaded ban tags');
+      }
+      navigateToOverview();
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   // Save last visited screen in Secure Storage
@@ -464,7 +542,7 @@ function DontCareSee({ navigation }) {
         {/* E0F1F3 */}
         <View style={styles.nextButtContainer}>
           <Pressable
-            onPress={navigateToOverview}
+            onPress={handleSubmit}
             style={[styles.nextButt, styles.nextNot]}
           >
             <View style={styles.row}>

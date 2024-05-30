@@ -3,6 +3,8 @@ import {
   Text, View, Pressable, Image,
   ScrollView,
 } from 'react-native';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
 import * as SecureStore from 'expo-secure-store';
 import { LinearGradient } from 'expo-linear-gradient';
 import PropTypes from 'prop-types';
@@ -19,6 +21,7 @@ function WOYM({ navigation }) {
     return resultMap;
   }
 
+  const [interestedList, setInterestedList] = useState([]);
   const [selectedCoping, setSelectedCoping] = useState(createMaps(data.coping));
   const [selectedEWB, setSelectedEWB] = useState(createMaps(data.ewb));
   const [selectedIdentity, setSelectedIdentity] = useState(createMaps(data.identity));
@@ -41,13 +44,21 @@ function WOYM({ navigation }) {
   const [showSelf, setShowSelf] = useState(false);
   const [showSupport, setShowSupport] = useState(false);
   const [showTrauma, setShowTrauma] = useState(false);
+  const { email } = useSelector((state) => state.auth);
 
   const toggleCoping = (term) => {
     const temp = { ...selectedCoping };
     if (temp[term] === false) {
       temp[term] = true;
+      const tempArr = [...interestedList];
+      tempArr.push(term);
+      setInterestedList(tempArr);
     } else if (temp[term] === true) {
       temp[term] = false;
+      const tempArr = [...interestedList];
+      const index = tempArr.indexOf(term);
+      tempArr.splice(index, 1);
+      setInterestedList(tempArr);
     }
     setSelectedCoping(temp);
   };
@@ -56,8 +67,15 @@ function WOYM({ navigation }) {
     const temp = { ...selectedEWB };
     if (temp[term] === false) {
       temp[term] = true;
+      const tempArr = [...interestedList];
+      tempArr.push(term);
+      setInterestedList(tempArr);
     } else if (temp[term] === true) {
       temp[term] = false;
+      const tempArr = [...interestedList];
+      const index = tempArr.indexOf(term);
+      tempArr.splice(index, 1);
+      setInterestedList(tempArr);
     }
     setSelectedEWB(temp);
   };
@@ -66,8 +84,15 @@ function WOYM({ navigation }) {
     const temp = { ...selectedIdentity };
     if (temp[term] === false) {
       temp[term] = true;
+      const tempArr = [...interestedList];
+      tempArr.push(term);
+      setInterestedList(tempArr);
     } else if (temp[term] === true) {
       temp[term] = false;
+      const tempArr = [...interestedList];
+      const index = tempArr.indexOf(term);
+      tempArr.splice(index, 1);
+      setInterestedList(tempArr);
     }
     setSelectedIdentity(temp);
   };
@@ -76,8 +101,15 @@ function WOYM({ navigation }) {
     const temp = { ...selectedLifestyle };
     if (temp[term] === false) {
       temp[term] = true;
+      const tempArr = [...interestedList];
+      tempArr.push(term);
+      setInterestedList(tempArr);
     } else if (temp[term] === true) {
       temp[term] = false;
+      const tempArr = [...interestedList];
+      const index = tempArr.indexOf(term);
+      tempArr.splice(index, 1);
+      setInterestedList(tempArr);
     }
     setSelectedLifestyle(temp);
   };
@@ -86,8 +118,15 @@ function WOYM({ navigation }) {
     const temp = { ...selectedMental };
     if (temp[term] === false) {
       temp[term] = true;
+      const tempArr = [...interestedList];
+      tempArr.push(term);
+      setInterestedList(tempArr);
     } else if (temp[term] === true) {
       temp[term] = false;
+      const tempArr = [...interestedList];
+      const index = tempArr.indexOf(term);
+      tempArr.splice(index, 1);
+      setInterestedList(tempArr);
     }
     setSelectedMental(temp);
   };
@@ -96,8 +135,15 @@ function WOYM({ navigation }) {
     const temp = { ...selectedRelationships };
     if (temp[term] === false) {
       temp[term] = true;
+      const tempArr = [...interestedList];
+      tempArr.push(term);
+      setInterestedList(tempArr);
     } else if (temp[term] === true) {
       temp[term] = false;
+      const tempArr = [...interestedList];
+      const index = tempArr.indexOf(term);
+      tempArr.splice(index, 1);
+      setInterestedList(tempArr);
     }
     setSelectedRelationships(temp);
   };
@@ -106,8 +152,15 @@ function WOYM({ navigation }) {
     const temp = { ...selectedSelf };
     if (temp[term] === false) {
       temp[term] = true;
+      const tempArr = [...interestedList];
+      tempArr.push(term);
+      setInterestedList(tempArr);
     } else if (temp[term] === true) {
       temp[term] = false;
+      const tempArr = [...interestedList];
+      const index = tempArr.indexOf(term);
+      tempArr.splice(index, 1);
+      setInterestedList(tempArr);
     }
     setSelectedSelf(temp);
   };
@@ -116,8 +169,15 @@ function WOYM({ navigation }) {
     const temp = { ...selectedSupport };
     if (temp[term] === false) {
       temp[term] = true;
+      const tempArr = [...interestedList];
+      tempArr.push(term);
+      setInterestedList(tempArr);
     } else if (temp[term] === true) {
       temp[term] = false;
+      const tempArr = [...interestedList];
+      const index = tempArr.indexOf(term);
+      tempArr.splice(index, 1);
+      setInterestedList(tempArr);
     }
     setSelectedSupport(temp);
   };
@@ -126,14 +186,33 @@ function WOYM({ navigation }) {
     const temp = { ...selectedTrauma };
     if (temp[term] === false) {
       temp[term] = true;
+      const tempArr = [...interestedList];
+      tempArr.push(term);
+      setInterestedList(tempArr);
     } else if (temp[term] === true) {
       temp[term] = false;
+      const tempArr = [...interestedList];
+      const index = tempArr.indexOf(term);
+      tempArr.splice(index, 1);
+      setInterestedList(tempArr);
     }
     setSelectedTrauma(temp);
   };
 
   const navigateToDontCareSee = () => {
     navigation.navigate('DontCareSee');
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/setInterestedTags`, { email, interestedTags: interestedList });
+      if (res.data) {
+        console.log('Successfully uploaded interested tags');
+      }
+      navigateToDontCareSee();
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   useEffect(() => {
@@ -487,7 +566,7 @@ function WOYM({ navigation }) {
         {/* E0F1F3 */}
         <View style={styles.nextButtContainer}>
           <Pressable
-            onPress={outOf3 > 2 ? navigateToDontCareSee : null}
+            onPress={outOf3 > 2 ? handleSubmit : null}
             style={[styles.nextButt, outOf3 > 2 ? styles.nextNot : styles.nextReady]}
           >
             <View style={styles.row}>

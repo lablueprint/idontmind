@@ -48,7 +48,35 @@ const setPersonalInfo = async (req, res) => {
     email, firstName, age, country, gender,
   } = req.body;
   try {
-    const user = await User.findOneAndUpdate({ email }, { firstName });
+    const user = await User.findOneAndUpdate({ email }, {
+      firstName, age, country, gender,
+    });
+    res.send(user);
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+const setInterestedTags = async (req, res) => {
+  const { email, interestedTags } = req.body;
+  console.log(email);
+  console.log(interestedTags);
+  try {
+    const user = await User.findOneAndUpdate(
+      { email },
+      { $set: { InterestedTags: interestedTags } },
+    );
+    console.log(user);
+    res.send(user);
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+const setBanTags = async (req, res) => {
+  const { email, banTags } = req.body;
+  try {
+    const user = await User.findOneAndUpdate({ email }, { $set: { banTags } });
     res.send(user);
   } catch (e) {
     console.error(e);
@@ -281,4 +309,6 @@ module.exports = {
   // favoriteTag,
   // unfavoriteTag,
   setPersonalInfo,
+  setInterestedTags,
+  setBanTags,
 };
