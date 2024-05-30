@@ -2,6 +2,16 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/OfficialUserSchema');
 const passport = require('../passport');
 
+const API_KEY = process.env.SECRET_API_KEY;
+
+const validateApiKey = async (req, res, next) => {
+  const providedApiKey = req.headers['x-api-key'];
+  if (!providedApiKey || providedApiKey !== API_KEY) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+  next();
+};
+
 // Creates user with given email, password, and to send to backend
 const signUpUser = async (req, res, next) => {
   try {
@@ -213,6 +223,7 @@ const readSpecifiedFields = async (req, res) => {
 };
 
 module.exports = {
+  validateApiKey,
   signInUser,
   signUpUser,
   welcomeUser,

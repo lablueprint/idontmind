@@ -134,7 +134,11 @@ export default function SignUp({ navigation }) {
         email: userEmail,
         password,
       };
-      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/signup`, userData);
+      const res = await axios.post(
+        `${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/signup`,
+        userData,
+        { headers: { 'x-api-key': `${process.env.SECRET_API_KEY}` } },
+      );
 
       if (res.data.error) {
         console.error(res.data.error);

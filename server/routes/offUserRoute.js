@@ -4,7 +4,7 @@ const offUserRouter = express.Router();
 const offUserController = require('../controllers/offUserController');
 
 offUserRouter.post('/signin', offUserController.signInUser);
-offUserRouter.post('/signup', offUserController.signUpUser);
+offUserRouter.post('/signup', offUserController.validateApiKey, offUserController.signUpUser);
 
 // Protects the routes below with middleware (requires authorization header aka signed in user)
 offUserRouter.use(offUserController.authenticatePassport);
