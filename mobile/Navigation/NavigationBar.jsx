@@ -4,9 +4,9 @@ import Feed from '../Features/Other/Screens/Feed';
 import TrendsPage from '../Features/Trends/Screens/TrendsPage';
 import JournalTabs from '../Features/Journal/Screens/JournalPage';
 import CheckIn from '../Features/CheckIn/CheckIn';
-import PushNotifications from '../Features/Settings/Screens/PushNotifications';
-import Options from '../Features/Other/Screens/Options';
-import JournalHistoryPage from '../Features/Other/Screens/JournalHistoryPage';
+// import PushNotifications from '../Features/Settings/Screens/PushNotifications';
+// import Options from '../Features/Other/Screens/Options';
+// import JournalHistoryPage from '../Features/Other/Screens/JournalHistoryPage';
 import WOYM from '../Features/Onboarding/Screens/WOYM';
 import DontCareSee from '../Features/Onboarding/Screens/DontCareSee';
 
@@ -14,7 +14,7 @@ import Bookmarks from '../Features/ContentLibrary/Screens/Bookmarks';
 import BookmarksEdgeCase from '../Features/ContentLibrary/Screens/BookmarksEdgeCase';
 import Resource from '../Features/ContentLibrary/Screens/Resource';
 import ResourceList from '../Features/ContentLibrary/Screens/ResourceList';
-import Tag from '../Features/ContentLibrary/Screens/Tag';
+// import Tag from '../Features/ContentLibrary/Screens/Tag';
 
 const Tab = createBottomTabNavigator();
 
