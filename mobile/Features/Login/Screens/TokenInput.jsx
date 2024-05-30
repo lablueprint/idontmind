@@ -1,7 +1,7 @@
 import {
-  Text, View, TouchableOpacity
+  Text, View, TouchableOpacity,
 } from 'react-native';
-import Modal from "react-native-modal";
+import Modal from 'react-native-modal';
 import PropTypes from 'prop-types';
 import { Image } from 'expo-image';
 import { useState, useEffect } from 'react';
@@ -80,11 +80,16 @@ function TokenInput({ route, navigation }) {
   }, [countdown]);
 
   return (
-    <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: '#E5F8F3' }}>
+    <View style={{
+      flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: '#E5F8F3',
+    }}
+    >
       <View style={{ width: '83%', marginTop: '15%' }}>
         <Image
-          source={require('../../../assets/images/package.png')}
-          style={{height: '92%', width: '92%', overflow: 'visible', zIndex: -1, position: 'absolute', bottom: '77%'}}
+          source={require('../../../assets/images/packageicon.png')}
+          style={{
+            height: '92%', width: '92%', overflow: 'visible', zIndex: -1, position: 'absolute', bottom: '77%',
+          }}
         />
         <Text style={{ fontSize: 40, fontWeight: 300, marginBottom: '1%' }}>
           Reset Password
@@ -92,8 +97,10 @@ function TokenInput({ route, navigation }) {
         <Text>
           Enter the 6-digit code that was sent to your email to reset your password.
         </Text>
-        <Text style={{marginTop: '12%', color: '#767C7C' }}>
-          Sent to {email.toLowerCase()}
+        <Text style={{ marginTop: '12%', color: '#767C7C' }}>
+          Sent to
+          {' '}
+          {email.toLowerCase()}
         </Text>
         <View>
           <CodeField
@@ -117,33 +124,45 @@ function TokenInput({ route, navigation }) {
           />
         </View>
         <TouchableOpacity onPress={() => setShowModal(true)}>
-          <Text style={{ color: '#767C7C', marginTop: '2%', fontSize: 13, alignSelf: 'flex-end'}}>Didn&apos;t get a code?</Text>
+          <Text style={{
+            color: '#767C7C', marginTop: '2%', fontSize: 13, alignSelf: 'flex-end',
+          }}
+          >
+            Didn&apos;t get a code?
+          </Text>
         </TouchableOpacity>
         <Modal
           isVisible={showModal}
           onBackdropPress={() => setShowModal(false)}
         >
           <View style={{ flex: 1, justifyContent: 'flex-end', marginBottom: '15%' }}>
-            <View style={{ backgroundColor: 'white', borderRadius: 10, alignItems: 'center', height: '17%'}}>
-              <View style={{flexDirection: 'row'}}>
+            <View style={{
+              backgroundColor: 'white', borderRadius: 10, alignItems: 'center', height: '17%',
+            }}
+            >
+              <View style={{ flexDirection: 'row' }}>
                 <TouchableOpacity
                   onPress={() => {
                     sendNewToken();
                     setShowModal(false);
                   }}
-                  style={{ flex: 1, justifyContent: 'center', alignItems: 'center', width: '100%', height: '90%', marginTop: '0.5%' }}
+                  style={{
+                    flex: 1, justifyContent: 'center', alignItems: 'center', width: '100%', height: '90%', marginTop: '0.5%',
+                  }}
                 >
                   <Text style={{ fontSize: 16, fontWeight: '500' }}>Send Again</Text>
                 </TouchableOpacity>
               </View>
               <View style={{ width: '100%', height: 1, backgroundColor: '#C6CECE' }} />
-              <View style={{flexDirection: 'row'}}>
-                <TouchableOpacity 
+              <View style={{ flexDirection: 'row' }}>
+                <TouchableOpacity
                   onPress={() => {
                     setShowModal(false);
                     navigation.navigate('ForgotPassword');
                   }}
-                  style={{ flex: 1, justifyContent: 'center', alignItems: 'center', width: '100%', height: '90%'}}
+                  style={{
+                    flex: 1, justifyContent: 'center', alignItems: 'center', width: '100%', height: '90%',
+                  }}
                 >
                   <Text style={{ fontSize: 16, fontWeight: '500' }}>Edit Email</Text>
                 </TouchableOpacity>
@@ -151,7 +170,10 @@ function TokenInput({ route, navigation }) {
               <View style={{ width: '100%', height: 20 }} />
             </View>
             <TouchableOpacity onPress={() => setShowModal(false)}>
-              <View style={{ backgroundColor: 'white', padding: 18, borderRadius: 10, alignItems: 'center', width: '100%', marginTop: '5%' }}>
+              <View style={{
+                backgroundColor: 'white', padding: 18, borderRadius: 10, alignItems: 'center', width: '100%', marginTop: '5%',
+              }}
+              >
                 <Text style={{ fontSize: 16, fontWeight: '500', color: 'red' }}>Cancel</Text>
               </View>
             </TouchableOpacity>
