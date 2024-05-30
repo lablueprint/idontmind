@@ -96,9 +96,9 @@ export default function PersonalInfo({ navigation }) {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
-        <TouchableOpacity onPress={navigateToSignUp} style={styles.arrowContainer}>
+        {/* <TouchableOpacity onPress={navigateToSignUp} style={styles.arrowContainer}>
           <Icon name="arrow-left" size={30} color="black" />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <Text style={styles.title}>Tell us a bit about yourself!</Text>
         <View style={styles.inputContainer}>
           <Text>First Name</Text>

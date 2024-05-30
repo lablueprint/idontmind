@@ -47,6 +47,7 @@ import Meal from '../Features/CheckIn/Meal';
 import EndCheckIn from '../Features/CheckIn/EndCheckIn';
 import Exercise from '../Features/CheckIn/Exercise';
 import NotificationsTest from '../Features/Settings/Screens/NotificationsTest';
+import { faLaptopHouse } from '@fortawesome/free-solid-svg-icons';
 
 const Stack = createStackNavigator();
 
@@ -108,9 +109,9 @@ export default function AppNavigation({ user }) {
           <Stack.Screen name="Landing" component={Landing} options={{ headerShown: false }} />
           <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
           <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
-          <Stack.Screen name="PersonalInfo" component={PersonalInfo} options={{ headerShown: false }} />
-          <Stack.Screen name="DontCareSee" component={DontCareSee} options={{ headerShown: false}} />
-          <Stack.Screen name="WOYM" component={WOYM} options={{ headerShown: false }} />
+          <Stack.Screen name="PersonalInfo" component={PersonalInfo} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="DontCareSee" component={DontCareSee} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="WOYM" component={WOYM} options={{ headerShown: false, gestureEnabled: false }} />
           <Stack.Screen name="NavigationBar" component={NavigationBar} options={{ headerShown: false }} />
           <Stack.Screen name="Filter" component={Filter} options={{ headerShown: false }} />
           <Stack.Screen name="BannedTags" component={BannedTags} options={{ headerShown: false }} />
@@ -127,7 +128,7 @@ export default function AppNavigation({ user }) {
           <Stack.Screen name="WrapUp" component={WrapUp} options={{ headerShown: false }} />
           <Stack.Screen name="ThirtyDayOverview" component={ThirtyDayOverview} options={{ headerShown: false }} />
           <Stack.Screen name="Notifications Test" component={NotificationsTest} options={{ headerShown: false }} />
-          <Stack.Screen name="Overview" component={Overview} options={{ headerShown: false }} />
+          <Stack.Screen name="Overview" component={Overview} options={{ headerShown: false, gestureEnabled: false }} />
           <Stack.Screen name="Favorites" component={FavoritesList} options={{ headerShown: false }} />
           <Stack.Screen name="CheckIn" component={CheckIn} options={{ headerShown: false }} />
           <Stack.Screen name="Sleep" component={Sleep} options={{ headerShown: false }} />

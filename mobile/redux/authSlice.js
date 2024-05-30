@@ -42,7 +42,6 @@ const authSlice = createSlice({
       // Update user object in Secure Store
       const obj = JSON.parse(SecureStore.getItem('user'));
       obj.user.firstName = action.payload.firstName;
-      console.log(obj);
       SecureStore.setItemAsync('user', JSON.stringify(obj));
     },
   },
