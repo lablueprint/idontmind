@@ -26,10 +26,14 @@ import Personalization from '../Features/Tutorial/Personalization';
 import MoreResources from '../Features/Tutorial/MoreResources';
 import WrapUp from '../Features/Tutorial/WrapUp';
 import ThirtyDayOverview from '../Features/Tutorial/ThirtyDayOverview';
+import ForgotPassword from '../Features/Login/Screens/ForgotPassword';
+import TokenInput from '../Features/Login/Screens/TokenInput';
+import ResetPassword from '../Features/Login/Screens/ResetPassword';
 import TrendsTab from '../Features/Trends/Components/Trends';
 import TrendsBody from '../Features/Trends/Screens/TrendsBody';
 
 import CheckIn from '../Features/CheckIn/CheckIn';
+import JournalDetails from '../Features/Journal/Screens/JournalDetails';
 import Sleep from '../Features/CheckIn/Sleep';
 import Mood from '../Features/CheckIn/Mood';
 import AddMood from '../Features/CheckIn/AddMood';
@@ -104,6 +108,9 @@ export default function AppNavigation({ user }) {
           <Stack.Screen name="Personalization" component={Personalization} options={{ headerShown: false }} />
           <Stack.Screen name="MoreResources" component={MoreResources} options={{ headerShown: false }} />
           <Stack.Screen name="WrapUp" component={WrapUp} options={{ headerShown: false }} />
+          <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{ headerShown: false }} />
+          <Stack.Screen name="TokenInput" component={TokenInput} options={{ headerShown: false }} />
+          <Stack.Screen name="ResetPassword" component={ResetPassword} options={{ headerShown: false }} />
           <Stack.Screen name="ThirtyDayOverview" component={ThirtyDayOverview} options={{ headerShown: false }} />
           <Stack.Screen name="Notifications Test" component={NotificationsTest} options={{ headerShown: false }} />
           <Stack.Screen name="Overview" component={Overview} options={{ headerShown: false }} />
@@ -121,8 +128,8 @@ export default function AppNavigation({ user }) {
           <Stack.Screen name="AddActivity" component={AddActivity} options={{ headerShown: false }} />
           <Stack.Screen name="AddIcon" component={AddIcon} options={{ headerShown: false }} />
           <Stack.Screen name="EndCheckIn" component={EndCheckIn} options={{ headerShown: false }} />
-
           <Stack.Screen name="Exercise" component={Exercise} options={{ headerShown: false }} />
+          <Stack.Screen name="JournalDetails" component={JournalDetails} options={{ headerShown: false }} />
         </Stack.Navigator>
       </TagProvider>
     </NavigationContainer>
