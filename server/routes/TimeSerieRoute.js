@@ -6,6 +6,8 @@ const { addCustomActivity, getCustomActivities, deleteCustomActivities } = requi
 
 timeSerieRouter.post('/insertTimeSeries', timeSerieController.insertTimeSeries);
 
+timeSerieRouter.get('/checkExistingCheckIn', timeSerieController.checkExistingCheckIn);
+
 timeSerieRouter.post('/InsertManyExamples', timeSerieController.InsertManyExamples);
 
 timeSerieRouter.post('/getUserTimeSeries', timeSerieController.getUserTimeSeries);

@@ -3,18 +3,47 @@ import {
 } from 'react-native';
 import { Image } from 'expo-image';
 import PropTypes from 'prop-types';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
+import { useState, useEffect } from 'react';
 import styles from './CheckInStyles';
 
 function CheckIn({ navigation }) {
   const numPages = 4.0;
 
+  const { email, authHeader } = useSelector((state) => state.auth);
+  const [hasCheckedIn, setHasCheckedIn] = useState(false);
+
   const beginCheckIn = () => {
-    navigation.navigate('Pre Feeling', { numPages });
+    if (hasCheckedIn) {
+      alert('You have already completed your check-in for today.');
+    } else {
+      navigation.navigate('Pre Feeling', { numPages });
+    }
   };
 
   const continueToDashBoard = () => {
     navigation.navigate('Landing');
   };
+
+  const checkExistingCheckIn = async () => {
+    try {
+      const response = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/timeSerie/checkExistingCheckIn`, {
+        headers: authHeader,
+        params: { email },
+      });
+      if (response.data.exists) {
+        setHasCheckedIn(true);
+      }
+    } catch (err) {
+      console.error('Failed to check existing check-in:', err);
+      alert('Failed to verify existing check-in. Please try again later.');
+    }
+  };
+
+  useEffect(() => {
+    checkExistingCheckIn();
+  }, []);
 
   return (
     <View style={{

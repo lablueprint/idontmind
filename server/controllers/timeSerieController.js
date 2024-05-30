@@ -14,6 +14,27 @@ const insertTimeSeries = async (req, res) => {
   }
 };
 
+const checkExistingCheckIn = async (req, res) => {
+  try {
+    const { email } = req.query;
+    const startOfDay = new Date();
+    startOfDay.setUTCHours(0, 0, 0, 0);
+
+    const existingCheckIn = await TimeSerie.findOne({
+      'metadata.email': email,
+      timestamp: { $gte: startOfDay },
+    });
+
+    if (existingCheckIn) {
+      return res.status(200).json({ exists: true });
+    }
+    return res.status(200).json({ exists: false });
+  } catch (error) {
+    console.error('Failed to check existing check-in:', error.message);
+    res.status(500).json({ error: 'Failed to check existing check-in' });
+  }
+};
+
 module.exports = {
   insertTimeSeries,
 };
@@ -366,5 +387,5 @@ const InsertManyExamples = async (req, res) => {
 };
 
 module.exports = {
-  insertTimeSeries, InsertManyExamples, getUserTimeSeries,
+  insertTimeSeries, InsertManyExamples, getUserTimeSeries, checkExistingCheckIn,
 };
