@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import { Image } from 'expo-image';
 import ProgressBar from 'react-native-progress/Bar';
 import { useRoute } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 import styles from './SleepStyle';
 
 function Sleep({ navigation }) {
@@ -38,6 +39,8 @@ function Sleep({ navigation }) {
   const initialSliderValue = 2;
   const [slider, setSlider] = useState(initialSliderValue);
   const [hasMovedSlider, setHasMovedSlider] = useState(false);
+  // const { optionalCheckins } = useSelector((state) => state.auth);
+  const optionalCheckins = ['Meal', 'Water', 'Exercise', 'Activity'];
 
   const onSliderChange = (sliderValue) => {
     setSlider(sliderValue);
@@ -53,24 +56,48 @@ function Sleep({ navigation }) {
     }
   };
 
+  const getNextPage = (currentPage) => {
+    const corePages = ['CheckIn', 'PreFeeling', 'Feeling', 'Energy', 'Sleep', 'EndCheckIn'];
+    const allPages = corePages.slice(0, corePages.length - 1)
+      .concat(optionalCheckins)
+      .concat(corePages.slice(corePages.length - 1));
+
+    const currentIndex = allPages.indexOf(currentPage);
+    return currentIndex !== -1 && currentIndex < allPages.length - 1
+      ? allPages[currentIndex + 1]
+      : null;
+  };
+
   const continueButton = () => {
-    navigation.navigate('Meal', {
+    const nextPage = getNextPage('Sleep');
+    const data = {
       numPages,
       moodValue,
       moodsChosen,
       energyChosen,
       sleepScore: 5 - slider,
-    });
+    };
+    if (nextPage) {
+      navigation.navigate(nextPage, data);
+    } else {
+      navigation.navigate('EndCheckIn', data);
+    }
   };
 
   const skipButton = () => {
-    navigation.navigate('Meal', {
+    const nextPage = getNextPage('Sleep');
+    const data = {
       numPages,
       moodValue,
       moodsChosen,
       energyChosen,
       sleepScore: null,
-    });
+    };
+    if (nextPage) {
+      navigation.navigate(nextPage, data);
+    } else {
+      navigation.navigate('EndCheckIn', data);
+    }
   };
 
   return (

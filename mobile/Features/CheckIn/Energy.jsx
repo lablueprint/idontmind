@@ -50,6 +50,15 @@ function Energy({ navigation }) {
     }
   };
 
+  // right now i have a check in flow for a user every day that goes from page to page
+  // CheckIn -> PreFeeling -> Feeling -> Energy -> Sleep -> Meal -> Water -> Exercise -> Activity -> EndCheckIn
+  // checkIn, prefeeling, feeling, energy, sleep, and endcheckin are the core checkin pages that will be there for every user
+  // but meal, water, exercise, and activity are optional and are only there if the user specified so
+  // each user has a schema that includes an attribute called optionalCheckins which is an array of strings: optionalCheckins: ["meal", "water", "exercise", "activity"].
+  // so for example, only if "meal" is in the optionalCheckins array, will the page be part of the checkin flow
+  // help me implement this. right now, my sleep page goes straight to the meal  page if you press the continue button, for example, but now it should take into account the optionalCheckins array for each user
+  // get optionalCheckins by doing   const { optionalCheckins } = useSelector((state) => state.auth);
+
   const continueButton = () => {
     navigation.navigate('Sleep', {
       numPages, moodValue, moodsChosen, energyChosen: slider + 1,

@@ -4,6 +4,7 @@ import {
 } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 import styles from './MealStyles';
 
 export default function Meal({ navigation }) {
@@ -13,6 +14,8 @@ export default function Meal({ navigation }) {
   const moodsChosen = route.params?.moodsChosen;
   const energyChosen = route.params?.energyChosen;
   const sleepScore = route.params?.sleepScore;
+  // const { optionalCheckins } = useSelector((state) => state.auth);
+  const optionalCheckins = ['Meal', 'Water', 'Exercise', 'Activity'];
 
   const [selectedOption, setSelectedOption] = useState(null);
 
@@ -20,27 +23,51 @@ export default function Meal({ navigation }) {
     setSelectedOption((prevOption) => (prevOption === option ? null : option));
   };
 
+  const getNextPage = (currentPage) => {
+    const corePages = ['CheckIn', 'PreFeeling', 'Feeling', 'Energy', 'Sleep', 'EndCheckIn'];
+    const allPages = corePages.slice(0, corePages.length - 1)
+      .concat(optionalCheckins)
+      .concat(corePages.slice(corePages.length - 1));
+
+    const currentIndex = allPages.indexOf(currentPage);
+    return currentIndex !== -1 && currentIndex < allPages.length - 1
+      ? allPages[currentIndex + 1]
+      : null;
+  };
+
   const continueButton = () => {
     const hasHadMeal = (selectedOption === 'yes');
-    navigation.navigate('Water', {
+    const nextPage = getNextPage('Meal');
+    const data = {
       numPages,
       moodValue,
       moodsChosen,
       energyChosen,
       sleepScore,
       hasHadMeal,
-    });
+    };
+    if (nextPage) {
+      navigation.navigate(nextPage, data);
+    } else {
+      navigation.navigate('EndCheckIn', data);
+    }
   };
 
   const skipButton = () => {
-    navigation.navigate('Water', {
+    const nextPage = getNextPage('Meal');
+    const data = {
       numPages,
       moodValue,
       moodsChosen,
       energyChosen,
       sleepScore,
       hasHadMeal: null,
-    });
+    };
+    if (nextPage) {
+      navigation.navigate(nextPage, data);
+    } else {
+      navigation.navigate('EndCheckIn', data);
+    }
   };
 
   return (

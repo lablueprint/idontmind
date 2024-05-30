@@ -41,6 +41,7 @@ function CheckIn({ navigation }) {
     }
   };
 
+  // this prevents multiple checkins in a day under the same user
   useEffect(() => {
     checkExistingCheckIn();
   }, []);

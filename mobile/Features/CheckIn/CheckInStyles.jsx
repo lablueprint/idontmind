@@ -14,7 +14,7 @@ export default StyleSheet.create({
     width: '31%',
     height: '6.8%',
     opacity: 0.75,
-    backgroundColor: '#BFDBD7',
+    backgroundColor: '#F7E89C',
     marginTop: '-6.2%',
     zIndex: 0,
   },

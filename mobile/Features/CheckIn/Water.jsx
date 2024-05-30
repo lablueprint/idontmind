@@ -5,6 +5,7 @@ import {
 import { useEffect, useState } from 'react';
 import { useRoute } from '@react-navigation/native';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 import waterMore from '../../assets/images/water-more.png';
 import waterMiddle from '../../assets/images/water-middle.png';
 import waterLess from '../../assets/images/water-less.png';
@@ -12,6 +13,8 @@ import styles from './ExerciseStyle';
 
 export default function Exercise({ navigation }) {
   const [water, setWater] = useState('');
+  // const { optionalCheckins } = useSelector((state) => state.auth);
+  const optionalCheckins = ['Meal', 'Water', 'Exercise', 'Activity'];
 
   const route = useRoute();
   const numPages = route.params?.numPages;
@@ -21,8 +24,21 @@ export default function Exercise({ navigation }) {
   const sleepScore = route.params?.sleepScore;
   const hasHadMeal = route.params?.hasHadMeal;
 
+  const getNextPage = (currentPage) => {
+    const corePages = ['CheckIn', 'PreFeeling', 'Feeling', 'Energy', 'Sleep', 'EndCheckIn'];
+    const allPages = corePages.slice(0, corePages.length - 1)
+      .concat(optionalCheckins)
+      .concat(corePages.slice(corePages.length - 1));
+
+    const currentIndex = allPages.indexOf(currentPage);
+    return currentIndex !== -1 && currentIndex < allPages.length - 1
+      ? allPages[currentIndex + 1]
+      : null;
+  };
+
   const continueButton = () => {
-    navigation.navigate('Exercise', {
+    const nextPage = getNextPage('Water');
+    const data = {
       numPages,
       moodValue,
       moodsChosen,
@@ -30,11 +46,17 @@ export default function Exercise({ navigation }) {
       sleepScore,
       hasHadMeal,
       water,
-    });
+    };
+    if (nextPage) {
+      navigation.navigate(nextPage, data);
+    } else {
+      navigation.navigate('EndCheckIn', data);
+    }
   };
 
   const skipButton = () => {
-    navigation.navigate('Exercise', {
+    const nextPage = getNextPage('Water');
+    const data = {
       numPages,
       moodValue,
       moodsChosen,
@@ -42,7 +64,12 @@ export default function Exercise({ navigation }) {
       sleepScore,
       hasHadMeal,
       water: null,
-    });
+    };
+    if (nextPage) {
+      navigation.navigate(nextPage, data);
+    } else {
+      navigation.navigate('EndCheckIn', data);
+    }
   };
 
   useEffect(() => {

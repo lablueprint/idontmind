@@ -4,8 +4,8 @@ import {
 } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import PropTypes from 'prop-types';
-import axios from 'axios';
 import { useSelector } from 'react-redux';
+import axios from 'axios';
 import sleepFace from '../../assets/images/sleepFace.png';
 import styles from './MoodStyle';
 
@@ -23,10 +23,9 @@ function Activity({ navigation }) {
   const [exercise, setExercise] = useState(route.params?.exercise);
 
   const [customActivities, setCustomActivities] = useState([]);
-  const [addedActivities, setAddedActivities] = useState([]);
   const [activityChosen, setActivityChosen] = useState('');
 
-  const { email, id, authHeader } = useSelector((state) => state.auth);
+  const { email, authHeader } = useSelector((state) => state.auth);
 
   const fetchCustomActivities = async () => {
     try {
@@ -35,7 +34,6 @@ function Activity({ navigation }) {
         params: { email },
       });
       setCustomActivities(response.data.customActivities);
-      setAddedActivities(customActivities);
     } catch (err) {
       console.error('Failed to fetch custom activities:', err);
     }
@@ -47,10 +45,11 @@ function Activity({ navigation }) {
 
   useEffect(() => {
     if (route.params?.activityPassedIn && customActivities.length < 3) {
-      const newAddedActivities = [...addedActivities,
-        [route.params.activityPassedIn, route.params.iconChosen]];
-      setAddedActivities(newAddedActivities);
-      setCustomActivities(newAddedActivities);
+      const newActivity = {
+        activity: route.params.activityPassedIn,
+        icon: route.params.iconChosen,
+      };
+      setCustomActivities((prevActivities) => [...prevActivities, newActivity]);
     }
   }, [route.params]);
 
@@ -58,13 +57,25 @@ function Activity({ navigation }) {
     console.log('Route Params:', route.params);
   }, [route.params]);
 
-  const submitData = async (chosenActivity) => {
+  const continueButton = () => {
+    if (activityChosen !== null) {
+      const data = {
+        numPages,
+        moodValue,
+        moodsChosen,
+        energyChosen,
+        sleepScore,
+        hasHadMeal,
+        water,
+        exercise,
+        activityChosen,
+      };
+      navigation.navigate('EndCheckIn', data);
+    }
+  };
+
+  const skipButton = () => {
     const data = {
-      metadata: {
-        email,
-        userId: id,
-      },
-      timestamp: new Date(),
       numPages,
       moodValue,
       moodsChosen,
@@ -73,37 +84,9 @@ function Activity({ navigation }) {
       hasHadMeal,
       water,
       exercise,
-      activityChosen: chosenActivity,
+      activityChosen: null,
     };
-
-    try {
-      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/timeSerie/insertTimeSeries`, data, { headers: authHeader });
-      console.log('Response:', res); // Log the response
-      if (res.status === 201) {
-        navigation.navigate('EndCheckIn');
-      } else {
-        console.error('Failed to save data:', res.statusText);
-      }
-    } catch (err) {
-      console.error('Failed to fetch:', err);
-      if (err.response) {
-        console.error('Error response data:', err.response.data);
-      } else if (err.request) {
-        console.error('Error request:', err.request);
-      } else {
-        console.error('Error message:', err.message);
-      }
-    }
-  };
-
-  const continueButton = () => {
-    if (activityChosen !== '') {
-      submitData(activityChosen);
-    }
-  };
-
-  const skipButton = () => {
-    submitData(null);
+    navigation.navigate('EndCheckIn', data);
   };
 
   const pressActivity = (activity) => {
@@ -125,7 +108,6 @@ function Activity({ navigation }) {
       const res = await axios.delete(`${process.env.EXPO_PUBLIC_SERVER_URL}/timeSerie/deleteCustomActivity/${activityId}`, { headers: authHeader });
       if (res.status === 200) {
         setCustomActivities(customActivities.filter((activity) => activity._id !== activityId));
-        setAddedActivities(addedActivities.filter((activity) => activity._id !== activityId));
       }
     } catch (err) {
       console.error('Failed to delete activity:', err);
@@ -134,7 +116,7 @@ function Activity({ navigation }) {
   };
 
   const renderActivities = (activities) => (
-    activities.map((activityObj, index) => (
+    activities.map((activityObj) => (
       <View key={activityObj._id} style={styles.singularMood}>
         <Pressable onPress={() => pressActivity(activityObj.activity)}>
           <View style={{ width: 120, height: 120, backgroundColor: activityObj.icon }} />
@@ -165,7 +147,6 @@ function Activity({ navigation }) {
 
   const renderAddActivityButton = () => {
     console.log('customActivities.length', customActivities.length);
-    console.log('addedActivities.length', addedActivities.length);
     if (customActivities.length < 3) {
       return (
         <Pressable onPress={addActivity} style={styles.singularMood}>
