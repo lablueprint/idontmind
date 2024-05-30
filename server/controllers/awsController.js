@@ -14,23 +14,10 @@ const ses = new AWS.SES({
 
 const sendEmail = async (req, res) => {
   const { email, token } = req.body;
-
+  console.log(email);
+  console.log(token);
   try {
-    // Example of how to create a templated email
-    // const templateParams = {
-    //   Template: {
-    //     TemplateName: 'TestTemplate',
-    //     HtmlPart: '<h1>Hello {{name}},</h1><p>Your order {{token}} is ready for     pickup!</p>',
-    //     SubjectPart: 'Your order {{order}} is ready!',
-    //   },
-    // };
-
-    // await ses.createTemplate(templateParams, (err, data) => {
-    //   if (err) console.log(err, err.stack);
-    //   else console.log('HELLO');
-    // });
-
-    const TemplateData = `{ "name":"John", "token":${token}, "order":"random order"}`;
+    const TemplateData = `{"token":${token}}`;
 
     const params = {
       Source: 'bpidontmind@gmail.com',
@@ -39,17 +26,33 @@ const sendEmail = async (req, res) => {
           email,
         ],
       },
-      Template: 'TestTemplate',
+      Template: 'ResetPassword2',
       TemplateData,
     };
 
     ses.sendTemplatedEmail(params, (err, data) => {
       if (err) console.log(err);
-      else res.send(data);
+      else res.status(200).send(data);
     });
   } catch (error) {
     console.log(error);
   }
+};
+
+// Example of how to create a templated email
+const createTemplate = async (req, res) => {
+  const templateParams = {
+    Template: {
+      TemplateName: 'ResetPassword2',
+      HtmlPart: '<div style="display: flex;"><div style="flex-direction: column;"><h1 style="margin-top: 30px;">IDONTMIND</h1><h2 style="margin-top: 15px; margin-bottom: 30px;">Reset Password</h2><p>Hi,<br>Forgot your password?<br> If you did not request a password reset for your account please ignore this message.<br> Below is the code to reset your password: <br> {{token}}</p></div>',
+      SubjectPart: 'Reset Password Request',
+    },
+  };
+
+  await ses.createTemplate(templateParams, (err, data) => {
+    if (err) console.log(err, err.stack);
+    else console.log('created template');
+  });
 };
 
 const getImage = async (req, res) => {
@@ -91,5 +94,5 @@ const uploadImage = async (req, res) => {
 };
 
 module.exports = {
-  getImage, uploadImage, sendEmail,
+  getImage, uploadImage, sendEmail, createTemplate,
 };

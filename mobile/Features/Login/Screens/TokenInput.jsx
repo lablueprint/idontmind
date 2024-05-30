@@ -43,9 +43,9 @@ function TokenInput({ route, navigation }) {
       setToken(newToken);
       setCountdown(1800);
       setTokenExpired(false);
-      const response = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/sendEmail`, { email, token: newToken });
+      const response = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/test/sendEmail`, { email: 'bpidontmind@gmail.com', token: newToken });
       console.log(5, response.data);
-      if (response.data.success) {
+      if (response.data) {
         console.log('Email sent successfully with new token.');
       } else {
         console.error('Failed to send email with new token:', response.data.message);

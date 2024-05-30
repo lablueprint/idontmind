@@ -19,4 +19,6 @@ miscRouter.post('/uploadImage', awsController.uploadImage);
 
 miscRouter.post('/sendEmail', awsController.sendEmail);
 
+miscRouter.post('/createTemplate', awsController.createTemplate);
+
 module.exports = miscRouter;

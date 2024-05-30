@@ -34,12 +34,14 @@ function ForgotPassword({ navigation }) {
         setShowError(false);
 
         console.log(11, curUser);
-        // navigation.navigate('Token Input', { token: newToken, email, curUser });
+
         // email param must be a verified email on aws because of sandbox mode
-        const response = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/test/sendEmail`, { email, token: newToken });
+        // currently using bpidontmind@gmail.com for testing purposes
+        const response = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/test/sendEmail`, { email: 'bpidontmind@gmail.com', token: newToken });
         if (response.data) {
           console.log('Successfully sent email!');
           console.log(response.data);
+          navigation.navigate('TokenInput', { token: newToken, email, curUser });
         } else {
           console.log('Failed to send email:', response);
         }
