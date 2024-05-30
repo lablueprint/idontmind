@@ -129,10 +129,6 @@ export default function Landing({ navigation }) {
         title="To Exercise Checkin Question"
         onPress={navigateToExercise}
       />
-      <Button
-        title="New Template"
-        onPress={async () => axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/test/createTemplate`)}
-      />
     </View>
   );
 }
