@@ -6,6 +6,13 @@ const offUserController = require('../controllers/offUserController');
 offUserRouter.post('/signin', offUserController.signInUser);
 offUserRouter.post('/signup', offUserController.signUpUser);
 
+offUserRouter.post('/sendEmail', offUserController.sendEmail);
+
+offUserRouter.post('/checkUserByEmail', offUserController.checkUserByEmail);
+
+// !!! TODO: this should be changed to be semi protected
+offUserRouter.post('/resetPassword', offUserController.resetPassword);
+
 // Protects the routes below with middleware (requires authorization header aka signed in user)
 offUserRouter.use(offUserController.authenticatePassport);
 offUserRouter.post('/getData', offUserController.getUserData);
@@ -26,8 +33,6 @@ offUserRouter.get('/getFavorites', offUserController.getFavorites);
 offUserRouter.post('/updateUser', offUserController.updateUser);
 
 offUserRouter.post('/deleteUserById', offUserController.deleteUserById);
-
-offUserRouter.post('/getFavorites', offUserController.getFavorites);
 
 offUserRouter.post('/getUserChallengeDay', offUserController.getUserChallengeDay);
 

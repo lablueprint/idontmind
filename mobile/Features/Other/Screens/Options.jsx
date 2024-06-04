@@ -12,7 +12,7 @@ export default function Options({ navigation }) {
 
   const navigateFunctions = (key) => {
     if (key === 4) {
-      navigation.navigate('PushNotifications');
+      navigation.navigate('NotificationsTest');
     }
     if (key === 5) {
       navigation.navigate('BannedTags');

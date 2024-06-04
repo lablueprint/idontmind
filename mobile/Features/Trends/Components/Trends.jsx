@@ -10,7 +10,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import styles from './TrendsStyle';
 import { data } from './TrendsData';
 import TrendsHeader from './TrendsHeader';
-import Arrow from '../../assets/images/arrow.png';
+import Arrow from '../../../assets/images/arrow.png';
 
 function TrendSection({ header, description, buttonText }) {
   return (
