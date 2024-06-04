@@ -158,7 +158,9 @@ function WOYM({ navigation }) {
             </Text>
           </View>
           <View style={styles.pillArea}>
-            <View style={[styles.titleButton, showCoping ? styles.extraMargin : styles.titleButton]}>
+            <View style={[styles.titleButton,
+              showCoping ? styles.extraMargin : styles.titleButton]}
+            >
               <Pressable style={styles.arrow} onPress={() => setShowCoping(!showCoping)}>
                 <Text style={styles.pillTitle}>Coping</Text>
                 <View style={styles.arrowCont}>
@@ -216,7 +218,9 @@ function WOYM({ navigation }) {
             </View>
           </View>
           <View style={styles.pillArea}>
-            <View style={[styles.titleButton, showIdentity ? styles.extraMargin : styles.titleButton]}>
+            <View style={[styles.titleButton,
+              showIdentity ? styles.extraMargin : styles.titleButton]}
+            >
               <Pressable style={styles.arrow} onPress={() => setShowIdentity(!showIdentity)}>
                 <Text style={styles.pillTitle}>Identity and Self-Perception</Text>
                 <View style={styles.arrowCont}>
@@ -245,7 +249,9 @@ function WOYM({ navigation }) {
             </View>
           </View>
           <View style={styles.pillArea}>
-            <View style={[styles.titleButton, showLifestyle ? styles.extraMargin : styles.titleButton]}>
+            <View style={[styles.titleButton,
+              showLifestyle ? styles.extraMargin : styles.titleButton]}
+            >
               <Pressable style={styles.arrow} onPress={() => setShowLifestyle(!showLifestyle)}>
                 <Text style={styles.pillTitle}>Lifestyle and Wellness</Text>
                 <View style={styles.arrowCont}>
@@ -274,7 +280,9 @@ function WOYM({ navigation }) {
             </View>
           </View>
           <View style={styles.pillArea}>
-            <View style={[styles.titleButton, showMental ? styles.extraMargin : styles.titleButton]}>
+            <View style={[styles.titleButton,
+              showMental ? styles.extraMargin : styles.titleButton]}
+            >
               <Pressable style={styles.arrow} onPress={() => setShowMental(!showMental)}>
                 <Text style={styles.pillTitle}>Mental Health Conditions</Text>
                 <View style={styles.arrowCont}>
