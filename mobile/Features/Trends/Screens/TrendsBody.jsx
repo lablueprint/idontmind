@@ -7,7 +7,7 @@ import { LineChart } from 'react-native-gifted-charts';
 import PropTypes from 'prop-types';
 import { LinearGradient } from 'expo-linear-gradient';
 import TrendsHeader from '../Components/TrendsHeader';
-import Bookmark from '../../Features/Other/Components/Bookmark';
+import Bookmark from '../../Other/Components/Bookmark';
 import styles from './TrendsPageStyles';
 
 // note need to change mood to energy?? (energy is strings but mood is #s)
@@ -323,7 +323,7 @@ export default function TrendsBody({ route }) {
                 </Text>
                 <TouchableOpacity onPress={handleTrendPress}>
                   <Image
-                    source={require('../../assets/images/little-guy-notif.png')}
+                    source={require('../../../assets/images/little-guy-notif.png')}
                     style={styles.infoImage}
                   />
                 </TouchableOpacity>
