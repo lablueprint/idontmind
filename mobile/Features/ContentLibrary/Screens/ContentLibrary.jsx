@@ -17,7 +17,7 @@ import SearchBar from '../../Other/Components/SearchBar';
 
 export default function ContentLibrary({ navigation }) {
   const { initTags, initFavorites } = useContext(TagContext);
-  const { email, authHeader } = useSelector((state) => state.auth);
+  const { id, authHeader } = useSelector((state) => state.auth);
 
   const navigateToTag = (index) => {
     navigation.navigate('Tag', { index, routeName: 'Content' });
@@ -38,7 +38,7 @@ export default function ContentLibrary({ navigation }) {
         const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/getAllTagTitles`);
 
         /* Grab user's favorite list */
-        const resFavorites = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/getFavorites`, { email }, { headers: authHeader });
+        const resFavorites = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/getFavorites`, { headers: authHeader, params: { id } });
 
         /* Set Context Set for Favorites */
         initFavorites(resFavorites.data);
