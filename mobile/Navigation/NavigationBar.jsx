@@ -13,6 +13,7 @@ import Resource from '../Features/ContentLibrary/Screens/Resource';
 import ResourceList from '../Features/ContentLibrary/Screens/ResourceList';
 import ContentLibrary from '../Features/ContentLibrary/Screens/ContentLibrary';
 import CalendarPage from '../Features/Other/Screens/Calendar';
+import Overview from '../Features/Tutorial/Overview';
 
 const Tab = createBottomTabNavigator();
 
@@ -33,7 +34,7 @@ export default function NavigationBar() {
       <Tab.Screen name="Bookmarks Edge Case" component={BookmarksEdgeCase} options={{ headerShown: false }} />
       <Tab.Screen name="Resource" component={Resource} options={{ headerShown: false }} />
       <Tab.Screen name="Resource List" component={ResourceList} options={{ headerShown: false }} />
-
+      <Tab.Screen name="Overview" component={Overview} options={{ headerShown: false }} />
     </Tab.Navigator>
   );
 }
