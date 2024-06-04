@@ -17,7 +17,7 @@ import SearchBar from '../../Other/Components/SearchBar';
 
 export default function ContentLibrary({ navigation }) {
   const { initTags, initFavorites } = useContext(TagContext);
-  const { email, authHeader } = useSelector((state) => state.auth);
+  const { id, authHeader } = useSelector((state) => state.auth);
 
   const navigateToTag = (index) => {
     navigation.navigate('Tag', { index, routeName: 'Content' });
@@ -35,19 +35,19 @@ export default function ContentLibrary({ navigation }) {
     const getAllTags = async () => {
       try {
         /* Grab all tags */
-        const tags = [{ id: '0', tagName: 'hi' }, { id: '1', tagName: 'social anxiety' }, { id: '2', tagName: 'relaxation' }, { id: '3', tagName: 'exercise' }, { id: '4', tagName: 'tag1' }, { id: '5', tagName: 'tag2' }, { id: '6', tagName: 'tag3' }];
+        const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/getAllTagTitles`);
 
         /* Grab user's favorite list */
-        const resFavorites = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/getFavorites`, { email }, { headers: authHeader });
+        const resFavorites = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/getFavorites`, { headers: authHeader, params: { id } });
 
         /* Set Context Set for Favorites */
         initFavorites(resFavorites.data);
 
         /* Set Context List for Tags */
-        initTags(tags);
+        initTags(res.data);
 
         /* Set Initial Data for Render Functions */
-        setData(tags);
+        setData(res.data);
       } catch (err) {
         console.error(err);
       }
@@ -166,7 +166,7 @@ export default function ContentLibrary({ navigation }) {
           horizontal
           data={data}
           renderItem={horizontalRenderItem}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item._id}
           showsHorizontalScrollIndicator={false}
         />
       </View>
@@ -182,7 +182,7 @@ export default function ContentLibrary({ navigation }) {
         <FlatList
           data={data}
           renderItem={verticalRenderItem}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item._id}
           showsVerticalScrollIndicator={false}
         />
       </View>
