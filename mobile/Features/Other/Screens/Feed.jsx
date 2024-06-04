@@ -144,7 +144,7 @@ export default function Feed({ navigation }) {
   const favoriteResource = async () => {
     try {
       console.log(id);
-      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/favoriteResource`, { id, resource: 'test resource' }, { headers: authHeader });
+      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/favoriteResource`, { id, resource: 'wooo' }, { headers: authHeader });
       if (res.data.error) {
         console.error(res.data.error);
       } else {
@@ -159,7 +159,7 @@ export default function Feed({ navigation }) {
   const unfavoriteTag = async () => {
     try {
       console.log(id);
-      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/unfavoriteTag`, { id, resource: 'test tag' }, { headers: authHeader });
+      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/unfavoriteTag`, { id, tag: 'test tag' }, { headers: authHeader });
       if (res.data.error) {
         console.error(res.data.error);
       } else {
@@ -237,6 +237,10 @@ export default function Feed({ navigation }) {
       <Button
         title="unfavorite tag"
         onPress={unfavoriteTag}
+      />
+      <Button
+        title="unfavorite resource"
+        onPress={unfavoriteResource}
       />
     </View>
   );
