@@ -12,18 +12,18 @@ import TagRectangle from '../Components/TagRectangle';
 
 export default function Tag({ navigation, route }) {
   /* index of corresponding Tag */
-  const { index } = route.params;
+  const { index, tagName, subtopics } = route.params;
 
   const {
     Tags,
   } = useContext(TagContext);
 
   /* Grabs current tag */
-  const tag = Tags[index];
+  // const tag = Tags[index];
 
-  const {
-    tagName,
-  } = tag;
+  // const {
+  //   tagName,
+  // } = tag;
 
   /* Checks if current tag is in users favorite list */
   // const favorited = findFavorite(id);
@@ -97,7 +97,7 @@ export default function Tag({ navigation, route }) {
         >
           <View style={{ flex: 1 }}>
             {
-                hardcodedTags.map((item) => (
+                subtopics.map((item) => (
                   <Pressable key={item} onPress={() => navigateToResourceList(item)}>
                     <TagRectangle
                         // key={resourceName}
@@ -125,6 +125,8 @@ Tag.propTypes = {
     params: PropTypes.shape({
       index: PropTypes.number,
       routeName: PropTypes.string,
+      tagName: PropTypes.string,
+      subtopics: PropTypes.arrayOf(PropTypes.string),
     }).isRequired,
   }).isRequired,
 };

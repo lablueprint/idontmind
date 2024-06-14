@@ -14,13 +14,22 @@ import Card from '../Components/Card';
 import TagContext from '../Context/TagContext';
 // do want to change routing though:
 import SearchBar from '../../Other/Components/SearchBar';
+import jsonData from '../../../content_library.json';
 
 export default function ContentLibrary({ navigation }) {
+  const transformedData = Object.keys(jsonData).map((tagName, index) => ({
+    id: index.toString(), // Unique ID for each category
+    tagName, // Category name
+    subtopics: jsonData[tagName], // Array of sub-items
+  }));
+
   const { initTags, initFavorites } = useContext(TagContext);
   const { id, authHeader } = useSelector((state) => state.auth);
 
-  const navigateToTag = (index) => {
-    navigation.navigate('Tag', { index, routeName: 'Content' });
+  const navigateToTag = (index, tagName, subtopics) => {
+    navigation.navigate('Tag', {
+      index, routeName: 'Content', tagName, subtopics,
+    });
   };
 
   const navigateToFavorites = () => {
@@ -180,7 +189,7 @@ export default function ContentLibrary({ navigation }) {
       </View>
       <View style={[style.row, { flex: 2, paddingTop: 15 }]}>
         <FlatList
-          data={data}
+          data={transformedData}
           renderItem={verticalRenderItem}
           keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator={false}
