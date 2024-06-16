@@ -9,10 +9,13 @@ import Back from '../../../assets/images/back_button.png';
 import style from '../Components/ContentStyle';
 import TagContext from '../Context/TagContext';
 import TagRectangle from '../Components/TagRectangle';
+import jsonData from '../../../content_library.json';
 
 export default function Tag({ navigation, route }) {
   /* index of corresponding Tag */
-  const { index, tagName, subtopics } = route.params;
+  const { index, tagName } = route.params;
+  const subtopics = jsonData[tagName];
+  console.log(subtopics);
 
   const {
     Tags,
@@ -38,7 +41,7 @@ export default function Tag({ navigation, route }) {
 
   const navigateToResourceList = (subtopicName) => {
     console.log(subtopicName);
-    navigation.navigate('Resource List', { subtopicName });
+    navigation.navigate('Resource List', { subtopicName, tagName });
   };
 
   return (

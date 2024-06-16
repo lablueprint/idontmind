@@ -20,6 +20,8 @@ function ResourceList({ navigation }) {
   const [newFolderName, setNewFolderName] = useState('');
   const route = useRoute();
   const subtopicName = route.params?.subtopicName;
+  const tagName = route.params?.tagName;
+
   const resources = [['resource 1', 'nicole'], ['yo mama', 'aaron'], ['haha', 'jeffrey'], ['no', 'alan'], ['well yes', 'daniel']];
 
   const toggleModal = () => {
@@ -35,11 +37,11 @@ function ResourceList({ navigation }) {
     setNewFolderName(name);
   };
   const navigateToTag = () => {
-    navigation.navigate('Tag', { index: 0, routeName: 'Content Library' }); // set index to 0 as default for now
+    navigation.navigate('Tag', { index: 0, routeName: 'Content Library', tagName }); // set index to 0 as default for now
   };
   const navigateToResource = (item) => {
     const name = item.Title ? item.Title : 'hardcoded title';
-    navigation.navigate('Resource', { resourceName: name, routeName: 'Resource List', subtopicName });
+    navigation.navigate('Resource', { resourceName: name, routeName: 'Resource List', subtopicName, tagName });
   };
 
   const filters = ['All', 'Q&A', 'Personal Stories', 'Exercises', 'Articles'];
