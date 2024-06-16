@@ -17,10 +17,6 @@ export default function Tag({ navigation, route }) {
   const subtopics = jsonData[tagName];
   console.log(subtopics);
 
-  const {
-    Tags,
-  } = useContext(TagContext);
-
   /* Grabs current tag */
   // const tag = Tags[index];
 

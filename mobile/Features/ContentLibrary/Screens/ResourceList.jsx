@@ -2,9 +2,10 @@ import {
   View, Text, TouchableOpacity, ScrollView, Pressable, Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 // import axios from 'axios';
 import { useRoute } from '@react-navigation/native';
+import axios from 'axios';
 import Bookmark from '../../Other/Components/Bookmark';
 import styles from './BookmarksStyle';
 import BookmarkImage from '../../../assets/images/bookmark_blue.png';
@@ -22,7 +23,7 @@ function ResourceList({ navigation }) {
   const subtopicName = route.params?.subtopicName;
   const tagName = route.params?.tagName;
 
-  const resources = [['resource 1', 'nicole'], ['yo mama', 'aaron'], ['haha', 'jeffrey'], ['no', 'alan'], ['well yes', 'daniel']];
+  const [resources, setResources] = useState([]);
 
   const toggleModal = () => {
     setModalVisible(!modalVisible);
@@ -41,11 +42,35 @@ function ResourceList({ navigation }) {
   };
   const navigateToResource = (item) => {
     const name = item.Title ? item.Title : 'hardcoded title';
-    navigation.navigate('Resource', { resourceName: name, routeName: 'Resource List', subtopicName, tagName });
+
+    navigation.navigate('Resource', {
+      resourceName: name, routeName: 'Resource List', subtopicName, tagName,
+    });
   };
 
   const filters = ['All', 'Q&A', 'Personal Stories', 'Exercises', 'Articles'];
   const [filterQuery, setFilterQuery] = useState('All');
+
+  const handleFilterChange = async (item) => {
+    setFilterQuery(item);
+    // get all the tags under this filter
+    const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/test/searchByTag`, { tag: subtopicName, filter: item });
+    setResources(res.data);
+    console.log(resources);
+  };
+
+  useEffect(() => {
+    const fetchResources = async () => {
+      try {
+        const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/test/searchByTag`, { tag: subtopicName, filter: 'All' });
+        setResources(res.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchResources();
+  }, [subtopicName]);
 
   return (
     <View
@@ -96,8 +121,7 @@ function ResourceList({ navigation }) {
                 key={item}
                 onPress={() => {
                   if (item !== filterQuery) {
-                    setFilterQuery(item);
-                    console.log(filterQuery);
+                    handleFilterChange(item);
                   }
                 }}
                 style={[
@@ -124,15 +148,40 @@ function ResourceList({ navigation }) {
         <View style={{ height: 600, width: '110%' }}>
           <ScrollView>
             {
-                  resources.map((item) => (
-                    <Pressable key={item[0]} onPress={() => navigateToResource(item)}>
-                      <Bookmark
-                        resourceName={item[0]}
-                        author={item[1]}
-                        style={{}}
-                      />
-                    </Pressable>
-                  ))
+                  resources.map((item) => {
+                    // the title and author fields are different depending on the content type
+                    // Q&A
+                    if (item.Question) {
+                      return (
+                        <Pressable key={item.Question} onPress={() => navigateToResource(item)}>
+                          <Bookmark
+                            resourceName={item.Question}
+                            author={item['Who Answered']}
+                          />
+                        </Pressable>
+                      );
+                    }
+                    // Personal Stories
+                    if (item.title) {
+                      return (
+                        <Pressable key={item.title} onPress={() => navigateToResource(item)}>
+                          <Bookmark
+                            resourceName={item.title}
+                            author={item.author}
+                          />
+                        </Pressable>
+                      );
+                    }
+                    // else
+                    return (
+                      <Pressable key={item.Title} onPress={() => navigateToResource(item)}>
+                        <Bookmark
+                          resourceName={item.Title}
+                          author={item.Author}
+                        />
+                      </Pressable>
+                    );
+                  })
                 }
           </ScrollView>
         </View>
