@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import OptionStyle from './OptionStyle';
 
-export default function Options({ navigation }) {
+export default function OptionsOld({ navigation }) {
   const options = ['personal info(name, etc)', 'account info (email, pass)', 'mental health info', 'push notifications', 'content recommendations', 'check-ins'];
 
   const navigateFunctions = (key) => {
@@ -93,7 +93,7 @@ export default function Options({ navigation }) {
   );
 }
 
-Options.propTypes = {
+OptionsOld.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func,
   }).isRequired,

@@ -12,7 +12,6 @@ export default function ContentDashboard({ navigation }) {
   const navigateToDayChallenge = () => {
     navigation.navigate('Day Challenge');
   };
-
   const navigateToOptions = () => {
     navigation.navigate('Options');
   };
