@@ -26,6 +26,7 @@ const offJournalRouter = require('./routes/offJournalRoute');
 const offUserRouter = require('./routes/offUserRoute');
 const timeSerieRouter = require('./routes/TimeSerieRoute');
 const checkInRouter = require('./routes/checkInRoute');
+const folderRouter = require('./routes/folderRoute');
 
 // Connect to the MongoDB database
 async function connectToDatabase() {
@@ -53,6 +54,7 @@ app.use('/offUser', offUserRouter);
 app.use('/offJournal', offJournalRouter);
 app.use('/timeSerie', timeSerieRouter);
 app.use('/checkins', checkInRouter);
+app.use('/folder', folderRouter);
 
 app.get('/', (req, res) => {
   res.send('Hello World!');

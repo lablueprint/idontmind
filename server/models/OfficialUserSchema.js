@@ -27,6 +27,31 @@ const officialUserSchema = new mongoose.Schema({
     default: [],
     type: [String],
   },
+  favoritedTags: {
+    required: true,
+    default: [],
+    type: [String],
+  },
+  favoritedResources: {
+    required: true,
+    default: [],
+    type: [String],
+  },
+  favoritedFolders: {
+    required: true,
+    default: {},
+    type: Map,
+    of: {
+      tags: {
+        type: [String],
+        default: [],
+      },
+      resources: {
+        type: [String],
+        default: [],
+      },
+    },
+  },
   journalEntries: {
     default: [],
     type: [String],

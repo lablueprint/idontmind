@@ -9,21 +9,24 @@ import Back from '../../../assets/images/back_button.png';
 import style from '../Components/ContentStyle';
 import TagContext from '../Context/TagContext';
 import TagRectangle from '../Components/TagRectangle';
+import jsonData from '../../../content_library.json';
 
 export default function Tag({ navigation, route }) {
   /* index of corresponding Tag */
-  const { index } = route.params;
+  const { index, tagName } = route.params;
+  const subtopics = jsonData[tagName];
+  console.log(subtopics);
 
   const {
     Tags,
   } = useContext(TagContext);
 
   /* Grabs current tag */
-  const tag = Tags[index];
+  // const tag = Tags[index];
 
-  const {
-    tagName,
-  } = tag;
+  // const {
+  //   tagName,
+  // } = tag;
 
   /* Checks if current tag is in users favorite list */
   // const favorited = findFavorite(id);
@@ -38,7 +41,7 @@ export default function Tag({ navigation, route }) {
 
   const navigateToResourceList = (subtopicName) => {
     console.log(subtopicName);
-    navigation.navigate('Resource List', { subtopicName });
+    navigation.navigate('Resource List', { subtopicName, tagName });
   };
 
   return (
@@ -97,7 +100,7 @@ export default function Tag({ navigation, route }) {
         >
           <View style={{ flex: 1 }}>
             {
-                hardcodedTags.map((item) => (
+                subtopics.map((item) => (
                   <Pressable key={item} onPress={() => navigateToResourceList(item)}>
                     <TagRectangle
                         // key={resourceName}
@@ -125,6 +128,8 @@ Tag.propTypes = {
     params: PropTypes.shape({
       index: PropTypes.number,
       routeName: PropTypes.string,
+      tagName: PropTypes.string,
+      subtopics: PropTypes.arrayOf(PropTypes.string),
     }).isRequired,
   }).isRequired,
 };

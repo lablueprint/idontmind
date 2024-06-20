@@ -10,6 +10,7 @@ import starImage from '../../../assets/images/star.png';
 import goldStar from '../../../assets/images/goldStar.png';
 import TagContext from '../Context/TagContext';
 import shapeImage from '../../../assets/images/shape.png';
+
 export default function Card({
   navigateToTag, index, item, orientation,
 }) {
@@ -19,7 +20,7 @@ export default function Card({
   const { email, authHeader } = useSelector((state) => state.auth);
 
   /* Grab item fields */
-  const { id, tagName } = item;
+  const { id, tagName, subtopics } = item;
 
   /* Check if current tag is favorited */
   const favorited = findFavorite(id);
@@ -51,7 +52,7 @@ export default function Card({
       { orientation === 'horizontal' ? (
         <TouchableOpacity
           style={[style.horizontalCard]}
-          onPress={() => navigateToTag(index)}
+          onPress={() => navigateToTag(index, tagName, subtopics)}
         >
           <TouchableOpacity
             onPress={() => handleFavoriteChange()}
@@ -76,7 +77,7 @@ export default function Card({
       ) : (
         <TouchableOpacity
           style={[style.verticalCard]}
-          onPress={() => navigateToTag(index)}
+          onPress={() => navigateToTag(index, tagName, subtopics)}
         >
           <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'center' }}>
             <Text
@@ -120,6 +121,7 @@ Card.propTypes = {
   item: PropTypes.shape({
     id: PropTypes.string,
     tagName: PropTypes.string,
+    subtopics: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,
   orientation: PropTypes.string.isRequired,
 };

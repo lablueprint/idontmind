@@ -22,6 +22,7 @@ function Resource({ navigation }) {
   const route = useRoute();
   const resourceName = route.params?.resourceName;
   const routeName = route.params?.routeName;
+  const tagName = route.params?.tagName;
   const subtopicName = route.params?.subtopicName;
   const toggleModal = () => {
     setModalVisible(!modalVisible);
@@ -36,7 +37,7 @@ function Resource({ navigation }) {
     setNewFolderName(name);
   };
   const navigateToPreviousRoute = () => {
-    if (routeName === 'Resource List') navigation.navigate(routeName, { subtopicName });
+    if (routeName === 'Resource List') navigation.navigate(routeName, { subtopicName, tagName });
     else navigation.navigate(routeName);
   };
   return (
