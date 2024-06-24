@@ -142,6 +142,8 @@ export function JournalPage({
       console.error(error);
       // Handle error
     }
+    setText('');
+    removeImage();
   };
 
   return (
