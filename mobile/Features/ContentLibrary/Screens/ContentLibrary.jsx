@@ -1,5 +1,6 @@
 import {
   Text, View, TouchableOpacity, FlatList, Image,
+  Dimensions,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { useState, useEffect, useContext } from 'react';
@@ -19,6 +20,8 @@ export default function ContentLibrary({ navigation }) {
   const { initTags, initFavorites } = useContext(TagContext);
   const { id, authHeader } = useSelector((state) => state.auth);
 
+  const { width } = Dimensions.get('window');
+
   const navigateToTag = (index) => {
     navigation.navigate('Tag', { index, routeName: 'Content' });
   };
@@ -30,12 +33,18 @@ export default function ContentLibrary({ navigation }) {
   /* List of Tags */
   const [data, setData] = useState([]);
 
+  /* List of Categories */
+  const [categories, setCategories] = useState([]);
+
   useEffect(() => {
     /* Grab all Tags and initalize the Tag List State Variable */
     const getAllTags = async () => {
       try {
         /* Grab all tags */
-        const tags = [{ id: '0', tagName: 'hi' }, { id: '1', tagName: 'social anxiety' }, { id: '2', tagName: 'relaxation' }, { id: '3', tagName: 'exercise' }, { id: '4', tagName: 'tag1' }, { id: '5', tagName: 'tag2' }, { id: '6', tagName: 'tag3' }];
+        const tags = [{ id: '0', tagName: 'Boundaries', category: 'Relationships' }, { id: '1', tagName: 'social anxiety', category: 'Emotional Well-Being' }, { id: '2', tagName: 'relaxation', category: 'Identity + Self - Perception' }, { id: '3', tagName: 'exercise', category: 'Mental Health Condition' }, { id: '4', tagName: 'tag1', category: 'Coping' }, { id: '5', tagName: 'tag2', category: 'Support' }, { id: '6', tagName: 'tag3', category: 'Trauma + Recovery' }];
+
+        /* Grab all Categories */
+        const categories = [{ id: '0', tagName: 'Coping' }, { id: '1', tagName: 'Emotional Well-Being' }, { id: '2', tagName: 'Identity + Self - Perception' }, { id: '3', tagName: 'Lifestyle + Wellness' }, { id: '4', tagName: 'Mental Health Condition' }, { id: '5', tagName: 'Relationships' }, { id: '6', tagName: 'Self-Improvement + Growth' }, { id: '7', tagName: 'Support' }, { id: '8', tagName: 'Trauma + Recovery' }];
 
         /* Grab user's favorite list */
         const resFavorites = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/getFavorites`, { headers: authHeader, params: { id } });
@@ -48,6 +57,9 @@ export default function ContentLibrary({ navigation }) {
 
         /* Set Initial Data for Render Functions */
         setData(tags);
+
+        /* Set List for Categories */
+        setCategories(categories);
       } catch (err) {
         console.error(err);
       }
@@ -119,47 +131,49 @@ export default function ContentLibrary({ navigation }) {
 
   return (
     <View
-      style={[style.container, { paddingLeft: 25 }]}
+      style={[style.container]}
     >
-      <View style={[style.titleRow, { paddingTop: 75, flexBasis: 125, backgroundColor: 'white' }]}>
-        <Text style={style.title}>Content</Text>
-        <View style={style.row}>
-          <View>
-            <TouchableOpacity
-              onPress={() => navigateToFavorites()}
-              style={style.bookmarkBackground}
-            >
-              <View style={style.bookmarkContainer}>
-                <Image
-                  source={bookmark}
-                  style={style.bookmark}
+      <View style={{ paddingLeft: width / 18 }}>
+        <View style={[style.titleRow, { paddingTop: 75, paddingRight: 40, flexBasis: 125 }]}>
+          <Text style={style.title}>Content</Text>
+          <View style={style.row}>
+            <View>
+              <TouchableOpacity
+                onPress={() => navigateToFavorites()}
+                style={style.bookmarkBackground}
+              >
+                <View style={style.bookmarkContainer}>
+                  <Image
+                    source={bookmark}
+                    style={style.bookmark}
+                  />
+                </View>
+              </TouchableOpacity>
+            </View>
+            <View style={{ width: 12 }} />
+            <View>
+              <TouchableOpacity onPress={openSearch} style={style.bookmarkBackground}>
+                <View style={style.bookmarkContainer}>
+                  <Image
+                    source={searchImage}
+                    style={style.search}
+                  />
+                </View>
+                <SearchBar
+                  visible={isOpen}
+                  onClose={closeSearch}
+                  onSearch={handleSearch}
+                  recentSearches={recentSearches}
                 />
-              </View>
-            </TouchableOpacity>
-          </View>
-          <View style={{ width: 12 }} />
-          <View>
-            <TouchableOpacity onPress={openSearch} style={style.bookmarkBackground}>
-              <View style={style.bookmarkContainer}>
-                <Image
-                  source={searchImage}
-                  style={style.search}
-                />
-              </View>
-              <SearchBar
-                visible={isOpen}
-                onClose={closeSearch}
-                onSearch={handleSearch}
-                recentSearches={recentSearches}
-              />
-            </TouchableOpacity>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
-      </View>
-      <View style={[style.row, { flexBasis: 35 }]}>
-        <Text style={style.subheading}>
-          Recommended for You
-        </Text>
+        <View style={[style.row]}>
+          <Text style={style.subheading}>
+            Recommended for You
+          </Text>
+        </View>
       </View>
       <View style={[style.row, { flex: 1 }]}>
         <FlatList
@@ -168,22 +182,23 @@ export default function ContentLibrary({ navigation }) {
           renderItem={horizontalRenderItem}
           keyExtractor={(item) => item.id}
           showsHorizontalScrollIndicator={false}
+          style={{ paddingLeft: width / 18 }}
         />
       </View>
-      <View
-        style={{ borderBottomColor: 'grey', borderBottomWidth: 0.75, opacity: 0.25 }}
-      />
-      <View style={[style.row, { flexBasis: 35 }]}>
+      <View style={[style.row, { flexBasis: 35, paddingLeft: width / 18 }]}>
         <Text style={style.subheading}>
           All Categories
         </Text>
       </View>
-      <View style={[style.row, { flex: 2, paddingTop: 15 }]}>
+
+      <View style={[style.row, { flex: 2 }]}>
         <FlatList
-          data={data}
+          data={categories}
           renderItem={verticalRenderItem}
           keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator={false}
+          numColumns={2}
+          style={{ paddingLeft: width / 18 }}
         />
       </View>
     </View>
