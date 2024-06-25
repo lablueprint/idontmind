@@ -130,6 +130,13 @@ export default function ContentLibrary({ navigation }) {
     <View
       style={[style.container, { paddingLeft: 25 }]}
     >
+      <SearchBar
+        navigation={navigation}
+        visible={isOpen}
+        onClose={closeSearch}
+        onSearch={handleSearch}
+        recentSearches={recentSearches}
+      />
       <View style={[style.titleRow, { paddingTop: 75, flexBasis: 125, backgroundColor: 'white' }]}>
         <Text style={style.title}>Content</Text>
         <View style={style.row}>
@@ -155,14 +162,21 @@ export default function ContentLibrary({ navigation }) {
                   style={style.search}
                 />
               </View>
-              <SearchBar
+              {/* <SearchBar
                 navigation={navigation}
                 visible={isOpen}
                 onClose={closeSearch}
                 onSearch={handleSearch}
                 recentSearches={recentSearches}
-              />
+              /> */}
             </TouchableOpacity>
+            <SearchBar
+              navigation={navigation}
+              visible={isOpen}
+              onClose={closeSearch}
+              onSearch={handleSearch}
+              recentSearches={recentSearches}
+            />
           </View>
         </View>
       </View>

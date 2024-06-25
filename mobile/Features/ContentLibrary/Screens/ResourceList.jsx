@@ -157,11 +157,9 @@ function ResourceList({ navigation }) {
                       authorName = item.author;
                       // format: [[excerpt_title_1, excerpt_1], [excerpt_title_2, excerpt_2]...]
                       const excerptStrings = Object.values(item.excerpts)
-                        .map((excerpt) => excerpt.trim())
-                        .filter(Boolean);
+                        .map((excerpt) => excerpt.trim());
                       const excerptTitles = Object.values(item.excerpt_titles)
-                        .map((title) => title.trim())
-                        .filter(Boolean);
+                        .map((title) => title.trim());
                       const maxLength = Math.max(excerptStrings.length, excerptTitles.length);
                       const filledExcerpts = [...excerptStrings, ...Array(maxLength - excerptStrings.length).fill('')];
                       const filledTitles = [...excerptTitles, ...Array(maxLength - excerptTitles.length).fill('')];
