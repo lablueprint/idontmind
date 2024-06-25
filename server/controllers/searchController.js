@@ -4,6 +4,7 @@ const QnA = require('../models/QnASchema');
 const OfficialArticle = require('../models/OfficialArticleSchema');
 const OfficialQnA = require('../models/OfficialQnASchema');
 const OfficialPersonalStory = require('../models/OfficialStoriesSchema');
+const OfficialExercise = require('../models/OfficialExerciseSchema');
 
 // filter resources by keyword in title
 const searchByKeyword = async (req, res) => {
@@ -32,6 +33,16 @@ const searchByKeyword = async (req, res) => {
   }
   if (filter === 'All' || filter === 'Personal Stories') {
     aggregateCalls.push(OfficialPersonalStory.aggregate([{
+      $match: {
+        $or: [
+          { title: { $regex: keyword, $options: 'i' } },
+          { excerpts: { $elemMatch: { $regex: keyword, $options: 'i' } } },
+        ],
+      },
+    }]));
+  }
+  if (filter === 'All' || filter === 'Exercises') {
+    aggregateCalls.push(OfficialExercise.aggregate([{
       $match: {
         $or: [
           { title: { $regex: keyword, $options: 'i' } },
@@ -71,6 +82,12 @@ const searchByTag = async (req, res) => {
   if (filter === 'All' || filter === 'Personal Stories') {
     aggregateCalls.push(
       OfficialPersonalStory.aggregate([{ $match: { tags: { $elemMatch: { $in: [tagSearch] } } } }]),
+    );
+  }
+
+  if (filter === 'All' || filter === 'Exercises') {
+    aggregateCalls.push(
+      OfficialExercise.aggregate([{ $match: { tags: { $elemMatch: { $in: [tagSearch] } } } }]),
     );
   }
 

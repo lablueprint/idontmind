@@ -54,7 +54,7 @@ function ResourceList({ navigation }) {
     // get all the tags under this filter
     const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/test/searchByTag`, { tag: subtopicName, filter: item });
     setResources(res.data);
-    console.log(resources);
+    // console.log(resources);
   };
 
   useEffect(() => {
@@ -155,17 +155,27 @@ function ResourceList({ navigation }) {
                     if (item.title) {
                       resourceName = item.title;
                       authorName = item.author;
+                      // format: [[excerpt_title_1, excerpt_1], [excerpt_title_2, excerpt_2]...]
                       const excerptStrings = Object.values(item.excerpts)
                         .map((excerpt) => excerpt.trim())
                         .filter(Boolean);
+                      const excerptTitles = Object.values(item.excerpt_titles)
+                        .map((title) => title.trim())
+                        .filter(Boolean);
+                      const maxLength = Math.max(excerptStrings.length, excerptTitles.length);
+                      const filledExcerpts = [...excerptStrings, ...Array(maxLength - excerptStrings.length).fill('')];
+                      const filledTitles = [...excerptTitles, ...Array(maxLength - excerptTitles.length).fill('')];
+                      content = filledExcerpts.map(
+                        (excerpt, index) => [filledTitles[index], excerpt],
+                      );
 
-                      content = excerptStrings;
+                      // content = excerptStrings;
                     } else if (item['Journal Prompts']) {
                       resourceName = item['Journal Prompts'];
                     } else {
                       resourceName = item.question;
                       authorName = item.who_answered;
-                      content = [item.answer];
+                      content = [['', item.answer]];
                     }
 
                     return (

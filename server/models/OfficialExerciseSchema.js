@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
-const OfficialStoriesSchema = new mongoose.Schema({
-  content_type: {
-    default: '',
+const OfficialExerciseSchema = new mongoose.Schema({
+  subtitle: {
+    required: true,
     type: String,
   },
   title: {
@@ -31,4 +31,4 @@ const OfficialStoriesSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('OfficialPersonal-Stories', OfficialStoriesSchema, 'officialpersonal-stories');
+module.exports = mongoose.model('OfficialExercise', OfficialExerciseSchema, 'officialcoping-ground');

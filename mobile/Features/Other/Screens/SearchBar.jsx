@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import {
-  View, Text, TextInput, Modal, Button, TouchableOpacity, ScrollView, Image,
+  View, Text, TextInput, Modal, Button, TouchableOpacity, ScrollView, Image, Pressable,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import DropDownPicker from 'react-native-dropdown-picker';
 import axios from 'axios';
 import SearchBarStyle from './SearchBarStyle';
-import Bookmark from './Bookmark';
+import Bookmark from '../Components/Bookmark';
 import timeline from '../../../assets/images/time_line.png';
 import clear from '../../../assets/images/clear.png';
 
 export default function SearchBar({
-  visible, onClose, onSearch, recentSearches,
+  navigation, visible, onClose, onSearch, recentSearches,
 }) {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('Tags');
@@ -36,6 +36,16 @@ export default function SearchBar({
     setSearchQuery(query);
     handleSearch(query, filterQuery, type);
     setEnterPressed(true);
+  };
+
+  const navigateToResource = (resourceName, authorName, content, tags) => {
+    console.log('Navigating to Resource with:', {
+      resourceName, authorName, content, tags,
+    });
+
+    navigation.navigate('Resource', {
+      resourceName, authorName, content, tags, routeName: 'Content Library',
+    });
   };
 
   const [items, setItems] = useState([
@@ -175,27 +185,50 @@ export default function SearchBar({
               {
                 results.map((item) => {
                   let resourceName;
+                  let authorName;
+                  let content;
                   if (item.title) {
                     resourceName = item.title;
+                    authorName = item.author;
+                    // format: [[excerpt_title_1, excerpt_1], [excerpt_title_2, excerpt_2]...]
+                    const excerptStrings = Object.values(item.excerpts)
+                      .map((excerpt) => excerpt.trim())
+                      .filter(Boolean);
+                    const excerptTitles = Object.values(item.excerpt_titles)
+                      .map((title) => title.trim())
+                      .filter(Boolean);
+                    const maxLength = Math.max(excerptStrings.length, excerptTitles.length);
+                    const filledExcerpts = [...excerptStrings, ...Array(maxLength - excerptStrings.length).fill('')];
+                    const filledTitles = [...excerptTitles, ...Array(maxLength - excerptTitles.length).fill('')];
+                    content = filledExcerpts.map(
+                      (excerpt, index) => [filledTitles[index], excerpt],
+                    );
+
+                    // content = excerptStrings;
                   } else if (item['Journal Prompts']) {
                     resourceName = item['Journal Prompts'];
                   } else {
                     resourceName = item.question;
-                  }
-                  let authorName;
-                  if (item.author) {
-                    authorName = item.author;
-                  } else {
                     authorName = item.who_answered;
+                    content = [['', item.answer]];
                   }
+
                   return (
-                    <Bookmark
+                    <Pressable
                       key={resourceName}
-                      resourceName={resourceName}
-                      author={authorName}
+                      onPress={() => navigateToResource(
+                        resourceName,
+                        authorName,
+                        content,
+                        item.tags,
+                      )}
                     >
-                      {item.authorName}
-                    </Bookmark>
+                      <Bookmark
+                        resourceName={resourceName}
+                        author={authorName}
+                      />
+
+                    </Pressable>
                   );
                 })
               }
@@ -208,6 +241,9 @@ export default function SearchBar({
 }
 
 SearchBar.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+  }).isRequired,
   visible: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onSearch: PropTypes.func.isRequired,

@@ -13,7 +13,7 @@ import searchImage from '../../../assets/images/search.png';
 import Card from '../Components/Card';
 import TagContext from '../Context/TagContext';
 // do want to change routing though:
-import SearchBar from '../../Other/Components/SearchBar';
+import SearchBar from '../../Other/Screens/SearchBar';
 import jsonData from '../../../content_library.json';
 
 export default function ContentLibrary({ navigation }) {
@@ -156,6 +156,7 @@ export default function ContentLibrary({ navigation }) {
                 />
               </View>
               <SearchBar
+                navigation={navigation}
                 visible={isOpen}
                 onClose={closeSearch}
                 onSearch={handleSearch}

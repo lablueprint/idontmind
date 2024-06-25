@@ -24,7 +24,6 @@ function Resource({ navigation }) {
   let authorName = route.params?.authorName;
   if (!authorName) authorName = 'Anonymous'; // placeholder
   const content = route.params?.content;
-  console.log(content);
 
   const routeName = route.params?.routeName;
   const tagName = route.params?.tagName;
@@ -115,14 +114,32 @@ function Resource({ navigation }) {
         </ScrollView>
       </View>
       <ScrollView>
-        {content.map((excerpt) => {
-          if (excerpt.trim() !== '') {
+        {content.map((item) => {
+          if (item[0].trim() !== '' && item[1].trim !== '') {
             return (
-              <Text key={excerpt} style={{ fontSize: 16, fontFamily: 'cabinet-grotesk-regular' }}>
-
-                {excerpt}
+              <View>
+                <Text key={item[0]} style={{ fontSize: 24, fontFamily: 'recoleta' }}>
+                  {item[0]}
+                </Text>
+                <Text key={item[1]} style={{ fontSize: 16, fontFamily: 'cabinet-grotesk-regular' }}>
+                  {item[1]}
+                  {'\n'}
+                </Text>
+              </View>
+            );
+          }
+          if (item[0].trim() !== '') {
+            return (
+              <Text key={item[0]} style={{ fontSize: 24, fontFamily: 'recoleta' }}>
+                {item[0]}
+              </Text>
+            );
+          }
+          if (item[1].trim() !== '') {
+            return (
+              <Text key={item[1]} style={{ fontSize: 16, fontFamily: 'cabinet-grotesk-regular' }}>
+                {item[1]}
                 {'\n'}
-
               </Text>
             );
           }
