@@ -5,6 +5,8 @@ import {
 import { useRoute } from '@react-navigation/native';
 import ProgressBar from 'react-native-progress/Bar';
 import PropTypes from 'prop-types';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
 import styles from './AddColorStyles';
 
 function AddIcon({ navigation }) {
@@ -23,9 +25,40 @@ function AddIcon({ navigation }) {
   // state to keep track of which color the user chose
   const [colorChosen, setColorChosen] = useState('');
 
+  const { email, authHeader } = useSelector((state) => state.auth);
+
   // also navigate back to the original activity screen and pass the activity and color chosen
-  const continueButton = () => {
-    navigation.navigate('Activity', { activityPassedIn, iconChosen: colorChosen });
+  const continueButton = async () => {
+    try {
+      const res = await axios.post(
+        `${process.env.EXPO_PUBLIC_SERVER_URL}/timeSerie/addCustomActivity`,
+        {
+          email,
+          activity: activityPassedIn,
+          icon: colorChosen,
+        },
+        { headers: authHeader },
+      );
+      if (res.status === 201) {
+        navigation.navigate('Activity', {
+          activityPassedIn,
+          iconChosen: colorChosen,
+        });
+      } else {
+        console.error('Failed to save custom activity:', res.statusText);
+      }
+    } catch (err) {
+      console.error('Failed to fetch:', err);
+      if (err.response) {
+        console.error('Error response data:', err.response.data);
+        console.error('Error response status:', err.response.status);
+        console.error('Error response headers:', err.response.headers);
+      } else if (err.request) {
+        console.error('Error request:', err.request);
+      } else {
+        console.error('Error message:', err.message);
+      }
+    }
   };
 
   return (
