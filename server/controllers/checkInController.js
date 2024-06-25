@@ -25,9 +25,9 @@ const connectToDatabaseTimeSeries = async () => {
 
     // Check if the collection already exists and create it if it doesn't
     const existingCollections = await db.listCollections().toArray();
-    const collectionExists = existingCollections.some((collection) => collection.name === 'checkin_time_series2');
+    const collectionExists = existingCollections.some((collection) => collection.name === 'checkin_time_series3');
     if (!collectionExists) {
-      await db.createCollection('checkin_time_series2', collectionOptions);
+      await db.createCollection('checkin_time_series3', collectionOptions);
       console.log('Collection created successfully');
     }
 
@@ -41,7 +41,7 @@ const connectToDatabaseTimeSeries = async () => {
 const createCheckIn = async (data) => {
   try {
     const db = await connectToDatabaseTimeSeries();
-    const collection = db.collection('checkin_time_series2');
+    const collection = db.collection('checkin_time_series3');
     await collection.insertMany([
       {
         timestamp: new Date(),

@@ -46,4 +46,4 @@ const TimeSerie = new mongoose.Schema(
   },
 );
 
-module.exports = mongoose.model('checkin_time_series2', TimeSerie);
+module.exports = mongoose.model('checkin_time_series3', TimeSerie);

@@ -14,6 +14,56 @@ import { useSelector } from 'react-redux';
 // note need to change mood to energy?? (energy is strings but mood is #s)
 // note rn water intake in mongo db is used for mood
 // mood, sleep, energy, water
+// function TrendSection({
+//   header, description, data, data2, avg,
+// }) {
+//   let result = '';
+//   if (avg < 0) {
+//     result = `${Math.round(avg) * -1}% decrease `;
+//   } else {
+//     result = `${Math.round(avg)}% increase `;
+//   }
+
+//   console.log("data: ", data);
+//   console.log("data2: ", data2);
+
+//   return (
+//     <View style={{
+//       display: 'flex', flexDirection: 'column', gap: 10,
+//     }}
+//     >
+//       <Text style={{ fontSize: 24 }}>{header}</Text>
+//       <Text style={{ fontSize: 14 }}>{description}</Text>
+//       <LineChart
+//         style={{ backgroundColor: 'black' }}
+//         data={data2.reverse()}
+//         data2={data.reverse()}
+//         color1="#5d9e9f"
+//         color2="#bfdbd7"
+//         thickness={5}
+//         width={350}
+//         height={350}
+//         curved
+//         hideDataPoints
+//         hideRules
+//         hideYAxisText
+//         hideAxesAndRules
+//         yAxisLabelWidth={0}
+//         yAxisOffset={0}
+//         isAnimated
+
+//       />
+//       <Text>
+//         Your energy trended a
+//         {' '}
+//         <Text style={{ color: '#82ad98' }}>{result}</Text>
+//         {avg < 0 ? 'downward' : 'upward'}
+//         {' '}
+//         from the previous week.
+//       </Text>
+//     </View>
+//   );
+// }
 function TrendSection({
   header, description, data, data2, avg,
 }) {
@@ -24,6 +74,44 @@ function TrendSection({
     result = `${Math.round(avg)}% increase `;
   }
 
+  // Combine both datasets to handle a 10-day span
+  const totalEntries = 10;
+
+  // Ensure each data point has a unique and properly formatted label
+  const formattedData = data.map((point) => ({
+    ...point,
+    label: new Date(point.label).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }),
+  }));
+
+  const formattedData2 = data2.map((point) => ({
+    ...point,
+    label: new Date(point.label).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }),
+  }));
+
+  // Get unique labels from both datasets
+  const uniqueLabels = Array.from(new Set([...formattedData.map(d => d.label), ...formattedData2.map(d => d.label)]));
+
+  // Sort unique labels
+  uniqueLabels.sort((a, b) => new Date(a) - new Date(b));
+
+  // Create a map of labels to values for both datasets
+  const dataMap = new Map(formattedData.map(d => [d.label, d.value]));
+  const data2Map = new Map(formattedData2.map(d => [d.label, d.value]));
+
+  // Fill in missing data points with null values
+  const alignedData = uniqueLabels.map(label => ({
+    label,
+    value: dataMap.get(label) !== undefined ? dataMap.get(label) : null,
+  }));
+
+  const alignedData2 = uniqueLabels.map(label => ({
+    label,
+    value: data2Map.get(label) !== undefined ? data2Map.get(label) : null,
+  }));
+
+  console.log("alignedData: ", alignedData);
+  console.log("alignedData2: ", alignedData2);
+
   return (
     <View style={{
       display: 'flex', flexDirection: 'column', gap: 10,
@@ -33,22 +121,25 @@ function TrendSection({
       <Text style={{ fontSize: 14 }}>{description}</Text>
       <LineChart
         style={{ backgroundColor: 'black' }}
-        data={data}
-        data2={data2}
+        data={alignedData}
+        data2={alignedData2}
         color1="#bfdbd7"
         color2="#5d9e9f"
         thickness={5}
         width={350}
         height={350}
         curved
-        hideDataPoints
-        hideRules
-        hideYAxisText
-        hideAxesAndRules
-        yAxisLabelWidth={0}
+        hideDataPoints={false} // Ensure data points are shown
+        hideRules={false} // Show rules to make the chart more readable
+        hideYAxisText={false} // Show Y axis text
+        yAxisLabelWidth={50} // Adjust Y axis label width
+        xAxisLabelWidth={50} // Adjust X axis label width
         yAxisOffset={0}
+        xAxisOffset={0}
         isAnimated
-
+        // Customize the X-axis to show all labels
+        xAxisLabelTexts={uniqueLabels}
+        xAxisLabelTextStyle={{ color: 'white', fontSize: 12 }} // Customize X-axis label style
       />
       <Text>
         Your energy trended a
@@ -61,6 +152,7 @@ function TrendSection({
     </View>
   );
 }
+
 
 TrendSection.propTypes = {
   header: PropTypes.string.isRequired,
@@ -132,8 +224,8 @@ export default function TrendsBody({ route }) {
         const endDate = end.toISOString();
 
         const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/timeSerie/getUserTimeSeries`, {
-          email,
-          userId,
+          email: 'user1@example.com',
+          userId: 'user1',
           startDate,
           midDate,
           endDate,
@@ -170,6 +262,9 @@ export default function TrendsBody({ route }) {
     getUserTimeSeries();
   }, []);
 
+  //NOTE!!! i changed the values for the algos to be 1 and 2 are low, 3 and 4 are moderate and 5 is high
+  //!!!
+
   function analyzeMood(currentData, lastData) {
     // combine both datasets to handle a 10-day span
     const totalEntries = 10;
@@ -177,9 +272,17 @@ export default function TrendsBody({ route }) {
     const lastEntriesNeeded = totalEntries - currentLength;
     const combinedData = lastData.slice(-lastEntriesNeeded).concat(currentData);
 
+    // Sort combined data by date
+    const sortedCombinedData = combinedData.sort((a, b) => new Date(a.label) - new Date(b.label));
+    // Log sorted combined data for debugging
+    console.log('energy sortedCombinedData:', sortedCombinedData);
+    // Get the most recent 5 entries
+    const recentFiveEntries = sortedCombinedData.slice(-5);
+    // Log the most recent 5 entries for debugging
+    console.log('energy recentFiveEntries:', recentFiveEntries);
+
     // check for poor sleep quality over the last 5 days
-    const lowMood = combinedData.slice(-5).every((day) => day.value >= 1 && day.value <= 4);
-    console.log('mood combinedData.slice(-5): ', combinedData.slice(-5));
+    const lowMood = recentFiveEntries.every((day) => day.value >= 1 && day.value <= 2);
     if (lowMood) {
       setMoodMessage('Consistently Low Mood (5+ nights): Suggest resources on managing low mood or depression, such as mindfulness exercises, physical activity, or seeking professional help.');
       console.log('Mood message', moodMessage);
@@ -187,7 +290,7 @@ export default function TrendsBody({ route }) {
     }
 
     // check for average sleep quality over the last 10 days
-    const moderateMood = combinedData.every((day) => day.value >= 5 && day.value <= 7);
+    const moderateMood = sortedCombinedData.every((day) => day.value >= 3 && day.value <= 4);
     if (moderateMood) {
       setMoodMessage('Moderate Sleep (10+ nights): Encourage exploration of activities that can enhance mood, like creative hobbies or social engagement.');
       console.log('Mood message', moodMessage);
@@ -195,7 +298,7 @@ export default function TrendsBody({ route }) {
     }
 
     // check for good sleep quality over the last 5 days
-    const highMood = combinedData.slice(-5).every((day) => day.value >= 8);
+    const highMood = recentFiveEntries.every((day) => day.value >= 5);
     if (highMood) {
       setMoodMessage('High Mood (5+ nights):  Provide content on maintaining positive mental health and resilience-building practices.');
       console.log('Mood message', moodMessage);
@@ -213,9 +316,17 @@ export default function TrendsBody({ route }) {
     const lastEntriesNeeded = totalEntries - currentLength;
     const combinedData = lastData.slice(-lastEntriesNeeded).concat(currentData);
 
+    // Sort combined data by date
+    const sortedCombinedData = combinedData.sort((a, b) => new Date(a.label) - new Date(b.label));
+    // Log sorted combined data for debugging
+    console.log('energy sortedCombinedData:', sortedCombinedData);
+    // Get the most recent 5 entries
+    const recentFiveEntries = sortedCombinedData.slice(-5);
+    // Log the most recent 5 entries for debugging
+    console.log('energy recentFiveEntries:', recentFiveEntries);
+
     // check for poor sleep quality over the last 5 days
-    const poorSleep = combinedData.slice(-5).every((day) => day.value >= 1 && day.value <= 4);
-    console.log('sleep combinedData.slice(-5): ', combinedData.slice(-5));
+    const poorSleep = recentFiveEntries.every((day) => day.value >= 1 && day.value <= 2);
     if (poorSleep) {
       setSleepMessage('Poor Sleep Quality (5+ nights): Offer sleep hygiene tips, relaxation techniques before bed, and suggest limiting screen time in the evening.');
       console.log('Sleep message', sleepMessage);
@@ -223,7 +334,7 @@ export default function TrendsBody({ route }) {
     }
 
     // check for average sleep quality over the last 10 days
-    const averageSleep = combinedData.every((day) => day.value >= 5 && day.value <= 7);
+    const averageSleep = sortedCombinedData.every((day) => day.value >= 3 && day.value <= 4);
     if (averageSleep) {
       setSleepMessage('Average Sleep Quality (10+ nights): Suggest fine-tuning sleep environment or routine, exploring relaxation methods like meditation.');
       console.log('Sleep message', sleepMessage);
@@ -231,7 +342,7 @@ export default function TrendsBody({ route }) {
     }
 
     // check for good sleep quality over the last 5 days
-    const goodSleep = combinedData.slice(-5).every((day) => day.value >= 8);
+    const goodSleep = recentFiveEntries.every((day) => day.value >= 5);
     if (goodSleep) {
       setSleepMessage('Good Sleep Quality (5+ nights): Reinforce current sleep habits and explore additional practices for restful sleep, like regular exercise.');
       console.log('Sleep message', sleepMessage);
@@ -245,30 +356,43 @@ export default function TrendsBody({ route }) {
   function analyzeEnergyLevels(currentData, lastData) {
     // note: need to check for if there aren't enough entries to check
     // (like if there weren't 5 past days, you can't do .slice(-5))
+  
     // combine both datasets to handle a 10-day span
     const totalEntries = 10;
     const currentLength = currentData.length;
     const lastEntriesNeeded = totalEntries - currentLength;
     const combinedData = lastData.slice(-lastEntriesNeeded).concat(currentData);
 
+    // Sort combined data by date
+    const sortedCombinedData = combinedData.sort((a, b) => new Date(a.label) - new Date(b.label));
+    // Log sorted combined data for debugging
+    console.log('energy sortedCombinedData:', sortedCombinedData);
+    // Get the most recent 5 entries
+    const recentFiveEntries = sortedCombinedData.slice(-5);
+    // Log the most recent 5 entries for debugging
+    console.log('energy recentFiveEntries:', recentFiveEntries);
+
     // check for consistently low energy over the last 5 days
-    const lowEnergy = combinedData.slice(-5).every((day) => day.level === 'Low');
+    const lowEnergy = recentFiveEntries.every((day) => day.value >= 1 && day.value <= 2);
     if (lowEnergy) {
       setEnergyMessage('Consistently Low Energy (5+ days): Suggest reviewing diet and physical activity levels, offer strategies for managing stress, and consider recommending a health check-up if persistent.');
+      console.log('Energy message', energyMessage);
       return;
     }
 
     // check for moderate energy over the last 10 days
-    const moderateEnergy = combinedData.slice(-10).every((day) => day.level === 'Moderate');
+    const moderateEnergy = sortedCombinedData.every((day) => day.value >= 3 && day.value <= 4);
     if (moderateEnergy) {
       setEnergyMessage('Moderate Energy (10+ days): Encourage activities that naturally boost energy, such as short, brisk walks, hydration, and balanced meals.');
+      console.log('Energy message', energyMessage);
       return;
     }
 
     // check for consistently high energy over the last 5 days
-    const highEnergy = combinedData.slice(-5).every((day) => day.level === 'High');
+    const highEnergy = recentFiveEntries.every((day) => day.value >= 5);
     if (highEnergy) {
       setEnergyMessage('Consistently High Energy (5+ days): Suggest channeling this energy into productive activities, like exercise, hobbies, or social projects.');
+      console.log('Energy message', energyMessage);
       return;
     }
     // delete this later:
@@ -358,10 +482,8 @@ export default function TrendsBody({ route }) {
             )
             : null}
         </View>
-        <TrendSection header="Energy Levels" description="Tracking mood changes over time" data={lastPeriodWater} data2={currentPeriodWater} avg={avgWaterPercentage} />
-        <View style={{ marginBottom: 75 }}>
-          <TrendSection header="Sleep Quality" description="Monitoring sleep patterns and quality." data={lastPeriodSleep} data2={currentPeriodSleep} avg={avgSleepPercentage} />
-        </View>
+        <TrendSection header="Mood Levels" description="Tracking mood changes over time" data={lastPeriodMood} data2={currentPeriodMood} avg={avgMoodPercentage} />
+        <TrendSection header="Sleep Quality" description="Monitoring sleep patterns and quality." data={lastPeriodSleep} data2={currentPeriodSleep} avg={avgSleepPercentage} />
         <View style={{ marginBottom: 75 }}>
         <TrendSection header="Energy Levels" description="Observing energy levels throughout the day." data={lastPeriodEnergy} data2={currentPeriodEnergy} avg={avgEnergyPercentage} />
         </View>
