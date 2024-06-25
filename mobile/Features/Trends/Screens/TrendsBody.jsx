@@ -9,6 +9,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import TrendsHeader from '../Components/TrendsHeader';
 import Bookmark from '../../Other/Components/Bookmark';
 import styles from './TrendsPageStyles';
+import { useSelector } from 'react-redux';
 
 // note need to change mood to energy?? (energy is strings but mood is #s)
 // note rn water intake in mongo db is used for mood
@@ -83,59 +84,85 @@ TrendSection.propTypes = {
 };
 
 export default function TrendsBody({ route }) {
+  const [lastPeriodMood, setLastPeriodMood] = useState([]);
+  const [currentPeriodMood, setCurrentPeriodMood] = useState([]);
   const [lastPeriodSleep, setLastPeriodSleep] = useState([]);
   const [currentPeriodSleep, setCurrentPeriodSleep] = useState([]);
-  const [lastPeriodWater, setLastPeriodWater] = useState([]);
-  const [currentPeriodWater, setCurrentPeriodWater] = useState([]);
+  const [lastPeriodEnergy, setLastPeriodEnergy] = useState([]);
+  const [currentPeriodEnergy, setCurrentPeriodEnergy] = useState([]);
+  const [avgMoodPercentage, setAvgMoodPercentage] = useState(0);
   const [avgSleepPercentage, setAvgSleepPercentage] = useState(0);
-  const [avgWaterPercentage, setAvgWaterPercentage] = useState(0);
+  const [avgEnergyPercentage, setAvgEnergyPercentage] = useState(0);
   const [moodMessage, setMoodMessage] = useState(null);
   const [sleepMessage, setSleepMessage] = useState(null);
   const [energyMessage, setEnergyMessage] = useState(null);
 
   const { title } = route.params;
 
+  const { email, userId, authHeader} = useSelector((state) => state.auth);
+
   useEffect(() => {
     const getUserTimeSeries = async () => {
       try {
-        const weekOffset = 1;
+        // const weekOffset = 1;
+        // const current = new Date();
+        // const start = new Date(current);
+        // const mid = new Date(current);
+        // const end = new Date(current);
+        // start.setMonth(mid.getMonth() + 1, 0);
+        // mid.setMonth(start.getMonth() + 1, 0); // May 30th
+        // // end.setMonth(mid.getMonth() + 1, 0); // May 30th
+        // start.setDate(current.getDate() - (14 * weekOffset));
+        // mid.setDate(current.getDate() - (7 * weekOffset)); // 7 Days Past
+        // // end.setDate(start.getDate()); // Current Date
+        // const startDate = start.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+        // const midDate = mid.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+        // const endDate = end.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+
+        //replaced above with this:
         const current = new Date();
         const start = new Date(current);
         const mid = new Date(current);
         const end = new Date(current);
-        start.setMonth(mid.getMonth() + 1, 0);
-        mid.setMonth(start.getMonth() + 1, 0); // May 30th
-        // end.setMonth(mid.getMonth() + 1, 0); // May 30th
-        start.setDate(current.getDate() - (14 * weekOffset));
-        mid.setDate(current.getDate() - (7 * weekOffset)); // 7 Days Past
-        // end.setDate(start.getDate()); // Current Date
-        const startDate = start.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-        const midDate = mid.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-        const endDate = end.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+        start.setDate(current.getDate() - 14);
+        mid.setDate(current.getDate() - 7);
+
+        const startDate = start.toISOString();
+        const midDate = mid.toISOString();
+        const endDate = end.toISOString();
 
         const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/timeSerie/getUserTimeSeries`, {
-          email: 'booooooop',
-          userId: 'booop',
+          email,
+          userId,
           startDate,
           midDate,
           endDate,
-        });
+        }, { headers: authHeader });
 
         const {
-          PercentageAvgSleep, PercentageAvgWater, firstPeriod, secondPeriod,
+          PercentageAvgMood,
+          PercentageAvgSleep,
+          PercentageAvgEnergy,
+          firstPeriod,
+          secondPeriod,
         } = res.data[0];
 
+        setLastPeriodMood(firstPeriod.MoodData);
+        setCurrentPeriodMood(secondPeriod.MoodData);
         setLastPeriodSleep(firstPeriod.SleepData);
         setCurrentPeriodSleep(secondPeriod.SleepData);
-        setLastPeriodWater(firstPeriod.WaterData);
-        setCurrentPeriodWater(secondPeriod.WaterData);
+        setLastPeriodEnergy(firstPeriod.EnergyData);
+        setCurrentPeriodEnergy(secondPeriod.EnergyData);
+        setAvgMoodPercentage(PercentageAvgMood);
         setAvgSleepPercentage(PercentageAvgSleep);
-        setAvgWaterPercentage(PercentageAvgWater);
+        setAvgEnergyPercentage(PercentageAvgEnergy);
 
-        // console.log('Last period sleep: ', lastPeriodSleep);
-        // console.log('Current period sleep: ', currentPeriodSleep);
-        // console.log('Last period water: ', lastPeriodWater);
-        // console.log('Current period water: ', currentPeriodWater);
+        console.log('Last period mood: ', lastPeriodMood);
+        console.log('Current period mood: ', currentPeriodMood);
+        console.log('Last period sleep: ', lastPeriodSleep);
+        console.log('Current period sleep: ', currentPeriodSleep);
+        console.log('Last period energy: ', lastPeriodEnergy);
+        console.log('Current period energy: ', currentPeriodEnergy);
       } catch (err) {
         console.error(err);
       }
@@ -250,10 +277,10 @@ export default function TrendsBody({ route }) {
   }
 
   useEffect(() => {
-    if (currentPeriodWater.length && lastPeriodWater.length) {
-      analyzeMood(currentPeriodWater, lastPeriodWater);
+    if (currentPeriodMood.length && lastPeriodMood.length) {
+      analyzeMood(currentPeriodMood, lastPeriodMood);
     }
-  }, [currentPeriodWater, lastPeriodWater]);
+  }, [currentPeriodMood, lastPeriodMood]);
 
   useEffect(() => {
     if (currentPeriodSleep.length && lastPeriodSleep.length) {
@@ -261,13 +288,13 @@ export default function TrendsBody({ route }) {
     }
   }, [currentPeriodSleep, lastPeriodSleep]);
 
-  // uncomment this once we have the data for energy levels
   // (energy levels should be string data, not #s)
-  // useEffect(() => {
-  //   if (currentPeriodWater.length && lastPeriodWater.length) {
-  //     analyzeEnergyLevels(currentPeriodWater, lastPeriodWater);
-  //   }
-  // }, [currentPeriodWater, lastPeriodWater]);
+  useEffect(() => {
+    if (currentPeriodEnergy.length && lastPeriodEnergy.length) {
+      analyzeEnergyLevels(currentPeriodEnergy, lastPeriodEnergy);
+    }
+  }, [currentPeriodEnergy, lastPeriodEnergy]);
+
 
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -331,9 +358,12 @@ export default function TrendsBody({ route }) {
             )
             : null}
         </View>
-        <TrendSection header="Energy Levels" description="Discovering how mood and sleep intertwine offers valuable insights for a healthier, happier you." data={lastPeriodWater} data2={currentPeriodWater} avg={avgWaterPercentage} />
+        <TrendSection header="Energy Levels" description="Tracking mood changes over time" data={lastPeriodWater} data2={currentPeriodWater} avg={avgWaterPercentage} />
         <View style={{ marginBottom: 75 }}>
-          <TrendSection header="Sleep Quality" description="Discovering how mood and sleep intertwine offers valuable insights for a healthier, happier you." data={lastPeriodSleep} data2={currentPeriodSleep} avg={avgSleepPercentage} moodMessage={moodMessage} sleepMessage={sleepMessage} energyMessage={energyMessage} />
+          <TrendSection header="Sleep Quality" description="Monitoring sleep patterns and quality." data={lastPeriodSleep} data2={currentPeriodSleep} avg={avgSleepPercentage} />
+        </View>
+        <View style={{ marginBottom: 75 }}>
+        <TrendSection header="Energy Levels" description="Observing energy levels throughout the day." data={lastPeriodEnergy} data2={currentPeriodEnergy} avg={avgEnergyPercentage} />
         </View>
       </LinearGradient>
     </ScrollView>
