@@ -1,27 +1,41 @@
 const Article = require('../models/ArticleSchema');
 const QnA = require('../models/QnASchema');
 
+const OfficialArticle = require('../models/OfficialArticleSchema');
+const OfficialQnA = require('../models/OfficialQnASchema');
+const OfficialPersonalStory = require('../models/OfficialStoriesSchema');
+
 // filter resources by keyword in title
 const searchByKeyword = async (req, res) => {
   const { keyword, filter } = req.body;
   const aggregateCalls = [];
 
   if (filter === 'All' || filter === 'Articles') {
-    aggregateCalls.push(Article.aggregate([{
+    aggregateCalls.push(OfficialArticle.aggregate([{
       $match: {
         $or: [
-          { Title: { $regex: keyword, $options: 'i' } },
-          { Exerpts: { $elemMatch: { $regex: keyword, $options: 'i' } } },
+          { title: { $regex: keyword, $options: 'i' } },
+          { excerpts: { $elemMatch: { $regex: keyword, $options: 'i' } } },
         ],
       },
     }]));
   }
   if (filter === 'All' || filter === 'Q&A') {
-    aggregateCalls.push(QnA.aggregate([{
+    aggregateCalls.push(OfficialQnA.aggregate([{
       $match: {
         $or: [
-          { Question: { $regex: keyword, $options: 'i' } },
-          { Answer: { $regex: keyword, $options: 'i' } },
+          { question: { $regex: keyword, $options: 'i' } },
+          { answer: { $regex: keyword, $options: 'i' } },
+        ],
+      },
+    }]));
+  }
+  if (filter === 'All' || filter === 'Personal Stories') {
+    aggregateCalls.push(OfficialPersonalStory.aggregate([{
+      $match: {
+        $or: [
+          { title: { $regex: keyword, $options: 'i' } },
+          { excerpts: { $elemMatch: { $regex: keyword, $options: 'i' } } },
         ],
       },
     }]));
@@ -44,13 +58,19 @@ const searchByTag = async (req, res) => {
 
   if (filter === 'All' || filter === 'Articles') {
     aggregateCalls.push(
-      Article.aggregate([{ $match: { Tags: { $elemMatch: { $in: [tagSearch] } } } }]),
+      OfficialArticle.aggregate([{ $match: { tags: { $elemMatch: { $in: [tagSearch] } } } }]),
     );
   }
 
   if (filter === 'All' || filter === 'Q&A') {
     aggregateCalls.push(
-      QnA.aggregate([{ $match: { Tags: { $elemMatch: { $in: [tagSearch] } } } }]),
+      OfficialQnA.aggregate([{ $match: { tags: { $elemMatch: { $in: [tagSearch] } } } }]),
+    );
+  }
+
+  if (filter === 'All' || filter === 'Personal Stories') {
+    aggregateCalls.push(
+      OfficialPersonalStory.aggregate([{ $match: { tags: { $elemMatch: { $in: [tagSearch] } } } }]),
     );
   }
 

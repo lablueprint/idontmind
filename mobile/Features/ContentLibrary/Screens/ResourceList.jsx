@@ -40,11 +40,9 @@ function ResourceList({ navigation }) {
   const navigateToTag = () => {
     navigation.navigate('Tag', { index: 0, routeName: 'Content Library', tagName }); // set index to 0 as default for now
   };
-  const navigateToResource = (item) => {
-    const name = item.Title ? item.Title : 'hardcoded title';
-
+  const navigateToResource = (resourceName, authorName, content, tags) => {
     navigation.navigate('Resource', {
-      resourceName: name, routeName: 'Resource List', subtopicName, tagName,
+      resourceName, authorName, content, tags, routeName: 'Resource List', subtopicName, tagName,
     });
   };
 
@@ -151,34 +149,41 @@ function ResourceList({ navigation }) {
                   resources.map((item) => {
                     // the title and author fields are different depending on the content type
                     // Q&A
-                    if (item.Question) {
-                      return (
-                        <Pressable key={item.Question} onPress={() => navigateToResource(item)}>
-                          <Bookmark
-                            resourceName={item.Question}
-                            author={item['Who Answered']}
-                          />
-                        </Pressable>
-                      );
-                    }
-                    // Personal Stories
+                    let resourceName;
+                    let authorName;
+                    let content;
                     if (item.title) {
-                      return (
-                        <Pressable key={item.title} onPress={() => navigateToResource(item)}>
-                          <Bookmark
-                            resourceName={item.title}
-                            author={item.author}
-                          />
-                        </Pressable>
-                      );
+                      resourceName = item.title;
+                      authorName = item.author;
+                      const excerptStrings = Object.values(item.excerpts)
+                        .map((excerpt) => excerpt.trim())
+                        .filter(Boolean);
+
+                      content = excerptStrings;
+                    } else if (item['Journal Prompts']) {
+                      resourceName = item['Journal Prompts'];
+                    } else {
+                      resourceName = item.question;
+                      authorName = item.who_answered;
+                      content = [item.answer];
                     }
-                    // else
+
                     return (
-                      <Pressable key={item.Title} onPress={() => navigateToResource(item)}>
+                      <Pressable
+                        key={resourceName}
+                        onPress={() => navigateToResource(
+                          resourceName,
+                          authorName,
+                          content,
+                          item.tags,
+                        )}
+                      >
+
                         <Bookmark
-                          resourceName={item.Title}
-                          author={item.Author}
+                          resourceName={resourceName}
+                          author={authorName}
                         />
+
                       </Pressable>
                     );
                   })

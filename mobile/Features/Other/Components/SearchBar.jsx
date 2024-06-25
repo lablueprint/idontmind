@@ -175,20 +175,26 @@ export default function SearchBar({
               {
                 results.map((item) => {
                   let resourceName;
-                  if (item.Title) {
-                    resourceName = item.Title;
+                  if (item.title) {
+                    resourceName = item.title;
                   } else if (item['Journal Prompts']) {
                     resourceName = item['Journal Prompts'];
                   } else {
-                    resourceName = item.Question;
+                    resourceName = item.question;
+                  }
+                  let authorName;
+                  if (item.author) {
+                    authorName = item.author;
+                  } else {
+                    authorName = item.who_answered;
                   }
                   return (
                     <Bookmark
                       key={resourceName}
                       resourceName={resourceName}
-                      author={item.Author}
+                      author={authorName}
                     >
-                      {item.Author}
+                      {item.authorName}
                     </Bookmark>
                   );
                 })
