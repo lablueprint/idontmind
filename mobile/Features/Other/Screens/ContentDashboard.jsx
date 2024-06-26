@@ -1,16 +1,44 @@
 import {
   View, Text, TouchableOpacity, Image,
-  ScrollView,
+  ScrollView, FlatList, Dimensions,
 } from 'react-native';
 import PropTypes from 'prop-types';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
 import gear from '../../../assets/images/gear.png';
 import background from '../../../assets/images/contentbackground.png';
 import styles from './ContentDashboardStyle';
 import rightChev from '../../../assets/images/rightChevron.png';
+import ResourceCard from '../Components/ResourceCard';
 
 export default function ContentDashboard({ navigation }) {
+  const [resources, setResources] = useState([]);
+  const { id, authHeader } = useSelector((state) => state.auth);
+
+  /* width of screen */
+  const { width } = Dimensions.get('window');
+
+  useEffect(() => {
+    const getRecommendedResources = async () => {
+      try {
+        const resResources = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/getRecommendedResources`, { id }, { headers: authHeader });
+        const recommendedResources = resResources.data;
+
+        setResources(recommendedResources);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    getRecommendedResources();
+  }, []);
+
   const navigateToDayChallenge = () => {
     navigation.navigate('Day Challenge');
+  };
+
+  const navigateToResource = (resource) => {
+    navigation.navigate('Resource', { resource });
   };
 
   const navigateToOptions = () => {
@@ -86,6 +114,17 @@ export default function ContentDashboard({ navigation }) {
           </TouchableOpacity>
         </View>
         <View style={{ height: 20 }} />
+        <Text style={styles.resources}>Your Resources</Text>
+        <View>
+          {resources.map(
+            (resource) => (
+              <ResourceCard
+                resource={resource}
+                navigateToResource={navigateToResource}
+              />
+            ),
+          )}
+        </View>
         <View style={styles.dailyBookmarkLine}>
           <Text style={styles.dailydiscovery}>Daily Discovery</Text>
           <TouchableOpacity>

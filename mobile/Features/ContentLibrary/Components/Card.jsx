@@ -30,19 +30,19 @@ export default function Card({
   } = useContext(TagContext);
   const { email, authHeader } = useSelector((state) => state.auth);
 
-  const { height, width } = Dimensions.get('window');
+  const { width } = Dimensions.get('window');
 
   /* image dict */
   const imageDict = {
-    Relationships,
-    Coping,
-    'Emotional Well-Being': Emotional,
-    'Identity + Self - Perception': identity,
-    'Lifestyle + Wellness': Lifestyle,
-    'Mental Health Condition': Mental,
-    'Self-Improvement + Growth': Improvement,
-    Support,
-    'Trauma + Recovery': Trauma,
+    relationships: Relationships,
+    coping: Coping,
+    ewb: Emotional,
+    identity,
+    lifestyle: Lifestyle,
+    mental: Mental,
+    self: Improvement,
+    support: Support,
+    trauma: Trauma,
   };
   /* subtopics color dict */
   const subTopicColorDict = {

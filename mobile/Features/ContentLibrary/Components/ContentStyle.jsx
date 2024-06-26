@@ -21,6 +21,9 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     maxWidth: '100%',
+    paddingTop: 75,
+    paddingRight: 40,
+    flexBasis: 125,
   },
   row: {
     flexDirection: 'row',

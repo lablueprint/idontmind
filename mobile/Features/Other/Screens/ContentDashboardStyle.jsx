@@ -25,6 +25,13 @@ export default StyleSheet.create({
     paddingBottom: 5,
     paddingTop: 15,
   },
+  resources: {
+    fontFamily: 'cabinet-grotesk-medium',
+    fontSize: 24,
+    color: '#343A3A',
+    paddingBottom: 5,
+    paddingTop: 15,
+  },
   dailydiscovery: {
     fontFamily: 'cabinet-grotesk-regular',
     fontSize: 24,

@@ -7,23 +7,28 @@ import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import style from '../Components/ContentStyle';
-import starImage from '../../../assets/images/star.png';
-import filterImage from '../../../assets/images/filter.png';
 import bookmark from '../../../assets/images/bookmark_fill.png';
 import searchImage from '../../../assets/images/search.png';
-import Card from '../Components/Card';
 import TagContext from '../Context/TagContext';
 // do want to change routing though:
 import SearchBar from '../../Other/Components/SearchBar';
+import jsonData from '../../../content_library.json';
+import CategoryCard from '../Components/CategoryCard';
+import RecommendationCard from '../Components/RecommendationCard';
 
 export default function ContentLibrary({ navigation }) {
   const { initTags, initFavorites } = useContext(TagContext);
   const { id, authHeader } = useSelector((state) => state.auth);
 
+  /* width of screen */
   const { width } = Dimensions.get('window');
 
   const navigateToTag = (index) => {
     navigation.navigate('Tag', { index, routeName: 'Content' });
+  };
+
+  const navigateToResourceList = (subtopicName) => {
+    navigation.navigate('Resource List', { subtopicName });
   };
 
   const navigateToFavorites = () => {
@@ -31,20 +36,22 @@ export default function ContentLibrary({ navigation }) {
   };
 
   /* List of Tags */
-  const [data, setData] = useState([]);
+  const [tags, setTags] = useState([]);
 
   /* List of Categories */
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     /* Grab all Tags and initalize the Tag List State Variable */
-    const getAllTags = async () => {
+
+    const getAllTagsAndCategories = async () => {
       try {
         /* Grab all tags */
-        const tags = [{ id: '0', tagName: 'Boundaries', category: 'Relationships' }, { id: '1', tagName: 'social anxiety', category: 'Emotional Well-Being' }, { id: '2', tagName: 'relaxation', category: 'Identity + Self - Perception' }, { id: '3', tagName: 'exercise', category: 'Mental Health Condition' }, { id: '4', tagName: 'tag1', category: 'Coping' }, { id: '5', tagName: 'tag2', category: 'Support' }, { id: '6', tagName: 'tag3', category: 'Trauma + Recovery' }];
+        const resTags = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/getRecommendedTags`, { id }, { headers: authHeader });
+        const recommendedTags = resTags.data;
 
         /* Grab all Categories */
-        const categories = [{ id: '0', tagName: 'Coping' }, { id: '1', tagName: 'Emotional Well-Being' }, { id: '2', tagName: 'Identity + Self - Perception' }, { id: '3', tagName: 'Lifestyle + Wellness' }, { id: '4', tagName: 'Mental Health Condition' }, { id: '5', tagName: 'Relationships' }, { id: '6', tagName: 'Self-Improvement + Growth' }, { id: '7', tagName: 'Support' }, { id: '8', tagName: 'Trauma + Recovery' }];
+        const allCategories = Object.keys(jsonData);
 
         /* Grab user's favorite list */
         const resFavorites = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/getFavorites`, { headers: authHeader, params: { id } });
@@ -55,35 +62,30 @@ export default function ContentLibrary({ navigation }) {
         /* Set Context List for Tags */
         initTags(tags);
 
-        /* Set Initial Data for Render Functions */
-        setData(tags);
+        /* Set List of tags */
+        setTags(recommendedTags);
 
         /* Set List for Categories */
-        setCategories(categories);
+        setCategories(allCategories);
       } catch (err) {
         console.error(err);
       }
     };
-    getAllTags();
+    getAllTagsAndCategories();
   }, []);
 
   /* RenderItem function for Horizontal Card Carousel */
-  const horizontalRenderItem = ({ item, index }) => (
-    <Card
-      navigateToTag={navigateToTag}
-      index={index}
-      item={item}
-      orientation="horizontal"
+  const horizontalRenderItem = ({ item }) => (
+    <RecommendationCard
+      navigateToResourceList={navigateToResourceList}
+      tagName={item}
     />
   );
 
   /* RenderItem function for Vertical Card Carousel */
-  const verticalRenderItem = ({ item, index }) => (
-    <Card
-      navigateToTag={navigateToTag}
-      index={index}
-      item={item}
-      orientation="vertical"
+  const verticalRenderItem = ({ item }) => (
+    <CategoryCard
+      categoryName={item}
     />
   );
 
@@ -134,7 +136,7 @@ export default function ContentLibrary({ navigation }) {
       style={[style.container]}
     >
       <View style={{ paddingLeft: width / 18 }}>
-        <View style={[style.titleRow, { paddingTop: 75, paddingRight: 40, flexBasis: 125 }]}>
+        <View style={[style.titleRow]}>
           <Text style={style.title}>Content</Text>
           <View style={style.row}>
             <View>
@@ -178,7 +180,7 @@ export default function ContentLibrary({ navigation }) {
       <View style={[style.row, { flex: 1 }]}>
         <FlatList
           horizontal
-          data={data}
+          data={tags}
           renderItem={horizontalRenderItem}
           keyExtractor={(item) => item.id}
           showsHorizontalScrollIndicator={false}
@@ -195,7 +197,6 @@ export default function ContentLibrary({ navigation }) {
         <FlatList
           data={categories}
           renderItem={verticalRenderItem}
-          keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator={false}
           numColumns={2}
           style={{ paddingLeft: width / 18 }}
