@@ -6,7 +6,16 @@ import { useRoute } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
-import sleepFace from '../../assets/images/sleepFace.png';
+import activity1 from '../../assets/images/activity/activity1.png';
+import activity2 from '../../assets/images/activity/activity2.png';
+import activity3 from '../../assets/images/activity/activity3.png';
+import activity4 from '../../assets/images/activity/activity4.png';
+import activity5 from '../../assets/images/activity/activity5.png';
+import activity6 from '../../assets/images/activity/activity6.png';
+import activity7 from '../../assets/images/activity/activity7.png';
+import activity8 from '../../assets/images/activity/activity8.png';
+import activity9 from '../../assets/images/activity/activity9.png';
+
 import styles from './MoodStyle';
 
 function Activity({ navigation }) {
@@ -137,9 +146,9 @@ function Activity({ navigation }) {
   // activityImages is an array of each of the rows
   // each row contains activity, image pairs
   const activityImages = [
-    [['JUMPED', sleepFace], ['DANCED', sleepFace], ['RUN', sleepFace]],
-    [['DASHED', sleepFace], ['CONSUMED', sleepFace], ['LAUNCHED', sleepFace]],
-    [['RIZZED', sleepFace], ['DATED', sleepFace], ['GAMED', sleepFace]],
+    [['Exercise', activity1], ['Eating', activity2], ['Reading', activity3]],
+    [['Nature', activity4], ['TV', activity5], ['Music', activity6]],
+    [['Art', activity7], ['Friends', activity8], ['Family', activity9]],
   ];
 
   // Render the activities including the custom ones
@@ -165,17 +174,24 @@ function Activity({ navigation }) {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.heading}>
-        <Text>
-          what brought you joy today?
+        <Text style={styles.headingText}>
+          What brought you
+        </Text>
+        <Text style={styles.headingText}>
+          joy today?
         </Text>
       </View>
       <View style={styles.content}>
         {activityImages.map((row, rowIndex) => (
           <View key={rowIndex} style={styles.moodRow}>
             {row.map(([activity, icon]) => (
-              <Pressable key={activity} style={styles.singularMood} onPress={() => pressActivity(activity)}>
-                <Image source={icon} />
-                <Text>{activity}</Text>
+              <Pressable
+                key={activity}
+                style={styles.singularMood}
+                onPress={() => pressActivity(activity)}
+              >
+                <Image source={icon} style={styles.icon} />
+                <Text style={styles.activityText}>{activity}</Text>
               </Pressable>
             ))}
           </View>
