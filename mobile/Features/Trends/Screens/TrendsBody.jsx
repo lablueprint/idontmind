@@ -14,56 +14,6 @@ import { useSelector } from 'react-redux';
 // note need to change mood to energy?? (energy is strings but mood is #s)
 // note rn water intake in mongo db is used for mood
 // mood, sleep, energy, water
-// function TrendSection({
-//   header, description, data, data2, avg,
-// }) {
-//   let result = '';
-//   if (avg < 0) {
-//     result = `${Math.round(avg) * -1}% decrease `;
-//   } else {
-//     result = `${Math.round(avg)}% increase `;
-//   }
-
-//   console.log("data: ", data);
-//   console.log("data2: ", data2);
-
-//   return (
-//     <View style={{
-//       display: 'flex', flexDirection: 'column', gap: 10,
-//     }}
-//     >
-//       <Text style={{ fontSize: 24 }}>{header}</Text>
-//       <Text style={{ fontSize: 14 }}>{description}</Text>
-//       <LineChart
-//         style={{ backgroundColor: 'black' }}
-//         data={data2.reverse()}
-//         data2={data.reverse()}
-//         color1="#5d9e9f"
-//         color2="#bfdbd7"
-//         thickness={5}
-//         width={350}
-//         height={350}
-//         curved
-//         hideDataPoints
-//         hideRules
-//         hideYAxisText
-//         hideAxesAndRules
-//         yAxisLabelWidth={0}
-//         yAxisOffset={0}
-//         isAnimated
-
-//       />
-//       <Text>
-//         Your energy trended a
-//         {' '}
-//         <Text style={{ color: '#82ad98' }}>{result}</Text>
-//         {avg < 0 ? 'downward' : 'upward'}
-//         {' '}
-//         from the previous week.
-//       </Text>
-//     </View>
-//   );
-// }
 function TrendSection({
   header, description, data, data2, avg,
 }) {
@@ -74,43 +24,8 @@ function TrendSection({
     result = `${Math.round(avg)}% increase `;
   }
 
-  // Combine both datasets to handle a 10-day span
-  const totalEntries = 10;
-
-  // Ensure each data point has a unique and properly formatted label
-  const formattedData = data.map((point) => ({
-    ...point,
-    label: new Date(point.label).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }),
-  }));
-
-  const formattedData2 = data2.map((point) => ({
-    ...point,
-    label: new Date(point.label).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }),
-  }));
-
-  // Get unique labels from both datasets
-  const uniqueLabels = Array.from(new Set([...formattedData.map(d => d.label), ...formattedData2.map(d => d.label)]));
-
-  // Sort unique labels
-  uniqueLabels.sort((a, b) => new Date(a) - new Date(b));
-
-  // Create a map of labels to values for both datasets
-  const dataMap = new Map(formattedData.map(d => [d.label, d.value]));
-  const data2Map = new Map(formattedData2.map(d => [d.label, d.value]));
-
-  // Fill in missing data points with null values
-  const alignedData = uniqueLabels.map(label => ({
-    label,
-    value: dataMap.get(label) !== undefined ? dataMap.get(label) : null,
-  }));
-
-  const alignedData2 = uniqueLabels.map(label => ({
-    label,
-    value: data2Map.get(label) !== undefined ? data2Map.get(label) : null,
-  }));
-
-  console.log("alignedData: ", alignedData);
-  console.log("alignedData2: ", alignedData2);
+  console.log("data: ", data);
+  console.log("data2: ", data2);
 
   return (
     <View style={{
@@ -121,25 +36,22 @@ function TrendSection({
       <Text style={{ fontSize: 14 }}>{description}</Text>
       <LineChart
         style={{ backgroundColor: 'black' }}
-        data={alignedData}
-        data2={alignedData2}
-        color1="#bfdbd7"
-        color2="#5d9e9f"
+        data={data2.reverse()}
+        data2={data.reverse()}
+        color1="#5d9e9f"
+        color2="#bfdbd7"
         thickness={5}
         width={350}
         height={350}
         curved
-        hideDataPoints={false} // Ensure data points are shown
-        hideRules={false} // Show rules to make the chart more readable
-        hideYAxisText={false} // Show Y axis text
-        yAxisLabelWidth={50} // Adjust Y axis label width
-        xAxisLabelWidth={50} // Adjust X axis label width
+        hideDataPoints
+        hideRules
+        hideYAxisText
+        hideAxesAndRules
+        yAxisLabelWidth={0}
         yAxisOffset={0}
-        xAxisOffset={0}
         isAnimated
-        // Customize the X-axis to show all labels
-        xAxisLabelTexts={uniqueLabels}
-        xAxisLabelTextStyle={{ color: 'white', fontSize: 12 }} // Customize X-axis label style
+
       />
       <Text>
         Your energy trended a
