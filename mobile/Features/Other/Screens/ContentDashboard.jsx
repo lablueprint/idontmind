@@ -45,6 +45,10 @@ export default function ContentDashboard({ navigation }) {
     navigation.navigate('Options');
   };
 
+  const navigateToContentLibrary = () => {
+    navigation.navigate('Content Library');
+  };
+
   return (
     <ScrollView>
       <View style={{ position: 'absolute' }}>
@@ -114,7 +118,14 @@ export default function ContentDashboard({ navigation }) {
           </TouchableOpacity>
         </View>
         <View style={{ height: 20 }} />
-        <Text style={styles.resources}>Your Resources</Text>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <Text style={styles.resources}>Your Resources</Text>
+          <TouchableOpacity onP>
+            <Text>
+              All Resources
+            </Text>
+          </TouchableOpacity>
+        </View>
         <View>
           {resources.map(
             (resource) => (
