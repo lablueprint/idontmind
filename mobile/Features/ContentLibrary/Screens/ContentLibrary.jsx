@@ -23,12 +23,12 @@ export default function ContentLibrary({ navigation }) {
   /* width of screen */
   const { width } = Dimensions.get('window');
 
-  const navigateToTag = (index) => {
-    navigation.navigate('Tag', { index, routeName: 'Content' });
+  const navigateToTag = (categoryName) => {
+    navigation.navigate('Tag', { routeName: 'Content', categoryName });
   };
 
   const navigateToResourceList = (subtopicName) => {
-    navigation.navigate('Resource List', { subtopicName });
+    navigation.navigate('Resource List', { subtopicName, routeName: 'Content Library' });
   };
 
   const navigateToFavorites = () => {
@@ -86,6 +86,7 @@ export default function ContentLibrary({ navigation }) {
   const verticalRenderItem = ({ item }) => (
     <CategoryCard
       categoryName={item}
+      navigateToTag={navigateToTag}
     />
   );
 
@@ -182,7 +183,6 @@ export default function ContentLibrary({ navigation }) {
           horizontal
           data={tags}
           renderItem={horizontalRenderItem}
-          keyExtractor={(item) => item.id}
           showsHorizontalScrollIndicator={false}
           style={{ paddingLeft: width / 18 }}
         />

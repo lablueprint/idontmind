@@ -25,12 +25,23 @@ export default StyleSheet.create({
     paddingBottom: 5,
     paddingTop: 15,
   },
+  resourceContainer: {
+    paddingVertical: 15,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   resources: {
     fontFamily: 'cabinet-grotesk-medium',
     fontSize: 24,
     color: '#343A3A',
-    paddingBottom: 5,
-    paddingTop: 15,
+  },
+  allResources: {
+    justifyContent: 'center',
+  },
+  allResourcesText: {
+    fontFamily: 'cabinet-grotesk-bold',
+    fontSize: 16,
+    textDecorationLine: 'underline',
   },
   dailydiscovery: {
     fontFamily: 'cabinet-grotesk-regular',

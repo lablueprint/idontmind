@@ -4,7 +4,6 @@ export default StyleSheet.create({
   categoryCard: {
     padding: 10,
     marginVertical: 8,
-    marginRight: 16,
     backgroundColor: '#F6FCFC',
     borderRadius: 8,
     flex: 1,

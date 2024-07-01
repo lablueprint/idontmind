@@ -1,6 +1,6 @@
 import {
   View, Text, TouchableOpacity, Image,
-  ScrollView, FlatList, Dimensions,
+  ScrollView, Dimensions,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
@@ -38,7 +38,7 @@ export default function ContentDashboard({ navigation }) {
   };
 
   const navigateToResource = (resource) => {
-    navigation.navigate('Resource', { resource });
+    navigation.navigate('Resource', { resource, routeName: 'Content Dashboard' });
   };
 
   const navigateToOptions = () => {
@@ -46,7 +46,9 @@ export default function ContentDashboard({ navigation }) {
   };
 
   const navigateToContentLibrary = () => {
-    navigation.navigate('Content Library');
+    navigation.navigate('Content', {
+      screen: 'Content Library',
+    });
   };
 
   return (
@@ -118,10 +120,10 @@ export default function ContentDashboard({ navigation }) {
           </TouchableOpacity>
         </View>
         <View style={{ height: 20 }} />
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <View style={[styles.resourceContainer]}>
           <Text style={styles.resources}>Your Resources</Text>
-          <TouchableOpacity onP>
-            <Text>
+          <TouchableOpacity style={styles.allResources} onPress={navigateToContentLibrary}>
+            <Text style={styles.allResourcesText}>
               All Resources
             </Text>
           </TouchableOpacity>
@@ -130,8 +132,9 @@ export default function ContentDashboard({ navigation }) {
           {resources.map(
             (resource) => (
               <ResourceCard
-                resource={resource}
+                resource={resource.resource}
                 navigateToResource={navigateToResource}
+                key={resource.resource._id}
               />
             ),
           )}

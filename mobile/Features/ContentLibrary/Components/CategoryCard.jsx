@@ -21,7 +21,7 @@ export default function CategoryCard({ categoryName, navigateToTag }) {
     <View>
       <TouchableOpacity
         style={[style.categoryCard, { width: cardWidth, height: cardHeight }]}
-        onPress={() => navigateToTag(index)}
+        onPress={() => navigateToTag(CategoryDict[categoryName].name)}
       >
         <View style={[style.row]}>
           <Text

@@ -8,31 +8,36 @@ import book from '../../../assets/images/book.png';
 
 export default function ResourceCard({ resource, navigateToResource }) {
   /* width and height of current mobile screen */
-  const { width, height } = Dimensions.get('window');
-  /* card width */
-  const cardWidth = Math.floor((7 * width) / 9);
+  const { height } = Dimensions.get('window');
   /* card height */
   const cardHeight = Math.floor((2.5 * height) / 9);
 
   const {
-    title, author, excerpts, content_type,
+    title, author, content_type, who_answered, question, answer,
   } = resource;
 
-  let authorName = author;
+  let authorName = author || who_answered || 'IDONTMIND';
   /* Check if the author name has more than the firstname and lastname */
-  if (author.split(' ').length > 2 || author.length === 0) {
+  if (authorName.split(' ').length > 2 || authorName.length === 0) {
     authorName = 'IDONTMIND';
   }
 
-  let excerpt = '';
-  if (excerpts) {
-    excerpt = excerpts.excerpt_1;
+  let header = title || question;
+
+  if (header.length > 60) {
+    header = `${header.substring(0, 60)}...`;
+  }
+
+  let content = content_type || answer;
+
+  if (content.length > 110) {
+    content = `${content.substring(0, 110)}...`;
   }
 
   return (
     <View>
       <View
-        style={[style.categoryCard, { width: cardWidth, height: cardHeight }]}
+        style={[style.categoryCard, { width: '100%', height: cardHeight }]}
       >
         <View style={[style.authorContainer]}>
           <View style={[style.bookContainer]}>
@@ -51,12 +56,15 @@ export default function ResourceCard({ resource, navigateToResource }) {
           <Text
             style={[style.categoryText]}
           >
-            {title}
+            {header}
           </Text>
         </View>
         <View style={{ flex: 1 }}>
-          <Text>
-            {content_type}
+          <Text style={{
+            overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', width: '100%',
+          }}
+          >
+            {content}
           </Text>
         </View>
         <View style={{ flex: 1 }}>
@@ -73,10 +81,10 @@ ResourceCard.propTypes = {
   resource: PropTypes.shape({
     title: PropTypes.string,
     author: PropTypes.string,
-    excerpts: PropTypes.shape({
-      excerpt_1: PropTypes.string,
-    }),
     content_type: PropTypes.string,
+    who_answered: PropTypes.string,
+    question: PropTypes.string,
+    answer: PropTypes.string,
   }).isRequired,
   navigateToResource: PropTypes.func.isRequired,
 };

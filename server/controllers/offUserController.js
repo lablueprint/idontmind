@@ -481,11 +481,42 @@ const getRecommendedResources = async (req, res) => {
     }
     const combinedList = [].concat(user.favoritedTags, user.banTags);
 
-    const resources = [].concat(
+    let resources = [].concat(
       await OfficialArticle.find({ tags: { $nin: combinedList.map((tag) => tag) } }),
       await OfficialQnA.find({ tags: { $nin: combinedList.map((tag) => tag) } }),
       await OfficialPersonalStory.find({ tags: { $nin: combinedList.map((tag) => tag) } }),
     );
+
+    // map to individual objects with priority property
+    resources = resources.map((resource) => {
+      let priority = 0;
+      resource.tags.forEach((tag) => {
+        if (user.interestedTags.includes(tag) && !user.seenTags.includes(tag)) {
+          priority += 1;
+        } else if (user.seenTags.includes(tag)) {
+          priority -= 1;
+        }
+      });
+      return ({
+        resource,
+        priority,
+      });
+    });
+    // randomize array of tags
+    let currentIndex = resources.length;
+
+    while (currentIndex !== 0) {
+      // Pick a remaining element...
+      const randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+
+      // And swap it with the current element.
+      [resources[currentIndex], resources[randomIndex]] = [
+        resources[randomIndex], resources[currentIndex]];
+    }
+    // sort by priority
+    resources.sort((a, b) => b.priority - a.priority);
+
     console.log(resources.slice(0, 4));
     return res.send(resources.slice(0, 4));
   } catch (error) {

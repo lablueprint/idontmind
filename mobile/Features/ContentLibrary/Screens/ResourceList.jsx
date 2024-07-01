@@ -20,6 +20,7 @@ function ResourceList({ navigation }) {
   const [newFolderName, setNewFolderName] = useState('');
   const route = useRoute();
   const subtopicName = route.params?.subtopicName;
+  const routeName = route.params?.routeName;
   const resources = [['resource 1', 'nicole'], ['yo mama', 'aaron'], ['haha', 'jeffrey'], ['no', 'alan'], ['well yes', 'daniel']];
 
   const toggleModal = () => {
@@ -34,8 +35,12 @@ function ResourceList({ navigation }) {
   const setFolderName = (name) => {
     setNewFolderName(name);
   };
-  const navigateToTag = () => {
-    navigation.navigate('Tag', { index: 0, routeName: 'Content Library' }); // set index to 0 as default for now
+  // const navigateToTag = () => {
+  //   navigation.navigate('Tag', { index: 0, routeName: 'Content Library' }); // set index to 0 as default for now
+  // };
+  const navigateToPreviousRoute = () => {
+    if (routeName === 'Content Library') navigation.navigate(routeName);
+    else navigation.navigate('Tag', { index: 0, routeName: 'Content Library' });
   };
   const navigateToResource = (item) => {
     const name = item.Title ? item.Title : 'hardcoded title';
@@ -56,7 +61,7 @@ function ResourceList({ navigation }) {
         <View style={styles.overlay} />
       )}
       <TouchableOpacity
-        onPress={navigateToTag}
+        onPress={navigateToPreviousRoute}
         style={{ paddingRight: 10, paddingTop: 20, marginBottom: -10 }}
       >
         <Image style={{ resizeMode: 'contain', height: 20, width: 20 }} source={Back} />
