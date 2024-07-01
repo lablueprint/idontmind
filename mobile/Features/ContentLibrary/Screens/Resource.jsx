@@ -2,8 +2,10 @@ import {
   View, Text, TouchableOpacity, ScrollView, Pressable, Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRoute } from '@react-navigation/native';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
 import BookmarkImage from '../../../assets/images/bookmark_blue.png';
 import styles from './BookmarksStyle';
 import BottomHalfModal from '../Components/BottomModal';
@@ -12,6 +14,9 @@ import FolderCreatedModal from '../Components/FolderCreatedModal';
 import Back from '../../../assets/images/back_button.png';
 
 function Resource({ navigation }) {
+  const {
+    authHeader, id,
+  } = useSelector((state) => state.auth);
   const route = useRoute();
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisibleNewFolder, setModalVisibleNewFolder] = useState(false);
@@ -28,6 +33,8 @@ function Resource({ navigation }) {
   const routeName = route.params?.routeName;
   const tagName = route.params?.tagName;
   const subtopicName = route.params?.subtopicName;
+
+  const [folders, setFolders] = useState([]);
   const toggleModal = () => {
     setModalVisible(!modalVisible);
   };
@@ -44,6 +51,24 @@ function Resource({ navigation }) {
     if (routeName === 'Resource List') navigation.navigate(routeName, { subtopicName, tagName });
     else navigation.navigate(routeName);
   };
+  const getFolders = async () => {
+    try {
+      const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/folder/getFavoritedFolders`, { headers: authHeader, params: { id } });
+      if (res.data.error) {
+        console.error(res.data.error);
+      } else {
+        console.log('This is the get folder data:');
+        console.log(res.data);
+        console.log(Object.keys(res.data));
+        setFolders(res.data);
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+  useEffect(() => {
+    getFolders();
+  }, [modalVisibleCreated]);
   return (
     <View
       className="mainContainer"
@@ -154,7 +179,7 @@ function Resource({ navigation }) {
           </Pressable>
 
         </View>
-        <BottomHalfModal modalVisibleParent={modalVisible} toggleModal={toggleModal} toggleModalNewFolder={toggleModalNewFolder} page="Tags" />
+        <BottomHalfModal modalVisibleParent={modalVisible} toggleModal={toggleModal} toggleModalNewFolder={toggleModalNewFolder} page="Resources" folders={folders} tagOrResourceName={resourceName} />
         <NewFolderModal
           modalVisibleParent={modalVisibleNewFolder}
           toggleModal={toggleModalNewFolder}

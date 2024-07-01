@@ -2,8 +2,10 @@ import {
   Text, View, Image, ScrollView, Pressable,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
+import axios from 'axios';
+import { useSelector } from 'react-redux';
 import shapeImage from '../../../assets/images/shape.png';
 import Back from '../../../assets/images/back_button.png';
 import style from '../Components/ContentStyle';
@@ -16,6 +18,9 @@ export default function Tag({ navigation, route }) {
   const { index, tagName } = route.params;
   const subtopics = jsonData[tagName];
   console.log(subtopics);
+  const {
+    authHeader, id,
+  } = useSelector((state) => state.auth);
 
   /* Grabs current tag */
   // const tag = Tags[index];
@@ -39,6 +44,27 @@ export default function Tag({ navigation, route }) {
     console.log(subtopicName);
     navigation.navigate('Resource List', { subtopicName, tagName });
   };
+
+  const [favoritedTags, setFavoritedTags] = useState([]);
+  const getFavorites = async () => {
+    try {
+      const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/getFavorites`, { headers: authHeader, params: { id } });
+      if (res.data.error) {
+        console.error(res.data.error);
+      } else {
+        console.log('This is get favorites data:');
+        // console.log(res.data);
+        // console.log(res.data.favoritedTags);
+        setFavoritedTags(res.data.favoritedTags);
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  useEffect(() => {
+    getFavorites();
+  }, []);
 
   return (
     <ScrollView
@@ -101,6 +127,7 @@ export default function Tag({ navigation, route }) {
                     <TagRectangle
                         // key={resourceName}
                       tagName={item}
+                      selected={favoritedTags.includes(item)}
                     />
                   </Pressable>
                 ))

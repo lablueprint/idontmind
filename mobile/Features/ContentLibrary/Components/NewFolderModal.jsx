@@ -4,6 +4,8 @@ import {
   TextInput, TouchableWithoutFeedback, Keyboard,
 } from 'react-native';
 import PropTypes from 'prop-types';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
 import styles from './FolderModalStyle';
 
 import exit from '../../../assets/images/exit.png';
@@ -11,6 +13,8 @@ import exit from '../../../assets/images/exit.png';
 function NewFolderModal({
   modalVisibleParent, toggleModal, toggleModalCreated, setFolderName,
 }) {
+  const { id, authHeader } = useSelector((state) => state.auth);
+
   const [folderNameText, setFolderNameText] = useState('');
   const [descriptionText, setDescriptionText] = useState('');
 
@@ -21,6 +25,19 @@ function NewFolderModal({
     setDescriptionText(text);
   };
 
+  const handleNewFolder = async (folderName, description) => {
+    try {
+      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/folder/createFavoritedFolder`, { id, folderName, description }, { headers: authHeader });
+      if (res.data.error) {
+        console.error(res.data.error);
+      } else {
+        console.log('This is the create folder data:');
+        console.log(res.data);
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
   const handleSave = () => {
     // Handle saving the input text
     console.log('handle save');
@@ -28,6 +45,7 @@ function NewFolderModal({
       setFolderName(folderNameText);
       toggleModal();
       toggleModalCreated();
+      handleNewFolder(folderNameText, descriptionText);
     }
   };
 

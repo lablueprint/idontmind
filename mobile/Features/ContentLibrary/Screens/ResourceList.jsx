@@ -6,15 +6,20 @@ import { useEffect, useState } from 'react';
 // import axios from 'axios';
 import { useRoute } from '@react-navigation/native';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 import Bookmark from '../../Other/Components/Bookmark';
 import styles from './BookmarksStyle';
 import BookmarkImage from '../../../assets/images/bookmark_blue.png';
+import unfilledBookmark from '../../../assets/images/unfilledBookmark.png';
 import BottomHalfModal from '../Components/BottomModal';
 import NewFolderModal from '../Components/NewFolderModal';
 import FolderCreatedModal from '../Components/FolderCreatedModal';
 import Back from '../../../assets/images/back_button.png';
 
 function ResourceList({ navigation }) {
+  const {
+    authHeader, id,
+  } = useSelector((state) => state.auth);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisibleNewFolder, setModalVisibleNewFolder] = useState(false);
   const [modalVisibleCreated, setModalVisibleCreated] = useState(false);
@@ -24,6 +29,8 @@ function ResourceList({ navigation }) {
   const tagName = route.params?.tagName;
 
   const [resources, setResources] = useState([]);
+  const [folders, setFolders] = useState([]);
+  const [selectedFolders, setSelectedFolders] = useState([]);
 
   const toggleModal = () => {
     setModalVisible(!modalVisible);
@@ -57,18 +64,77 @@ function ResourceList({ navigation }) {
     // console.log(resources);
   };
 
-  useEffect(() => {
-    const fetchResources = async () => {
-      try {
-        const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/test/searchByTag`, { tag: subtopicName, filter: 'All' });
-        setResources(res.data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
+  const fetchResources = async () => {
+    try {
+      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/test/searchByTag`, { tag: subtopicName, filter: 'All' });
+      setResources(res.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
 
+  const getFolders = async () => {
+    try {
+      const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/folder/getFavoritedFolders`, { headers: authHeader, params: { id } });
+      if (res.data.error) {
+        console.error(res.data.error);
+      } else {
+        console.log('This is the get folder data:');
+        console.log(res.data);
+        console.log(Object.keys(res.data));
+        setFolders(res.data);
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  const getFoldersForTag = async () => {
+    try {
+      const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/folder/getFoldersForTag`, { headers: authHeader, params: { id, tag: subtopicName } });
+      console.log('here');
+      if (res.data.error) {
+        console.error(res.data.error);
+      } else {
+        console.log('folders for tag', res.data);
+        setSelectedFolders(res.data);
+        console.log(selectedFolders);
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  const [favoritedResources, setFavoritedResources] = useState([]);
+  const [subtopicFavorited, setSubtopicFavorited] = useState(false);
+  const getFavorites = async () => {
+    try {
+      const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/getFavorites`, { headers: authHeader, params: { id } });
+      if (res.data.error) {
+        console.error(res.data.error);
+      } else {
+        console.log('This is get favorites data:');
+        console.log(res.data.favoritedTags);
+        setFavoritedResources(res.data.favoritedResources);
+        if (res.data.favoritedTags.includes(subtopicName)) setSubtopicFavorited(true);
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  useEffect(() => {
+    getFoldersForTag();
+  }, []);
+  useEffect(() => {
     fetchResources();
   }, [subtopicName]);
+  useEffect(() => {
+    getFolders();
+  }, [modalVisibleCreated]);
+  useEffect(() => {
+    getFavorites();
+  }, []);
 
   return (
     <View
@@ -104,7 +170,7 @@ function ResourceList({ navigation }) {
           {subtopicName}
         </Text>
         <Pressable style={{ flex: 0.5 }} onPress={toggleModal}>
-          <Image style={{ resizeMode: 'contain', height: 30, width: 30 }} source={BookmarkImage} />
+          <Image style={{ resizeMode: 'contain', height: 30, width: 30 }} source={subtopicFavorited ? BookmarkImage : unfilledBookmark} />
         </Pressable>
 
       </View>
@@ -190,6 +256,9 @@ function ResourceList({ navigation }) {
                         <Bookmark
                           resourceName={resourceName}
                           author={authorName}
+                          selected={favoritedResources.includes(resourceName)}
+                          modalVisibleParent={modalVisible}
+                          toggleModal={toggleModal}
                         />
 
                       </Pressable>
@@ -199,7 +268,7 @@ function ResourceList({ navigation }) {
           </ScrollView>
         </View>
       </View>
-      <BottomHalfModal modalVisibleParent={modalVisible} toggleModal={toggleModal} toggleModalNewFolder={toggleModalNewFolder} page="Tags" />
+      <BottomHalfModal modalVisibleParent={modalVisible} toggleModal={toggleModal} toggleModalNewFolder={toggleModalNewFolder} page="Tags" folders={folders} tagOrResourceName={subtopicName} />
       <NewFolderModal
         modalVisibleParent={modalVisibleNewFolder}
         toggleModal={toggleModalNewFolder}

@@ -171,6 +171,9 @@ const favoriteTag = async (req, res) => {
       return res.status(404).send({ message: 'User not found' });
     }
     if (!user.favoritedTags.includes(tag)) user.favoritedTags.push(tag);
+    // if (!user.favoritedTags.has(tag)) {
+    //   user.favoritedTags.set(tag, { folders: [] });
+    // }
     await user.save();
 
     return res.send(user.favoritedTags);

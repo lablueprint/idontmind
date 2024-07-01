@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View, Text, Image, Pressable,
 } from 'react-native';
@@ -6,17 +6,21 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import style from './TagRectangleStyle';
-import BookmarkWhite from '../../../assets/images/bookmark.png';
+import BookmarkWhite from '../../../assets/images/unfilledBookmarkDark.png';
 import BookmarkDark from '../../../assets/images/bookmark_dark.png';
 
 import TagFill from '../../../assets/images/tag_fill.png';
 
 export default function TagRectangle({
-  tagName,
+  tagName, selected,
 }) {
   const { id, authHeader } = useSelector((state) => state.auth);
 
-  const [bookmarkSelected, setBookmarkSelected] = useState(false); // hardcode it as true for now
+  const [bookmarkSelected, setBookmarkSelected] = useState(selected);
+  useEffect(() => {
+    setBookmarkSelected(selected);
+  }, [selected]);
+
   const toggleBookmark = async () => {
     if (!bookmarkSelected) {
       // favorite the tag
