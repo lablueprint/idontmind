@@ -21,6 +21,7 @@ import Terms from '../Features/GettingStarted/Terms';
 import Loading from '../Features/Register/Loading';
 import Overview from '../Features/Tutorial/Overview';
 import TutorialCheckIn1 from '../Features/Tutorial/TutorialCheckIn1';
+import CheckinOptional from '../Features/Tutorial/CheckinOptional';
 import TutorialCheckIn2 from '../Features/Tutorial/TutorialCheckIn2';
 import Personalization from '../Features/Tutorial/Personalization';
 import MoreResources from '../Features/Tutorial/MoreResources';
@@ -44,6 +45,7 @@ import AddIcon from '../Features/CheckIn/AddIcon';
 import PreFeeling from '../Features/CheckIn/PreFeeling';
 import Feeling from '../Features/CheckIn/Feeling';
 import Energy from '../Features/CheckIn/Energy';
+import Water from '../Features/CheckIn/Water';
 import Meal from '../Features/CheckIn/Meal';
 import EndCheckIn from '../Features/CheckIn/EndCheckIn';
 import Exercise from '../Features/CheckIn/Exercise';
@@ -104,6 +106,7 @@ export default function AppNavigation({ user }) {
           <Stack.Screen name="Splash" component={Splash} options={{ headerShown: false }} />
           <Stack.Screen name="Terms" component={Terms} options={{ headerShown: false }} />
           <Stack.Screen name="TutorialCheckIn1" component={TutorialCheckIn1} options={{ headerShown: false }} />
+          <Stack.Screen name="CheckinOptional" component={CheckinOptional} options={{ headerShown: false }} />
           <Stack.Screen name="TutorialCheckIn2" component={TutorialCheckIn2} options={{ headerShown: false }} />
           <Stack.Screen name="Personalization" component={Personalization} options={{ headerShown: false }} />
           <Stack.Screen name="MoreResources" component={MoreResources} options={{ headerShown: false }} />
@@ -120,6 +123,7 @@ export default function AppNavigation({ user }) {
           <Stack.Screen name="Feeling" component={Feeling} options={{ headerShown: false }} />
           <Stack.Screen name="Pre Feeling" component={PreFeeling} options={{ headerShown: false }} />
           <Stack.Screen name="Energy" component={Energy} options={{ headerShown: false }} />
+          <Stack.Screen name="Water" component={Water} options={{ headerShown: false }} />
           <Stack.Screen name="Meal" component={Meal} options={{ headerShown: false }} />
           <Stack.Screen name="Mood" component={Mood} options={{ headerShown: false }} />
           <Stack.Screen name="AddMood" component={AddMood} options={{ headerShown: false }} />
