@@ -36,7 +36,8 @@ function Resource({ navigation }) {
     setNewFolderName(name);
   };
   const navigateToPreviousRoute = () => {
-    if (routeName === 'Resource List') navigation.navigate(routeName, { subtopicName });
+    console.log(routeName);
+    if (routeName === 'Resource List') navigation.navigate(routeName, { subtopicName, routeName: 'Content Library' });
     else navigation.navigate(routeName);
   };
   return (

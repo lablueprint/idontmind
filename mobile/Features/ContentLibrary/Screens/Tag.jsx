@@ -12,18 +12,17 @@ import TagRectangle from '../Components/TagRectangle';
 
 export default function Tag({ navigation, route }) {
   /* index of corresponding Tag */
-  const { index } = route.params;
-
-  const {
-    Tags,
-  } = useContext(TagContext);
+  const { categoryName } = route.params;
+  // const {
+  //   Tags,
+  // } = useContext(TagContext);
 
   /* Grabs current tag */
-  const tag = Tags[index];
+  // const tag = Tags[index];
 
-  const {
-    tagName,
-  } = tag;
+  // const {
+  //   tagName,
+  // } = tag;
 
   /* Checks if current tag is in users favorite list */
   // const favorited = findFavorite(id);
@@ -32,7 +31,6 @@ export default function Tag({ navigation, route }) {
   const hardcodedTags = ['Tag', 'Creativity', 'Energy', 'Environment', 'Exercise', 'Fitness', 'Health', 'Journaling', 'Medication']; // hardcoded for now, i think tag content list
 
   const navigateToPreviousRoute = () => {
-    console.log('hi');
     navigation.navigate('Content Library');
   };
 
@@ -74,7 +72,7 @@ export default function Tag({ navigation, route }) {
           <Text
             style={{ textAlign: 'center', fontSize: 40, fontFamily: 'recoleta-regular' }}
           >
-            {tagName}
+            {categoryName}
           </Text>
           <Text
             style={{ fontSize: 16, fontFamily: 'cabinet-grotesk-medium', marginBottom: 20 }}
@@ -123,8 +121,7 @@ Tag.propTypes = {
   }).isRequired,
   route: PropTypes.shape({
     params: PropTypes.shape({
-      index: PropTypes.number,
-      routeName: PropTypes.string,
+      categoryName: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
 };
