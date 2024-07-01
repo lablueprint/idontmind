@@ -7,6 +7,7 @@ import { useRoute } from '@react-navigation/native';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import BookmarkImage from '../../../assets/images/bookmark_blue.png';
+import unfilledBookmark from '../../../assets/images/unfilledBookmark.png';
 import styles from './BookmarksStyle';
 import BottomHalfModal from '../Components/BottomModal';
 import NewFolderModal from '../Components/NewFolderModal';
@@ -66,9 +67,24 @@ function Resource({ navigation }) {
       console.error(err.message);
     }
   };
+
+  const [resourceFavorited, setResourceFavorited] = useState(false);
+  const getFavorited = async () => {
+    try {
+      const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/getFavorites`, { headers: authHeader, params: { id } });
+      if (res.data.error) {
+        console.error(res.data.error);
+      } else if (res.data.favoritedResources.includes(resourceName)) setResourceFavorited(true);
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
   useEffect(() => {
     getFolders();
   }, [modalVisibleCreated]);
+  useEffect(() => {
+    getFavorited();
+  }, []);
   return (
     <View
       className="mainContainer"
@@ -112,7 +128,7 @@ function Resource({ navigation }) {
             style={{
               flex: 1, resizeMode: 'contain', height: 30, width: 30,
             }}
-            source={BookmarkImage}
+            source={resourceFavorited ? BookmarkImage : unfilledBookmark}
           />
         </Pressable>
 

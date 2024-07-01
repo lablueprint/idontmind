@@ -56,17 +56,18 @@ const officialUserSchema = new mongoose.Schema({
       },
     },
   },
-  // tagToFolders: {
-  //   required: true,
-  //   default: {},
-  //   type: Map,
-  //   of: {
-  //     folders: {
-  //       type: [String],
-  //       default: [],
-  //     },
-  //   },
-  // },
+  tagToFolders: {
+    required: true,
+    default: {},
+    type: Map,
+    of: [String],
+  },
+  resourceToFolders: {
+    required: true,
+    default: {},
+    type: Map,
+    of: [String],
+  },
   journalEntries: {
     default: [],
     type: [String],

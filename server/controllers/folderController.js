@@ -45,6 +45,9 @@ const getFavoritedFolders = async (req, res) => {
 };
 
 // add a tag or resource to a specified folder
+function sanitize(name) {
+  return name.replace(/\./g, '_');
+}
 const addToFolder = async (req, res) => {
   console.log('add to folder');
   const {
@@ -66,14 +69,42 @@ const addToFolder = async (req, res) => {
       folder.tags.push(tag);
       // const favoritedTag = user.favoritedTags.get(tag);
       // favoritedTag.folders.push(folderName);
-      console.log(user.tagToFolders.get(tag));
-      user.tagToFolders.get(tag).folders.push(folderName);
-      // favoritedTag[]
+      const sanitizedTag = sanitize(tag);
+      if (!user.tagToFolders.get(sanitizedTag)) {
+        user.tagToFolders.set(sanitizedTag, [folderName]);
+      } else {
+        user.tagToFolders.get(sanitizedTag).push(folderName);
+      }
     }
     // only add a resource if it isn't already in folder
-    if (resource && !folder.resources.includes(resource)) folder.resources.push(resource);
+    if (resource && !folder.resources.includes(resource)) {
+      folder.resources.push(resource);
+      const sanitizedResource = sanitize(resource);
+
+      if (!user.resourceToFolders.get(sanitizedResource)) {
+        user.resourceToFolders.set(sanitizedResource, [folderName]);
+      } else {
+        user.resourceToFolders.get(sanitizedResource).push(folderName);
+      }
+    }
     await user.save();
     return res.send(user.favoritedFolders);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send(err);
+  }
+};
+
+const getFoldersForItem = async (req, res) => {
+  console.log('get folders for item');
+  const { id, tag, resource } = req.query;
+  try {
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).send({ message: 'User not found' });
+    }
+    if (tag) return res.send(user.tagToFolders(sanitize(tag)));
+    return res.send(user.tagToFolders(sanitize(resource)));
   } catch (err) {
     console.error(err);
     return res.status(500).send(err);
