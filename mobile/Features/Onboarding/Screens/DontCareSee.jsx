@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import {
   Text, View, Pressable, Image,
   ScrollView,
@@ -144,7 +144,8 @@ function DontCareSee({ navigation }) {
           </View>
           <View>
             <Text style={styles.subheading}>
-              It&apos;s okay to mind sometimes. Let us know if there&apos;s any content you want us to exclude from your feed. You can always change this later.
+              It&apos;s okay to mind sometimes. Let us know if there&apos;s any
+              content you want us to exclude from your feed. You can always change this later.
             </Text>
           </View>
           <View style={styles.pillArea}>
