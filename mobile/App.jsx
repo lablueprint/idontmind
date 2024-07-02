@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import * as SecureStore from 'expo-secure-store';
 import AppNavigation from './Navigation/AppNavigation';
 import store from './redux/store';
-import Loading from './Features/Register/Loading';
+import Loading from './Features/Onboarding/Screens/Loading';
 
 // npx expo run:ios
 
