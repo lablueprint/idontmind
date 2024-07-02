@@ -6,7 +6,7 @@ import * as SecureStore from 'expo-secure-store';
 import { Asset } from 'expo-asset';
 import AppNavigation from './Navigation/AppNavigation';
 import store from './redux/store';
-import Loading from './Features/Register/Loading';
+import Loading from './Features/Onboarding/Screens/Loading';
 
 import gear from './assets/images/gear.png';
 import lilGuy from './assets/images/lilGuy.png';

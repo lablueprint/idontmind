@@ -7,6 +7,7 @@ import styles from './OverviewStyle';
 
 export default function WrapUp({ navigation }) {
   const next = () => {
+    navigation.navigate('CheckIn');
   };
   return (
     <View style={{
