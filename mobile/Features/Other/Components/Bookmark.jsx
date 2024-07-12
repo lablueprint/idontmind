@@ -13,7 +13,7 @@ import BookmarkDark from '../../../assets/images/bookmark_dark.png';
 import Book from '../../../assets/images/reading.png';
 
 export default function Bookmark({
-  resourceName, author, selected, modalVisible, toggleModal,
+  resourceName, author, selected, modalVisible, toggleModal, getFoldersForResource,
 }) {
   const { id, authHeader } = useSelector((state) => state.auth);
 
@@ -30,7 +30,10 @@ export default function Bookmark({
       await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/unfavoriteResource`, { id, resource: resourceName }, { headers: authHeader });
     }
     setBookmarkSelected(!bookmarkSelected);
-    if (!bookmarkSelected) toggleModal();
+    if (!bookmarkSelected) {
+      await getFoldersForResource(resourceName);
+      toggleModal(false, resourceName);
+    }
     // favorite or unfavorite the tag
 
     console.log('toggle bookmark selection');

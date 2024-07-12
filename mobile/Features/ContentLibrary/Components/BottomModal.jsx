@@ -50,7 +50,7 @@ FolderModalHeader.propTypes = {
 };
 
 function FolderModalRow({
-  folderName, description, isAdded, page, tagOrResourceName,
+  folderName, description, isAdded, isTag, tagOrResourceName,
 }) {
   const { id, authHeader } = useSelector((state) => state.auth);
 
@@ -58,9 +58,9 @@ function FolderModalRow({
   const addToFolder = async () => {
     try {
       let payload;
-      if (page === 'Resources') {
+      if (!isTag) {
         payload = { id, folderName, resource: tagOrResourceName };
-      } else if (page === 'Tags') {
+      } else if (isTag) {
         payload = { id, folderName, tag: tagOrResourceName };
       }
       const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/folder/addToFolder`, payload, { headers: authHeader });
@@ -74,9 +74,9 @@ function FolderModalRow({
   const deleteFromFolder = async () => {
     try {
       let payload;
-      if (page === 'Resources') {
+      if (!isTag) {
         payload = { id, folderName, resource: tagOrResourceName };
-      } else if (page === 'Tags') {
+      } else if (isTag) {
         payload = { id, folderName, tag: tagOrResourceName };
       }
       const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/folder/deleteFromFolder`, payload, { headers: authHeader });
@@ -137,7 +137,8 @@ FolderModalRow.propTypes = {
 };
 
 function BottomHalfModal({
-  modalVisibleParent, toggleModal, toggleModalNewFolder, page, folders, tagOrResourceName,
+  modalVisibleParent, toggleModal, toggleModalNewFolder, isTag, folders,
+  tagOrResourceName, selectedFolders,
 }) {
 //   const [modalVisible, setModalVisible] = useState(false);
 //   useEffect(() => {
@@ -187,8 +188,8 @@ function BottomHalfModal({
                 <FolderModalRow
                   folderName={key}
                   description={value.description}
-                  isAdded={false}
-                  page={page}
+                  isAdded={selectedFolders.includes(key)}
+                  isTag={isTag}
                   tagOrResourceName={tagOrResourceName}
                 />
               </View>
@@ -208,7 +209,7 @@ BottomHalfModal.propTypes = {
   modalVisibleParent: PropTypes.bool.isRequired,
   toggleModal: PropTypes.func.isRequired,
   toggleModalNewFolder: PropTypes.func.isRequired,
-  page: PropTypes.string.isRequired,
+  isTag: PropTypes.bool.isRequired,
   folders: PropTypes.objectOf(
     PropTypes.shape({
       _id: PropTypes.string.isRequired,

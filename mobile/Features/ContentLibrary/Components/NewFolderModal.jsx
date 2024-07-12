@@ -11,7 +11,7 @@ import styles from './FolderModalStyle';
 import exit from '../../../assets/images/exit.png';
 
 function NewFolderModal({
-  modalVisibleParent, toggleModal, toggleModalCreated, setFolderName,
+  modalVisibleParent, toggleModal, toggleModalCreated, setFolderName, isTag, tagOrResourceName,
 }) {
   const { id, authHeader } = useSelector((state) => state.auth);
 
@@ -26,8 +26,20 @@ function NewFolderModal({
   };
 
   const handleNewFolder = async (folderName, description) => {
+    console.log('isTag', isTag);
+    console.log('tagOrResourceName', tagOrResourceName);
     try {
-      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/folder/createFavoritedFolder`, { id, folderName, description }, { headers: authHeader });
+      let payload;
+      if (!isTag) {
+        payload = {
+          id, folderName, description, resource: tagOrResourceName,
+        };
+      } else if (isTag) {
+        payload = {
+          id, folderName, description, tag: tagOrResourceName,
+        };
+      }
+      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/folder/createFavoritedFolder`, payload, { headers: authHeader });
       if (res.data.error) {
         console.error(res.data.error);
       } else {

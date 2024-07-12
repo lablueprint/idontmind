@@ -16,6 +16,6 @@ folderRouter.post('/deleteFavoritedFolder', folderController.deleteFavoritedFold
 
 folderRouter.get('/getFavoritedFolders', folderController.getFavoritedFolders);
 
-folderRouter.get('/getFoldersForTag', folderController.getFoldersForTag);
+folderRouter.get('/getFoldersForItem', folderController.getFoldersForItem);
 
 module.exports = folderRouter;

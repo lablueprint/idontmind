@@ -3,7 +3,6 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
-// import axios from 'axios';
 import { useRoute } from '@react-navigation/native';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
@@ -31,8 +30,16 @@ function ResourceList({ navigation }) {
   const [resources, setResources] = useState([]);
   const [folders, setFolders] = useState([]);
   const [selectedFolders, setSelectedFolders] = useState([]);
+  const [isTag, setIsTag] = useState(true);
+  const [tagOrResourceName, setTagOrResourceName] = useState(subtopicName);
+  const [favoritedResources, setFavoritedResources] = useState([]);
+  const [subtopicFavorited, setSubtopicFavorited] = useState(false);
 
-  const toggleModal = () => {
+  const toggleModal = (tag, name) => {
+    if (!modalVisible) {
+      setIsTag(tag);
+      setTagOrResourceName(name);
+    }
     setModalVisible(!modalVisible);
   };
   const toggleModalNewFolder = () => {
@@ -89,24 +96,34 @@ function ResourceList({ navigation }) {
     }
   };
 
-  const getFoldersForTag = async () => {
+  const getFoldersForSubtopic = async () => {
     try {
-      const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/folder/getFoldersForTag`, { headers: authHeader, params: { id, tag: subtopicName } });
-      console.log('here');
+      const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/folder/getFoldersForItem`, { headers: authHeader, params: { id, tag: subtopicName } });
       if (res.data.error) {
         console.error(res.data.error);
       } else {
         console.log('folders for tag', res.data);
         setSelectedFolders(res.data);
-        console.log(selectedFolders);
       }
     } catch (err) {
       console.error(err.message);
     }
   };
 
-  const [favoritedResources, setFavoritedResources] = useState([]);
-  const [subtopicFavorited, setSubtopicFavorited] = useState(false);
+  const getFoldersForResource = async (resource) => {
+    try {
+      const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/folder/getFoldersForItem`, { headers: authHeader, params: { id, resource } });
+      if (res.data.error) {
+        console.error(res.data.error);
+      } else {
+        console.log('folders for resource', res.data);
+        setSelectedFolders(res.data);
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
   const getFavorites = async () => {
     try {
       const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/getFavorites`, { headers: authHeader, params: { id } });
@@ -123,9 +140,23 @@ function ResourceList({ navigation }) {
     }
   };
 
+  const handleUpperBookmark = async () => {
+    if (!subtopicFavorited) {
+      // favorite the tag
+      await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/favoriteTag`, { id, tag: subtopicName }, { headers: authHeader });
+    } else {
+      await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/unfavoriteTag`, { id, tag: subtopicName }, { headers: authHeader });
+    }
+    setSubtopicFavorited(!subtopicFavorited);
+    if (!subtopicFavorited) {
+      await getFoldersForSubtopic(subtopicName);
+      toggleModal(true, subtopicName);
+    }
+  };
+
   useEffect(() => {
-    getFoldersForTag();
-  }, []);
+    getFoldersForSubtopic();
+  }, [modalVisible]);
   useEffect(() => {
     fetchResources();
   }, [subtopicName]);
@@ -169,7 +200,7 @@ function ResourceList({ navigation }) {
         >
           {subtopicName}
         </Text>
-        <Pressable style={{ flex: 0.5 }} onPress={toggleModal}>
+        <Pressable style={{ flex: 0.5 }} onPress={handleUpperBookmark}>
           <Image style={{ resizeMode: 'contain', height: 30, width: 30 }} source={subtopicFavorited ? BookmarkImage : unfilledBookmark} />
         </Pressable>
 
@@ -259,6 +290,7 @@ function ResourceList({ navigation }) {
                           selected={favoritedResources.includes(resourceName)}
                           modalVisibleParent={modalVisible}
                           toggleModal={toggleModal}
+                          getFoldersForResource={getFoldersForResource}
                         />
 
                       </Pressable>
@@ -268,12 +300,22 @@ function ResourceList({ navigation }) {
           </ScrollView>
         </View>
       </View>
-      <BottomHalfModal modalVisibleParent={modalVisible} toggleModal={toggleModal} toggleModalNewFolder={toggleModalNewFolder} page="Tags" folders={folders} tagOrResourceName={subtopicName} />
+      <BottomHalfModal
+        modalVisibleParent={modalVisible}
+        toggleModal={toggleModal}
+        toggleModalNewFolder={toggleModalNewFolder}
+        isTag={isTag}
+        folders={folders}
+        tagOrResourceName={tagOrResourceName}
+        selectedFolders={selectedFolders}
+      />
       <NewFolderModal
         modalVisibleParent={modalVisibleNewFolder}
         toggleModal={toggleModalNewFolder}
         toggleModalCreated={toggleModalCreated}
         setFolderName={setFolderName}
+        tagOrResourceName={tagOrResourceName}
+        isTag={isTag}
       />
       <FolderCreatedModal
         modalVisibleParent={modalVisibleCreated}
