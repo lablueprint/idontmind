@@ -117,5 +117,7 @@ NewFolderModal.propTypes = {
   toggleModal: PropTypes.func.isRequired,
   toggleModalCreated: PropTypes.func.isRequired,
   setFolderName: PropTypes.func.isRequired,
+  isTag: PropTypes.bool.isRequired,
+  tagOrResourceName: PropTypes.string.isRequired,
 
 };

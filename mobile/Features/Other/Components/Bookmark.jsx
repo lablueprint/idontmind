@@ -9,11 +9,10 @@ import style from './BookmarkStyle';
 import BookmarkFilled from '../../../assets/images/bookmark.png';
 import BookmarkUnfilled from '../../../assets/images/unfilledBookmarkWhite.png';
 
-import BookmarkDark from '../../../assets/images/bookmark_dark.png';
 import Book from '../../../assets/images/reading.png';
 
 export default function Bookmark({
-  resourceName, author, selected, modalVisible, toggleModal, getFoldersForResource,
+  resourceName, author, selected, toggleModal,
 }) {
   const { id, authHeader } = useSelector((state) => state.auth);
 
@@ -31,7 +30,7 @@ export default function Bookmark({
     }
     setBookmarkSelected(!bookmarkSelected);
     if (!bookmarkSelected) {
-      await getFoldersForResource(resourceName);
+      // await getFoldersForResource(resourceName);
       toggleModal(false, resourceName);
     }
     // favorite or unfavorite the tag

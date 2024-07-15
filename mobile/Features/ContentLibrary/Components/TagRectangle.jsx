@@ -12,7 +12,7 @@ import BookmarkDark from '../../../assets/images/bookmark_dark.png';
 import TagFill from '../../../assets/images/tag_fill.png';
 
 export default function TagRectangle({
-  tagName, selected,
+  tagName, selected, toggleModal,
 }) {
   const { id, authHeader } = useSelector((state) => state.auth);
 
@@ -29,6 +29,10 @@ export default function TagRectangle({
       await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/unfavoriteTag`, { id, tag: tagName }, { headers: authHeader });
     }
     setBookmarkSelected(!bookmarkSelected);
+    if (!bookmarkSelected) {
+      // await getFoldersForResource(resourceName);
+      toggleModal(tagName);
+    }
     // favorite or unfavorite the tag
 
     console.log('toggle bookmark selection');
@@ -50,6 +54,8 @@ export default function TagRectangle({
 
 TagRectangle.propTypes = {
   tagName: PropTypes.string,
+  toggleModal: PropTypes.func.isRequired,
+  selected: PropTypes.bool.isRequired,
 };
 
 TagRectangle.defaultProps = {

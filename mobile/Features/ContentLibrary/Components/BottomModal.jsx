@@ -132,28 +132,19 @@ FolderModalRow.propTypes = {
   folderName: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   isAdded: PropTypes.bool.isRequired,
-  page: PropTypes.string.isRequired,
+  isTag: PropTypes.bool.isRequired,
   tagOrResourceName: PropTypes.string.isRequired,
 };
 
 function BottomHalfModal({
   modalVisibleParent, toggleModal, toggleModalNewFolder, isTag, folders,
-  tagOrResourceName, selectedFolders,
+  tagOrResourceName,
 }) {
-//   const [modalVisible, setModalVisible] = useState(false);
-//   useEffect(() => {
-//     // Update the local state whenever modalVisibleParent changes
-//     setModalVisible(modalVisibleParent);
-//     console.log('setmodal');
-//   }, [modalVisibleParent]);
-
   const handleNewFolder = () => {
     toggleModal();
     toggleModalNewFolder();
   };
 
-  // const folderNames = Object.keys(folders);
-  // const folderList = [['Artistry', 'description'], ['Haha You Suck', 'description 2']];
   return (
     <View style={styles.container}>
 
@@ -180,15 +171,12 @@ function BottomHalfModal({
                 </Text>
               </Pressable>
             </View>
-            {/* <View style={{ marginVertical: 10 }}>
-              <FolderModalRow folderName={page} description="Automatically saved to folder" isAdded page={page} tagOrResourceName={tagOrResourceName} />
-            </View> */}
             {Object.entries(folders).map(([key, value]) => (
               <View key={key} style={{ marginVertical: 10 }}>
                 <FolderModalRow
                   folderName={key}
                   description={value.description}
-                  isAdded={selectedFolders.includes(key)}
+                  isAdded={false}
                   isTag={isTag}
                   tagOrResourceName={tagOrResourceName}
                 />

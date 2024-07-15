@@ -18,14 +18,9 @@ function Resource({ navigation }) {
   const {
     authHeader, id,
   } = useSelector((state) => state.auth);
-  const route = useRoute();
-  const [modalVisible, setModalVisible] = useState(false);
-  const [modalVisibleNewFolder, setModalVisibleNewFolder] = useState(false);
-  const [modalVisibleCreated, setModalVisibleCreated] = useState(false);
-  const [newFolderName, setNewFolderName] = useState('');
-  const filters = route.params?.tags;
-  const [filterQuery, setFilterQuery] = useState('All');
 
+  // route params
+  const route = useRoute();
   const resourceName = route.params?.resourceName;
   let authorName = route.params?.authorName;
   if (!authorName) authorName = 'Anonymous'; // placeholder
@@ -35,7 +30,23 @@ function Resource({ navigation }) {
   const tagName = route.params?.tagName;
   const subtopicName = route.params?.subtopicName;
 
+  // modal stuff
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisibleNewFolder, setModalVisibleNewFolder] = useState(false);
+  const [newFolderName, setNewFolderName] = useState('');
+  const [modalVisibleCreated, setModalVisibleCreated] = useState(false);
+
+  // folder stuff
   const [folders, setFolders] = useState([]);
+
+  // whether or not the resource is favorited, determines if top right bookmark is selected
+  const [resourceFavorited, setResourceFavorited] = useState(false);
+
+  // filter stuff
+  const filters = route.params?.tags;
+  const [filterQuery] = useState('All');
+
+  // modal functions
   const toggleModal = () => {
     setModalVisible(!modalVisible);
   };
@@ -48,10 +59,14 @@ function Resource({ navigation }) {
   const setFolderName = (name) => {
     setNewFolderName(name);
   };
+
+  // navigation to previous route
   const navigateToPreviousRoute = () => {
     if (routeName === 'Resource List') navigation.navigate(routeName, { subtopicName, tagName });
     else navigation.navigate(routeName);
   };
+
+  // retrieve all the favoritedFolders so we can display them in the bottom modal
   const getFolders = async () => {
     try {
       const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/folder/getFavoritedFolders`, { headers: authHeader, params: { id } });
@@ -68,7 +83,7 @@ function Resource({ navigation }) {
     }
   };
 
-  const [resourceFavorited, setResourceFavorited] = useState(false);
+  // get favorited data to find out whether or not this resource is favorited
   const getFavorited = async () => {
     try {
       const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/getFavorites`, { headers: authHeader, params: { id } });
@@ -79,12 +94,27 @@ function Resource({ navigation }) {
       console.error(err.message);
     }
   };
+
+  const handleUpperBookmark = async () => {
+    if (!resourceFavorited) {
+      // favorite the resource
+      await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/favoriteResource`, { id, resource: resourceName }, { headers: authHeader });
+    } else {
+      await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/unfavoriteResource`, { id, resource: resourceName }, { headers: authHeader });
+    }
+    setResourceFavorited(!resourceFavorited);
+    if (!resourceFavorited) {
+      toggleModal();
+    }
+  };
+
   useEffect(() => {
     getFolders();
   }, [modalVisibleCreated]);
   useEffect(() => {
     getFavorited();
   }, []);
+
   return (
     <View
       className="mainContainer"
@@ -123,7 +153,7 @@ function Resource({ navigation }) {
             {authorName}
           </Text>
         </View>
-        <Pressable onPress={toggleModal}>
+        <Pressable onPress={handleUpperBookmark}>
           <Image
             style={{
               flex: 1, resizeMode: 'contain', height: 30, width: 30,
@@ -195,12 +225,21 @@ function Resource({ navigation }) {
           </Pressable>
 
         </View>
-        <BottomHalfModal modalVisibleParent={modalVisible} toggleModal={toggleModal} toggleModalNewFolder={toggleModalNewFolder} page="Resources" folders={folders} tagOrResourceName={resourceName} />
+        <BottomHalfModal
+          modalVisibleParent={modalVisible}
+          toggleModal={toggleModal}
+          toggleModalNewFolder={toggleModalNewFolder}
+          isTag={false}
+          folders={folders}
+          tagOrResourceName={resourceName}
+        />
         <NewFolderModal
           modalVisibleParent={modalVisibleNewFolder}
           toggleModal={toggleModalNewFolder}
           toggleModalCreated={toggleModalCreated}
           setFolderName={setFolderName}
+          tagOrResourceName={resourceName}
+          isTag={false}
         />
         <FolderCreatedModal
           modalVisibleParent={modalVisibleCreated}
