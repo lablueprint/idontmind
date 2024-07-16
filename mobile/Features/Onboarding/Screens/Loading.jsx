@@ -1,7 +1,7 @@
 import {
   Text, View, StyleSheet, Image,
 } from 'react-native';
-import IDMlogo from '../../assets/images/idontmindlogo.png';
+import IDMlogo from '../../../assets/images/idontmindlogo.png';
 import styles from './LoadingStyle';
 
 function Loading() {
