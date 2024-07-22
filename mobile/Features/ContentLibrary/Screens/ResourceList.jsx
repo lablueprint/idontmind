@@ -23,6 +23,12 @@ function ResourceList({ navigation }) {
   const route = useRoute();
   const subtopicName = route.params?.subtopicName; // subtopicName actually refers to the tag
   const tagName = route.params?.tagName; // tagName refers to "supertag" or category
+  const prevRoute = route.params?.route;
+
+  const folderName = route.params?.folderName;
+  const folderDescription = route.params?.folderDescription;
+  const folderResources = route.params?.resources;
+  const folderTags = route.params?.tags;
 
   // filter stuff
   const filters = ['All', 'Q&A', 'Personal Stories', 'Exercises', 'Articles'];
@@ -41,7 +47,6 @@ function ResourceList({ navigation }) {
 
   // folder stuff
   const [folders, setFolders] = useState([]);
-  // const [selectedFolders, setSelectedFolders] = useState([]);
   const [isTag, setIsTag] = useState(true); /* tells the bottom modal what triggered the popup
 (whether a tag or resource was pressed) */
   const [tagOrResourceName, setTagOrResourceName] = useState(subtopicName); /* the name of the
@@ -66,8 +71,16 @@ function ResourceList({ navigation }) {
   };
 
   // navigation to Tag.jsx and Resource.jsx
-  const navigateToTag = () => {
-    navigation.navigate('Tag', { index: 0, routeName: 'Content Library', tagName }); // set index to 0 as default for now
+  const navigateToPreviousRoute = () => {
+    if (prevRoute === 'Bookmarks') {
+      navigation.navigate('Bookmarks'); // set index to 0 as default for now
+    } else if (prevRoute === 'FolderContent') {
+      navigation.navigate('FolderContent', {
+        folderName, folderDescription, resources: folderResources, tags: folderTags,
+      }); // set index to 0 as default for now
+    } else {
+      navigation.navigate('Tag', { index: 0, routeName: 'Content Library', tagName }); // set index to 0 as default for now
+    }
   };
   const navigateToResource = (resourceName, authorName, content, tags) => {
     navigation.navigate('Resource', {
@@ -162,7 +175,7 @@ function ResourceList({ navigation }) {
         <View style={styles.overlay} />
       )}
       <TouchableOpacity
-        onPress={navigateToTag}
+        onPress={navigateToPreviousRoute}
         style={{ paddingRight: 10, paddingTop: 20, marginBottom: -10 }}
       >
         <Image style={{ resizeMode: 'contain', height: 20, width: 20 }} source={Back} />

@@ -30,6 +30,11 @@ function Resource({ navigation }) {
   const tagName = route.params?.tagName;
   const subtopicName = route.params?.subtopicName;
 
+  const folderName = route.params?.folderName;
+  const folderDescription = route.params?.folderDescription;
+  const folderResources = route.params?.folderResources;
+  const folderTags = route.params?.folderTags;
+
   // modal stuff
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisibleNewFolder, setModalVisibleNewFolder] = useState(false);
@@ -63,7 +68,11 @@ function Resource({ navigation }) {
   // navigation to previous route
   const navigateToPreviousRoute = () => {
     if (routeName === 'Resource List') navigation.navigate(routeName, { subtopicName, tagName });
-    else navigation.navigate(routeName);
+    else if (routeName === 'FolderContent') {
+      navigation.navigate('FolderContent', {
+        folderName, folderDescription, resources: folderResources, tags: folderTags,
+      }); // set index to 0 as default for now
+    } else navigation.navigate(routeName);
   };
 
   // retrieve all the favoritedFolders so we can display them in the bottom modal

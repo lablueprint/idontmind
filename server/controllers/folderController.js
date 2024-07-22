@@ -242,6 +242,5 @@ module.exports = {
   addToFolder,
   deleteFromFolder,
   deleteFavoritedFolder,
-  // getFoldersForTag,
   getFoldersForItem,
 };

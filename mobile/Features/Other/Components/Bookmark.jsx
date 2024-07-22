@@ -64,6 +64,8 @@ export default function Bookmark({
 Bookmark.propTypes = {
   resourceName: PropTypes.string,
   author: PropTypes.string,
+  selected: PropTypes.bool.isRequired,
+  toggleModal: PropTypes.func.isRequired,
 };
 
 Bookmark.defaultProps = {
