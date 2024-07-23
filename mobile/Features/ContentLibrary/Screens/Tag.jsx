@@ -11,6 +11,7 @@ import Back from '../../../assets/images/back_button.png';
 import style from '../Components/ContentStyle';
 import TagRectangle from '../Components/TagRectangle';
 import jsonData from '../../../content_library.json';
+import blurbData from '../../../blurbs.json';
 
 import BottomHalfModal from '../Components/BottomModal';
 import NewFolderModal from '../Components/NewFolderModal';
@@ -19,6 +20,7 @@ import FolderCreatedModal from '../Components/FolderCreatedModal';
 export default function Tag({ navigation, route }) {
   const { tagName } = route.params;
   const subtopics = jsonData[tagName];
+  const blurb = blurbData[tagName];
   const {
     authHeader, id,
   } = useSelector((state) => state.auth);
@@ -137,10 +139,7 @@ export default function Tag({ navigation, route }) {
           <Text
             style={{ fontSize: 16, fontFamily: 'cabinet-grotesk-medium', marginBottom: 20 }}
           >
-            Prioritizing lifestyle and wellness practices is beneficial
-            for mental health as they promote balance, resilience, and
-            positive coping mechanisms, fostering a sense of well-being
-            and inner harmony.
+            {blurb}
           </Text>
           <Text
             style={{ fontSize: 16, fontFamily: 'cabinet-grotesk-medium', paddingBottom: 10 }}
