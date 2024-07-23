@@ -21,7 +21,6 @@ import Feed from '../Features/Other/Screens/Feed';
 import CheckIn from '../Features/Other/Screens/CheckIn';
 import Options from '../Features/Other/Screens/Options';
 import JournalHistoryPage from '../Features/Other/Screens/JournalHistoryPage';
-import WOYM from '../Features/Register/WOYM';
 import DayChallenge from '../Features/Other/Screens/DayChallenge';
 
 import Bookmarks from '../Features/ContentLibrary/Screens/Bookmarks';
@@ -33,9 +32,9 @@ import FolderContent from '../Features/ContentLibrary/Screens/FolderContent';
 import NotificationsTest from '../Features/Settings/Screens/NotificationsTest';
 
 const Stack = createStackNavigator();
-const otherNames = ['Day Challenge', 'CheckIn', 'PostSignInLanding', 'Feed', 'Notifs', 'Options', 'Journal History', 'WOYM'];
+const otherNames = ['Day Challenge', 'CheckIn', 'PostSignInLanding', 'Feed', 'Notifs', 'Options', 'Journal History'];
 const otherPages = [DayChallenge, CheckIn, PostSignInLanding, Feed, NotificationsTest,
-  Options, JournalHistoryPage, WOYM];
+  Options, JournalHistoryPage];
 
 function HomeWithExtraPages() {
   return (

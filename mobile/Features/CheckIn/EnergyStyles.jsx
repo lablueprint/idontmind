@@ -1,5 +1,4 @@
 import { StyleSheet } from 'react-native';
-import reducer from '../../redux/authSlice';
 
 export default StyleSheet.create({
   container: {
@@ -9,8 +8,6 @@ export default StyleSheet.create({
     height: '100%',
     width: '90%',
     flexDirection: 'column',
-    // borderWidth: 2,
-    // borderColor: 'red',
   },
   heading: {
     fontSize: 32,
@@ -36,8 +33,6 @@ export default StyleSheet.create({
     height: '100%',
     width: '90%',
     flexDirection: 'column',
-    // borderWidth: 2,
-    // borderColor: 'blue',
   },
   continueText: {
     color: 'white',

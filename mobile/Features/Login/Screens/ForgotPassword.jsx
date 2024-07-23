@@ -63,8 +63,10 @@ function ForgotPassword({ navigation }) {
     }}
     >
       <Image
-        source={require('../../../assets/images/package.png')}
-        style={{height: '32%', width: '32%', overflow: 'visible', zIndex: -1, position: 'absolute', bottom: '54%'}}
+        source={require('../../../assets/images/packageicon.png')}
+        style={{
+          height: '32%', width: '32%', overflow: 'visible', zIndex: -1, position: 'absolute', bottom: '54%',
+        }}
       />
       <View style={{ width: '83%', marginTop: '15%' }}>
         <Text style={{ fontSize: 40, fontWeight: 300 }}>
