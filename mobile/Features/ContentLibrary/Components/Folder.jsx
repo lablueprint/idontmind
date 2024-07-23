@@ -27,7 +27,6 @@ export default function Folder({
 
   return (
     <Pressable onPress={() => {
-      console.log('add');
       toggleModalNewFolder();
     }}
 

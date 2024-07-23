@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 // import axios from 'axios';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
 import { useRoute } from '@react-navigation/native';
 import Bookmark from '../../Other/Components/Bookmark';
 import styles from './BookmarksStyle';
@@ -15,6 +14,7 @@ import Back from '../../../assets/images/back_button.png';
 function FolderContent({ navigation }) {
   const route = useRoute();
 
+  // getting the folder's information to display
   const folderName = route.params?.folderName;
   const folderDescription = route.params?.folderDescription;
   const folderResources = route.params?.resources;
@@ -23,6 +23,7 @@ function FolderContent({ navigation }) {
   // resource names, straight from favoritedResources
   const [fetchedResources, setFetchedResources] = useState([]);
 
+  // navigation functions
   const navigateToBookmarks = () => {
     navigation.navigate('Bookmarks');
   };
@@ -37,13 +38,13 @@ function FolderContent({ navigation }) {
     });
   };
 
+  // filter stuff
   const filters = ['All', 'Q&A', 'Personal Stories', 'Exercises', 'Articles'];
   const [filterQuery, setFilterQuery] = useState('All');
 
-  // filter function, get all the favorited resources under this filter
+  // filter function, fetch all the folder's resources that are under this filter
   const handleFilterChange = async (item) => {
     setFilterQuery(item);
-    // get all the tags under this filter
     const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/test/filterResourcesByFilter`, { resources: folderResources, filter: item });
     setFetchedResources(res.data);
   };
@@ -213,7 +214,6 @@ function FolderContent({ navigation }) {
                   folderTags.map((item) => (
                     <Pressable key={item} onPress={() => navigateToResourceList(item)}>
                       <TagRectangle
-                          // key={resourceName}
                         tagName={item}
                         selected
                       />

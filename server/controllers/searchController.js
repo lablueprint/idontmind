@@ -1,6 +1,3 @@
-const Article = require('../models/ArticleSchema');
-const QnA = require('../models/QnASchema');
-
 const OfficialArticle = require('../models/OfficialArticleSchema');
 const OfficialQnA = require('../models/OfficialQnASchema');
 const OfficialPersonalStory = require('../models/OfficialStoriesSchema');
@@ -100,38 +97,7 @@ const searchByTag = async (req, res) => {
   }
 };
 
-// get a resource (and all its data) by name
-const searchByResourceName = async (req, res) => {
-  const { resource } = req.body;
-  const resourceSearch = resource;
-  const aggregateCalls = [];
-
-  aggregateCalls.push(
-    OfficialArticle.aggregate([{ $match: { title: resourceSearch } }]),
-  );
-
-  aggregateCalls.push(
-    OfficialQnA.aggregate([{ $match: { question: resourceSearch } }]),
-  );
-
-  aggregateCalls.push(
-    OfficialPersonalStory.aggregate([{ $match: { title: resourceSearch } }]),
-  );
-
-  aggregateCalls.push(
-    OfficialExercise.aggregate([{ $match: { title: resourceSearch } }]),
-  );
-
-  try {
-    const data = await Promise.all(aggregateCalls);
-    res.send(data.flat());
-  } catch (err) {
-    console.error(err);
-    res.status(500).send(err);
-  }
-};
-
-// filter resources by filter selection
+// fetch and filter a given array of resources by filter selection
 const filterResourcesByFilter = async (req, res) => {
   const { resources, filter } = req.body;
   const aggregateCalls = [];
@@ -172,5 +138,5 @@ const filterResourcesByFilter = async (req, res) => {
 };
 
 module.exports = {
-  searchByKeyword, searchByTag, searchByResourceName, filterResourcesByFilter,
+  searchByKeyword, searchByTag, filterResourcesByFilter,
 };

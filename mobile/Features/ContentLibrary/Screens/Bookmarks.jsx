@@ -3,7 +3,6 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
-// import axios from 'axios';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import Bookmark from '../../Other/Components/Bookmark';
@@ -19,17 +18,18 @@ function Bookmarks({ navigation }) {
     authHeader, id,
   } = useSelector((state) => state.auth);
 
-  const [favoritedResources, setFavoritedResources] = useState([]);
-  // resource names, straight from favoritedResources
-  const [fetchedResources, setFetchedResources] = useState([]);
+  // favoriting/folder stuff
+  const [favoritedResources, setFavoritedResources] = useState([]); // just names
+  const [fetchedResources, setFetchedResources] = useState([]); // full research objects
   const [favoritedTags, setFavoritedTags] = useState([]);
-
   const [folders, setFolders] = useState([]);
 
+  // modal stuff
   const [modalVisibleNewFolder, setModalVisibleNewFolder] = useState(false);
   const [newFolderName, setNewFolderName] = useState('');
   const [modalVisibleCreated, setModalVisibleCreated] = useState(false);
 
+  // modal toggle functions
   const toggleModalNewFolder = () => {
     setModalVisibleNewFolder(!modalVisibleNewFolder);
   };
@@ -40,6 +40,7 @@ function Bookmarks({ navigation }) {
     setNewFolderName(name);
   };
 
+  // navigation functions
   const navigateToContentLibrary = () => {
     navigation.navigate('Content Library');
   };
@@ -52,17 +53,18 @@ function Bookmarks({ navigation }) {
     navigation.navigate('Resource List', { subtopicName, route: 'Bookmarks' });
   };
 
+  // filter stuff
   const filters = ['All', 'Q&A', 'Personal Stories', 'Exercises', 'Articles'];
   const [filterQuery, setFilterQuery] = useState('All');
 
-  // filter function, get all the favorited resources under this filter
+  // filter function, fetch all the favorited resources under this filter (getting the full objects)
   const handleFilterChange = async (item) => {
     setFilterQuery(item);
-    // get all the tags under this filter
     const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/test/filterResourcesByFilter`, { resources: favoritedResources, filter: item });
     setFetchedResources(res.data);
   };
 
+  // get the favoritedResources and favoritedTags
   const getFavorites = async () => {
     try {
       const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/getFavorites`, { headers: authHeader, params: { id } });
@@ -77,6 +79,7 @@ function Bookmarks({ navigation }) {
     }
   };
 
+  // retrieve all the folders this user has made
   const getFolders = async () => {
     try {
       const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/folder/getFavoritedFolders`, { headers: authHeader, params: { id } });
@@ -100,7 +103,7 @@ function Bookmarks({ navigation }) {
 
   useEffect(() => {
     getFolders();
-  }, [modalVisibleCreated]);
+  }, [modalVisibleCreated]); // refresh folders when a new folder has been created
 
   return (
     <View
