@@ -116,22 +116,6 @@ const addToFolder = async (req, res) => {
   }
 };
 
-const getFoldersForItem = async (req, res) => {
-  console.log('get folders for item');
-  const { id, tag, resource } = req.query;
-  try {
-    const user = await User.findById(id);
-    if (!user) {
-      return res.status(404).send({ message: 'User not found' });
-    }
-    if (tag) return res.send(user.tagToFolders.get(sanitize(tag)));
-    return res.send(user.resourceToFolders.get(sanitize(resource)));
-  } catch (err) {
-    console.error(err);
-    return res.status(500).send(err);
-  }
-};
-
 // delete a specified tag or resource from a specified folder
 const deleteFromFolder = async (req, res) => {
   console.log('delete from folder');
@@ -213,34 +197,10 @@ const deleteFavoritedFolder = async (req, res) => {
   }
 };
 
-// const getFoldersForTag = async (req, res) => {
-//   console.log('get folders for tag');
-//   const { id, tag } = req.query;
-//   console.log(id);
-//   try {
-//     const user = await User.findById(id);
-//     if (!user) {
-//       return res.status(404).send({ message: 'User not found' });
-//     }
-//     const foldersWithTag = [];
-//     user.favoritedFolders.forEach((value, key) => {
-//       if (value.tags.includes(tag)) {
-//         foldersWithTag.push(key);
-//       }
-//     });
-//     console.log(foldersWithTag);
-//     return res.status(200).json(foldersWithTag);
-//   } catch (err) {
-//     console.error(err);
-//     return res.status(500).send(err);
-//   }
-// };
-
 module.exports = {
   createFavoritedFolder,
   getFavoritedFolders,
   addToFolder,
   deleteFromFolder,
   deleteFavoritedFolder,
-  getFoldersForItem,
 };

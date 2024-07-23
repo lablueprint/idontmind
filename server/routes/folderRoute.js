@@ -18,6 +18,4 @@ folderRouter.get('/getFavoritedFolders', folderController.getFavoritedFolders);
 
 folderRouter.get('/getFolder', folderController.getFavoritedFolders);
 
-folderRouter.get('/getFoldersForItem', folderController.getFoldersForItem);
-
 module.exports = folderRouter;
