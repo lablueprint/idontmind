@@ -139,6 +139,151 @@ const deleteUserById = async (req, res) => {
   }
 };
 
+const getFavorites = async (req, res) => {
+  console.log('get favorites');
+  const { id } = req.query;
+  try {
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).send({ message: 'User not found' });
+    }
+
+    const favoritesData = {
+      bannedTags: user.banTags,
+      favoritedTags: user.favoritedTags,
+      favoritedResources: user.favoritedResources,
+      favoritedFolders: Object.fromEntries(user.favoritedFolders),
+    };
+
+    return res.send(favoritesData);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send(err);
+  }
+};
+
+const favoriteTag = async (req, res) => {
+  console.log('favorite tag');
+  const { id, tag } = req.body;
+  try {
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).send({ message: 'User not found' });
+    }
+    if (!user.favoritedTags.includes(tag)) user.favoritedTags.push(tag);
+    // if (!user.favoritedTags.has(tag)) {
+    //   user.favoritedTags.set(tag, { folders: [] });
+    // }
+    await user.save();
+
+    return res.send(user.favoritedTags);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send(err);
+  }
+};
+
+function sanitize(name) {
+  return name.replace(/\./g, '_');
+}
+const unfavoriteTag = async (req, res) => {
+  console.log('unfavorite tag');
+  const { id, tag } = req.body;
+  try {
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).send({ message: 'User not found' });
+    }
+    user.favoritedTags = user.favoritedTags.filter((t) => t !== tag);
+
+    // also remove from all favoritedFolders it is in
+    const sanitizedTag = sanitize(tag);
+
+    const folderNames = user.tagToFolders.get(sanitizedTag);
+
+    // also remove from all favoritedFolders it is in
+    if (folderNames) {
+      folderNames.forEach((folderName) => {
+        const newTags = user.favoritedFolders.get(folderName).tags.filter(
+          (t) => t !== tag,
+        );
+        user.favoritedFolders.get(folderName).tags = newTags;
+      });
+    }
+
+    // also delete entry from tagToFolders
+    if (user.tagToFolders.has(sanitizedTag)) {
+      user.tagToFolders.delete(sanitizedTag);
+    }
+
+    await user.save();
+
+    return res.send(user.favoritedTags);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send(err);
+  }
+};
+
+const favoriteResource = async (req, res) => {
+  console.log('favorite resource');
+  const { id, resource } = req.body;
+  try {
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).send({ message: 'User not found' });
+    }
+    // only add to favoriteResources if not already there
+    if (!user.favoritedResources.includes(resource)) user.favoritedResources.push(resource);
+    await user.save();
+
+    return res.send(user.favoritedResources);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send(err);
+  }
+};
+
+const unfavoriteResource = async (req, res) => {
+  console.log('unfavorite resource');
+  const { id, resource } = req.body;
+  try {
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).send({ message: 'User not found' });
+    }
+    user.favoritedResources = user.favoritedResources.filter((r) => r !== resource);
+
+    // also remove from all favoritedFolders it is in
+    const sanitizedResource = sanitize(resource);
+
+    const folderNames = user.resourceToFolders.get(sanitizedResource);
+
+    if (folderNames) {
+      folderNames.forEach((folderName) => {
+        const newResources = user.favoritedFolders.get(folderName).resources.filter(
+          (r) => r !== resource,
+        );
+        user.favoritedFolders.get(folderName).resources = newResources;
+      });
+    }
+
+    // also delete entry from resourceToFolders
+    if (user.resourceToFolders.has(sanitizedResource)) {
+      user.resourceToFolders.delete(sanitizedResource);
+    }
+
+    // TODO: also remove from all favoritedFolders it is in
+
+    await user.save();
+
+    return res.send(user.favoritedResources);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send(err);
+  }
+};
+
 const readSpecifiedFields = async (req, res) => {
   console.log('HERE');
   const { id, fields } = req.body;
@@ -206,7 +351,7 @@ const increaseChallengeDay = async (req, res) => {
   } catch (err) {
     console.error(err);
     return res.status(500).send(err);
-  }
+  }a;
 };
 
 // req has tag object, email
@@ -253,7 +398,7 @@ const increaseChallengeDay = async (req, res) => {
 // };
 
 const sendEmail = async (req, res) => {
-  console.log(33, req.body)
+  console.log(33, req.body);
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     host: 'smtp.gmail.com',
@@ -329,14 +474,16 @@ module.exports = {
   updateUser,
   readSpecifiedFields,
   deleteUserById,
-  // getFavorites,
+  getFavorites,
+  favoriteTag,
+  unfavoriteTag,
+  favoriteResource,
+  unfavoriteResource,
   getUserChallengeDay,
   resetChallengeDay,
   increaseChallengeDay,
-  readSpecifiedFields,
   checkUserByEmail,
   sendEmail,
   resetPassword,
-  // favoriteTag,
-  // unfavoriteTag,
+
 };
