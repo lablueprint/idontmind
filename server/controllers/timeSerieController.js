@@ -247,6 +247,86 @@ const getUserTimeSeries = async (req, res) => {
   }
 };
 
+const findLastDays = async (req, res) => {
+
+  const { email, userId, timestamp, days } = req.body;
+
+  try {
+    // Ensure timestamp is a valid Date object
+    const endDate = new Date(timestamp);
+
+    const startDate = new Date(endDate);
+    startDate.setDate(startDate.getDate() - days);
+
+    startDate.setHours(0,0,0,0);
+    endDate.setHours(23, 59, 59, 999);
+
+    const data = await TimeSerie.aggregate([
+      {
+        $match: {
+          'metadata.email': email,
+          'metadata.userId': userId,
+          timestamp: {
+            $gte: startDate,
+            $lte: endDate,
+          },
+        },
+      },
+      {
+        $sort: { timestamp: -1 },
+      },
+      {
+        $group: {
+          _id: {
+            date: {
+              $dateToString: { format: "%Y-%m-%d", date: "$timestamp" },
+            },
+            time: {
+              $dateToString: { format: "%H:%M:%S", date: "$timestamp" },
+            },
+          },
+          sleep: { $first: '$sleep' },
+          waterIntake: { $first: '$waterIntake' },
+          metadata: { $first: '$metadata' },
+          timestamp: { $first: '$timestamp' },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          timestamp: "$timestamp",
+          sleep: 1,
+          waterIntake: 1,
+          metadata: 1,
+          dayOfWeek: {
+            $switch: {
+              branches: [
+                { case: { $eq: [{ $dayOfWeek: "$timestamp" }, 1] }, then: 'Sunday' },
+                { case: { $eq: [{ $dayOfWeek: "$timestamp" }, 2] }, then: 'Monday' },
+                { case: { $eq: [{ $dayOfWeek: "$timestamp" }, 3] }, then: 'Tuesday' },
+                { case: { $eq: [{ $dayOfWeek: "$timestamp" }, 4] }, then: 'Wednesday' },
+                { case: { $eq: [{ $dayOfWeek: "$timestamp" }, 5] }, then: 'Thursday' },
+                { case: { $eq: [{ $dayOfWeek: "$timestamp" }, 6] }, then: 'Friday' },
+                { case: { $eq: [{ $dayOfWeek: "$timestamp" }, 7] }, then: 'Saturday' },
+              ],
+              default: 'Unknown',
+            },
+          },
+        },
+      },
+      {
+        $sort: { timestamp: -1 },
+      },
+    ]);
+
+    // Return the found documents
+    res.send(data);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(err);
+  }
+};
+
 const InsertManyExamples = async (req, res) => {
   console.log('Insert Many Examples');
   try {
@@ -257,7 +337,7 @@ const InsertManyExamples = async (req, res) => {
             email: 'booooooop',
             userId: 'booop',
           },
-          timestamp: new Date('2024-06-22T12:00:00.000Z'),
+          timestamp: new Date('2024-01-01T12:00:00.000Z'),
           sleep: 1,
           waterIntake: 2,
         },
@@ -266,7 +346,7 @@ const InsertManyExamples = async (req, res) => {
             email: 'booooooop',
             userId: 'booop',
           },
-          timestamp: new Date('2024-06-23T12:00:00.000Z'),
+          timestamp: new Date('2024-01-02T12:00:00.000Z'),
           sleep: 3,
           waterIntake: 1,
         },
@@ -275,7 +355,7 @@ const InsertManyExamples = async (req, res) => {
             email: 'booooooop',
             userId: 'booop',
           },
-          timestamp: new Date('2024-06-24T12:00:00.000Z'),
+          timestamp: new Date('2024-01-03T12:00:00.000Z'),
           sleep: 2,
           waterIntake: 2,
         },
@@ -284,7 +364,7 @@ const InsertManyExamples = async (req, res) => {
             email: 'booooooop',
             userId: 'booop',
           },
-          timestamp: new Date('2024-06-25T12:00:00.000Z'),
+          timestamp: new Date('2024-01-04T12:00:00.000Z'),
           sleep: 4,
           waterIntake: 2,
         },
@@ -293,7 +373,7 @@ const InsertManyExamples = async (req, res) => {
             email: 'booooooop',
             userId: 'booop',
           },
-          timestamp: new Date('2024-06-26T12:00:00.000Z'),
+          timestamp: new Date('2024-01-05T12:00:00.000Z'),
           sleep: 2,
           waterIntake: 6,
         },
@@ -302,7 +382,7 @@ const InsertManyExamples = async (req, res) => {
             email: 'booooooop',
             userId: 'booop',
           },
-          timestamp: new Date('2024-06-27T12:00:00.000Z'),
+          timestamp: new Date('2024-01-06T12:00:00.000Z'),
           sleep: 3,
           waterIntake: 4,
         },
@@ -311,7 +391,7 @@ const InsertManyExamples = async (req, res) => {
             email: 'booooooop',
             userId: 'booop',
           },
-          timestamp: new Date('2024-06-28T12:00:00.000Z'),
+          timestamp: new Date('2024-01-07T12:00:00.000Z'),
           sleep: 6,
           waterIntake: 6,
         },
@@ -320,7 +400,7 @@ const InsertManyExamples = async (req, res) => {
             email: 'booooooop',
             userId: 'booop',
           },
-          timestamp: new Date('2024-06-29T12:00:00.000Z'),
+          timestamp: new Date('2024-01-08T12:00:00.000Z'),
           sleep: 5,
           waterIntake: 7,
         },
@@ -329,7 +409,7 @@ const InsertManyExamples = async (req, res) => {
             email: 'booooooop',
             userId: 'booop',
           },
-          timestamp: new Date('2024-06-30T12:00:00.000Z'),
+          timestamp: new Date('2024-01-09T12:00:00.000Z'),
           sleep: 3,
           waterIntake: 4,
         },
@@ -338,7 +418,7 @@ const InsertManyExamples = async (req, res) => {
             email: 'booooooop',
             userId: 'booop',
           },
-          timestamp: new Date('2024-07-01T12:00:00.000Z'),
+          timestamp: new Date('2024-01-10T12:00:00.000Z'),
           sleep: 2,
           waterIntake: 5,
         },
@@ -347,7 +427,7 @@ const InsertManyExamples = async (req, res) => {
             email: 'booooooop',
             userId: 'booop',
           },
-          timestamp: new Date('2024-07-02T12:00:00.000Z'),
+          timestamp: new Date('2024-01-11T12:00:00.000Z'),
           sleep: 5,
           waterIntake: 2,
         },
@@ -356,7 +436,7 @@ const InsertManyExamples = async (req, res) => {
             email: 'booooooop',
             userId: 'booop',
           },
-          timestamp: new Date('2024-07-03T12:00:00.000Z'),
+          timestamp: new Date('2024-01-12T12:00:00.000Z'),
           sleep: 6,
           waterIntake: 4,
         },
@@ -365,7 +445,7 @@ const InsertManyExamples = async (req, res) => {
             email: 'booooooop',
             userId: 'booop',
           },
-          timestamp: new Date('2024-07-04T12:00:00.000Z'),
+          timestamp: new Date('2024-01-13T12:00:00.000Z'),
           sleep: 7,
           waterIntake: 3,
         },
@@ -374,7 +454,7 @@ const InsertManyExamples = async (req, res) => {
             email: 'booooooop',
             userId: 'booop',
           },
-          timestamp: new Date('2024-07-05T12:00:00.000Z'),
+          timestamp: new Date('2024-01-14T12:00:00.000Z'),
           sleep: 5,
           waterIntake: 5,
         },
@@ -387,5 +467,5 @@ const InsertManyExamples = async (req, res) => {
 };
 
 module.exports = {
-  insertTimeSeries, InsertManyExamples, getUserTimeSeries, checkExistingCheckIn,
+  insertTimeSeries, InsertManyExamples, getUserTimeSeries, checkExistingCheckIn, findLastDays,
 };

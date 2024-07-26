@@ -10,6 +10,8 @@ timeSerieRouter.get('/checkExistingCheckIn', timeSerieController.checkExistingCh
 
 timeSerieRouter.post('/InsertManyExamples', timeSerieController.InsertManyExamples);
 
+timeSerieRouter.post('/findLastDays', timeSerieController.findLastDays);
+
 timeSerieRouter.post('/getUserTimeSeries', timeSerieController.getUserTimeSeries);
 
 timeSerieRouter.post('/addCustomActivity', addCustomActivity);
