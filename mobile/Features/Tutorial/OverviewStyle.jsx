@@ -39,4 +39,11 @@ export default StyleSheet.create({
     fontSize: 18,
     color: '#F6FCFC',
   },
+  allToggleContainers: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 20,
+    marginTop: 40,
+    marginBottom: 100,
+  },
 });

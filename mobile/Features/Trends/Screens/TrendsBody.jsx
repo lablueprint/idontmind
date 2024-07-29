@@ -10,12 +10,13 @@ import TrendsHeader from '../Components/TrendsHeader';
 import Bookmark from '../../Other/Components/Bookmark';
 import styles from './TrendsPageStyles';
 import { useSelector } from 'react-redux';
+import { useRoute } from '@react-navigation/native';
 
 // note need to change mood to energy?? (energy is strings but mood is #s)
 // note rn water intake in mongo db is used for mood
 // mood, sleep, energy, water
 function TrendSection({
-  header, description, data, data2, avg,
+  header, name, description, data, data2, avg, notEnoughData
 }) {
   let result = '';
   if (avg < 0) {
@@ -33,17 +34,18 @@ function TrendSection({
     }}
     >
       <Text style={{ fontSize: 24 }}>{header}</Text>
-      <Text style={{ fontSize: 14 }}>{description}</Text>
+      <Text style={{ fontSize: 14, marginBottom: -100 }}>{description}</Text>
       <LineChart
         style={{ backgroundColor: 'black' }}
-        data={data2.reverse()}
-        data2={data.reverse()}
+        data={data2}
+        data2={data}
         color1="#5d9e9f"
         color2="#bfdbd7"
         thickness={5}
         width={350}
         height={350}
         curved
+        curvature={0.01}
         hideDataPoints
         hideRules
         hideYAxisText
@@ -51,16 +53,21 @@ function TrendSection({
         yAxisLabelWidth={0}
         yAxisOffset={0}
         isAnimated
+        //spacing={10}
 
       />
-      <Text>
-        Your energy trended a
-        {' '}
-        <Text style={{ color: '#82ad98' }}>{result}</Text>
-        {avg < 0 ? 'downward' : 'upward'}
-        {' '}
-        from the previous week.
-      </Text>
+      {notEnoughData ? (
+        null
+      ) : (
+        <Text>
+          Your <Text style={{ color: '#82ad98' }}>{name}</Text> trended a
+          {' '}
+          <Text style={{ color: '#82ad98' }}>{result}</Text>
+          {avg < 0 ? 'downward' : 'upward'}
+          {' '}
+          from the previous week.
+        </Text>
+      )}
     </View>
   );
 }
@@ -73,12 +80,14 @@ TrendSection.propTypes = {
     PropTypes.shape({
       value: PropTypes.number.isRequired,
       label: PropTypes.string.isRequired,
+      isDummy: PropTypes.bool,
     }).isRequired,
   ).isRequired,
   data2: PropTypes.arrayOf(
     PropTypes.shape({
       value: PropTypes.number.isRequired,
       label: PropTypes.string.isRequired,
+      sDummy: PropTypes.bool,
     }).isRequired,
   ).isRequired,
   avg: PropTypes.number.isRequired,
@@ -87,7 +96,7 @@ TrendSection.propTypes = {
   // energyMessage: PropTypes.string.isRequired,
 };
 
-export default function TrendsBody({ route }) {
+export default function TrendsBody({ route, navigation }) {
   const [lastPeriodMood, setLastPeriodMood] = useState([]);
   const [currentPeriodMood, setCurrentPeriodMood] = useState([]);
   const [lastPeriodSleep, setLastPeriodSleep] = useState([]);
@@ -100,6 +109,8 @@ export default function TrendsBody({ route }) {
   const [moodMessage, setMoodMessage] = useState(null);
   const [sleepMessage, setSleepMessage] = useState(null);
   const [energyMessage, setEnergyMessage] = useState(null);
+  const [notEnoughData, setNotEnoughData] = useState(false);
+  const [selectedPeriod, setSelectedPeriod] = useState('Week');
 
   const { title } = route.params;
 
@@ -128,28 +139,41 @@ export default function TrendsBody({ route }) {
         const start = new Date(current);
         const mid = new Date(current);
         const end = new Date(current);
-        start.setDate(current.getDate() - 14);
-        mid.setDate(current.getDate() - 7);
+        if (selectedPeriod === 'Week') {
+          start.setDate(current.getDate() - 14);
+          mid.setDate(current.getDate() - 7);
+        } else {
+          start.setDate(current.getDate() - 60);
+          mid.setDate(current.getDate() - 30);
+        }
 
         const startDate = start.toISOString();
         const midDate = mid.toISOString();
         const endDate = end.toISOString();
 
         const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/timeSerie/getUserTimeSeries`, {
+          //THE EMAIL AND USERID HERE ARE JUST FOR TESTING. need to change to just email and userId with no colon
           email: 'user1@example.com',
           userId: 'user1',
           startDate,
           midDate,
           endDate,
+          period: selectedPeriod,
         }, { headers: authHeader });
 
+        console.log('Response data:', res.data);
+
+        if (res.data.message) {
+          setNotEnoughData(true);
+        }
+
         const {
-          PercentageAvgMood,
-          PercentageAvgSleep,
-          PercentageAvgEnergy,
+          PercentageAvgMood = 0,
+          PercentageAvgSleep = 0,
+          PercentageAvgEnergy = 0,
           firstPeriod,
           secondPeriod,
-        } = res.data[0];
+        } = res.data;
 
         setLastPeriodMood(firstPeriod.MoodData);
         setCurrentPeriodMood(secondPeriod.MoodData);
@@ -172,7 +196,7 @@ export default function TrendsBody({ route }) {
       }
     };
     getUserTimeSeries();
-  }, []);
+  }, [selectedPeriod]);
 
   //NOTE!!! i changed the values for the algos to be 1 and 2 are low, 3 and 4 are moderate and 5 is high
   //!!!
@@ -180,9 +204,10 @@ export default function TrendsBody({ route }) {
   function analyzeMood(currentData, lastData) {
     // combine both datasets to handle a 10-day span
     const totalEntries = 10;
-    const currentLength = currentData.length;
-    const lastEntriesNeeded = totalEntries - currentLength;
-    const combinedData = lastData.slice(-lastEntriesNeeded).concat(currentData);
+    const combinedData = lastData.concat(currentData).filter(item => !item.isDummy).slice(-totalEntries);
+    // const currentLength = currentData.length;
+    // const lastEntriesNeeded = totalEntries - currentLength;
+    // const combinedData = lastData.slice(-lastEntriesNeeded).concat(currentData);
 
     // Sort combined data by date
     const sortedCombinedData = combinedData.sort((a, b) => new Date(a.label) - new Date(b.label));
@@ -193,26 +218,26 @@ export default function TrendsBody({ route }) {
     // Log the most recent 5 entries for debugging
     console.log('energy recentFiveEntries:', recentFiveEntries);
 
-    // check for poor sleep quality over the last 5 days
+    // check for low mood levels over the last 5 days
     const lowMood = recentFiveEntries.every((day) => day.value >= 1 && day.value <= 2);
     if (lowMood) {
-      setMoodMessage('Consistently Low Mood (5+ nights): Suggest resources on managing low mood or depression, such as mindfulness exercises, physical activity, or seeking professional help.');
+      setMoodMessage('We noticed your mood levels have been consistently low for 5+ days. Please feel free to use our resources or reach out for help!');
       console.log('Mood message', moodMessage);
       return;
     }
 
-    // check for average sleep quality over the last 10 days
+    // check for average mood levels over the last 10 days
     const moderateMood = sortedCombinedData.every((day) => day.value >= 3 && day.value <= 4);
     if (moderateMood) {
-      setMoodMessage('Moderate Sleep (10+ nights): Encourage exploration of activities that can enhance mood, like creative hobbies or social engagement.');
+      setMoodMessage('We noticed your mood levels have been consistently moderate for 10+ days.');
       console.log('Mood message', moodMessage);
       return;
     }
 
-    // check for good sleep quality over the last 5 days
+    // check for good mood levels over the last 5 days
     const highMood = recentFiveEntries.every((day) => day.value >= 5);
     if (highMood) {
-      setMoodMessage('High Mood (5+ nights):  Provide content on maintaining positive mental health and resilience-building practices.');
+      setMoodMessage('We noticed your mood levels have been consistently high for 5+ days!');
       console.log('Mood message', moodMessage);
       return;
     }
@@ -224,9 +249,10 @@ export default function TrendsBody({ route }) {
   function analyzeSleepQuality(currentData, lastData) {
     // combine both datasets to handle a 10-day span
     const totalEntries = 10;
-    const currentLength = currentData.length;
-    const lastEntriesNeeded = totalEntries - currentLength;
-    const combinedData = lastData.slice(-lastEntriesNeeded).concat(currentData);
+    const combinedData = lastData.concat(currentData).filter(item => !item.isDummy).slice(-totalEntries);
+    // const currentLength = currentData.length;
+    // const lastEntriesNeeded = totalEntries - currentLength;
+    // const combinedData = lastData.slice(-lastEntriesNeeded).concat(currentData);
 
     // Sort combined data by date
     const sortedCombinedData = combinedData.sort((a, b) => new Date(a.label) - new Date(b.label));
@@ -240,7 +266,7 @@ export default function TrendsBody({ route }) {
     // check for poor sleep quality over the last 5 days
     const poorSleep = recentFiveEntries.every((day) => day.value >= 1 && day.value <= 2);
     if (poorSleep) {
-      setSleepMessage('Poor Sleep Quality (5+ nights): Offer sleep hygiene tips, relaxation techniques before bed, and suggest limiting screen time in the evening.');
+      setSleepMessage('We noticed your sleep quality has been consistently low for 5+ nights. Please feel free to use our resources or reach out for help!');
       console.log('Sleep message', sleepMessage);
       return;
     }
@@ -248,7 +274,7 @@ export default function TrendsBody({ route }) {
     // check for average sleep quality over the last 10 days
     const averageSleep = sortedCombinedData.every((day) => day.value >= 3 && day.value <= 4);
     if (averageSleep) {
-      setSleepMessage('Average Sleep Quality (10+ nights): Suggest fine-tuning sleep environment or routine, exploring relaxation methods like meditation.');
+      setSleepMessage('We noticed your sleep quality has been consistently average for 10+ nights.');
       console.log('Sleep message', sleepMessage);
       return;
     }
@@ -256,7 +282,7 @@ export default function TrendsBody({ route }) {
     // check for good sleep quality over the last 5 days
     const goodSleep = recentFiveEntries.every((day) => day.value >= 5);
     if (goodSleep) {
-      setSleepMessage('Good Sleep Quality (5+ nights): Reinforce current sleep habits and explore additional practices for restful sleep, like regular exercise.');
+      setSleepMessage('We noticed your sleep quality has been consistently high for 5+ nights!');
       console.log('Sleep message', sleepMessage);
       return;
     }
@@ -271,9 +297,10 @@ export default function TrendsBody({ route }) {
   
     // combine both datasets to handle a 10-day span
     const totalEntries = 10;
-    const currentLength = currentData.length;
-    const lastEntriesNeeded = totalEntries - currentLength;
-    const combinedData = lastData.slice(-lastEntriesNeeded).concat(currentData);
+    const combinedData = lastData.concat(currentData).filter(item => !item.isDummy).slice(-totalEntries);
+    // const currentLength = currentData.length;
+    // const lastEntriesNeeded = totalEntries - currentLength;
+    // const combinedData = lastData.slice(-lastEntriesNeeded).concat(currentData);
 
     // Sort combined data by date
     const sortedCombinedData = combinedData.sort((a, b) => new Date(a.label) - new Date(b.label));
@@ -287,7 +314,7 @@ export default function TrendsBody({ route }) {
     // check for consistently low energy over the last 5 days
     const lowEnergy = recentFiveEntries.every((day) => day.value >= 1 && day.value <= 2);
     if (lowEnergy) {
-      setEnergyMessage('Consistently Low Energy (5+ days): Suggest reviewing diet and physical activity levels, offer strategies for managing stress, and consider recommending a health check-up if persistent.');
+      setEnergyMessage('We noticed your energy levels have been consistently low for 5+ days. Please feel free to use our resources or reach out for help!');
       console.log('Energy message', energyMessage);
       return;
     }
@@ -295,7 +322,7 @@ export default function TrendsBody({ route }) {
     // check for moderate energy over the last 10 days
     const moderateEnergy = sortedCombinedData.every((day) => day.value >= 3 && day.value <= 4);
     if (moderateEnergy) {
-      setEnergyMessage('Moderate Energy (10+ days): Encourage activities that naturally boost energy, such as short, brisk walks, hydration, and balanced meals.');
+      setEnergyMessage('We noticed your energy levels have been consistently moderate for 10+ days.');
       console.log('Energy message', energyMessage);
       return;
     }
@@ -303,7 +330,7 @@ export default function TrendsBody({ route }) {
     // check for consistently high energy over the last 5 days
     const highEnergy = recentFiveEntries.every((day) => day.value >= 5);
     if (highEnergy) {
-      setEnergyMessage('Consistently High Energy (5+ days): Suggest channeling this energy into productive activities, like exercise, hobbies, or social projects.');
+      setEnergyMessage('We noticed your energy levels have been consistently high for 5+ days!');
       console.log('Energy message', energyMessage);
       return;
     }
@@ -313,20 +340,20 @@ export default function TrendsBody({ route }) {
   }
 
   useEffect(() => {
-    if (currentPeriodMood.length && lastPeriodMood.length) {
+    if (currentPeriodMood.length && lastPeriodMood.length && !notEnoughData) {
       analyzeMood(currentPeriodMood, lastPeriodMood);
     }
   }, [currentPeriodMood, lastPeriodMood]);
 
   useEffect(() => {
-    if (currentPeriodSleep.length && lastPeriodSleep.length) {
+    if (currentPeriodSleep.length && lastPeriodSleep.length && !notEnoughData) {
       analyzeSleepQuality(currentPeriodSleep, lastPeriodSleep);
     }
   }, [currentPeriodSleep, lastPeriodSleep]);
 
   // (energy levels should be string data, not #s)
   useEffect(() => {
-    if (currentPeriodEnergy.length && lastPeriodEnergy.length) {
+    if (currentPeriodEnergy.length && lastPeriodEnergy.length && !notEnoughData) {
       analyzeEnergyLevels(currentPeriodEnergy, lastPeriodEnergy);
     }
   }, [currentPeriodEnergy, lastPeriodEnergy]);
@@ -338,10 +365,14 @@ export default function TrendsBody({ route }) {
     setModalVisible(true);
   };
 
+  const onFindHelpPress = () => {
+    navigation.navigate('FindHelp');
+    setModalVisible(!modalVisible);
+  }
   return (
     <ScrollView>
       <LinearGradient colors={['#E0F1F3', '#E5F8F3']} style={{ gap: 35, paddingTop: 50, paddingHorizontal: 30 }}>
-        <TrendsHeader title={title} />
+        <TrendsHeader title={title} setSelectedPeriod={setSelectedPeriod} selectedPeriod={selectedPeriod}/>
         <View>
           <Modal
             animationType="slide"
@@ -362,15 +393,12 @@ export default function TrendsBody({ route }) {
                     <Text style={styles.textStyle}>X  </Text>
                   </Pressable>
                 </View>
-                <Text>{moodMessage}</Text>
-                <Text>{sleepMessage}</Text>
-                <Text>{energyMessage}</Text>
-                <Bookmark
-                  key="resourceName (replace)"
-                  resourceName="resourceName (replace)"
-                  author="author (replace)"
-                />
-                <TouchableOpacity style={styles.findHelpButton}>
+                <View style={{alignItems: 'flex-start'}}>
+                  <Text style={{marginBottom: 10}}>{moodMessage}</Text>
+                  <Text style={{marginBottom: 10}}>{sleepMessage}</Text>
+                  <Text style={{marginBottom: 10}}>{energyMessage}</Text>
+                </View>
+                <TouchableOpacity style={styles.findHelpButton} onPress={onFindHelpPress}>
                   <Text style={styles.textStyle}>Find Help</Text>
                 </TouchableOpacity>
               </View>
@@ -378,26 +406,35 @@ export default function TrendsBody({ route }) {
           </Modal>
         </View>
         <View>
-          { moodMessage || sleepMessage || energyMessage
+          { !notEnoughData && (moodMessage || sleepMessage || energyMessage)
             ? (
-              <View style={{ flexDirection: 'row' }}>
-                <Text style={{ flexShrink: 1 }}>
-                  We noticed some changes in your activity data in the past week!
-                </Text>
-                <TouchableOpacity onPress={handleTrendPress}>
-                  <Image
-                    source={require('../../../assets/images/little-guy-notif.png')}
-                    style={styles.infoImage}
-                  />
-                </TouchableOpacity>
-              </View>
+              // <View style={{ flexDirection: 'row' }}>
+              //   <Text style={{ flexShrink: 1 }}>
+              //     We noticed some changes in your activity data in the past week!
+              //   </Text>
+              //   <TouchableOpacity onPress={handleTrendPress}>
+              //     <Image
+              //       source={require('../../../assets/images/little-guy-notif.png')}
+              //       style={styles.infoImage}
+              //     />
+              //   </TouchableOpacity>
+              // </View>
+              <TouchableOpacity onPress={handleTrendPress} style={{marginBottom: -130}}>
+                <Image
+                  source={require('../../../assets/images/little-guy-notif.png')}
+                  style={styles.infoImage}
+                />
+              </TouchableOpacity>
             )
             : null}
+          { notEnoughData && <Text>You don't have enough check-in data to display your trends. Keep checking in consistently!</Text> }
         </View>
-        <TrendSection header="Mood Levels" description="Tracking mood changes over time" data={lastPeriodMood} data2={currentPeriodMood} avg={avgMoodPercentage} />
-        <TrendSection header="Sleep Quality" description="Monitoring sleep patterns and quality." data={lastPeriodSleep} data2={currentPeriodSleep} avg={avgSleepPercentage} />
+        <View style={{ marginTop: -20 }}>
+          <TrendSection header="Mood Levels" name="mood levels" description="Tracking mood changes over time" data={lastPeriodMood} data2={currentPeriodMood} avg={avgMoodPercentage} notEnoughData={notEnoughData} />
+        </View>
+        <TrendSection header="Sleep Quality" name="sleep quality" description="Monitoring sleep patterns and quality." data={lastPeriodSleep} data2={currentPeriodSleep} avg={avgSleepPercentage} notEnoughData={notEnoughData}/>
         <View style={{ marginBottom: 75 }}>
-        <TrendSection header="Energy Levels" description="Observing energy levels throughout the day." data={lastPeriodEnergy} data2={currentPeriodEnergy} avg={avgEnergyPercentage} />
+        <TrendSection header="Energy Levels" name="energy levels" description="Observing energy levels throughout the day." data={lastPeriodEnergy} data2={currentPeriodEnergy} avg={avgEnergyPercentage} notEnoughData={notEnoughData}/>
         </View>
       </LinearGradient>
     </ScrollView>

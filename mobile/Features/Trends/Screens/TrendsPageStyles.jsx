@@ -50,6 +50,8 @@ export default StyleSheet.create({
     backgroundColor: '#546967',
     borderRadius: 30,
     padding: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   textStyle: {
     color: 'white',
@@ -57,9 +59,9 @@ export default StyleSheet.create({
     textAlign: 'center',
   },
   infoImage: {
-    width: 90,
-    height: 90,
+    width: 350,
+    height: 350,
     resizeMode: 'contain',
-    marginTop: -20,
+    marginTop: -150,
   },
 });

@@ -48,8 +48,7 @@ const style = StyleSheet.create({
 
 });
 
-export default function TrendsHeader({ title }) {
-  const [selectedPeriod, setSelectedPeriod] = useState('Week');
+export default function TrendsHeader({ title, setSelectedPeriod, selectedPeriod }) {
 
   // Planning to use this for storying the data at a local/global level.
   // const { initData } = useContext(TrendsContext);

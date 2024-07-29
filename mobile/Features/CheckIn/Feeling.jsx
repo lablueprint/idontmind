@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, Pressable, TouchableOpacity, Dimensions } from 'react-native';
+import {
+  Text, View, Pressable, TouchableOpacity, Dimensions,
+} from 'react-native';
 import { Image } from 'expo-image';
 import Slider from '@react-native-community/slider';
 import PropTypes from 'prop-types';
@@ -31,23 +33,13 @@ function Feeling({ navigation }) {
     'Great',
   ];
 
-  const [selectedCoping, setSelectedCoping] = useState({
-    calm: false,
-    satisfied: false,
-    relaxed: false,
-    unfazed: false,
-    peaceful: false,
-    serene: false,
-    grateful: false,
-    positive: false,
-    cheery: false,
-    pleasant: false,
-    optimistic: false,
-    happy: false,
-    charged: false,
-    joyful: false,
-    content: false,
-  });
+  const moodTerms = [
+    'calm', 'satisfied', 'relaxed', 'unfazed', 'peaceful', 'serene',
+    'grateful', 'positive', 'cheery', 'pleasant', 'optimistic', 'happy',
+    'charged', 'joyful', 'content',
+  ];
+
+  const [selectedCoping, setSelectedCoping] = useState([]);
 
   const [slider, setSlider] = useState(moodValue !== undefined ? moodValue : 2);
   const [isContinueEnabled, setIsContinueEnabled] = useState(false);
@@ -57,9 +49,12 @@ function Feeling({ navigation }) {
   }, [selectedCoping]);
 
   const toggleCoping = (term) => {
-    const temp = { ...selectedCoping };
-    temp[term] = !temp[term];
-    setSelectedCoping(temp);
+    setSelectedCoping((prevSelected) => {
+      if (prevSelected.includes(term)) {
+        return prevSelected.filter((item) => item !== term);
+      }
+      return [...prevSelected, term];
+    });
   };
 
   const onSliderChange = (sliderValue) => {
@@ -75,7 +70,7 @@ function Feeling({ navigation }) {
   };
 
   const skipButton = () => {
-    navigation.navigate('Energy', { numPages, moodValueChosen: slider });
+    navigation.navigate('Energy', { numPages, moodValueChosen: slider, moodsChosen: null });
   };
 
   return (
@@ -86,7 +81,7 @@ function Feeling({ navigation }) {
           How are you feeling today, really?
         </Text>
         <View style={{ alignItems: 'center' }}>
-          <Text style={{ marginBottom: -10, fontSize: 40, fontWeight: 600 }}>{captions[moodValue]}</Text>
+          <Text style={{ marginBottom: -10, fontSize: 40, fontWeight: 600 }}>{captions[moodValue - 1]}</Text>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <View style={{ alignItems: 'center' }}>
               <View style={[
@@ -96,7 +91,8 @@ function Feeling({ navigation }) {
                   height: 40 + (slider === moodValue ? 20 : 0),
                 },
                 slider === moodValue ? styles.shadowEffect : null,
-              ]}>
+              ]}
+              >
                 <Image
                   source={images[moodValue]}
                   style={[
@@ -114,7 +110,7 @@ function Feeling({ navigation }) {
               minimumValue={0}
               maximumValue={4}
               step={1}
-              value={slider}
+              value={slider - 1}
               onValueChange={onSliderChange}
               disabled={moodValue !== undefined}
               minimumTrackTintColor="#374342"
@@ -128,13 +124,13 @@ function Feeling({ navigation }) {
             <Text style={{ fontSize: 16, textAlign: 'center', marginTop: '15%' }}>Select at least 1 mood word to continue.</Text>
           </View>
           <View style={styles.pills}>
-            {Object.entries(selectedCoping).map((cope) => (
+            {moodTerms.map((term) => (
               <View
-                key={cope[0]}
-                style={[styles.pill, cope[1] ? styles.selectedPill : styles.nonselectedPill]}
+                key={term}
+                style={[styles.pill, selectedCoping.includes(term) ? styles.selectedPill : styles.nonselectedPill]}
               >
-                <Pressable onPress={() => toggleCoping(cope[0])}>
-                  <Text>{cope[0]}</Text>
+                <Pressable onPress={() => toggleCoping(term)}>
+                  <Text>{term}</Text>
                 </Pressable>
               </View>
             ))}
