@@ -4,13 +4,23 @@ import {
 import { Image } from 'expo-image';
 import PropTypes from 'prop-types';
 import * as SecureStore from 'expo-secure-store';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
 import styles from './CheckInStyles';
 
 function CheckIn({ navigation }) {
   const numPages = 4.0;
 
+  const { email, authHeader } = useSelector((state) => state.auth);
+  const [hasCheckedIn, setHasCheckedIn] = useState(false);
+
   const beginCheckIn = () => {
+    // if (hasCheckedIn) {
+    //   alert('You have already completed your check-in for today.');
+    // } else {
+    //   navigation.navigate('Pre Feeling', { numPages });
+    // }
     navigation.navigate('Pre Feeling', { numPages });
   };
 
@@ -28,6 +38,27 @@ function CheckIn({ navigation }) {
     };
 
     saveLastScreen();
+    navigation.navigate('Landing');
+  });
+
+  const checkExistingCheckIn = async () => {
+    try {
+      const response = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/timeSerie/checkExistingCheckIn`, {
+        headers: authHeader,
+        params: { email },
+      });
+      if (response.data.exists) {
+        setHasCheckedIn(true);
+      }
+    } catch (err) {
+      console.error('Failed to check existing check-in:', err);
+      alert('Failed to verify existing check-in. Please try again later.');
+    }
+  };
+
+  // this prevents multiple checkins in a day under the same user
+  useEffect(() => {
+    checkExistingCheckIn();
   }, []);
 
   return (

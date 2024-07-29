@@ -40,13 +40,26 @@ export default StyleSheet.create({
   singularMood: {
     flexDirection: 'column',
     alignItems: 'center',
-    transform: [{ scale: 0.8 }],
+    // transform: [{ scale: 0.8 }],
     flex: 1,
+  },
+  icon: {
+    width: 100,
+    height: 100,
   },
   addedMood: {
     flexDirection: 'column',
     alignItems: 'center',
     transform: [{ scale: 0.8 }],
   },
-
+  headingText: {
+    fontSize: 32,
+    color: '#4A4E4E',
+    fontFamily: 'recoleta-regular',
+  },
+  activityText: {
+    fontSize: 16,
+    color: '#4A4E4E',
+    fontFamily: 'cabinet-grotesk-bold',
+  },
 });

@@ -3,9 +3,6 @@ import {
   Text, View, Pressable, Image,
   ScrollView,
 } from 'react-native';
-import axios from 'axios';
-import { useSelector } from 'react-redux';
-import * as SecureStore from 'expo-secure-store';
 import { LinearGradient } from 'expo-linear-gradient';
 import PropTypes from 'prop-types';
 import chev from '../../../assets/images/chevron-up.png';
@@ -21,7 +18,6 @@ function WOYM({ navigation }) {
     return resultMap;
   }
 
-  const [interestedList, setInterestedList] = useState([]);
   const [selectedCoping, setSelectedCoping] = useState(createMaps(data.coping));
   const [selectedEWB, setSelectedEWB] = useState(createMaps(data.ewb));
   const [selectedIdentity, setSelectedIdentity] = useState(createMaps(data.identity));
@@ -44,21 +40,13 @@ function WOYM({ navigation }) {
   const [showSelf, setShowSelf] = useState(false);
   const [showSupport, setShowSupport] = useState(false);
   const [showTrauma, setShowTrauma] = useState(false);
-  const { email } = useSelector((state) => state.auth);
 
   const toggleCoping = (term) => {
     const temp = { ...selectedCoping };
     if (temp[term] === false) {
       temp[term] = true;
-      const tempArr = [...interestedList];
-      tempArr.push(term);
-      setInterestedList(tempArr);
     } else if (temp[term] === true) {
       temp[term] = false;
-      const tempArr = [...interestedList];
-      const index = tempArr.indexOf(term);
-      tempArr.splice(index, 1);
-      setInterestedList(tempArr);
     }
     setSelectedCoping(temp);
   };
@@ -67,15 +55,8 @@ function WOYM({ navigation }) {
     const temp = { ...selectedEWB };
     if (temp[term] === false) {
       temp[term] = true;
-      const tempArr = [...interestedList];
-      tempArr.push(term);
-      setInterestedList(tempArr);
     } else if (temp[term] === true) {
       temp[term] = false;
-      const tempArr = [...interestedList];
-      const index = tempArr.indexOf(term);
-      tempArr.splice(index, 1);
-      setInterestedList(tempArr);
     }
     setSelectedEWB(temp);
   };
@@ -84,15 +65,8 @@ function WOYM({ navigation }) {
     const temp = { ...selectedIdentity };
     if (temp[term] === false) {
       temp[term] = true;
-      const tempArr = [...interestedList];
-      tempArr.push(term);
-      setInterestedList(tempArr);
     } else if (temp[term] === true) {
       temp[term] = false;
-      const tempArr = [...interestedList];
-      const index = tempArr.indexOf(term);
-      tempArr.splice(index, 1);
-      setInterestedList(tempArr);
     }
     setSelectedIdentity(temp);
   };
@@ -101,15 +75,8 @@ function WOYM({ navigation }) {
     const temp = { ...selectedLifestyle };
     if (temp[term] === false) {
       temp[term] = true;
-      const tempArr = [...interestedList];
-      tempArr.push(term);
-      setInterestedList(tempArr);
     } else if (temp[term] === true) {
       temp[term] = false;
-      const tempArr = [...interestedList];
-      const index = tempArr.indexOf(term);
-      tempArr.splice(index, 1);
-      setInterestedList(tempArr);
     }
     setSelectedLifestyle(temp);
   };
@@ -118,15 +85,8 @@ function WOYM({ navigation }) {
     const temp = { ...selectedMental };
     if (temp[term] === false) {
       temp[term] = true;
-      const tempArr = [...interestedList];
-      tempArr.push(term);
-      setInterestedList(tempArr);
     } else if (temp[term] === true) {
       temp[term] = false;
-      const tempArr = [...interestedList];
-      const index = tempArr.indexOf(term);
-      tempArr.splice(index, 1);
-      setInterestedList(tempArr);
     }
     setSelectedMental(temp);
   };
@@ -135,15 +95,8 @@ function WOYM({ navigation }) {
     const temp = { ...selectedRelationships };
     if (temp[term] === false) {
       temp[term] = true;
-      const tempArr = [...interestedList];
-      tempArr.push(term);
-      setInterestedList(tempArr);
     } else if (temp[term] === true) {
       temp[term] = false;
-      const tempArr = [...interestedList];
-      const index = tempArr.indexOf(term);
-      tempArr.splice(index, 1);
-      setInterestedList(tempArr);
     }
     setSelectedRelationships(temp);
   };
@@ -152,15 +105,8 @@ function WOYM({ navigation }) {
     const temp = { ...selectedSelf };
     if (temp[term] === false) {
       temp[term] = true;
-      const tempArr = [...interestedList];
-      tempArr.push(term);
-      setInterestedList(tempArr);
     } else if (temp[term] === true) {
       temp[term] = false;
-      const tempArr = [...interestedList];
-      const index = tempArr.indexOf(term);
-      tempArr.splice(index, 1);
-      setInterestedList(tempArr);
     }
     setSelectedSelf(temp);
   };
@@ -169,15 +115,8 @@ function WOYM({ navigation }) {
     const temp = { ...selectedSupport };
     if (temp[term] === false) {
       temp[term] = true;
-      const tempArr = [...interestedList];
-      tempArr.push(term);
-      setInterestedList(tempArr);
     } else if (temp[term] === true) {
       temp[term] = false;
-      const tempArr = [...interestedList];
-      const index = tempArr.indexOf(term);
-      tempArr.splice(index, 1);
-      setInterestedList(tempArr);
     }
     setSelectedSupport(temp);
   };
@@ -186,33 +125,14 @@ function WOYM({ navigation }) {
     const temp = { ...selectedTrauma };
     if (temp[term] === false) {
       temp[term] = true;
-      const tempArr = [...interestedList];
-      tempArr.push(term);
-      setInterestedList(tempArr);
     } else if (temp[term] === true) {
       temp[term] = false;
-      const tempArr = [...interestedList];
-      const index = tempArr.indexOf(term);
-      tempArr.splice(index, 1);
-      setInterestedList(tempArr);
     }
     setSelectedTrauma(temp);
   };
 
   const navigateToDontCareSee = () => {
     navigation.navigate('DontCareSee');
-  };
-
-  const handleSubmit = async () => {
-    try {
-      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/setInterestedTags`, { email, interestedTags: interestedList });
-      if (res.data) {
-        console.log('Successfully uploaded interested tags');
-      }
-      navigateToDontCareSee();
-    } catch (e) {
-      console.error(e);
-    }
   };
 
   useEffect(() => {
@@ -234,19 +154,6 @@ function WOYM({ navigation }) {
   }, [selectedCoping, selectedEWB, selectedLifestyle, selectedIdentity, selectedMental,
     selectedRelationships, selectedSelf, selectedSupport, selectedTrauma,
   ]);
-
-  // Save last visited screen in Secure Storage
-  useEffect(() => {
-    const saveLastScreen = async () => {
-      try {
-        await SecureStore.setItemAsync('lastScreen', 'WOYM');
-      } catch (e) {
-        console.error('unable to set screen in storage: ', e);
-      }
-    };
-
-    saveLastScreen();
-  }, []);
 
   return (
     <View style={{ flex: 1 }}>
@@ -324,8 +231,8 @@ function WOYM({ navigation }) {
             </View>
           </View>
           <View style={styles.pillArea}>
-            <View
-              style={[styles.titleButton, showIdentity ? styles.extraMargin : styles.titleButton]}
+            <View style={[styles.titleButton,
+              showIdentity ? styles.extraMargin : styles.titleButton]}
             >
               <Pressable style={styles.arrow} onPress={() => setShowIdentity(!showIdentity)}>
                 <Text style={styles.pillTitle}>Identity and Self-Perception</Text>
@@ -355,8 +262,8 @@ function WOYM({ navigation }) {
             </View>
           </View>
           <View style={styles.pillArea}>
-            <View
-              style={[styles.titleButton, showLifestyle ? styles.extraMargin : styles.titleButton]}
+            <View style={[styles.titleButton,
+              showLifestyle ? styles.extraMargin : styles.titleButton]}
             >
               <Pressable style={styles.arrow} onPress={() => setShowLifestyle(!showLifestyle)}>
                 <Text style={styles.pillTitle}>Lifestyle and Wellness</Text>
@@ -386,8 +293,8 @@ function WOYM({ navigation }) {
             </View>
           </View>
           <View style={styles.pillArea}>
-            <View
-              style={[styles.titleButton, showMental ? styles.extraMargin : styles.titleButton]}
+            <View style={[styles.titleButton,
+              showMental ? styles.extraMargin : styles.titleButton]}
             >
               <Pressable style={styles.arrow} onPress={() => setShowMental(!showMental)}>
                 <Text style={styles.pillTitle}>Mental Health Conditions</Text>
@@ -544,6 +451,7 @@ function WOYM({ navigation }) {
               ))}
             </View>
           </View>
+          <View style={styles.space} />
         </View>
       </ScrollView>
       <LinearGradient
@@ -566,7 +474,7 @@ function WOYM({ navigation }) {
         {/* E0F1F3 */}
         <View style={styles.nextButtContainer}>
           <Pressable
-            onPress={outOf3 > 2 ? handleSubmit : null}
+            onPress={outOf3 > 2 ? navigateToDontCareSee : null}
             style={[styles.nextButt, outOf3 > 2 ? styles.nextNot : styles.nextReady]}
           >
             <View style={styles.row}>

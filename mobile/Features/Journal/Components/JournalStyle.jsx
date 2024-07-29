@@ -2,23 +2,23 @@ import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   container: {
-    width: '90%',
-    height: '90%',
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
 
   },
   prompt: {
-    fontSize: 26,
+    marginTop: 20,
+    fontSize: 20,
     fontWeight: 'bold',
   },
   textBox: {
     padding: 10,
     marginTop: 20,
+    marginBottom: 20,
     justifyContent: 'flex-start',
     borderWidth: 2,
-    minWidth: '90%',
+    width: '80%',
     height: '80%',
   },
   attachmentBox: {
@@ -29,7 +29,6 @@ export default StyleSheet.create({
     minWidth: '90%',
     height: 100,
   },
-
   modalView: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -63,6 +62,6 @@ export default StyleSheet.create({
     backgroundColor: 'lightgrey',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 16,
+    marginLeft: 40,
   },
 });

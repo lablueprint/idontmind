@@ -24,15 +24,20 @@ import DontCareSee from '../Features/Onboarding/Screens/DontCareSee';
 import WOYM from '../Features/Onboarding/Screens/WOYM';
 import Overview from '../Features/Tutorial/Overview';
 import TutorialCheckIn1 from '../Features/Tutorial/TutorialCheckIn1';
+import CheckinOptional from '../Features/Tutorial/CheckinOptional';
 import TutorialCheckIn2 from '../Features/Tutorial/TutorialCheckIn2';
 import Personalization from '../Features/Tutorial/Personalization';
 import MoreResources from '../Features/Tutorial/MoreResources';
 import WrapUp from '../Features/Tutorial/WrapUp';
 import ThirtyDayOverview from '../Features/Tutorial/ThirtyDayOverview';
+import ForgotPassword from '../Features/Login/Screens/ForgotPassword';
+import TokenInput from '../Features/Login/Screens/TokenInput';
+import ResetPassword from '../Features/Login/Screens/ResetPassword';
 import TrendsTab from '../Features/Trends/Components/Trends';
 import TrendsBody from '../Features/Trends/Screens/TrendsBody';
 
 import CheckIn from '../Features/CheckIn/CheckIn';
+import JournalDetails from '../Features/Journal/Screens/JournalDetails';
 import Sleep from '../Features/CheckIn/Sleep';
 import Mood from '../Features/CheckIn/Mood';
 import AddMood from '../Features/CheckIn/AddMood';
@@ -43,6 +48,7 @@ import AddIcon from '../Features/CheckIn/AddIcon';
 import PreFeeling from '../Features/CheckIn/PreFeeling';
 import Feeling from '../Features/CheckIn/Feeling';
 import Energy from '../Features/CheckIn/Energy';
+import Water from '../Features/CheckIn/Water';
 import Meal from '../Features/CheckIn/Meal';
 import EndCheckIn from '../Features/CheckIn/EndCheckIn';
 import Exercise from '../Features/CheckIn/Exercise';
@@ -113,6 +119,14 @@ export default function AppNavigation({ user }) {
           <Stack.Screen name="DontCareSee" component={DontCareSee} options={{ headerShown: false, gestureEnabled: false }} />
           <Stack.Screen name="WOYM" component={WOYM} options={{ headerShown: false, gestureEnabled: false }} />
           <Stack.Screen name="NavigationBar" component={NavigationBar} options={{ headerShown: false }} />
+          <Stack.Screen name="PersonalInfo" component={PersonalInfo} options={{ headerShown: false }} />
+          <Stack.Screen name="DontCareSee" component={DontCareSee} options={{ headerShown: false }} />
+          <Stack.Screen name="WOYM" component={WOYM} options={{ headerShown: false }} />
+          { user ? (
+            <Stack.Screen name="Landing" component={Landing} options={{ headerShown: false }} />
+          ) : (
+            <Stack.Screen name="NavigationBar" component={NavigationBar} options={{ headerShown: false }} />
+          )}
           <Stack.Screen name="Filter" component={Filter} options={{ headerShown: false }} />
           <Stack.Screen name="BannedTags" component={BannedTags} options={{ headerShown: false }} />
           <Stack.Screen name="Loading" component={Loading} options={{ headerShown: false }} />
@@ -122,10 +136,14 @@ export default function AppNavigation({ user }) {
           <Stack.Screen name="Splash" component={Splash} options={{ headerShown: false }} />
           <Stack.Screen name="Terms" component={Terms} options={{ headerShown: false }} />
           <Stack.Screen name="TutorialCheckIn1" component={TutorialCheckIn1} options={{ headerShown: false }} />
+          <Stack.Screen name="CheckinOptional" component={CheckinOptional} options={{ headerShown: false }} />
           <Stack.Screen name="TutorialCheckIn2" component={TutorialCheckIn2} options={{ headerShown: false }} />
           <Stack.Screen name="Personalization" component={Personalization} options={{ headerShown: false }} />
           <Stack.Screen name="MoreResources" component={MoreResources} options={{ headerShown: false }} />
           <Stack.Screen name="WrapUp" component={WrapUp} options={{ headerShown: false }} />
+          <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{ headerShown: false }} />
+          <Stack.Screen name="TokenInput" component={TokenInput} options={{ headerShown: false }} />
+          <Stack.Screen name="ResetPassword" component={ResetPassword} options={{ headerShown: false }} />
           <Stack.Screen name="ThirtyDayOverview" component={ThirtyDayOverview} options={{ headerShown: false }} />
           <Stack.Screen name="Notifications Test" component={NotificationsTest} options={{ headerShown: false }} />
           <Stack.Screen name="Overview" component={Overview} options={{ headerShown: false, gestureEnabled: false }} />
@@ -135,6 +153,7 @@ export default function AppNavigation({ user }) {
           <Stack.Screen name="Feeling" component={Feeling} options={{ headerShown: false }} />
           <Stack.Screen name="Pre Feeling" component={PreFeeling} options={{ headerShown: false }} />
           <Stack.Screen name="Energy" component={Energy} options={{ headerShown: false }} />
+          <Stack.Screen name="Water" component={Water} options={{ headerShown: false }} />
           <Stack.Screen name="Meal" component={Meal} options={{ headerShown: false }} />
           <Stack.Screen name="Mood" component={Mood} options={{ headerShown: false }} />
           <Stack.Screen name="AddMood" component={AddMood} options={{ headerShown: false }} />
@@ -143,8 +162,8 @@ export default function AppNavigation({ user }) {
           <Stack.Screen name="AddActivity" component={AddActivity} options={{ headerShown: false }} />
           <Stack.Screen name="AddIcon" component={AddIcon} options={{ headerShown: false }} />
           <Stack.Screen name="EndCheckIn" component={EndCheckIn} options={{ headerShown: false }} />
-
           <Stack.Screen name="Exercise" component={Exercise} options={{ headerShown: false }} />
+          <Stack.Screen name="JournalDetails" component={JournalDetails} options={{ headerShown: false }} />
         </Stack.Navigator>
       </TagProvider>
     </NavigationContainer>

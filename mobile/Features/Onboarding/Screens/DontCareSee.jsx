@@ -1,11 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import {
   Text, View, Pressable, Image,
   ScrollView,
 } from 'react-native';
-import axios from 'axios';
-import { useSelector } from 'react-redux';
-import * as SecureStore from 'expo-secure-store';
 import { LinearGradient } from 'expo-linear-gradient';
 import PropTypes from 'prop-types';
 import chev from '../../../assets/images/chevron-up.png';
@@ -20,8 +17,6 @@ function DontCareSee({ navigation }) {
     });
     return resultMap;
   }
-  const { email } = useSelector((state) => state.auth);
-  const [banList, setBanList] = useState([]);
   const [selectedCoping, setSelectedCoping] = useState(createMaps(data.coping));
   const [selectedEWB, setSelectedEWB] = useState(createMaps(data.ewb));
   const [selectedIdentity, setSelectedIdentity] = useState(createMaps(data.identity));
@@ -47,15 +42,8 @@ function DontCareSee({ navigation }) {
     const temp = { ...selectedCoping };
     if (temp[term] === false) {
       temp[term] = true;
-      const tempArr = [...banList];
-      tempArr.push(term);
-      setBanList(tempArr);
     } else if (temp[term] === true) {
       temp[term] = false;
-      const tempArr = [...banList];
-      const index = tempArr.indexOf(term);
-      tempArr.splice(index, 1);
-      setBanList(tempArr);
     }
     setSelectedCoping(temp);
   };
@@ -64,15 +52,8 @@ function DontCareSee({ navigation }) {
     const temp = { ...selectedEWB };
     if (temp[term] === false) {
       temp[term] = true;
-      const tempArr = [...banList];
-      tempArr.push(term);
-      setBanList(tempArr);
     } else if (temp[term] === true) {
       temp[term] = false;
-      const tempArr = [...banList];
-      const index = tempArr.indexOf(term);
-      tempArr.splice(index, 1);
-      setBanList(tempArr);
     }
     setSelectedEWB(temp);
   };
@@ -81,15 +62,8 @@ function DontCareSee({ navigation }) {
     const temp = { ...selectedIdentity };
     if (temp[term] === false) {
       temp[term] = true;
-      const tempArr = [...banList];
-      tempArr.push(term);
-      setBanList(tempArr);
     } else if (temp[term] === true) {
       temp[term] = false;
-      const tempArr = [...banList];
-      const index = tempArr.indexOf(term);
-      tempArr.splice(index, 1);
-      setBanList(tempArr);
     }
     setSelectedIdentity(temp);
   };
@@ -98,15 +72,8 @@ function DontCareSee({ navigation }) {
     const temp = { ...selectedLifestyle };
     if (temp[term] === false) {
       temp[term] = true;
-      const tempArr = [...banList];
-      tempArr.push(term);
-      setBanList(tempArr);
     } else if (temp[term] === true) {
       temp[term] = false;
-      const tempArr = [...banList];
-      const index = tempArr.indexOf(term);
-      tempArr.splice(index, 1);
-      setBanList(tempArr);
     }
     setSelectedLifestyle(temp);
   };
@@ -115,15 +82,8 @@ function DontCareSee({ navigation }) {
     const temp = { ...selectedMental };
     if (temp[term] === false) {
       temp[term] = true;
-      const tempArr = [...banList];
-      tempArr.push(term);
-      setBanList(tempArr);
     } else if (temp[term] === true) {
       temp[term] = false;
-      const tempArr = [...banList];
-      const index = tempArr.indexOf(term);
-      tempArr.splice(index, 1);
-      setBanList(tempArr);
     }
     setSelectedMental(temp);
   };
@@ -132,15 +92,8 @@ function DontCareSee({ navigation }) {
     const temp = { ...selectedRelationships };
     if (temp[term] === false) {
       temp[term] = true;
-      const tempArr = [...banList];
-      tempArr.push(term);
-      setBanList(tempArr);
     } else if (temp[term] === true) {
       temp[term] = false;
-      const tempArr = [...banList];
-      const index = tempArr.indexOf(term);
-      tempArr.splice(index, 1);
-      setBanList(tempArr);
     }
     setSelectedRelationships(temp);
   };
@@ -149,15 +102,8 @@ function DontCareSee({ navigation }) {
     const temp = { ...selectedSelf };
     if (temp[term] === false) {
       temp[term] = true;
-      const tempArr = [...banList];
-      tempArr.push(term);
-      setBanList(tempArr);
     } else if (temp[term] === true) {
       temp[term] = false;
-      const tempArr = [...banList];
-      const index = tempArr.indexOf(term);
-      tempArr.splice(index, 1);
-      setBanList(tempArr);
     }
     setSelectedSelf(temp);
   };
@@ -166,15 +112,8 @@ function DontCareSee({ navigation }) {
     const temp = { ...selectedSupport };
     if (temp[term] === false) {
       temp[term] = true;
-      const tempArr = [...banList];
-      tempArr.push(term);
-      setBanList(tempArr);
     } else if (temp[term] === true) {
       temp[term] = false;
-      const tempArr = [...banList];
-      const index = tempArr.indexOf(term);
-      tempArr.splice(index, 1);
-      setBanList(tempArr);
     }
     setSelectedSupport(temp);
   };
@@ -183,15 +122,8 @@ function DontCareSee({ navigation }) {
     const temp = { ...selectedTrauma };
     if (temp[term] === false) {
       temp[term] = true;
-      const tempArr = [...banList];
-      tempArr.push(term);
-      setBanList(tempArr);
     } else if (temp[term] === true) {
       temp[term] = false;
-      const tempArr = [...banList];
-      const index = tempArr.indexOf(term);
-      tempArr.splice(index, 1);
-      setBanList(tempArr);
     }
     setSelectedTrauma(temp);
   };
@@ -199,31 +131,6 @@ function DontCareSee({ navigation }) {
   const navigateToOverview = () => {
     navigation.navigate('Overview');
   };
-
-  const handleSubmit = async () => {
-    try {
-      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/setBanTags`, { email, banTags: banList });
-      if (res.data) {
-        console.log('Successfully uploaded ban tags');
-      }
-      navigateToOverview();
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  // Save last visited screen in Secure Storage
-  useEffect(() => {
-    const saveLastScreen = async () => {
-      try {
-        await SecureStore.setItemAsync('lastScreen', 'DontCareSee');
-      } catch (e) {
-        console.error('unable to set screen in storage: ', e);
-      }
-    };
-
-    saveLastScreen();
-  }, []);
 
   return (
     <View style={{ flex: 1 }}>
@@ -236,7 +143,8 @@ function DontCareSee({ navigation }) {
           </View>
           <View>
             <Text style={styles.subheading}>
-              It&apos;s okay to mind sometimes. Let us know if there&apos;s any content you want us to exclude from your feed. You can always change this later.
+              It&apos;s okay to mind sometimes. Let us know if there&apos;s any
+              content you want us to exclude from your feed. You can always change this later.
             </Text>
           </View>
           <View style={styles.pillArea}>
@@ -520,6 +428,7 @@ function DontCareSee({ navigation }) {
               ))}
             </View>
           </View>
+          <View style={styles.space} />
         </View>
       </ScrollView>
       <LinearGradient
@@ -542,7 +451,7 @@ function DontCareSee({ navigation }) {
         {/* E0F1F3 */}
         <View style={styles.nextButtContainer}>
           <Pressable
-            onPress={handleSubmit}
+            onPress={navigateToOverview}
             style={[styles.nextButt, styles.nextNot]}
           >
             <View style={styles.row}>

@@ -27,6 +27,47 @@ const officialUserSchema = new mongoose.Schema({
     default: [],
     type: [String],
   },
+  favoritedTags: {
+    required: true,
+    default: [],
+    type: [String],
+  },
+  favoritedResources: {
+    required: true,
+    default: [],
+    type: [String],
+  },
+  favoritedFolders: {
+    required: true,
+    default: {},
+    type: Map,
+    of: {
+      description: {
+        type: String,
+        default: '',
+      },
+      tags: {
+        type: [String],
+        default: [],
+      },
+      resources: {
+        type: [String],
+        default: [],
+      },
+    },
+  },
+  tagToFolders: {
+    required: true,
+    default: {},
+    type: Map,
+    of: [String],
+  },
+  resourceToFolders: {
+    required: true,
+    default: {},
+    type: Map,
+    of: [String],
+  },
   journalEntries: {
     default: [],
     type: [String],
@@ -66,6 +107,10 @@ const officialUserSchema = new mongoose.Schema({
   InterestedTags: {
     default: [],
     type: [String],
+  },
+  code: {
+    type: String,
+    required: false,
   },
 });
 

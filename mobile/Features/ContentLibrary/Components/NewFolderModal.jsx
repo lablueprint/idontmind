@@ -4,13 +4,17 @@ import {
   TextInput, TouchableWithoutFeedback, Keyboard,
 } from 'react-native';
 import PropTypes from 'prop-types';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
 import styles from './FolderModalStyle';
 
 import exit from '../../../assets/images/exit.png';
 
 function NewFolderModal({
-  modalVisibleParent, toggleModal, toggleModalCreated, setFolderName,
+  modalVisibleParent, toggleModal, toggleModalCreated, setFolderName, isTag, tagOrResourceName,
 }) {
+  const { id, authHeader } = useSelector((state) => state.auth);
+
   const [folderNameText, setFolderNameText] = useState('');
   const [descriptionText, setDescriptionText] = useState('');
 
@@ -21,6 +25,31 @@ function NewFolderModal({
     setDescriptionText(text);
   };
 
+  const handleNewFolder = async (folderName, description) => {
+    console.log('isTag', isTag);
+    console.log('tagOrResourceName', tagOrResourceName);
+    try {
+      let payload;
+      if (!isTag) {
+        payload = {
+          id, folderName, description, resource: tagOrResourceName,
+        };
+      } else if (isTag) {
+        payload = {
+          id, folderName, description, tag: tagOrResourceName,
+        };
+      }
+      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/folder/createFavoritedFolder`, payload, { headers: authHeader });
+      if (res.data.error) {
+        console.error(res.data.error);
+      } else {
+        console.log('This is the create folder data:');
+        console.log(res.data);
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
   const handleSave = () => {
     // Handle saving the input text
     console.log('handle save');
@@ -28,6 +57,7 @@ function NewFolderModal({
       setFolderName(folderNameText);
       toggleModal();
       toggleModalCreated();
+      handleNewFolder(folderNameText, descriptionText);
     }
   };
 
@@ -87,5 +117,7 @@ NewFolderModal.propTypes = {
   toggleModal: PropTypes.func.isRequired,
   toggleModalCreated: PropTypes.func.isRequired,
   setFolderName: PropTypes.func.isRequired,
+  isTag: PropTypes.bool.isRequired,
+  tagOrResourceName: PropTypes.string.isRequired,
 
 };

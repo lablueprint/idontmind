@@ -39,7 +39,7 @@ export default function PersonalInfo({ navigation }) {
   };
 
   const navigateToCustomization = () => {
-    navigation.navigate('WOYM');
+    navigation.navigate('WOYM', { loginInfo: route.params, firstName });
   };
 
   const areStatesDefaulted = () => (firstName === '' || age === '' || country === '' || gender === '');

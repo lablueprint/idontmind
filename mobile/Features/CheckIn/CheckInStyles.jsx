@@ -8,15 +8,13 @@ export default StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
-    // borderWidth: 2,
-    // borderColor: 'red',
     height: 150,
   },
   highlight: {
     width: '31%',
     height: '6.8%',
     opacity: 0.75,
-    backgroundColor: '#BFDBD7',
+    backgroundColor: '#F7E89C',
     marginTop: '-6.2%',
     zIndex: 0,
   },
@@ -61,8 +59,8 @@ export default StyleSheet.create({
   checkInMascot: {
     position: 'absolute',
     right: 0,
-    bottom: 0,
-    width: 284,
-    height: 311,
+    bottom: -45,
+    width: 400,
+    height: 330,
   },
 });
