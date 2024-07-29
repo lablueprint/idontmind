@@ -7,6 +7,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import PropTypes from 'prop-types';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { LinearGradient } from 'expo-linear-gradient';
+import LookingForward from './lookingForward';
 import styles from './TrendsStyle';
 import { data } from './TrendsData';
 import TrendsHeader from './TrendsHeader';
@@ -163,6 +164,7 @@ function TrendTab({ view, navigation }) {
             <CircleSection header="Activity" description="Water, food, and movement at a glance." navigateToTrendsBody={navigateToTrendsBody} />
             <WaterSection />
             <CircleSection header="Emotion" description="Feelings, goals, and outlook" navigateToTrendsBody={navigateToTrendsBody} />
+            <LookingForward />
           </View>
         </LinearGradient>
       </ScrollView>
