@@ -103,6 +103,7 @@ export default function CalendarPage({ navigation }) {
   }, []);
 
   useEffect(() => {
+    console.log('for aaron debug:', allJournals);
     const timestampsArray = allJournals.map((journal) => new XDate(journal.timestamp).toString('yyyy-MM-dd'));
 
     const freeTimestampsArray = [];
@@ -165,6 +166,10 @@ export default function CalendarPage({ navigation }) {
     navigation.navigate('JournalDetails', {
       email: username, question: prompt, body: text, day: date,
     });
+    // navigation.navigate('PostDetails', {
+    //   email: username, question: prompt, body: text, day: date,
+    // });
+    // randomTitle, text, setText, freeWriteTitle, freeWrite,
   };
 
   const handleVisibleMonthsChange = (months) => {

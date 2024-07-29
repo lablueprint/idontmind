@@ -49,7 +49,7 @@ export default function PostDetails({ navigation, route }) {
 
           </View>
           <Button
-            title="Go back"
+            title="Go back now!"
             onPress={navigation.goBack}
           />
         </View>

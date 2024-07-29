@@ -8,6 +8,7 @@ import JournalPage from '../Features/Journal/Screens/JournalPage';
 import ContentDashboard from '../Features/Other/Screens/ContentDashboard';
 import ContentLibrary from '../Features/ContentLibrary/Screens/ContentLibrary';
 import FindHelp from '../Features/Other/Screens/FindHelp';
+import CalendarPage from '../Features/Other/Screens/Calendar';
 
 import TrendsIcon from '../assets/navbaricons/trendsicon.png';
 import JournalIcon from '../assets/navbaricons/journalicon.png';
@@ -31,9 +32,9 @@ import Tag from '../Features/ContentLibrary/Screens/Tag';
 import NotificationsTest from '../Features/Settings/Screens/NotificationsTest';
 
 const Stack = createStackNavigator();
-const otherNames = ['Day Challenge', 'CheckIn', 'PostSignInLanding', 'Feed', 'Notifs', 'Options', 'Journal History'];
+const otherNames = ['Day Challenge', 'CheckIn', 'PostSignInLanding', 'Feed', 'Notifs', 'Options', 'Journal History', 'Calendar'];
 const otherPages = [DayChallenge, CheckIn, PostSignInLanding, Feed, NotificationsTest,
-  Options, JournalHistoryPage];
+  Options, JournalHistoryPage, CalendarPage];
 
 function HomeWithExtraPages() {
   return (
