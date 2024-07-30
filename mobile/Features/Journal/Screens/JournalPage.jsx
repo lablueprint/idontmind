@@ -386,7 +386,7 @@ export function JournalPage({
                   marginTop: 3, textAlign: 'center', maxWidth: '70%', fontSize: 12, color: '#929999', flex: 1,
                 }}
                 >
-                  You can always go back to edit past entries later
+                  You cannot go back to edit past entries later
                 </Text>
 
               </View>
