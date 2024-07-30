@@ -115,18 +115,15 @@ export default function AppNavigation({ user }) {
           <Stack.Screen name="Landing" component={Landing} options={{ headerShown: false }} />
           <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
           <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
-          <Stack.Screen name="PersonalInfo" component={PersonalInfo} options={{ headerShown: false, gestureEnabled: false }} />
-          <Stack.Screen name="DontCareSee" component={DontCareSee} options={{ headerShown: false, gestureEnabled: false }} />
-          <Stack.Screen name="WOYM" component={WOYM} options={{ headerShown: false, gestureEnabled: false }} />
           <Stack.Screen name="NavigationBar" component={NavigationBar} options={{ headerShown: false }} />
           <Stack.Screen name="PersonalInfo" component={PersonalInfo} options={{ headerShown: false }} />
           <Stack.Screen name="DontCareSee" component={DontCareSee} options={{ headerShown: false }} />
           <Stack.Screen name="WOYM" component={WOYM} options={{ headerShown: false }} />
-          { user ? (
+          {/* { user ? (
             <Stack.Screen name="Landing" component={Landing} options={{ headerShown: false }} />
           ) : (
             <Stack.Screen name="NavigationBar" component={NavigationBar} options={{ headerShown: false }} />
-          )}
+          )} */}
           <Stack.Screen name="Filter" component={Filter} options={{ headerShown: false }} />
           <Stack.Screen name="BannedTags" component={BannedTags} options={{ headerShown: false }} />
           <Stack.Screen name="Loading" component={Loading} options={{ headerShown: false }} />
