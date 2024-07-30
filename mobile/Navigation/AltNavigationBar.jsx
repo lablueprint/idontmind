@@ -33,9 +33,9 @@ import Tag from '../Features/ContentLibrary/Screens/Tag';
 import NotificationsTest from '../Features/Settings/Screens/NotificationsTest';
 
 const Stack = createStackNavigator();
-const otherNames = ['Day Challenge', 'CheckIn', 'PostSignInLanding', 'Feed', 'Notifs', 'Options', 'Calendar'];
+const otherNames = ['Day Challenge', 'CheckIn', 'PostSignInLanding', 'Feed', 'Notifs', 'Options'];
 const otherPages = [DayChallenge, CheckIn, PostSignInLanding, Feed, NotificationsTest,
-  Options, CalendarPage];
+  Options];
 
 function HomeWithExtraPages() {
   return (
@@ -86,12 +86,37 @@ function ContentLibraryWithExtraPages() {
   );
 }
 
+// const contentNames = ['Bookmarks', 'Bookmarks Edge Case', 'Resource', 'Resource List', 'Tag'];
+// const contentPages = [Bookmarks, BookmarksEdgeCase, Resource, ResourceList, Tag];
+function JournalCalendar() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        key="Journal Tabs"
+        name="Journal Tabs"
+        component={JournalTabs}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        key="Calendar Screen"
+        name="Calendar Screen"
+        component={CalendarPage}
+        options={{
+          headerShown: false,
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
+
 export default function AltNavigationBar() {
   const Tab = createBottomTabNavigator();
 
   const names = ['Trends', 'Journal', 'Home', 'Content', 'Find Help'];
   const icons = [TrendsIcon, JournalIcon, HomeIcon, ContentIcon, FindHelpIcon];
-  const components = [TrendsPage, JournalTabs, HomeWithExtraPages,
+  const components = [TrendsPage, JournalCalendar, HomeWithExtraPages,
     ContentLibraryWithExtraPages, FindHelp];
 
   return (
