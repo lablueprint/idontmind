@@ -12,6 +12,7 @@ import TagRectangle from '../Components/TagRectangle';
 import Back from '../../../assets/images/back_button.png';
 import NewFolderModal from '../Components/NewFolderModal';
 import FolderCreatedModal from '../Components/FolderCreatedModal';
+import DeleteFolderModal from '../Components/DeleteFolderModal';
 
 function Bookmarks({ navigation }) {
   const {
@@ -28,6 +29,8 @@ function Bookmarks({ navigation }) {
   const [modalVisibleNewFolder, setModalVisibleNewFolder] = useState(false);
   const [newFolderName, setNewFolderName] = useState('');
   const [modalVisibleCreated, setModalVisibleCreated] = useState(false);
+  const [modalVisibleDelete, setModalVisibleDelete] = useState(false);
+  const [folderToDelete, setFolderToDelete] = useState('');
 
   // modal toggle functions
   const toggleModalNewFolder = () => {
@@ -38,6 +41,12 @@ function Bookmarks({ navigation }) {
   };
   const setFolderName = (name) => {
     setNewFolderName(name);
+  };
+  const toggleModalDelete = () => {
+    setModalVisibleDelete(!modalVisibleDelete);
+  };
+  const editFolderToDelete = (name) => {
+    setFolderToDelete(name);
   };
 
   // navigation functions
@@ -103,7 +112,8 @@ function Bookmarks({ navigation }) {
 
   useEffect(() => {
     getFolders();
-  }, [modalVisibleCreated]); // refresh folders when a new folder has been created
+  }, [modalVisibleCreated]);
+  // refresh folders when a new folder has been created or a folder has been deleted
 
   return (
     <View
@@ -181,6 +191,8 @@ function Bookmarks({ navigation }) {
                 folderDescription={folders[folderName].description}
                 tags={folders[folderName].tags}
                 resources={folders[folderName].resources}
+                editFolderToDelete={editFolderToDelete}
+                toggleModalDelete={toggleModalDelete}
               />
             ))}
             <Pressable onPress={toggleModalNewFolder}>
@@ -310,6 +322,12 @@ function Bookmarks({ navigation }) {
         modalVisibleParent={modalVisibleCreated}
         toggleModal={toggleModalCreated}
         newFolderName={newFolderName}
+      />
+      <DeleteFolderModal
+        modalVisibleParent={modalVisibleDelete}
+        toggleModal={toggleModalDelete}
+        deleteName={folderToDelete}
+        updateFolders={setFolders}
       />
     </View>
   );
