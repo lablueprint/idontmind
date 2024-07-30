@@ -57,9 +57,7 @@ export default function LookingForward() {
         <View style={{ gap: 8, flexDirection: 'row' }}>
           <Image source={Forward} style={{ height: 17, width: 19 }} />
           <Text style={{ fontSize: 16, fontWeight: 700, fontFamily: 'cabinet-grotesk-bold' }}>
-            What You
-            &apos;
-            re Looking Forward To
+            What brought you joy today?
           </Text>
         </View>
         <Image source={Right} style={{ height: 10, width: 10, marginTop: 5 }} />
