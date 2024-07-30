@@ -4,7 +4,8 @@ import {
   Image, ImageBackground, View, Dimensions,
 } from 'react-native';
 import TrendsPage from '../Features/Trends/Screens/TrendsPage';
-import JournalPage from '../Features/Journal/Screens/JournalPage';
+// import { JournalPage, JournalTabs } from '../Features/Journal/Screens/JournalPage';
+import JournalTabs from '../Features/Journal/Screens/JournalPage';
 import ContentDashboard from '../Features/Other/Screens/ContentDashboard';
 import ContentLibrary from '../Features/ContentLibrary/Screens/ContentLibrary';
 import FindHelp from '../Features/Other/Screens/FindHelp';
@@ -21,7 +22,7 @@ import PostSignInLanding from '../Features/Other/Screens/PostSignInLanding';
 import Feed from '../Features/Other/Screens/Feed';
 import CheckIn from '../Features/Other/Screens/CheckIn';
 import Options from '../Features/Other/Screens/Options';
-import JournalHistoryPage from '../Features/Other/Screens/JournalHistoryPage';
+// import JournalHistoryPage from '../Features/Other/Screens/JournalHistoryPage';
 import DayChallenge from '../Features/Other/Screens/DayChallenge';
 
 import Bookmarks from '../Features/ContentLibrary/Screens/Bookmarks';
@@ -32,9 +33,9 @@ import Tag from '../Features/ContentLibrary/Screens/Tag';
 import NotificationsTest from '../Features/Settings/Screens/NotificationsTest';
 
 const Stack = createStackNavigator();
-const otherNames = ['Day Challenge', 'CheckIn', 'PostSignInLanding', 'Feed', 'Notifs', 'Options', 'Journal History', 'Calendar'];
+const otherNames = ['Day Challenge', 'CheckIn', 'PostSignInLanding', 'Feed', 'Notifs', 'Options', 'Calendar'];
 const otherPages = [DayChallenge, CheckIn, PostSignInLanding, Feed, NotificationsTest,
-  Options, JournalHistoryPage, CalendarPage];
+  Options, CalendarPage];
 
 function HomeWithExtraPages() {
   return (
@@ -90,7 +91,7 @@ export default function AltNavigationBar() {
 
   const names = ['Trends', 'Journal', 'Home', 'Content', 'Find Help'];
   const icons = [TrendsIcon, JournalIcon, HomeIcon, ContentIcon, FindHelpIcon];
-  const components = [TrendsPage, JournalPage, HomeWithExtraPages,
+  const components = [TrendsPage, JournalTabs, HomeWithExtraPages,
     ContentLibraryWithExtraPages, FindHelp];
 
   return (

@@ -168,6 +168,7 @@ export default function CalendarPage({ navigation }) {
     });
     // navigation.navigate('PostDetails', {
     //   email: username, question: prompt, body: text, day: date,
+    //   randomTitle: prompt, text: text, 
     // });
     // randomTitle, text, setText, freeWriteTitle, freeWrite,
   };

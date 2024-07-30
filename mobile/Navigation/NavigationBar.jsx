@@ -28,12 +28,12 @@ export default function NavigationBar() {
   return (
     <Tab.Navigator initialRouteName="Feed">
       <Tab.Screen name="PostSignInLanding" component={PostSignInLanding} options={{ headerShown: false }} />
-      <Tab.Screen name="Calendar" component={CalendarPage} options={{ headerShown: false }} />
+      <Tab.Screen name="CalendarDebug" component={CalendarPage} options={{ headerShown: false }} />
       {/* <Tab.Screen name="Old CalenList" component={JournalHistoryPage} options={{ headerShown: false }} /> */}
       <Tab.Screen name="Feed" component={Feed} options={{ headerShown: false }} />
       <Tab.Screen name="CheckIn" component={CheckIn} options={{ headerShown: false }} />
       <Tab.Screen name="Trends" component={TrendsPage} options={{ headerShown: true }} />
-      <Tab.Screen name="Journal" component={JournalTabs} options={{ headerShown: false }} />
+      {/* <Tab.Screen name="Journal Tweak" component={JournalTabs} options={{ headerShown: false }} /> */}
       <Tab.Screen name="WOYM" component={WOYM} options={{ headerShown: false }} />
       <Tab.Screen name="DontCareSee" component={DontCareSee} options={{ headerShown: false }} />
       <Tab.Screen name="Bookmarks" component={Bookmarks} options={{ headerShown: false }} />
