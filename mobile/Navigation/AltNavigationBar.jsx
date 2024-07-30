@@ -87,8 +87,6 @@ function ContentLibraryWithExtraPages() {
   );
 }
 
-// const contentNames = ['Bookmarks', 'Bookmarks Edge Case', 'Resource', 'Resource List', 'Tag'];
-// const contentPages = [Bookmarks, BookmarksEdgeCase, Resource, ResourceList, Tag];
 function JournalCalendar() {
   return (
     <Stack.Navigator>
