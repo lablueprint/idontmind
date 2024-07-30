@@ -34,8 +34,10 @@ import ResetPassword from '../Features/Login/Screens/ResetPassword';
 import TrendsTab from '../Features/Trends/Components/Trends';
 import TrendsBody from '../Features/Trends/Screens/TrendsBody';
 
-import CheckIn from '../Features/CheckIn/CheckIn';
 import JournalDetails from '../Features/Journal/Screens/JournalDetails';
+import PostDetails from '../Features/Journal/Screens/PostDetails';
+
+import CheckIn from '../Features/CheckIn/CheckIn';
 import Sleep from '../Features/CheckIn/Sleep';
 import Mood from '../Features/CheckIn/Mood';
 import AddMood from '../Features/CheckIn/AddMood';
@@ -136,6 +138,7 @@ export default function AppNavigation({ user }) {
           <Stack.Screen name="EndCheckIn" component={EndCheckIn} options={{ headerShown: false }} />
           <Stack.Screen name="Exercise" component={Exercise} options={{ headerShown: false }} />
           <Stack.Screen name="JournalDetails" component={JournalDetails} options={{ headerShown: false }} />
+          <Stack.Screen name="PostDetails" component={PostDetails} options={{ headerShown: false }} />
         </Stack.Navigator>
       </TagProvider>
     </NavigationContainer>
