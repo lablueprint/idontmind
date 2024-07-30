@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import exit from '../../../assets/images/exit.png';
-import check from '../../../assets/images/green_check.png';
+import folderTrash from '../../../assets/images/folderTrash.png';
 import styles from './FolderModalStyle';
 
 function DeleteFolderModal({
@@ -60,9 +60,9 @@ function DeleteFolderModal({
             >
               <Image
                 style={{
-                  resizeMode: 'contain', width: 50, height: 50, paddingBottom: 10,
+                  resizeMode: 'contain', width: 30, height: 30, paddingBottom: 10,
                 }}
-                source={check}
+                source={folderTrash}
               />
               <Text style={{
                 fontFamily: 'cabinet-grotesk-regular', fontSize: 24, paddingTop: 15, paddingBottom: 10,
@@ -71,7 +71,7 @@ function DeleteFolderModal({
                 Delete this Folder?
               </Text>
               <Text style={{
-                fontFamily: 'cabinet-grotesk-regular', fontSize: 18, color: '#676C6C',
+                fontFamily: 'cabinet-grotesk-regular', fontSize: 18, color: '#676C6C', paddingBottom: 10,
               }}
               >
                 Are you sure you want to delete this folder? This action cannot be undone.
