@@ -37,12 +37,17 @@ function Feeling({ navigation }) {
     setSlider(sliderValue);
   };
 
+  const onImagePress = (index) => {
+    setSlider(index);
+  };
+
   const continueButton = () => {
-    navigation.navigate('Feeling', { numPages, moodValueChosen: slider });
+    navigation.navigate('Feeling', { numPages, moodValueChosen: slider + 1 });
   };
 
   const skipButton = () => {
-    navigation.navigate('Feeling', { numPages, moodValueChosen: slider });
+    // note: if we skip, what do we set mood as for this day? should it be null or 2
+    navigation.navigate('Feeling', { numPages, moodValueChosen: null });
   };
 
   return (
@@ -53,27 +58,30 @@ function Feeling({ navigation }) {
         </Text>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: width * 0.9 }}>
           {images.map((image, index) => (
-            <View key={index} style={{ alignItems: 'center' }}>
-              <View style={[
-                styles.imageContainer,
-                { width: 40 + (slider === index ? 20 : 0), height: 40 + (slider === index ? 20 : 0) },
-                slider === index ? styles.shadowEffect : null,
-              ]}>
-                <Image
-                  source={image}
-                  style={[
-                    styles.image,
-                    { width: 40 + (slider === index ? 20 : 0), height: 40 + (slider === index ? 20 : 0) }
-                  ]}
-                />
+            <Pressable key={index} onPress={() => onImagePress(index)}>
+              <View key={index} style={{ alignItems: 'center' }}>
+                <View style={[
+                  styles.imageContainer,
+                  { width: 40 + (slider === index ? 20 : 0), height: 40 + (slider === index ? 20 : 0) },
+                  slider === index ? styles.shadowEffect : null,
+                ]}
+                >
+                  <Image
+                    source={image}
+                    style={[
+                      styles.image,
+                      { width: 40 + (slider === index ? 20 : 0), height: 40 + (slider === index ? 20 : 0) },
+                    ]}
+                  />
+                </View>
+                <Text style={{ display: slider === index ? 'flex' : 'none', fontSize: 40, fontWeight: 600 }}>{captions[index]}</Text>
+                <View style={{ height: 10 }} />
               </View>
-              <Text style={{ display: slider === index ? 'flex' : 'none', fontSize: 40, fontWeight: 600 }}>{captions[index]}</Text>
-              <View style={{ height: 10 }} />
-            </View>
+            </Pressable>
           ))}
         </View>
         <Slider
-          style={{ width: width * 0.9, marginTop: 20, }}
+          style={{ width: width * 0.9, marginTop: 20 }}
           minimumValue={0}
           maximumValue={4}
           step={1}

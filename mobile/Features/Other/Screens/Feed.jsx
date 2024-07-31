@@ -8,7 +8,9 @@ import { logout } from '../../../redux/authSlice';
 
 export default function Feed({ navigation }) {
   // Grabs user firstName and authentication token for current user session
-  const { email, firstName, authHeader } = useSelector((state) => state.auth);
+  const {
+    email, firstName, authHeader, id,
+  } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const navigateToLanding = () => {

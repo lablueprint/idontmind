@@ -50,10 +50,6 @@ export default function JournalDetails({ navigation }) {
     }
   }, []);
 
-  const navigateToJournalHistory = () => {
-    navigation.navigate('Journal History');
-  }; // navigate to Journal History page
-
   return (
     <ScrollView contentContainerStyle={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <View style={styles.container}>
@@ -70,13 +66,7 @@ export default function JournalDetails({ navigation }) {
         title="Go back"
         onPress={navigation.goBack}
       />
-
-      <Button
-        title="To Past Journal Entries"
-        onPress={navigateToJournalHistory}
-      />
     </ScrollView>
 
   );
-  
 }

@@ -142,6 +142,8 @@ export function JournalPage({
       console.error(error);
       // Handle error
     }
+    setText('');
+    removeImage();
   };
 
   return (
@@ -203,7 +205,7 @@ export function JournalPage({
                   style={{
                     height: 20, width: 20, marginRight: 15, marginBottom: 10,
                   }}
-                  source={require('../../../assets/iterate.png')}
+                  source={require('../../../assets/images/iterate.png')}
                 />
               </Pressable>
             </View>
@@ -291,7 +293,7 @@ export function JournalPage({
                   <TouchableOpacity onPress={pickImage}>
                     <Image
                       style={{ width: 20, height: 20, marginRight: 10 }}
-                      source={require('../../../assets/attachImage.png')}
+                      source={require('../../../assets/images/attachImage.png')}
                     />
                   </TouchableOpacity>
                   <View>
@@ -312,13 +314,21 @@ export function JournalPage({
                   >
                     <View style={{ width: '100%', flexDirection: 'row', alignItems: 'flex-start' }}>
                       <View style={{ flex: 1 }}>
-                        <Text style={{ fontFamily: cabinetGrotesk, fontSize: 13, marginBottom: 18 }}>Attachments</Text>
+                        <Text style={{
+                          fontFamily:
+                          cabinetGrotesk,
+                          fontSize: 13,
+                          marginBottom: 18,
+                        }}
+                        >
+                          Attachments
+                        </Text>
                       </View>
                     </View>
                     <TouchableOpacity style={{ position: 'absolute', top: 0, right: 0 }}>
                       <Image
                         style={{ width: 28, height: 28, marginRight: 7 }}
-                        source={require('../../../assets/attachImageBig.png')}
+                        source={require('../../../assets/images/attachImageBig.png')}
                       />
                     </TouchableOpacity>
                     <View style={{ position: 'relative' }}>
@@ -329,7 +339,7 @@ export function JournalPage({
                       <TouchableOpacity onPress={removeImage} style={{ position: 'absolute', top: -8, right: -20 }}>
                         <Image
                           style={{ width: 20, height: 20, marginRight: 10 }}
-                          source={require('../../../assets/deleteImage.png')}
+                          source={require('../../../assets/images/deleteImage.png')}
                         />
                       </TouchableOpacity>
                     </View>
@@ -376,7 +386,7 @@ export function JournalPage({
                   marginTop: 3, textAlign: 'center', maxWidth: '70%', fontSize: 12, color: '#929999', flex: 1,
                 }}
                 >
-                  You can always go back to edit past entries later
+                  You cannot go back to edit past entries later
                 </Text>
 
               </View>
@@ -417,7 +427,9 @@ export function JournalPage({
                 }}
                 onPress={handlePopUp}
               >
-                <Text style={{ fontSize: 14, fontWeight: 500, fontFamily: cabinetGrotesk }}>Cancel</Text>
+                <Text style={{ fontSize: 14, fontWeight: 500, fontFamily: cabinetGrotesk }}>
+                  Cancel
+                </Text>
               </Pressable>
             </View>
           </TouchableOpacity>
@@ -447,6 +459,7 @@ function CustomTabBar({ state, descriptors, navigation }) {
     <View style={{ flexDirection: 'row' }}>
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
+        // eslint-disable-next-line no-nested-ternary
         const label = options.tabBarLabel !== undefined
           ? options.tabBarLabel
           : options.title !== undefined
@@ -501,7 +514,7 @@ function CustomTabBar({ state, descriptors, navigation }) {
 
 export default function JournalTabs({ navigation }) {
   const navigateToCalendar = () => {
-    navigation.navigate('Calendar');
+    navigation.navigate('Calendar Screen');
   };
 
   const Tab = createMaterialTopTabNavigator();
@@ -523,7 +536,7 @@ export default function JournalTabs({ navigation }) {
           >
             <Image
               style={{ width: 20, height: 20 }}
-              source={require('../../../assets/calendar.png')}
+              source={require('../../../assets/images/calendar.png')}
             />
           </TouchableOpacity>
         </View>
@@ -558,7 +571,11 @@ JournalPage.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
   }).isRequired,
-  freeWrite: PropTypes.bool.isRequired,
+  freeWrite: PropTypes.bool,
+};
+
+JournalPage.defaultProps = {
+  freeWrite: false,
 };
 
 JournalTabs.propTypes = {
