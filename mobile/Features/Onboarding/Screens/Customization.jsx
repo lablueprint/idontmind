@@ -29,7 +29,6 @@ export default function Customization({ navigation }) {
     const firstName = route.params?.firstName;
     try {
       // Ensures all emails are lowercase when stored in backend
-      console.log('api-key:', process.env.EXPO_SECRET_API_KEY);
       const userEmail = email.toLowerCase();
       const userData = {
         email: userEmail,
