@@ -4,6 +4,17 @@ const bcrypt = require('bcrypt');
 const User = require('../models/OfficialUserSchema');
 const passport = require('../passport');
 
+const API_KEY = process.env.SECRET_API_KEY;
+
+// verify that mobile and server API Keys are the same
+const validateApiKey = async (req, res, next) => {
+  const providedApiKey = req.headers['x-api-key'];
+  if (!providedApiKey || providedApiKey !== API_KEY) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+  next();
+};
+
 // Creates user with given email, password, and to send to backend
 const signUpUser = async (req, res, next) => {
   try {
@@ -463,6 +474,7 @@ const resetPassword = async (req, res) => {
 };
 
 module.exports = {
+  validateApiKey,
   signInUser,
   signUpUser,
   welcomeUser,

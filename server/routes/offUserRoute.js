@@ -3,8 +3,8 @@ const express = require('express');
 const offUserRouter = express.Router();
 const offUserController = require('../controllers/offUserController');
 
-offUserRouter.post('/signin', offUserController.signInUser);
-offUserRouter.post('/signup', offUserController.signUpUser);
+offUserRouter.post('/signin', offUserController.validateApiKey, offUserController.signInUser);
+offUserRouter.post('/signup', offUserController.validateApiKey, offUserController.signUpUser);
 
 offUserRouter.post('/sendEmail', offUserController.sendEmail);
 
@@ -32,7 +32,7 @@ offUserRouter.get('/getFavorites', offUserController.getFavorites);
 
 offUserRouter.post('/updateUser', offUserController.updateUser);
 
-offUserRouter.post('/deleteUserById', offUserController.deleteUserById);
+offUserRouter.post('/deleteUserById', offUserController.deleteUserById); // nope
 
 offUserRouter.post('/getUserChallengeDay', offUserController.getUserChallengeDay);
 
