@@ -117,6 +117,7 @@ export default function SignUp({ navigation }) {
 
   const handleSignUp = async () => {
     try {
+      console.log('hi reached here');
       if (!isValidEmail()) {
         console.error('Invalid Email Address');
         return;
@@ -143,7 +144,11 @@ export default function SignUp({ navigation }) {
       if (res.data.error) {
         console.error(res.data.error);
       } else { // If sign up is successful
-        const res2 = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/signin`, userData);
+        const res2 = await axios.post(
+          `${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/signin`,
+          userData,
+          { headers: { 'x-api-key': `${process.env.SECRET_API_KEY}` } },
+        );
         // Sets current state variables for session
         dispatch(login(res2.data));
         setEmail('');

@@ -4,6 +4,7 @@ const passport = require('../passport');
 
 const API_KEY = process.env.SECRET_API_KEY;
 
+// verify that mobile and server API Keys are the same
 const validateApiKey = async (req, res, next) => {
   const providedApiKey = req.headers['x-api-key'];
   if (!providedApiKey || providedApiKey !== API_KEY) {
