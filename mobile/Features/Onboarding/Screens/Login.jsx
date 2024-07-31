@@ -35,7 +35,11 @@ export default function Login({ navigation }) {
         email: userEmail,
         password,
       };
-      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/signin`, userData);
+      const res = await axios.post(
+        `${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/signin`,
+        userData,
+        { headers: { 'x-api-key': `${process.env.EXPO_SECRET_API_KEY}` } },
+      );
       if (res.data.error) {
         console.error(res.data.error);
       } else {

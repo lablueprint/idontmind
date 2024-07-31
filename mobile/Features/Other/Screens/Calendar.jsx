@@ -161,7 +161,7 @@ export default function CalendarPage({ navigation }) {
     navigation.navigate('Journal Tabs');
   };
 
-  const navigateToPastJournal = (username, prompt, text, date) => {
+  const navigateToPastJournal = (username, prompt, text, date, image) => {
     navigation.navigate('JournalDetails', {
       email: username, question: prompt, body: text, day: date,
     });
