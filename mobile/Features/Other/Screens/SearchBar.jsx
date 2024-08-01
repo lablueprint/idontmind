@@ -1,18 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-  View, Text, TextInput, Modal, Button, TouchableOpacity, ScrollView, Image,
+  View, Text, TextInput, Modal, Button, TouchableOpacity, ScrollView, Image, Pressable,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import DropDownPicker from 'react-native-dropdown-picker';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 import SearchBarStyle from './SearchBarStyle';
-import Bookmark from './Bookmark';
+import Bookmark from '../Components/Bookmark';
 import timeline from '../../../assets/images/time_line.png';
 import clear from '../../../assets/images/clear.png';
+import BottomHalfModal from '../../ContentLibrary/Components/BottomModal';
+import NewFolderModal from '../../ContentLibrary/Components/NewFolderModal';
+import FolderCreatedModal from '../../ContentLibrary/Components/FolderCreatedModal';
 
 export default function SearchBar({
-  visible, onClose, onSearch, recentSearches,
+  navigation, visible, onClose, onSearch, recentSearches,
 }) {
+  const { id, authHeader } = useSelector((state) => state.auth);
+
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('Tags');
   const [results, setResults] = useState([]);
@@ -20,6 +26,20 @@ export default function SearchBar({
   const [filterQuery, setFilterQuery] = useState('All');
   const [enterPressed, setEnterPressed] = useState(false);
   const searchFilters = ['All', 'Articles', 'Q&A', 'Personal Stories', 'Exercises'];
+
+  // modal stuff
+  const [modalVisible, setModalVisible] = useState(false); // for the bottom modal
+  const [modalVisibleNewFolder, setModalVisibleNewFolder] = useState(false);
+  const [newFolderName, setNewFolderName] = useState('');
+  const [modalVisibleCreated, setModalVisibleCreated] = useState(false);
+
+  // folder stuff
+  const [folders, setFolders] = useState([]);
+  const [tagOrResourceName, setTagOrResourceName] = useState(''); /* the name of the
+  tag or resource that triggered the modal popup */
+
+  // resources and favoriting stuff
+  const [favoritedResources, setFavoritedResources] = useState([]);
 
   const handleSearch = async (search, filter, type = value) => {
     if (type === 'Keywords') {
@@ -38,10 +58,79 @@ export default function SearchBar({
     setEnterPressed(true);
   };
 
+  const navigateToResource = (resourceName, authorName, content, tags) => {
+    onClose();
+    setResults([]);
+    setSearchQuery('');
+    setFilterQuery('All');
+    setEnterPressed(false);
+
+    navigation.navigate('Resource', {
+      resourceName, authorName, content, tags, routeName: 'Content Library',
+    });
+  };
+
   const [items, setItems] = useState([
     { label: 'Tags', value: 'Tags' },
     { label: 'Keywords', value: 'Keywords' },
   ]);
+
+  // modal functions
+  const toggleModal = (tag, name) => {
+    if (!modalVisible) {
+      setTagOrResourceName(name);
+    }
+    setModalVisible(!modalVisible);
+  };
+  const toggleModalNewFolder = () => {
+    setModalVisibleNewFolder(!modalVisibleNewFolder);
+  };
+  const toggleModalCreated = () => {
+    setModalVisibleCreated(!modalVisibleCreated);
+  };
+  const setFolderName = (name) => {
+    setNewFolderName(name);
+  };
+
+  // retrieve all the favoritedFolders so we can display them in the bottom modal
+  const getFolders = async () => {
+    try {
+      const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/folder/getFavoritedFolders`, { headers: authHeader, params: { id } });
+      if (res.data.error) {
+        console.error(res.data.error);
+      } else {
+        // console.log('This is the get folder data:');
+        // console.log(res.data);
+        // console.log(Object.keys(res.data));
+        setFolders(res.data);
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  // get favorited resources and whether or not tag is favorited (choose bookmark icons accordingly)
+  const getFavorites = async () => {
+    try {
+      const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/getFavorites`, { headers: authHeader, params: { id } });
+      if (res.data.error) {
+        console.error(res.data.error);
+      } else {
+        console.log('This is get favorites data:');
+        console.log(res.data.favoritedTags);
+        setFavoritedResources(res.data.favoritedResources);
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  useEffect(() => {
+    getFolders();
+  }, [modalVisibleCreated]);
+  useEffect(() => {
+    getFavorites();
+  }, []);
 
   return (
     <Modal visible={visible} animationType="slide" transparent={false}>
@@ -175,27 +264,51 @@ export default function SearchBar({
               {
                 results.map((item) => {
                   let resourceName;
+                  let authorName;
+                  let content;
                   if (item.title) {
                     resourceName = item.title;
+                    authorName = item.author;
+                    // format: [[excerpt_title_1, excerpt_1], [excerpt_title_2, excerpt_2]...]
+                    const excerptStrings = Object.values(item.excerpts)
+                      .map((excerpt) => excerpt.trim());
+                    const excerptTitles = Object.values(item.excerpt_titles)
+                      .map((title) => title.trim());
+                    const maxLength = Math.max(excerptStrings.length, excerptTitles.length);
+                    const filledExcerpts = [...excerptStrings, ...Array(maxLength - excerptStrings.length).fill('')];
+                    const filledTitles = [...excerptTitles, ...Array(maxLength - excerptTitles.length).fill('')];
+                    content = filledExcerpts.map(
+                      (excerpt, index) => [filledTitles[index], excerpt],
+                    );
+
+                    // content = excerptStrings;
                   } else if (item['Journal Prompts']) {
                     resourceName = item['Journal Prompts'];
                   } else {
                     resourceName = item.question;
-                  }
-                  let authorName;
-                  if (item.author) {
-                    authorName = item.author;
-                  } else {
                     authorName = item.who_answered;
+                    content = [['', item.answer]];
                   }
+
                   return (
-                    <Bookmark
+                    <Pressable
                       key={resourceName}
-                      resourceName={resourceName}
-                      author={authorName}
+                      onPress={() => navigateToResource(
+                        resourceName,
+                        authorName,
+                        content,
+                        item.tags,
+                      )}
                     >
-                      {item.authorName}
-                    </Bookmark>
+                      <Bookmark
+                        resourceName={resourceName}
+                        author={authorName}
+                        selected={favoritedResources.includes(resourceName)}
+                        modalVisibleParent={modalVisible}
+                        toggleModal={toggleModal}
+                      />
+
+                    </Pressable>
                   );
                 })
               }
@@ -203,11 +316,35 @@ export default function SearchBar({
           </View>
         )}
       </View>
+      <BottomHalfModal
+        modalVisibleParent={modalVisible}
+        toggleModal={toggleModal}
+        toggleModalNewFolder={toggleModalNewFolder}
+        isTag={false}
+        folders={folders}
+        tagOrResourceName={tagOrResourceName}
+      />
+      <NewFolderModal
+        modalVisibleParent={modalVisibleNewFolder}
+        toggleModal={toggleModalNewFolder}
+        toggleModalCreated={toggleModalCreated}
+        setFolderName={setFolderName}
+        tagOrResourceName={tagOrResourceName}
+        isTag={false}
+      />
+      <FolderCreatedModal
+        modalVisibleParent={modalVisibleCreated}
+        toggleModal={toggleModalCreated}
+        newFolderName={newFolderName}
+      />
     </Modal>
   );
 }
 
 SearchBar.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+  }).isRequired,
   visible: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onSearch: PropTypes.func.isRequired,

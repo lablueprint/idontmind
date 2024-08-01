@@ -21,7 +21,6 @@ import Feed from '../Features/Other/Screens/Feed';
 import CheckIn from '../Features/Other/Screens/CheckIn';
 import Options from '../Features/Other/Screens/Options';
 import JournalHistoryPage from '../Features/Other/Screens/JournalHistoryPage';
-import WOYM from '../Features/Register/WOYM';
 import DayChallenge from '../Features/Other/Screens/DayChallenge';
 
 import Bookmarks from '../Features/ContentLibrary/Screens/Bookmarks';
@@ -29,6 +28,7 @@ import BookmarksEdgeCase from '../Features/ContentLibrary/Screens/BookmarksEdgeC
 import Resource from '../Features/ContentLibrary/Screens/Resource';
 import ResourceList from '../Features/ContentLibrary/Screens/ResourceList';
 import Tag from '../Features/ContentLibrary/Screens/Tag';
+import FolderContent from '../Features/ContentLibrary/Screens/FolderContent';
 import NotificationsTest from '../Features/Settings/Screens/NotificationsTest';
 
 const Stack = createStackNavigator();
@@ -59,8 +59,8 @@ function HomeWithExtraPages() {
     </Stack.Navigator>
   );
 }
-const contentNames = ['Bookmarks', 'Bookmarks Edge Case', 'Resource', 'Resource List', 'Tag'];
-const contentPages = [Bookmarks, BookmarksEdgeCase, Resource, ResourceList, Tag];
+const contentNames = ['Bookmarks', 'Bookmarks Edge Case', 'Resource', 'Resource List', 'Tag', 'FolderContent'];
+const contentPages = [Bookmarks, BookmarksEdgeCase, Resource, ResourceList, Tag, FolderContent];
 function ContentLibraryWithExtraPages() {
   return (
     <Stack.Navigator>

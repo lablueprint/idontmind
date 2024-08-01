@@ -11,24 +11,33 @@ import bookmark from '../../../assets/images/bookmark_fill.png';
 import searchImage from '../../../assets/images/search.png';
 import TagContext from '../Context/TagContext';
 // do want to change routing though:
-import SearchBar from '../../Other/Components/SearchBar';
+import SearchBar from '../../Other/Screens/SearchBar';
+import jsonData from '../../../content_library.json';
 import jsonData from '../../../content_library.json';
 import CategoryCard from '../Components/CategoryCard';
 import RecommendationCard from '../Components/RecommendationCard';
 
 export default function ContentLibrary({ navigation }) {
+  const transformedData = Object.keys(jsonData).map((tagName, index) => ({
+    id: index.toString(), // Unique ID for each category
+    tagName, // Category name
+    subtopics: jsonData[tagName], // Array of sub-items
+  }));
+
   const { initTags, initFavorites } = useContext(TagContext);
   const { id, authHeader } = useSelector((state) => state.auth);
 
   /* width of screen */
   const { width } = Dimensions.get('window');
 
-  const navigateToTag = (categoryName) => {
-    navigation.navigate('Tag', { routeName: 'Content', categoryName });
-  };
+  const navigateToTag = (index, tagName, subtopics, categoryName) => {
+    navigation.navigate('Tag', {
+      index, routeName: 'Content', tagName, subtopics, categoryName
+    });
 
   const navigateToResourceList = (subtopicName) => {
-    navigation.navigate('Resource List', { subtopicName, routeName: 'Content Library' });
+    navigation.navigate('Resource List', { subtopicName, routeName: 'Content Library', tagName, subtopics,
+    });
   };
 
   const navigateToFavorites = () => {
@@ -137,7 +146,14 @@ export default function ContentLibrary({ navigation }) {
       style={[style.container]}
     >
       <View style={{ paddingLeft: width / 18 }}>
-        <View style={[style.titleRow]}>
+        <SearchBar
+        navigation={navigation}
+        visible={isOpen}
+        onClose={closeSearch}
+        onSearch={handleSearch}
+        recentSearches={recentSearches}
+      />
+      <View style={[style.titleRow]}>
           <Text style={style.title}>Content</Text>
           <View style={style.row}>
             <View>
@@ -162,14 +178,22 @@ export default function ContentLibrary({ navigation }) {
                     style={style.search}
                   />
                 </View>
-                <SearchBar
-                  visible={isOpen}
+                {/* <SearchBar
+                  navigation={navigation}
+                visible={isOpen}
                   onClose={closeSearch}
                   onSearch={handleSearch}
                   recentSearches={recentSearches}
-                />
+                /> */}
               </TouchableOpacity>
-            </View>
+              <SearchBar
+              navigation={navigation}
+              visible={isOpen}
+              onClose={closeSearch}
+              onSearch={handleSearch}
+              recentSearches={recentSearches}
+            />
+          </View>
           </View>
         </View>
         <View style={[style.row]}>
@@ -195,7 +219,7 @@ export default function ContentLibrary({ navigation }) {
 
       <View style={[style.row, { flex: 2 }]}>
         <FlatList
-          data={categories}
+          data={transformedData}
           renderItem={verticalRenderItem}
           showsVerticalScrollIndicator={false}
           numColumns={2}

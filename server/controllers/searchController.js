@@ -1,9 +1,7 @@
-const Article = require('../models/ArticleSchema');
-const QnA = require('../models/QnASchema');
-
 const OfficialArticle = require('../models/OfficialArticleSchema');
 const OfficialQnA = require('../models/OfficialQnASchema');
 const OfficialPersonalStory = require('../models/OfficialStoriesSchema');
+const OfficialExercise = require('../models/OfficialExerciseSchema');
 
 // filter resources by keyword in title
 const searchByKeyword = async (req, res) => {
@@ -32,6 +30,16 @@ const searchByKeyword = async (req, res) => {
   }
   if (filter === 'All' || filter === 'Personal Stories') {
     aggregateCalls.push(OfficialPersonalStory.aggregate([{
+      $match: {
+        $or: [
+          { title: { $regex: keyword, $options: 'i' } },
+          { excerpts: { $elemMatch: { $regex: keyword, $options: 'i' } } },
+        ],
+      },
+    }]));
+  }
+  if (filter === 'All' || filter === 'Exercises') {
+    aggregateCalls.push(OfficialExercise.aggregate([{
       $match: {
         $or: [
           { title: { $regex: keyword, $options: 'i' } },
@@ -74,6 +82,12 @@ const searchByTag = async (req, res) => {
     );
   }
 
+  if (filter === 'All' || filter === 'Exercises') {
+    aggregateCalls.push(
+      OfficialExercise.aggregate([{ $match: { tags: { $elemMatch: { $in: [tagSearch] } } } }]),
+    );
+  }
+
   try {
     const data = await Promise.all(aggregateCalls);
     res.send(data.flat());
@@ -83,6 +97,46 @@ const searchByTag = async (req, res) => {
   }
 };
 
+// fetch and filter a given array of resources by filter selection
+const filterResourcesByFilter = async (req, res) => {
+  const { resources, filter } = req.body;
+  const aggregateCalls = [];
+
+  if (filter === 'All' || filter === 'Articles') {
+    aggregateCalls.push(
+      OfficialArticle.aggregate([{ $match: { title: { $in: resources } } }]),
+    );
+    console.log(aggregateCalls);
+  }
+
+  if (filter === 'All' || filter === 'Q&A') {
+    aggregateCalls.push(
+      OfficialQnA.aggregate([{ $match: { question: { $in: resources } } }]),
+    );
+  }
+
+  if (filter === 'All' || filter === 'Personal Stories') {
+    aggregateCalls.push(
+      OfficialPersonalStory.aggregate([{ $match: { title: { $in: resources } } }]),
+    );
+  }
+
+  if (filter === 'All' || filter === 'Exercises') {
+    aggregateCalls.push(
+      OfficialExercise.aggregate([{ $match: { title: { $in: resources } } }]),
+    );
+  }
+
+  try {
+    const data = await Promise.all(aggregateCalls);
+    console.log(data.flat());
+    res.send(data.flat());
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(err);
+  }
+};
+
 module.exports = {
-  searchByKeyword, searchByTag,
+  searchByKeyword, searchByTag, filterResourcesByFilter,
 };

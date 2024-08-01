@@ -58,7 +58,7 @@ export default function Card({
   };
 
   /* Grab item fields */
-  const { id, tagName, category } = item;
+  const { id, tagName, subtopics, category } = item;
 
   /* Check if current tag is favorited */
   const favorited = findFavorite(id);
@@ -90,7 +90,7 @@ export default function Card({
       { orientation === 'horizontal' ? (
         <TouchableOpacity
           style={[style.horizontalCard, { width: 295 }]}
-          onPress={() => navigateToTag(index)}
+          onPress={() => navigateToTag(index, tagName, subtopics)}
         >
           <View style={{ flexDirection: 'row' }}>
             <View
@@ -160,6 +160,7 @@ Card.propTypes = {
   item: PropTypes.shape({
     id: PropTypes.string,
     tagName: PropTypes.string,
+    subtopics: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,
   orientation: PropTypes.string.isRequired,
 };

@@ -11,7 +11,6 @@ import styles from './FolderModalStyle';
 function FolderCreatedModal({ modalVisibleParent, toggleModal, newFolderName }) {
   const handleOK = () => {
     // Handle saving the input text
-    console.log('pressed OK');
     toggleModal();
   };
 

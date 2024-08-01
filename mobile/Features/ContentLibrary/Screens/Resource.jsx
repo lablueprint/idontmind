@@ -2,9 +2,12 @@ import {
   View, Text, TouchableOpacity, ScrollView, Pressable, Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRoute } from '@react-navigation/native';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
 import BookmarkImage from '../../../assets/images/bookmark_blue.png';
+import unfilledBookmark from '../../../assets/images/unfilledBookmark.png';
 import styles from './BookmarksStyle';
 import BottomHalfModal from '../Components/BottomModal';
 import NewFolderModal from '../Components/NewFolderModal';
@@ -12,17 +15,43 @@ import FolderCreatedModal from '../Components/FolderCreatedModal';
 import Back from '../../../assets/images/back_button.png';
 
 function Resource({ navigation }) {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [modalVisibleNewFolder, setModalVisibleNewFolder] = useState(false);
-  const [modalVisibleCreated, setModalVisibleCreated] = useState(false);
-  const [newFolderName, setNewFolderName] = useState('');
-  const filters = ['Creativity', 'SelfCare'];
-  const [filterQuery, setFilterQuery] = useState('All');
+  const {
+    authHeader, id,
+  } = useSelector((state) => state.auth);
 
+  // route params
   const route = useRoute();
   const resourceName = route.params?.resourceName;
+  let authorName = route.params?.authorName;
+  if (!authorName) authorName = 'Anonymous'; // placeholder
+  const content = route.params?.content;
+
   const routeName = route.params?.routeName;
+  const tagName = route.params?.tagName;
   const subtopicName = route.params?.subtopicName;
+
+  const folderName = route.params?.folderName;
+  const folderDescription = route.params?.folderDescription;
+  const folderResources = route.params?.folderResources;
+  const folderTags = route.params?.folderTags;
+
+  // modal stuff
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisibleNewFolder, setModalVisibleNewFolder] = useState(false);
+  const [newFolderName, setNewFolderName] = useState('');
+  const [modalVisibleCreated, setModalVisibleCreated] = useState(false);
+
+  // folder stuff
+  const [folders, setFolders] = useState([]);
+
+  // whether or not the resource is favorited, determines if top right bookmark is selected
+  const [resourceFavorited, setResourceFavorited] = useState(false);
+
+  // filter stuff
+  const filters = route.params?.tags;
+  const [filterQuery] = useState('All');
+
+  // modal functions
   const toggleModal = () => {
     setModalVisible(!modalVisible);
   };
@@ -35,11 +64,67 @@ function Resource({ navigation }) {
   const setFolderName = (name) => {
     setNewFolderName(name);
   };
+
+  // navigation to previous route
   const navigateToPreviousRoute = () => {
     console.log(routeName);
-    if (routeName === 'Resource List') navigation.navigate(routeName, { subtopicName, routeName: 'Content Library' });
-    else navigation.navigate(routeName);
+    if (routeName === 'Resource List') navigation.navigate(routeName, { subtopicName, routeName: 'Content Library', tagName });
+    else if (routeName === 'FolderContent') {
+      navigation.navigate('FolderContent', {
+        folderName, folderDescription, resources: folderResources, tags: folderTags,
+      }); // set index to 0 as default for now
+    } else navigation.navigate(routeName);
   };
+
+  // retrieve all the favoritedFolders so we can display them in the bottom modal
+  const getFolders = async () => {
+    try {
+      const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/folder/getFavoritedFolders`, { headers: authHeader, params: { id } });
+      if (res.data.error) {
+        console.error(res.data.error);
+      } else {
+        console.log('This is the get folder data:');
+        console.log(res.data);
+        console.log(Object.keys(res.data));
+        setFolders(res.data);
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  // get favorited data to find out whether or not this resource is favorited
+  const getFavorited = async () => {
+    try {
+      const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/getFavorites`, { headers: authHeader, params: { id } });
+      if (res.data.error) {
+        console.error(res.data.error);
+      } else if (res.data.favoritedResources.includes(resourceName)) setResourceFavorited(true);
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  const handleUpperBookmark = async () => {
+    if (!resourceFavorited) {
+      // favorite the resource
+      await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/favoriteResource`, { id, resource: resourceName }, { headers: authHeader });
+    } else {
+      await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/unfavoriteResource`, { id, resource: resourceName }, { headers: authHeader });
+    }
+    setResourceFavorited(!resourceFavorited);
+    if (!resourceFavorited) {
+      toggleModal();
+    }
+  };
+
+  useEffect(() => {
+    getFolders();
+  }, [modalVisibleCreated]);
+  useEffect(() => {
+    getFavorited();
+  }, []);
+
   return (
     <View
       className="mainContainer"
@@ -72,14 +157,18 @@ function Resource({ navigation }) {
         }}
         >
           <Text style={{ fontSize: 24, fontFamily: 'recoleta-regular', textAlign: 'center' }}>{resourceName}</Text>
-          <Text style={{ fontSize: 16, fontFamily: 'cabinet-grotesk-regular', textAlign: 'center' }}>By: IDONTMIND Team</Text>
+          <Text style={{ fontSize: 16, fontFamily: 'cabinet-grotesk-regular', textAlign: 'center' }}>
+            By:
+            {' '}
+            {authorName}
+          </Text>
         </View>
-        <Pressable onPress={toggleModal}>
+        <Pressable onPress={handleUpperBookmark}>
           <Image
             style={{
               flex: 1, resizeMode: 'contain', height: 30, width: 30,
             }}
-            source={BookmarkImage}
+            source={resourceFavorited ? BookmarkImage : unfilledBookmark}
           />
         </Pressable>
 
@@ -89,14 +178,8 @@ function Resource({ navigation }) {
         <ScrollView horizontal>
           <Text style={{ padding: 10 }}>Tags:</Text>
           {filters.map((item) => (
-            <TouchableOpacity
+            <View
               key={item}
-              onPress={() => {
-                if (item !== filterQuery) {
-                  setFilterQuery(item);
-                  console.log(filterQuery);
-                }
-              }}
               style={[
                 styles.filterButton,
                 filterQuery === item && styles.filterQuery,
@@ -107,38 +190,42 @@ function Resource({ navigation }) {
               >
                 {item}
               </Text>
-            </TouchableOpacity>
+            </View>
           ))}
         </ScrollView>
       </View>
       <ScrollView>
-        <Text style={{ fontSize: 16, fontFamily: 'cabinet-grotesk-regular' }}>
-          When was the last time you did something creative just for fun?
-          Seriously, just for fun, with little thought or expectations about
-          the end result. That’s a little tough, right? Most of the time,
-          we have our eyes on the end result and ignore the actual process
-          of creating. But the process is where the benefits are. The process
-          is where the healing is. What may seem like just a nice self-care
-          activity or a new hobby can actually be one of the best outlets
-          for your mental health. When you don’t know how to convey your emotions
-          out loud, turning into something artistic gives you the chance to express
-          yourself. And each form of creativity has its own benefits. No matter what
-          your skill level is, embrace your inner artist with some of these artistic
-          outlets. And try not to worry about the final product. Lean into the process
-          of creating. COLORING Coloring isn’t just for kids. Sure, there’s a reason
-          why we grew up with it: it’s an easy way into the world of art. And the same
-          is true now. Embrace the simplicity. Find comfort with coloring in the lines.
-          Or express yourself and ignore them completely. Either way can be pretty therapeutic.
-          Coloring reduces stress and anxiety, fights depression, helps you sleep, improves your
-          focus, helps with mindfulness...well, you get the point. It’s scientifically proven to
-          improve your mental health all around. Drawing & Painting All you need to do is watch
-          a video of Bob Ross to know the soothing power of art. Sometimes you can’t put into words
-          exactly what you’re thinking or feeling, and the only way to get it out of your head is to
-          pick up a pencil or paintbrush and cover a canvas. This type of creativity has been
-          scientifically proven to help people through trauma, as well as releasing all of those
-          feel-good hormones.
-          {' '}
-        </Text>
+        {content.map((item) => {
+          if (item[0].trim() !== '' && item[1].trim !== '') {
+            return (
+              <View>
+                <Text key={item[0]} style={{ fontSize: 24, fontFamily: 'recoleta' }}>
+                  {item[0]}
+                </Text>
+                <Text key={item[1]} style={{ fontSize: 16, fontFamily: 'cabinet-grotesk-regular' }}>
+                  {item[1]}
+                  {'\n'}
+                </Text>
+              </View>
+            );
+          }
+          if (item[0].trim() !== '') {
+            return (
+              <Text key={item[0]} style={{ fontSize: 24, fontFamily: 'recoleta' }}>
+                {item[0]}
+              </Text>
+            );
+          }
+          if (item[1].trim() !== '') {
+            return (
+              <Text key={item[1]} style={{ fontSize: 16, fontFamily: 'cabinet-grotesk-regular' }}>
+                {item[1]}
+                {'\n'}
+              </Text>
+            );
+          }
+          return null; // or any other fallback value if needed
+        })}
         <View style={{
           display: 'flex', justifyContent: 'center', flex: 1, alignItems: 'center',
         }}
@@ -148,12 +235,21 @@ function Resource({ navigation }) {
           </Pressable>
 
         </View>
-        <BottomHalfModal modalVisibleParent={modalVisible} toggleModal={toggleModal} toggleModalNewFolder={toggleModalNewFolder} page="Tags" />
+        <BottomHalfModal
+          modalVisibleParent={modalVisible}
+          toggleModal={toggleModal}
+          toggleModalNewFolder={toggleModalNewFolder}
+          isTag={false}
+          folders={folders}
+          tagOrResourceName={resourceName}
+        />
         <NewFolderModal
           modalVisibleParent={modalVisibleNewFolder}
           toggleModal={toggleModalNewFolder}
           toggleModalCreated={toggleModalCreated}
           setFolderName={setFolderName}
+          tagOrResourceName={resourceName}
+          isTag={false}
         />
         <FolderCreatedModal
           modalVisibleParent={modalVisibleCreated}

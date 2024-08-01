@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const OfficialArticleSchema = new mongoose.Schema({
   content_type: {
-    required: true,
+    default: '',
     type: String,
   },
   title: {
@@ -13,9 +13,21 @@ const OfficialArticleSchema = new mongoose.Schema({
     default: '',
     type: String,
   },
+  excerpt_titles: {
+    default: [],
+    type: [String],
+  },
   excerpts: {
     default: [],
     type: [String],
+  },
+  link: {
+    default: '',
+    type: String,
+  },
+  tag: {
+    default: '',
+    type: String,
   },
   tags: {
     default: [],
