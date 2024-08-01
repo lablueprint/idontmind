@@ -7,8 +7,6 @@ import { useContext } from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import style from './ContentStyle';
-import starImage from '../../../assets/images/star.png';
-import goldStar from '../../../assets/images/goldStar.png';
 import Bookmark from '../../../assets/images/bookmark_fill.png';
 import emptyBookmark from '../../../assets/images/emptyBookmark.png';
 import TagContext from '../Context/TagContext';
@@ -58,7 +56,9 @@ export default function Card({
   };
 
   /* Grab item fields */
-  const { id, tagName, subtopics, category } = item;
+  const {
+    id, tagName, subtopics, category,
+  } = item;
 
   /* Check if current tag is favorited */
   const favorited = findFavorite(id);
@@ -122,7 +122,11 @@ export default function Card({
         </TouchableOpacity>
       ) : (
         <TouchableOpacity
-          style={[style.verticalCard, { width: Math.floor((3.83 * width) / 9), height: 200, paddingHorizontal: 15 }]}
+          style={[style.verticalCard, {
+            width: Math.floor((3.83 * width) / 9),
+            height: 200,
+            paddingHorizontal: 15,
+          }]}
           onPress={() => navigateToTag(index)}
         >
           <View style={{ flexDirection: 'row' }}>

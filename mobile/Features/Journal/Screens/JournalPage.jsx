@@ -294,11 +294,11 @@ export function JournalPage({
   );
 }
 
-JournalPage.propTypes = {
-  navigation: PropTypes.shape({
-    navigate: PropTypes.func,
-  }).isRequired,
-};
+// JournalPage.propTypes = {
+//   navigation: PropTypes.shape({
+//     navigate: PropTypes.func,
+//   }).isRequired,
+// };
 
 function GuidedPrompt({ navigation }) {
   return (
@@ -352,25 +352,25 @@ export default function JournalTabs({ navigation }) {
     );
   }
 
-  return (
-    <ScrollView style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <View style={styles.container}>
-        {getPrompt(freeWrite)}
-        <View style={styles.textBox}>
-          <ScrollView automaticallyAdjustKeyboardInsets>
-            <Text>Hi</Text>
-            <Text>{body}</Text>
-          </ScrollView>
-        </View>
-      </View>
+  // return (
+  //   <ScrollView style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+  //     <View style={styles.container}>
+  //       {getPrompt(freeWrite)}
+  //       <View style={styles.textBox}>
+  //         <ScrollView automaticallyAdjustKeyboardInsets>
+  //           <Text>Hi</Text>
+  //           <Text>{body}</Text>
+  //         </ScrollView>
+  //       </View>
+  //     </View>
 
-      <Button
-        title="To Past Journal Entries"
-        onPress={navigateToJournalHistory}
-      />
-    </ScrollView>
+  //     <Button
+  //       title="To Past Journal Entries"
+  //       onPress={navigateToJournalHistory}
+  //     />
+  //   </ScrollView>
 
-  );
+  // );
 }
 
 JournalPage.propTypes = {

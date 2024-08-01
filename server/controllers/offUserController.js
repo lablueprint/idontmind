@@ -45,6 +45,7 @@ const signInUser = async (req, res, next) => {
 
       return res.json({ user, token });
     });
+    return null;
   })(req, res, next);
 };
 
@@ -351,7 +352,7 @@ const increaseChallengeDay = async (req, res) => {
   } catch (err) {
     console.error(err);
     return res.status(500).send(err);
-  }a;
+  }
 };
 
 // req has tag object, email
@@ -418,12 +419,13 @@ const sendEmail = async (req, res) => {
   };
 
   try {
-    const info = await transporter.sendMail(mailOptions);
+    await transporter.sendMail(mailOptions);
     res.send(true);
   } catch (error) {
     console.error('Error sending email:', error);
     return false;
   }
+  return null;
 };
 
 const checkUserByEmail = async (req, res) => {

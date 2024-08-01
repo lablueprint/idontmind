@@ -32,9 +32,9 @@ import FolderContent from '../Features/ContentLibrary/Screens/FolderContent';
 import NotificationsTest from '../Features/Settings/Screens/NotificationsTest';
 
 const Stack = createStackNavigator();
-const otherNames = ['Day Challenge', 'CheckIn', 'PostSignInLanding', 'Feed', 'Notifs', 'Options', 'Journal History', 'WOYM', 'Resource'];
+const otherNames = ['Day Challenge', 'CheckIn', 'PostSignInLanding', 'Feed', 'Notifs', 'Options', 'Journal History', 'Resource'];
 const otherPages = [DayChallenge, CheckIn, PostSignInLanding, Feed, NotificationsTest,
-  Options, JournalHistoryPage, WOYM, Resource];
+  Options, JournalHistoryPage, Resource];
 
 function HomeWithExtraPages() {
   return (
