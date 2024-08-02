@@ -29,7 +29,11 @@ const officialJournalSchema = new mongoose.Schema({
     default: [],
     type: [String],
   },
-  type: {
+  image: {
+    required: false,
+    type: String,
+  },
+  guided: {
     default: true,
     required: true,
     type: Boolean,
