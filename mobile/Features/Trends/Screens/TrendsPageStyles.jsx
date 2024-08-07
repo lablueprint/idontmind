@@ -59,9 +59,11 @@ export default StyleSheet.create({
     textAlign: 'center',
   },
   infoImage: {
-    width: 350,
-    height: 350,
-    resizeMode: 'contain',
+    alignSelf: 'center',
+    width: 320,
+    height: 110,
     marginTop: -150,
+    position: 'absolute',
+    top: 100
   },
 });
