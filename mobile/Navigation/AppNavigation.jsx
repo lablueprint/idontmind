@@ -11,14 +11,15 @@ import Landing from '../Features/Other/Screens/Landing';
 import Login from '../Features/Onboarding/Screens/Login';
 import SignUp from '../Features/Onboarding/Screens/SignUp';
 import PersonalInfo from '../Features/Onboarding/Screens/PersonalInfo';
-import Customization from '../Features/Onboarding/Screens/Customization';
 import NavigationBar from './NavigationBar';
 import AltNavigationBar from './AltNavigationBar';
 import Filter from '../Features/Other/Screens/Filter';
 import BannedTags from '../Features/Other/Screens/BannedTags';
 import Splash from '../Features/GettingStarted/Splash';
 import Terms from '../Features/GettingStarted/Terms';
-import Loading from '../Features/Register/Loading';
+import Loading from '../Features/Onboarding/Screens/Loading';
+import DontCareSee from '../Features/Onboarding/Screens/DontCareSee';
+import WOYM from '../Features/Onboarding/Screens/WOYM';
 import Overview from '../Features/Tutorial/Overview';
 import TutorialCheckIn1 from '../Features/Tutorial/TutorialCheckIn1';
 import CheckinOptional from '../Features/Tutorial/CheckinOptional';
@@ -33,8 +34,10 @@ import ResetPassword from '../Features/Login/Screens/ResetPassword';
 import TrendsTab from '../Features/Trends/Components/Trends';
 import TrendsBody from '../Features/Trends/Screens/TrendsBody';
 
-import CheckIn from '../Features/CheckIn/CheckIn';
 import JournalDetails from '../Features/Journal/Screens/JournalDetails';
+import PostDetails from '../Features/Journal/Screens/PostDetails';
+
+import CheckIn from '../Features/CheckIn/CheckIn';
 import Sleep from '../Features/CheckIn/Sleep';
 import Mood from '../Features/CheckIn/Mood';
 import AddMood from '../Features/CheckIn/AddMood';
@@ -92,7 +95,8 @@ export default function AppNavigation({ user }) {
           <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
           <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
           <Stack.Screen name="PersonalInfo" component={PersonalInfo} options={{ headerShown: false }} />
-          <Stack.Screen name="Customization" component={Customization} options={{ headerShown: false }} />
+          <Stack.Screen name="DontCareSee" component={DontCareSee} options={{ headerShown: false }} />
+          <Stack.Screen name="WOYM" component={WOYM} options={{ headerShown: false }} />
           { user ? (
             <Stack.Screen name="Landing" component={Landing} options={{ headerShown: false }} />
           ) : (
@@ -136,6 +140,7 @@ export default function AppNavigation({ user }) {
           <Stack.Screen name="Exercise" component={Exercise} options={{ headerShown: false }} />
           <Stack.Screen name="JournalDetails" component={JournalDetails} options={{ headerShown: false }} />
           <Stack.Screen name="FindHelp" component={FindHelp} options={{ headerShown: false }} />
+          <Stack.Screen name="PostDetails" component={PostDetails} options={{ headerShown: false }} />
         </Stack.Navigator>
       </TagProvider>
     </NavigationContainer>

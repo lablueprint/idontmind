@@ -1,19 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View, Text, Image, Pressable,
 } from 'react-native';
 import PropTypes from 'prop-types';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
 import style from './BookmarkStyle';
-import BookmarkWhite from '../../../assets/images/bookmark.png';
-import BookmarkDark from '../../../assets/images/bookmark_dark.png';
+import BookmarkFilled from '../../../assets/images/bookmark.png';
+import BookmarkUnfilled from '../../../assets/images/unfilledBookmarkWhite.png';
+
 import Book from '../../../assets/images/reading.png';
 
 export default function Bookmark({
-  resourceName, author,
+  resourceName, author, selected, toggleModal,
 }) {
-  const [bookmarkSelected, setBookmarkSelected] = useState(false); // hardcode it as false for now
-  const toggleBookmark = () => {
+  const { id, authHeader } = useSelector((state) => state.auth);
+
+  const [bookmarkSelected, setBookmarkSelected] = useState(selected);
+  useEffect(() => {
+    setBookmarkSelected(selected);
+  }, [selected]);
+
+  const toggleBookmark = async () => {
+    if (!bookmarkSelected) {
+      // favorite the tag
+      await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/favoriteResource`, { id, resource: resourceName }, { headers: authHeader });
+    } else {
+      await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/unfavoriteResource`, { id, resource: resourceName }, { headers: authHeader });
+    }
     setBookmarkSelected(!bookmarkSelected);
+    if (!bookmarkSelected) {
+      // await getFoldersForResource(resourceName);
+      toggleModal(false, resourceName);
+    }
+    // favorite or unfavorite the tag
+
     console.log('toggle bookmark selection');
   };
   let authorLine = '';
@@ -33,7 +54,7 @@ export default function Bookmark({
       </View>
       <View style={style.imageContainer2}>
         <Pressable onPress={toggleBookmark}>
-          <Image style={{ resizeMode: 'contain', height: 20, width: 20 }} source={bookmarkSelected ? BookmarkDark : BookmarkWhite} />
+          <Image style={{ resizeMode: 'contain', height: 20, width: 20 }} source={bookmarkSelected ? BookmarkFilled : BookmarkUnfilled} />
         </Pressable>
       </View>
     </View>
@@ -43,6 +64,8 @@ export default function Bookmark({
 Bookmark.propTypes = {
   resourceName: PropTypes.string,
   author: PropTypes.string,
+  selected: PropTypes.bool.isRequired,
+  toggleModal: PropTypes.func.isRequired,
 };
 
 Bookmark.defaultProps = {

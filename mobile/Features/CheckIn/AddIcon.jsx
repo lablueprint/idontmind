@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import {
-  Text, View, Pressable,
+  Text, View, Pressable, Image,
 } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import ProgressBar from 'react-native-progress/Bar';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-import styles from './AddColorStyles';
+import activity1 from '../../assets/images/activity/activity1.png';
+import styles from './AddIconStyle';
 
 function AddIcon({ navigation }) {
   // get parameters from route (activityPassedIn and numPages)
@@ -77,7 +78,7 @@ function AddIcon({ navigation }) {
                 style={styles.singularColor}
                 onPress={() => setColorChosen(pair[1])}
               >
-                <View style={{ width: 120, height: 120, backgroundColor: pair[1] }} />
+                <Image source={activity1} style={styles.iconPhoto} />
                 <Text>{pair[0]}</Text>
               </Pressable>
             ))}

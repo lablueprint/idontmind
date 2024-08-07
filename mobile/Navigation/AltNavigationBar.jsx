@@ -4,10 +4,12 @@ import {
   Image, ImageBackground, View, Dimensions,
 } from 'react-native';
 import TrendsPage from '../Features/Trends/Screens/TrendsPage';
-import JournalPage from '../Features/Journal/Screens/JournalPage';
+// import { JournalPage, JournalTabs } from '../Features/Journal/Screens/JournalPage';
+import JournalTabs from '../Features/Journal/Screens/JournalPage';
 import ContentDashboard from '../Features/Other/Screens/ContentDashboard';
 import ContentLibrary from '../Features/ContentLibrary/Screens/ContentLibrary';
 import FindHelp from '../Features/Other/Screens/FindHelp';
+import CalendarPage from '../Features/Other/Screens/Calendar';
 
 import TrendsIcon from '../assets/navbaricons/trendsicon.png';
 import JournalIcon from '../assets/navbaricons/journalicon.png';
@@ -20,8 +22,7 @@ import PostSignInLanding from '../Features/Other/Screens/PostSignInLanding';
 import Feed from '../Features/Other/Screens/Feed';
 import CheckIn from '../Features/Other/Screens/CheckIn';
 import Options from '../Features/Other/Screens/Options';
-import JournalHistoryPage from '../Features/Other/Screens/JournalHistoryPage';
-import WOYM from '../Features/Register/WOYM';
+// import JournalHistoryPage from '../Features/Other/Screens/JournalHistoryPage';
 import DayChallenge from '../Features/Other/Screens/DayChallenge';
 
 import Bookmarks from '../Features/ContentLibrary/Screens/Bookmarks';
@@ -29,12 +30,13 @@ import BookmarksEdgeCase from '../Features/ContentLibrary/Screens/BookmarksEdgeC
 import Resource from '../Features/ContentLibrary/Screens/Resource';
 import ResourceList from '../Features/ContentLibrary/Screens/ResourceList';
 import Tag from '../Features/ContentLibrary/Screens/Tag';
+import FolderContent from '../Features/ContentLibrary/Screens/FolderContent';
 import NotificationsTest from '../Features/Settings/Screens/NotificationsTest';
 
 const Stack = createStackNavigator();
-const otherNames = ['Day Challenge', 'CheckIn', 'PostSignInLanding', 'Feed', 'Notifs', 'Options', 'Journal History', 'WOYM'];
+const otherNames = ['Day Challenge', 'CheckIn', 'PostSignInLanding', 'Feed', 'Notifs', 'Options'];
 const otherPages = [DayChallenge, CheckIn, PostSignInLanding, Feed, NotificationsTest,
-  Options, JournalHistoryPage, WOYM];
+  Options];
 
 function HomeWithExtraPages() {
   return (
@@ -59,8 +61,8 @@ function HomeWithExtraPages() {
     </Stack.Navigator>
   );
 }
-const contentNames = ['Bookmarks', 'Bookmarks Edge Case', 'Resource', 'Resource List', 'Tag'];
-const contentPages = [Bookmarks, BookmarksEdgeCase, Resource, ResourceList, Tag];
+const contentNames = ['Bookmarks', 'Bookmarks Edge Case', 'Resource', 'Resource List', 'Tag', 'FolderContent'];
+const contentPages = [Bookmarks, BookmarksEdgeCase, Resource, ResourceList, Tag, FolderContent];
 function ContentLibraryWithExtraPages() {
   return (
     <Stack.Navigator>
@@ -85,12 +87,35 @@ function ContentLibraryWithExtraPages() {
   );
 }
 
+function JournalCalendar() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        key="Journal Tabs"
+        name="Journal Tabs"
+        component={JournalTabs}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        key="Calendar Screen"
+        name="Calendar Screen"
+        component={CalendarPage}
+        options={{
+          headerShown: false,
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
+
 export default function AltNavigationBar() {
   const Tab = createBottomTabNavigator();
 
   const names = ['Trends', 'Journal', 'Home', 'Content', 'Find Help'];
   const icons = [TrendsIcon, JournalIcon, HomeIcon, ContentIcon, FindHelpIcon];
-  const components = [TrendsPage, JournalPage, HomeWithExtraPages,
+  const components = [TrendsPage, JournalCalendar, HomeWithExtraPages,
     ContentLibraryWithExtraPages, FindHelp];
 
   return (

@@ -15,11 +15,12 @@ function CheckIn({ navigation }) {
   const [hasCheckedIn, setHasCheckedIn] = useState(false);
 
   const beginCheckIn = () => {
-    if (hasCheckedIn) {
-      alert('You have already completed your check-in for today.');
-    } else {
-      navigation.navigate('Pre Feeling', { numPages });
-    }
+    // if (hasCheckedIn) {
+    //   alert('You have already completed your check-in for today.');
+    // } else {
+    //   navigation.navigate('Pre Feeling', { numPages });
+    // }
+    navigation.navigate('Pre Feeling', { numPages });
   };
 
   const continueToDashBoard = () => {
