@@ -186,6 +186,47 @@ const deleteFavoritedFolder = async (req, res) => {
     if (!user.favoritedFolders.has(folderName)) {
       return res.status(404).send({ message: 'Folder not found' });
     }
+    // for each tag or resource in the folder
+    // update tagToFolder or resourceToFolder
+    // if now empty, "unfavorite" that item
+
+    const tagNames = user.favoritedFolders.get(folderName).tags;
+    if (tagNames) {
+      tagNames.forEach((tagName) => {
+        const sanitizedTag = sanitize(tagName);
+        // remove the folder from tagToFolders
+        const newTagToFolders = user.tagToFolders.get(sanitizedTag).filter(
+          (f) => f !== folderName,
+        );
+        if (newTagToFolders.length === 0) {
+          // delete the tagToFolders entry
+          user.tagToFolders.delete(sanitizedTag);
+          // remove from favoritedTags
+          user.favoritedTags = user.favoritedTags.filter((t) => t !== tagName);
+        } else {
+          user.tagToFolders.set(sanitizedTag, newTagToFolders);
+        }
+      });
+    }
+
+    const resourceNames = user.favoritedFolders.get(folderName).resources;
+    if (resourceNames) {
+      resourceNames.forEach((resourceName) => {
+        const sanitizedResource = sanitize(resourceName);
+        // remove the folder from resourceToFolders
+        const newResourceToFolders = user.resourceToFolders.get(sanitizedResource).filter(
+          (f) => f !== folderName,
+        );
+        if (newResourceToFolders.length === 0) {
+          // delete the resourceToFolders entry
+          user.resourceToFolders.delete(sanitizedResource);
+          // remove from favoritedTags
+          user.favoritedResources = user.favoritedResources.filter((t) => t !== resourceName);
+        } else {
+          user.resourceToFolders.set(sanitizedResource, newResourceToFolders);
+        }
+      });
+    }
 
     user.favoritedFolders.delete(folderName);
 
