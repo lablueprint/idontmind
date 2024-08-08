@@ -225,6 +225,7 @@ function Resource({ navigation }) {
           }
           return null; // or any other fallback value if needed
         })}
+        {/* a currently non-functional "next resource" button
         <View style={{
           display: 'flex', justifyContent: 'center', flex: 1, alignItems: 'center',
         }}
@@ -233,7 +234,7 @@ function Resource({ navigation }) {
             <Text style={{ color: 'white', textAlign: 'center' }}>next resource</Text>
           </Pressable>
 
-        </View>
+        </View> */}
         <BottomHalfModal
           modalVisibleParent={modalVisible}
           toggleModal={toggleModal}

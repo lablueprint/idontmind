@@ -5,12 +5,6 @@ import TrendsPage from '../Features/Trends/Screens/TrendsPage';
 import CheckIn from '../Features/CheckIn/CheckIn';
 import WOYM from '../Features/Onboarding/Screens/WOYM';
 import DontCareSee from '../Features/Onboarding/Screens/DontCareSee';
-
-import Bookmarks from '../Features/ContentLibrary/Screens/Bookmarks';
-import BookmarksEdgeCase from '../Features/ContentLibrary/Screens/BookmarksEdgeCase';
-import Resource from '../Features/ContentLibrary/Screens/Resource';
-import ResourceList from '../Features/ContentLibrary/Screens/ResourceList';
-
 import DayChallenge from '../Features/Other/Screens/DayChallenge';
 
 const Tab = createBottomTabNavigator();
@@ -24,10 +18,6 @@ export default function NavigationBar() {
       <Tab.Screen name="Trends" component={TrendsPage} options={{ headerShown: true }} />
       <Tab.Screen name="WOYM" component={WOYM} options={{ headerShown: false }} />
       <Tab.Screen name="DontCareSee" component={DontCareSee} options={{ headerShown: false }} />
-      <Tab.Screen name="Bookmarks" component={Bookmarks} options={{ headerShown: false }} />
-      <Tab.Screen name="Bookmarks Edge Case" component={BookmarksEdgeCase} options={{ headerShown: false }} />
-      <Tab.Screen name="Resource" component={Resource} options={{ headerShown: false }} />
-      <Tab.Screen name="Resource List" component={ResourceList} options={{ headerShown: false }} />
       <Tab.Screen name="Day Challenge" component={DayChallenge} options={{ headerShown: false }} />
     </Tab.Navigator>
   );
