@@ -53,6 +53,7 @@ import Water from '../Features/CheckIn/Water';
 import Meal from '../Features/CheckIn/Meal';
 import EndCheckIn from '../Features/CheckIn/EndCheckIn';
 import Exercise from '../Features/CheckIn/Exercise';
+
 import NotificationsTest from '../Features/Settings/Screens/NotificationsTest';
 import FindHelp from '../Features/Other/Screens/FindHelp';
 
@@ -120,8 +121,8 @@ export default function AppNavigation({ user }) {
           <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{ headerShown: false }} />
           <Stack.Screen name="TokenInput" component={TokenInput} options={{ headerShown: false }} />
           <Stack.Screen name="ResetPassword" component={ResetPassword} options={{ headerShown: false }} />
-          <Stack.Screen name="ThirtyDayOverview" component={ThirtyDayOverview} options={{ headerShown: false }} />
-          <Stack.Screen name="ThirtyDayChallenge" component={ThirtyDayChallenge} options={{ headerShown: false }} />
+          {/* <Stack.Screen name="ThirtyDayOverview" component={ThirtyDayOverview} options={{ headerShown: false }} />
+          <Stack.Screen name="ThirtyDayChallenge" component={ThirtyDayChallenge} options={{ headerShown: false }} /> */}
           {/* <Stack.Screen name="PushNotifications" component={PushNotifications}
            options={{ headerShown: false }} /> */}
           <Stack.Screen name="Notifications Test" component={NotificationsTest} options={{ headerShown: false }} />
