@@ -8,8 +8,6 @@ export default StyleSheet.create({
     height: '100%',
     width: '90%',
     flexDirection: 'column',
-    // borderWidth: 2,
-    // borderColor: 'red',
   },
   heading: {
     fontSize: 32,
@@ -24,12 +22,8 @@ export default StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    // alignItems: 'center',
     alignSelf: 'center',
-    // justifyContent: 'center',
     width: '87%',
-    // borderWidth: 2,
-    // borderColor: 'green',
   },
   down: {
     width: 50,

@@ -11,6 +11,8 @@ import styles from './EnergyStyles';
 function Energy({ navigation }) {
   const route = useRoute();
   const numPages = route.params?.numPages;
+  const moodValue = route.params?.moodValueChosen;
+  const moodsChosen = route.params?.moodsChosen;
   const progress = 1 / numPages;
 
   const { width } = Dimensions.get('window');
@@ -41,12 +43,32 @@ function Energy({ navigation }) {
     }
   };
 
+  const onImagePress = (index) => {
+    setSlider(index);
+    if (!sliderMoved) {
+      setSliderMoved(true);
+    }
+  };
+
+  // right now i have a check in flow for a user every day that goes from page to page
+  // CheckIn -> PreFeeling -> Feeling -> Energy -> Sleep -> Meal -> Water -> Exercise -> Activity -> EndCheckIn
+  // checkIn, prefeeling, feeling, energy, sleep, and endcheckin are the core checkin pages that will be there for every user
+  // but meal, water, exercise, and activity are optional and are only there if the user specified so
+  // each user has a schema that includes an attribute called optionalCheckins which is an array of strings: optionalCheckins: ["meal", "water", "exercise", "activity"].
+  // so for example, only if "meal" is in the optionalCheckins array, will the page be part of the checkin flow
+  // help me implement this. right now, my sleep page goes straight to the meal  page if you press the continue button, for example, but now it should take into account the optionalCheckins array for each user
+  // get optionalCheckins by doing   const { optionalCheckins } = useSelector((state) => state.auth);
+
   const continueButton = () => {
-    navigation.navigate('Sleep', { numPages, moodValueChosen: slider });
+    navigation.navigate('Sleep', {
+      numPages, moodValue, moodsChosen, energyChosen: slider + 1,
+    });
   };
 
   const skipButton = () => {
-    navigation.navigate('Sleep', { numPages, moodValueChosen: slider });
+    navigation.navigate('Sleep', {
+      numPages, moodValue, moodsChosen, energyChosen: null,
+    });
   };
 
   return (
@@ -56,23 +78,34 @@ function Energy({ navigation }) {
           <Text style={styles.heading}>
             How would you describe your energy today?
           </Text>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: width * 0.8, alignSelf: 'center' }}>
+          <View style={{
+            flexDirection: 'row', justifyContent: 'space-between', width: width * 0.8, alignSelf: 'center',
+          }}
+          >
             {images.map((image, index) => (
-              <View key={index} style={{ alignItems: 'center' }}>
-                <View style={[
-                  styles.imageContainer,
-                  { width: 40, height: 40 },
-                  index <= slider ? styles.shadowEffect : null,
-                ]}>
-                  <Image
-                    source={index <= slider ? image : require('../../assets/images/bolt0.png')}
-                    style={styles.image}
-                  />
+              <Pressable key={index} onPress={() => onImagePress(index)}>
+                <View key={index} style={{ alignItems: 'center' }}>
+                  <View style={[
+                    styles.imageContainer,
+                    { width: 40, height: 40 },
+                    index <= slider ? styles.shadowEffect : null,
+                  ]}
+                  >
+                    <Image
+                      source={index <= slider ? image : require('../../assets/images/bolt0.png')}
+                      style={styles.image}
+                    />
+                  </View>
                 </View>
-              </View>
+              </Pressable>
             ))}
           </View>
-          <Text style={{ marginTop: '10%', fontSize: 40, fontWeight: 'bold', textAlign: 'center' }}>{captions[slider]}</Text>
+          <Text style={{
+            marginTop: '10%', fontSize: 40, fontWeight: 'bold', textAlign: 'center',
+          }}
+          >
+            {captions[slider]}
+          </Text>
           <Slider
             style={{ width: width * 0.9, marginTop: 20 }}
             minimumValue={0}

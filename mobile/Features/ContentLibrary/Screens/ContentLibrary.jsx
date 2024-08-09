@@ -13,14 +13,23 @@ import searchImage from '../../../assets/images/search.png';
 import Card from '../Components/Card';
 import TagContext from '../Context/TagContext';
 // do want to change routing though:
-import SearchBar from '../../Other/Components/SearchBar';
+import SearchBar from '../../Other/Screens/SearchBar';
+import jsonData from '../../../content_library.json';
 
 export default function ContentLibrary({ navigation }) {
-  const { initTags, initFavorites } = useContext(TagContext);
-  const { email, authHeader } = useSelector((state) => state.auth);
+  const transformedData = Object.keys(jsonData).map((tagName, index) => ({
+    id: index.toString(), // Unique ID for each category
+    tagName, // Category name
+    subtopics: jsonData[tagName], // Array of sub-items
+  }));
 
-  const navigateToTag = (index) => {
-    navigation.navigate('Tag', { index, routeName: 'Content' });
+  const { initTags, initFavorites } = useContext(TagContext);
+  const { id, authHeader } = useSelector((state) => state.auth);
+
+  const navigateToTag = (index, tagName, subtopics) => {
+    navigation.navigate('Tag', {
+      index, routeName: 'Content', tagName, subtopics,
+    });
   };
 
   const navigateToFavorites = () => {
@@ -35,19 +44,19 @@ export default function ContentLibrary({ navigation }) {
     const getAllTags = async () => {
       try {
         /* Grab all tags */
-        const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tag/getAllTagTitles`);
+        const tags = [{ id: '0', tagName: 'hi' }, { id: '1', tagName: 'social anxiety' }, { id: '2', tagName: 'relaxation' }, { id: '3', tagName: 'exercise' }, { id: '4', tagName: 'tag1' }, { id: '5', tagName: 'tag2' }, { id: '6', tagName: 'tag3' }];
 
         /* Grab user's favorite list */
-        const resFavorites = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/getFavorites`, { email }, { headers: authHeader });
+        const resFavorites = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/getFavorites`, { headers: authHeader, params: { id } });
 
         /* Set Context Set for Favorites */
         initFavorites(resFavorites.data);
 
         /* Set Context List for Tags */
-        initTags(res.data);
+        initTags(tags);
 
         /* Set Initial Data for Render Functions */
-        setData(res.data);
+        setData(tags);
       } catch (err) {
         console.error(err);
       }
@@ -121,6 +130,13 @@ export default function ContentLibrary({ navigation }) {
     <View
       style={[style.container, { paddingLeft: 25 }]}
     >
+      <SearchBar
+        navigation={navigation}
+        visible={isOpen}
+        onClose={closeSearch}
+        onSearch={handleSearch}
+        recentSearches={recentSearches}
+      />
       <View style={[style.titleRow, { paddingTop: 75, flexBasis: 125, backgroundColor: 'white' }]}>
         <Text style={style.title}>Content</Text>
         <View style={style.row}>
@@ -146,13 +162,21 @@ export default function ContentLibrary({ navigation }) {
                   style={style.search}
                 />
               </View>
-              <SearchBar
+              {/* <SearchBar
+                navigation={navigation}
                 visible={isOpen}
                 onClose={closeSearch}
                 onSearch={handleSearch}
                 recentSearches={recentSearches}
-              />
+              /> */}
             </TouchableOpacity>
+            <SearchBar
+              navigation={navigation}
+              visible={isOpen}
+              onClose={closeSearch}
+              onSearch={handleSearch}
+              recentSearches={recentSearches}
+            />
           </View>
         </View>
       </View>
@@ -166,7 +190,7 @@ export default function ContentLibrary({ navigation }) {
           horizontal
           data={data}
           renderItem={horizontalRenderItem}
-          keyExtractor={(item) => item._id}
+          keyExtractor={(item) => item.id}
           showsHorizontalScrollIndicator={false}
         />
       </View>
@@ -180,9 +204,9 @@ export default function ContentLibrary({ navigation }) {
       </View>
       <View style={[style.row, { flex: 2, paddingTop: 15 }]}>
         <FlatList
-          data={data}
+          data={transformedData}
           renderItem={verticalRenderItem}
-          keyExtractor={(item) => item._id}
+          keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator={false}
         />
       </View>
