@@ -83,21 +83,21 @@ function Sleep({ navigation }) {
     }
   };
 
-  const skipButton = () => {
-    const nextPage = getNextPage('Sleep');
-    const data = {
-      numPages,
-      moodValue,
-      moodsChosen,
-      energyChosen,
-      sleepScore: null,
-    };
-    if (nextPage) {
-      navigation.navigate(nextPage, data);
-    } else {
-      navigation.navigate('EndCheckIn', data);
-    }
-  };
+  // const skipButton = () => {
+  //   const nextPage = getNextPage('Sleep');
+  //   const data = {
+  //     numPages,
+  //     moodValue,
+  //     moodsChosen,
+  //     energyChosen,
+  //     sleepScore: null,
+  //   };
+  //   if (nextPage) {
+  //     navigation.navigate(nextPage, data);
+  //   } else {
+  //     navigation.navigate('EndCheckIn', data);
+  //   }
+  // };
 
   return (
     <View style={styles.container}>
@@ -163,9 +163,9 @@ function Sleep({ navigation }) {
             Continue
           </Text>
         </Pressable>
-        <Pressable onPress={skipButton}>
+        {/* <Pressable onPress={skipButton}>
           <Text style={styles.skip}>Skip</Text>
-        </Pressable>
+        </Pressable> */}
       </View>
     </View>
   );
