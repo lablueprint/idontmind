@@ -154,12 +154,14 @@ function TrendTab({ view, navigation }) {
     return '';
   };
 
+  const [selectedPeriod, setSelectedPeriod] = useState('Week');
+
   return (
     <View style={{ display: 'flex', flexDirection: 'column' }}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <LinearGradient colors={['#E0F1F3', '#E5F8F3']} style={[styles.container, { flex: 1 }]}>
           <View className="header" style={{ marginTop: 40, marginBottom: 150 }}>
-            <TrendsHeader title="Trends" />
+            <TrendsHeader title="Trends" period={selectedPeriod} setPeriod={setSelectedPeriod} />
             <CircleSection header="Activity" description="Water, food, and movement at a glance." navigateToTrendsBody={navigateToTrendsBody} />
             <WaterSection />
             <CircleSection header="Emotion" description="Feelings, goals, and outlook" navigateToTrendsBody={navigateToTrendsBody} />

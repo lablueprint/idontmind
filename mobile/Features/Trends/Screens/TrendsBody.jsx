@@ -3,7 +3,7 @@ import {
 } from 'react-native';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { LineChart } from 'react-native-gifted-charts';
+import { LineChart, BarChart } from 'react-native-gifted-charts';
 import PropTypes from 'prop-types';
 import { LinearGradient } from 'expo-linear-gradient';
 import TrendsHeader from '../Components/TrendsHeader';
@@ -90,6 +90,62 @@ TrendSection.propTypes = {
   avg: PropTypes.number.isRequired,
 };
 
+function BarGraphSection({
+  header, description, data, modeLabel,
+}) {
+  let shownData = data;
+  const viewType = data.length;
+
+  if (viewType === 28) {
+    shownData = data.map((item, index) => ({
+      value: item.value,
+      label: [6, 13, 20, 27].includes(index) ? index + 1 : null,
+    }));
+  }
+  return (
+    <View style={{
+      display: 'flex', flexDirection: 'column', gap: 10,
+    }}
+    >
+      <Text style={{ fontSize: 24 }}>{header}</Text>
+      <Text style={{ fontSize: 14 }}>{description}</Text>
+      <BarChart
+        data={shownData}
+        barWidth={viewType === 7 ? 28 : 6}
+        spacing={viewType === 7 ? 17 : 6}
+        height={150}
+        width={360}
+        hideRules
+        hideYAxisText
+        scrollAnimation={false}
+        disableScroll
+        maxValue={10}
+        hideAxesAndRules
+        xAxisLabelTextStyle={viewType === 28 ? { fontSize: 9 } : {}}
+      />
+      <Text>
+        On average, you&apos;ve been drinking
+        {' '}
+        <Text style={{ color: '#82ad98' }}>{modeLabel}</Text>
+        {' '}
+        water.
+      </Text>
+    </View>
+  );
+}
+
+BarGraphSection.propTypes = {
+  header: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      value: PropTypes.number.isRequired,
+      label: PropTypes.string.isRequired,
+    }).isRequired,
+  ).isRequired,
+  modeLabel: PropTypes.string.isRequired,
+};
+
 export default function TrendsBody({ route, navigation }) {
   const [lastPeriodMood, setLastPeriodMood] = useState([]);
   const [currentPeriodMood, setCurrentPeriodMood] = useState([]);
@@ -97,6 +153,7 @@ export default function TrendsBody({ route, navigation }) {
   const [currentPeriodSleep, setCurrentPeriodSleep] = useState([]);
   const [lastPeriodEnergy, setLastPeriodEnergy] = useState([]);
   const [currentPeriodEnergy, setCurrentPeriodEnergy] = useState([]);
+  const [currentPeriodWater, setCurrentPeriodWater] = useState([]);
   const [avgMoodPercentage, setAvgMoodPercentage] = useState(0);
   const [avgSleepPercentage, setAvgSleepPercentage] = useState(0);
   const [avgEnergyPercentage, setAvgEnergyPercentage] = useState(0);
@@ -105,6 +162,8 @@ export default function TrendsBody({ route, navigation }) {
   const [energyMessage, setEnergyMessage] = useState(null);
   const [notEnoughData, setNotEnoughData] = useState(false);
   const [selectedPeriod, setSelectedPeriod] = useState('Week');
+  const [currentWeek, setCurrentWeek] = useState([]);
+  const [modeLabel, setModeLabel] = useState(0);
 
   const { title } = route.params;
 
@@ -161,6 +220,7 @@ export default function TrendsBody({ route, navigation }) {
         setCurrentPeriodSleep(secondPeriod.SleepData);
         setLastPeriodEnergy(firstPeriod.EnergyData);
         setCurrentPeriodEnergy(secondPeriod.EnergyData);
+        setCurrentPeriodWater(secondPeriod.WaterData);
         setAvgMoodPercentage(PercentageAvgMood);
         setAvgSleepPercentage(PercentageAvgSleep);
         setAvgEnergyPercentage(PercentageAvgEnergy);
@@ -171,6 +231,82 @@ export default function TrendsBody({ route, navigation }) {
         console.log('Current period sleep: ', currentPeriodSleep);
         console.log('Last period energy: ', lastPeriodEnergy);
         console.log('Current period energy: ', currentPeriodEnergy);
+        console.log('Second period water: ', currentPeriodWater);
+
+
+        const mapValue = (value) => {
+          if (value < 1) return 0;
+          if (value >= 1 && value <= 4) return 3.33;
+          if (value >= 5 && value <= 8) return 6.66;
+          if (value > 9) return 10;
+        };
+
+        const mapLabel = (label) => {
+          switch (label) {
+            case 'S':
+              return 'Sat';
+            case 'U':
+              return 'Sun';
+            case 'M':
+              return 'Mon';
+            case 'T':
+              return 'Tue';
+            case 'W':
+              return 'Wed';
+            case 'R':
+              return 'Thu';
+            case 'F':
+              return 'Fri';
+            default:
+              return label;
+          };
+        };
+
+        const viewType = selectedPeriod === 'Week' ? 7 : 28;
+
+        console.log(secondPeriod.WaterData);
+
+        const currWeek = secondPeriod.WaterData.slice(0, viewType).map((item) => ({
+          label: mapLabel(item.label),
+          value: mapValue(item.value),
+        }));
+
+        const firstDay = currWeek.shift();
+        currWeek.push(firstDay);
+
+        setCurrentWeek(currWeek);
+
+        const calculateMode = (currData) => {
+          if (currData.length === 0) return null;
+
+          const countMap = {};
+          let modeValue = null;
+          let maxCount = 0;
+
+          currData.forEach((obj) => {
+            const { value } = obj;
+            countMap[value] = (countMap[value] || 0) + 1;
+
+            if (countMap[value] > maxCount) {
+              maxCount = countMap[value];
+              modeValue = value;
+            }
+          });
+
+          switch (modeValue) {
+            case 0:
+              return 'no';
+            case 3.33:
+              return 'not enough';
+            case 6.66:
+              return 'enough';
+            case 10:
+              return 'a lot of';
+            default:
+              return '';
+          }
+        };
+        setModeLabel(calculateMode(currWeek));
 
       } catch (err) {
         console.error(err);
@@ -399,6 +535,7 @@ export default function TrendsBody({ route, navigation }) {
             : null}
           { notEnoughData && <Text>You don't have enough check-in data to display your trends. Keep checking in consistently!</Text> }
         </View>
+        <BarGraphSection header="Staying Hydrated" description="Drinking a sufficient amount of water every day improves mood and overall health" data={currentWeek} modeLabel={modeLabel} />
         <View>
           <TrendSection header="Mood Levels" name="mood levels" description="Tracking mood changes over time" data={lastPeriodMood} data2={currentPeriodMood} avg={avgMoodPercentage} notEnoughData={notEnoughData} period={selectedPeriod}/>
         </View>
