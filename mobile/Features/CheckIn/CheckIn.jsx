@@ -24,7 +24,7 @@ function CheckIn({ navigation }) {
   };
 
   const continueToDashBoard = () => {
-    navigation.navigate('Landing');
+    navigation.navigate('Content Dashboard');
   };
 
   const checkExistingCheckIn = async () => {
@@ -53,7 +53,7 @@ function CheckIn({ navigation }) {
     }}
     >
       <View style={[styles.checkInContentContainer, { marginBottom: '40%' }]}>
-        <Text style={styles.welcomeText}>Hi Daniel!</Text>
+        <Text style={styles.welcomeText}>Hi there!</Text>
         <Text style={styles.welcomeText}>What is your</Text>
         <Text style={styles.welcomeText}>mood like today?</Text>
         <View style={styles.highlight} />

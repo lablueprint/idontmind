@@ -7,10 +7,11 @@ import styles from './ThirtyDayOverviewStyle';
 
 export default function ThirtyDayOverview({ navigation }) {
   const next = () => {
+    navigation.navigate('ThirtyDayChallenge');
   };
   return (
     <View style={{
-      display: 'flex', flexDirection: 'column', marginTop: 100, width: '80%', alignSelf: 'center',
+      display: 'flex', flexDirection: 'column', width: '80%', alignSelf: 'center', marginTop: '15%',
     }}
     >
       <Text style={styles.title}>

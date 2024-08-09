@@ -1,0 +1,71 @@
+import { StyleSheet } from 'react-native';
+
+export default StyleSheet.create({
+  congratsContainer: {
+    backgroundColor: '#F6FCFC',
+    borderRadius: 10,
+    marginVertical: 10,
+    alignItems: 'center',
+    height: 350,
+  },
+  elementContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    width: '85%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  congratsText: {
+    fontSize: 32,
+    marginTop: '20%',
+    fontFamily: 'Recoleta',
+  },
+  description: {
+    fontSize: 14,
+    textAlign: 'center',
+    marginTop: '5%',
+    fontFamily: 'Cabinet Grotesk',
+  },
+  resetButton: {
+    backgroundColor: '#fff',
+    padding: 10,
+    borderRadius: 99,
+    width: '100%',
+    height: 50,
+    justifyContent: 'center',
+    marginTop: '7%',
+    border: 'solid',
+    borderColor: '#374342',
+    borderWidth: 2,
+  },
+  resetText: {
+    color: '#374342',
+    textAlign: 'center',
+    fontSize: 14,
+    fontWeight: 'bold',
+    fontFamily: 'Cabinet Grotesk',
+  },
+  congratsTop: {
+    width: '100%',
+    height: '25%',
+    backgroundColor: '#374342',
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+  },
+  circleContainer: {
+    position: 'absolute',
+    top: '25%',
+    left: '50%',
+    transform: [{ translateX: -50 }, { translateY: -50 }],
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  circleImage: {
+    width: 40,
+    height: 40,
+  },
+});

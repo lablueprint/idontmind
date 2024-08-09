@@ -1,23 +1,49 @@
 const mongoose = require('mongoose');
 
 // Example of a model schema to validate and structure documents
-const checkInSchema = new mongoose.Schema({
-  moodText: {
-    required: true,
-    type: String,
+const TimeSerie = new mongoose.Schema(
+  {
+    metadata: {
+      email: String,
+      userId: String,
+    },
+    timestamp: Date,
+    moodValue: {
+      required: true,
+      type: Number,
+    },
+    sleepScore: {
+      required: true,
+      type: Number,
+    },
+    energyChosen: {
+      required: true,
+      type: Number,
+    },
+    hasHadMeal: {
+      required: false,
+      type: Boolean,
+    },
+    activityChosen: {
+      required: false,
+      type: String,
+    },
+    moodsChosen: {
+      required: false,
+      type: Array,
+    },
+    numPages: {
+      required: false,
+      type: Number,
+    },
   },
-  moodColor: {
-    required: false,
-    type: String,
+  {
+    timeseries: {
+      timeField: 'timestamp',
+      metaField: 'metadata',
+      granularity: 'hours',
+    },
   },
-  sleep: {
-    required: true,
-    type: Number,
-  },
-  activity: {
-    required: false,
-    type: String,
-  },
-});
+);
 
-module.exports = mongoose.model('CheckIn', checkInSchema);
+module.exports = mongoose.model('checkin_time_series1', TimeSerie);

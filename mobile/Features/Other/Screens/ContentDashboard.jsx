@@ -10,12 +10,16 @@ import rightChev from '../../../assets/images/rightChevron.png';
 
 export default function ContentDashboard({ navigation }) {
   const navigateToDayChallenge = () => {
-    navigation.navigate('Day Challenge');
+    navigation.navigate('Detox');
   };
 
   const navigateToOptions = () => {
     navigation.navigate('Options');
   };
+
+  const navigateToCheckin = () => {
+    navigation.navigate('CheckIn');
+  }
 
   return (
     <ScrollView>
@@ -58,7 +62,7 @@ export default function ContentDashboard({ navigation }) {
         </TouchableOpacity>
         <View style={{ height: 20 }} />
         <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <TouchableOpacity style={styles.middleButtons}>
+          <TouchableOpacity style={styles.middleButtons} onPress={navigateToCheckin}>
             <Image
               source={rightChev}
               style={styles.leftChev}

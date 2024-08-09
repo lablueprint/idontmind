@@ -4,7 +4,7 @@ import {
   Image, ImageBackground, View, Dimensions,
 } from 'react-native';
 import TrendsPage from '../Features/Trends/Screens/TrendsPage';
-// import { JournalPage, JournalTabs } from '../Features/Journal/Screens/JournalPage';
+
 import JournalTabs from '../Features/Journal/Screens/JournalPage';
 import ContentDashboard from '../Features/Other/Screens/ContentDashboard';
 import ContentLibrary from '../Features/ContentLibrary/Screens/ContentLibrary';
@@ -18,12 +18,16 @@ import ContentIcon from '../assets/navbaricons/contenticon.png';
 import FindHelpIcon from '../assets/navbaricons/findhelpicon.png';
 import BlackCircle from '../assets/navbaricons/blackcircle.png';
 
-import PostSignInLanding from '../Features/Other/Screens/PostSignInLanding';
-import Feed from '../Features/Other/Screens/Feed';
-import CheckIn from '../Features/Other/Screens/CheckIn';
+// import PostSignInLanding from '../Features/Other/Screens/PostSignInLanding';
+
+// removed bc want to remove the bottom nav bar:
+// import CheckIn from '../Features/CheckIn/CheckIn';
+
+
 import Options from '../Features/Other/Screens/Options';
-// import JournalHistoryPage from '../Features/Other/Screens/JournalHistoryPage';
-import DayChallenge from '../Features/Other/Screens/DayChallenge';
+
+import ThirtyDayOverview from '../Features/Tutorial/ThirtyDayOverview';
+import ThirtyDayChallenge from '../Features/Tutorial/ThirtyDayChallenge';
 
 import Bookmarks from '../Features/ContentLibrary/Screens/Bookmarks';
 import BookmarksEdgeCase from '../Features/ContentLibrary/Screens/BookmarksEdgeCase';
@@ -34,8 +38,8 @@ import FolderContent from '../Features/ContentLibrary/Screens/FolderContent';
 import NotificationsTest from '../Features/Settings/Screens/NotificationsTest';
 
 const Stack = createStackNavigator();
-const otherNames = ['Day Challenge', 'CheckIn', 'PostSignInLanding', 'Feed', 'Notifs', 'Options'];
-const otherPages = [DayChallenge, CheckIn, PostSignInLanding, Feed, NotificationsTest,
+const otherNames = ['Detox', 'ThirtyDayChallenge', 'Notifs', 'Options'];
+const otherPages = [ThirtyDayOverview, ThirtyDayChallenge, NotificationsTest,
   Options];
 
 function HomeWithExtraPages() {
@@ -120,7 +124,7 @@ export default function AltNavigationBar() {
 
   return (
     <Tab.Navigator
-      initialRouteName="Feed"
+      initialRouteName="Home"
       screenOptions={({ route, navigation }) => ({
         tabBarLabel: navigation.isFocused() ? route.name : '',
         tabBarStyle: {

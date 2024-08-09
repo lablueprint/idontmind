@@ -65,11 +65,11 @@ function Energy({ navigation }) {
     });
   };
 
-  const skipButton = () => {
-    navigation.navigate('Sleep', {
-      numPages, moodValue, moodsChosen, energyChosen: null,
-    });
-  };
+  // const skipButton = () => {
+  //   navigation.navigate('Sleep', {
+  //     numPages, moodValue, moodsChosen, energyChosen: null,
+  //   });
+  // };
 
   return (
     <View style={{ backgroundColor: '#E5F8F3' }}>
@@ -131,11 +131,11 @@ function Energy({ navigation }) {
               Continue
             </Text>
           </Pressable>
-          <TouchableOpacity onPress={skipButton} style={styles.skip}>
+          {/* <TouchableOpacity onPress={skipButton} style={styles.skip}>
             <Text>
               SKIP
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
     </View>

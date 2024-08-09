@@ -25,10 +25,6 @@ export default function Landing({ navigation }) {
     navigation.navigate('CheckIn');
   };
 
-  const navigateTo30 = () => {
-    navigation.navigate('ThirtyDayOverview');
-  };
-
   const navigateToOverview = () => {
     navigation.navigate('Overview');
   };
@@ -116,10 +112,6 @@ export default function Landing({ navigation }) {
       <Button
         title="To Loading"
         onPress={navigateToLoading}
-      />
-      <Button
-        title="To Thirty Day"
-        onPress={navigateTo30}
       />
       <Button
         title="To Overview"
