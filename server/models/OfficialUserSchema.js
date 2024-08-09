@@ -112,6 +112,11 @@ const officialUserSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  optionalCheckins: {
+    required: true,
+    type: [String],
+    default: [],
+  },
 });
 
 // Hashes password upon creation of user

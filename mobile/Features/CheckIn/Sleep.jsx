@@ -39,8 +39,7 @@ function Sleep({ navigation }) {
   const initialSliderValue = 2;
   const [slider, setSlider] = useState(initialSliderValue);
   const [hasMovedSlider, setHasMovedSlider] = useState(false);
-  // const { optionalCheckins } = useSelector((state) => state.auth);
-  const optionalCheckins = ['Meal', 'Water', 'Exercise', 'Activity'];
+  const { optionalCheckins } = useSelector((state) => state.auth);
 
   const onSliderChange = (sliderValue) => {
     setSlider(sliderValue);

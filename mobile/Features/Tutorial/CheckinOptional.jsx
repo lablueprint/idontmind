@@ -1,16 +1,20 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   View, Text, TouchableOpacity,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
+import * as SecureStore from 'expo-secure-store';
 import axios from 'axios';
 import styles from './OverviewStyle';
 import ToggleSwitch from '../Settings/Components/ToggleSwitch';
 
 export default function CheckinOptional({ navigation }) {
   const { id, authHeader } = useSelector((state) => state.auth);
-  const allLabels = ['Full Meals', 'Water Intake', 'Physical Activity', 'Intention Setting', 'Looking Forward'];
+  const allLabels = ['Full Meals', 'Water Intake', 'Physical Activity', 'Intention Setting'];
+  const labelValues = {
+    'Full Meals': 'Meal', 'Water Intake': 'Water', 'Physical Activity': 'Exercise', 'Intention Setting': 'Activity',
+  };
   const [checkinSet, setCheckinSet] = useState(new Set());
 
   const next = () => {
@@ -26,9 +30,29 @@ export default function CheckinOptional({ navigation }) {
       temp.add(label);
       setCheckinSet(temp);
     }
-    const checkinArray = Array.from(temp);
-    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/updateUser`, { id, updatedFields: { 'pushNotifs.optionalCheckins': checkinArray } }, { headers: authHeader });
+    const checkinArray = Array.from(temp, (value) => labelValues[value]);
+    console.log(checkinArray);
+    console.log(id);
+    try {
+      console.log('update');
+      await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/updateUser`, { id, updatedFields: { 'optionalCheckins': checkinArray } }, { headers: authHeader });
+    } catch (e) {
+      console.log(e);
+    }
   };
+
+  // Save last visited screen in Secure Storage
+  useEffect(() => {
+    const saveLastScreen = async () => {
+      try {
+        await SecureStore.setItemAsync('lastScreen', 'CheckinOptional');
+      } catch (e) {
+        console.error('unable to set screen in storage: ', e);
+      }
+    };
+
+    saveLastScreen();
+  }, []);
 
   return (
     <View style={{

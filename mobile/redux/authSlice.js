@@ -10,6 +10,7 @@ const initialState = {
   email: null,
   firstName: null,
   authHeader: null,
+  optionalCheckins: null,
 };
 
 const authSlice = createSlice({
@@ -22,6 +23,7 @@ const authSlice = createSlice({
       state.email = action.payload.user.email;
       state.firstName = action.payload.user.firstName;
       state.token = action.payload.token;
+      state.optionalCheckins = action.payload.user.optionalCheckins;
       state.authHeader = {
         Authorization: `Bearer ${action.payload.token}`,
       };
@@ -34,6 +36,7 @@ const authSlice = createSlice({
       state.firstName = null;
       state.token = null;
       state.authHeader = null;
+      state.optionalCheckins = null;
       SecureStore.deleteItemAsync('user');
     },
     setFirstNameField: (state, action) => {

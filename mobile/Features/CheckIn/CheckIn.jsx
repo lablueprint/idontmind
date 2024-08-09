@@ -38,7 +38,6 @@ function CheckIn({ navigation }) {
     };
 
     saveLastScreen();
-    navigation.navigate('Landing');
   });
 
   const checkExistingCheckIn = async () => {

@@ -100,10 +100,6 @@ export default function AppNavigation({ user }) {
     loadLastScreen();
   }, [user]);
 
-  useEffect(() => {
-
-  }, [initialRoute]);
-
   if (isLoading) {
     return (<Loading />);
   }
@@ -113,54 +109,49 @@ export default function AppNavigation({ user }) {
       <TagProvider>
         <Stack.Navigator initialRouteName={initialRoute}>
           <Stack.Screen name="Landing" component={Landing} options={{ headerShown: false }} />
-          <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-          <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
-          <Stack.Screen name="NavigationBar" component={NavigationBar} options={{ headerShown: false }} />
-          <Stack.Screen name="PersonalInfo" component={PersonalInfo} options={{ headerShown: false }} />
-          <Stack.Screen name="DontCareSee" component={DontCareSee} options={{ headerShown: false }} />
-          <Stack.Screen name="WOYM" component={WOYM} options={{ headerShown: false }} />
-          {/* { user ? (
-            <Stack.Screen name="Landing" component={Landing} options={{ headerShown: false }} />
-          ) : (
-            <Stack.Screen name="NavigationBar" component={NavigationBar} options={{ headerShown: false }} />
-          )} */}
-          <Stack.Screen name="Filter" component={Filter} options={{ headerShown: false }} />
-          <Stack.Screen name="BannedTags" component={BannedTags} options={{ headerShown: false }} />
-          <Stack.Screen name="Loading" component={Loading} options={{ headerShown: false }} />
-          <Stack.Screen name="Trends" component={TrendsTab} options={{ headerShown: false }} />
-          <Stack.Screen name="TrendsBody" component={TrendsBody} options={{ headerShown: false }} />
-          <Stack.Screen name="AltNavigationBar" component={AltNavigationBar} options={{ headerShown: false }} />
-          <Stack.Screen name="Splash" component={Splash} options={{ headerShown: false }} />
-          <Stack.Screen name="Terms" component={Terms} options={{ headerShown: false }} />
-          <Stack.Screen name="TutorialCheckIn1" component={TutorialCheckIn1} options={{ headerShown: false }} />
-          <Stack.Screen name="CheckinOptional" component={CheckinOptional} options={{ headerShown: false }} />
-          <Stack.Screen name="TutorialCheckIn2" component={TutorialCheckIn2} options={{ headerShown: false }} />
-          <Stack.Screen name="Personalization" component={Personalization} options={{ headerShown: false }} />
-          <Stack.Screen name="MoreResources" component={MoreResources} options={{ headerShown: false }} />
-          <Stack.Screen name="WrapUp" component={WrapUp} options={{ headerShown: false }} />
-          <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{ headerShown: false }} />
-          <Stack.Screen name="TokenInput" component={TokenInput} options={{ headerShown: false }} />
-          <Stack.Screen name="ResetPassword" component={ResetPassword} options={{ headerShown: false }} />
-          <Stack.Screen name="ThirtyDayOverview" component={ThirtyDayOverview} options={{ headerShown: false }} />
-          <Stack.Screen name="Notifications Test" component={NotificationsTest} options={{ headerShown: false }} />
+          <Stack.Screen name="Login" component={Login} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="NavigationBar" component={NavigationBar} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="PersonalInfo" component={PersonalInfo} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="DontCareSee" component={DontCareSee} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="WOYM" component={WOYM} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="Filter" component={Filter} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="BannedTags" component={BannedTags} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="Loading" component={Loading} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="Trends" component={TrendsTab} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="TrendsBody" component={TrendsBody} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="AltNavigationBar" component={AltNavigationBar} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="Splash" component={Splash} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="Terms" component={Terms} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="TutorialCheckIn1" component={TutorialCheckIn1} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="CheckinOptional" component={CheckinOptional} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="TutorialCheckIn2" component={TutorialCheckIn2} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="Personalization" component={Personalization} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="MoreResources" component={MoreResources} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="WrapUp" component={WrapUp} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="TokenInput" component={TokenInput} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="ResetPassword" component={ResetPassword} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="ThirtyDayOverview" component={ThirtyDayOverview} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="Notifications Test" component={NotificationsTest} options={{ headerShown: false, gestureEnabled: false }} />
           <Stack.Screen name="Overview" component={Overview} options={{ headerShown: false, gestureEnabled: false }} />
-          <Stack.Screen name="Favorites" component={FavoritesList} options={{ headerShown: false }} />
+          <Stack.Screen name="Favorites" component={FavoritesList} options={{ headerShown: false, gestureEnabled: false }} />
           <Stack.Screen name="CheckIn" component={CheckIn} options={{ headerShown: false }} />
-          <Stack.Screen name="Sleep" component={Sleep} options={{ headerShown: false }} />
-          <Stack.Screen name="Feeling" component={Feeling} options={{ headerShown: false }} />
-          <Stack.Screen name="Pre Feeling" component={PreFeeling} options={{ headerShown: false }} />
-          <Stack.Screen name="Energy" component={Energy} options={{ headerShown: false }} />
-          <Stack.Screen name="Water" component={Water} options={{ headerShown: false }} />
-          <Stack.Screen name="Meal" component={Meal} options={{ headerShown: false }} />
-          <Stack.Screen name="Mood" component={Mood} options={{ headerShown: false }} />
-          <Stack.Screen name="AddMood" component={AddMood} options={{ headerShown: false }} />
-          <Stack.Screen name="AddColor" component={AddColor} options={{ headerShown: false }} />
-          <Stack.Screen name="Activity" component={Activity} options={{ headerShown: false }} />
-          <Stack.Screen name="AddActivity" component={AddActivity} options={{ headerShown: false }} />
-          <Stack.Screen name="AddIcon" component={AddIcon} options={{ headerShown: false }} />
-          <Stack.Screen name="EndCheckIn" component={EndCheckIn} options={{ headerShown: false }} />
-          <Stack.Screen name="Exercise" component={Exercise} options={{ headerShown: false }} />
-          <Stack.Screen name="JournalDetails" component={JournalDetails} options={{ headerShown: false }} />
+          <Stack.Screen name="Sleep" component={Sleep} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="Feeling" component={Feeling} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="Pre Feeling" component={PreFeeling} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="Energy" component={Energy} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="Water" component={Water} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="Meal" component={Meal} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="Mood" component={Mood} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="AddMood" component={AddMood} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="AddColor" component={AddColor} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="Activity" component={Activity} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="AddActivity" component={AddActivity} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="AddIcon" component={AddIcon} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="EndCheckIn" component={EndCheckIn} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="Exercise" component={Exercise} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="JournalDetails" component={JournalDetails} options={{ headerShown: false, gestureEnabled: false }} />
         </Stack.Navigator>
       </TagProvider>
     </NavigationContainer>

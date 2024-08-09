@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import PropTypes from 'prop-types';
+import * as SecureStore from 'expo-secure-store';
 import chev from '../../../assets/images/chevron-up.png';
 import data from './PillTags.json';
 import styles from './WOYMStyle';
@@ -154,6 +155,19 @@ function WOYM({ navigation }) {
   }, [selectedCoping, selectedEWB, selectedLifestyle, selectedIdentity, selectedMental,
     selectedRelationships, selectedSelf, selectedSupport, selectedTrauma,
   ]);
+
+  // Save last visited screen in Secure Storage
+  useEffect(() => {
+    const saveLastScreen = async () => {
+      try {
+        await SecureStore.setItemAsync('lastScreen', 'WOYM');
+      } catch (e) {
+        console.error('unable to set screen in storage: ', e);
+      }
+    };
+
+    saveLastScreen();
+  }, []);
 
   return (
     <View style={{ flex: 1 }}>

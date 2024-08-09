@@ -40,6 +40,7 @@ export default function Login({ navigation }) {
         console.error(res.data.error);
       } else {
         // Sets current state variables for session
+        console.log(res.data);
         dispatch(login(res.data));
         setEmail('');
         setPassword('');

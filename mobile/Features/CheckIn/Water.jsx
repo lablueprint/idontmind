@@ -13,8 +13,7 @@ import styles from './ExerciseStyle';
 
 export default function Exercise({ navigation }) {
   const [water, setWater] = useState('');
-  // const { optionalCheckins } = useSelector((state) => state.auth);
-  const optionalCheckins = ['Meal', 'Water', 'Exercise', 'Activity'];
+  const { optionalCheckins } = useSelector((state) => state.auth);
 
   const route = useRoute();
   const numPages = route.params?.numPages;

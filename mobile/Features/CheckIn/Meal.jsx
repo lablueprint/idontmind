@@ -14,8 +14,7 @@ export default function Meal({ navigation }) {
   const moodsChosen = route.params?.moodsChosen;
   const energyChosen = route.params?.energyChosen;
   const sleepScore = route.params?.sleepScore;
-  // const { optionalCheckins } = useSelector((state) => state.auth);
-  const optionalCheckins = ['Meal', 'Water', 'Exercise', 'Activity'];
+  const { optionalCheckins } = useSelector((state) => state.auth);
 
   const [selectedOption, setSelectedOption] = useState(null);
 
