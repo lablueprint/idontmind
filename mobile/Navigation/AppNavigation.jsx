@@ -53,6 +53,7 @@ import Meal from '../Features/CheckIn/Meal';
 import EndCheckIn from '../Features/CheckIn/EndCheckIn';
 import Exercise from '../Features/CheckIn/Exercise';
 import NotificationsTest from '../Features/Settings/Screens/NotificationsTest';
+import FindHelp from '../Features/Other/Screens/FindHelp';
 
 const Stack = createStackNavigator();
 
@@ -138,6 +139,7 @@ export default function AppNavigation({ user }) {
           <Stack.Screen name="EndCheckIn" component={EndCheckIn} options={{ headerShown: false }} />
           <Stack.Screen name="Exercise" component={Exercise} options={{ headerShown: false }} />
           <Stack.Screen name="JournalDetails" component={JournalDetails} options={{ headerShown: false }} />
+          <Stack.Screen name="FindHelp" component={FindHelp} options={{ headerShown: false }} />
           <Stack.Screen name="PostDetails" component={PostDetails} options={{ headerShown: false }} />
         </Stack.Navigator>
       </TagProvider>
