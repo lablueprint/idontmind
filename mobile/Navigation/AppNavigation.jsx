@@ -113,8 +113,8 @@ export default function AppNavigation({ user }) {
       <TagProvider>
         <Stack.Navigator initialRouteName={initialRoute}>
           <Stack.Screen name="Landing" component={Landing} options={{ headerShown: false }} />
-          <Stack.Screen name="Login" component={Login} options={{ headerShown: false, gestureEnabled: false }} />
-          <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+          <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
           <Stack.Screen name="NavigationBar" component={NavigationBar} options={{ headerShown: false, gestureEnabled: false }} />
           <Stack.Screen name="PersonalInfo" component={PersonalInfo} options={{ headerShown: false, gestureEnabled: false }} />
           <Stack.Screen name="DontCareSee" component={DontCareSee} options={{ headerShown: false, gestureEnabled: false }} />
@@ -122,8 +122,8 @@ export default function AppNavigation({ user }) {
           <Stack.Screen name="Filter" component={Filter} options={{ headerShown: false, gestureEnabled: false }} />
           <Stack.Screen name="BannedTags" component={BannedTags} options={{ headerShown: false, gestureEnabled: false }} />
           <Stack.Screen name="Loading" component={Loading} options={{ headerShown: false, gestureEnabled: false }} />
-          <Stack.Screen name="Trends" component={TrendsTab} options={{ headerShown: false, gestureEnabled: false }} />
-          <Stack.Screen name="TrendsBody" component={TrendsBody} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="Trends" component={TrendsTab} options={{ headerShown: false }} />
+          <Stack.Screen name="TrendsBody" component={TrendsBody} options={{ headerShown: false }} />
           <Stack.Screen name="AltNavigationBar" component={AltNavigationBar} options={{ headerShown: false, gestureEnabled: false }} />
           <Stack.Screen name="Splash" component={Splash} options={{ headerShown: false, gestureEnabled: false }} />
           <Stack.Screen name="Terms" component={Terms} options={{ headerShown: false, gestureEnabled: false }} />

@@ -2,6 +2,7 @@ import {
   View, Text, TouchableOpacity, Image,
   ScrollView,
 } from 'react-native';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import gear from '../../../assets/images/gear.png';
 import background from '../../../assets/images/contentbackground.png';
@@ -9,6 +10,8 @@ import styles from './ContentDashboardStyle';
 import rightChev from '../../../assets/images/rightChevron.png';
 
 export default function ContentDashboard({ navigation }) {
+  const { firstName } = useSelector((state) => state.auth);
+
   const navigateToDayChallenge = () => {
     navigation.navigate('Detox');
   };
@@ -19,7 +22,7 @@ export default function ContentDashboard({ navigation }) {
 
   const navigateToCheckin = () => {
     navigation.navigate('CheckIn');
-  }
+  };
 
   return (
     <ScrollView>
@@ -51,8 +54,8 @@ export default function ContentDashboard({ navigation }) {
         >
           <View style={{ flexDirection: 'row' }}>
             <Text style={styles.largeText}>Welcome </Text>
-            <Text style={styles.capitalLetter}>D</Text>
-            <Text style={styles.largeText}>aniel,</Text>
+            <Text style={styles.capitalLetter}>{firstName ? firstName[0].toUpperCase() : ""}</Text>
+            <Text style={styles.largeText}>{firstName ? firstName.substr(1) : ""}</Text>
           </View>
           <Text style={styles.medText}>We&apos;re so glad you&apos;re here!</Text>
         </View>

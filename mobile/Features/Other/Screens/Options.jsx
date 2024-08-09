@@ -1,15 +1,17 @@
 import {
-  ScrollView, View, Text, TouchableOpacity, Image, StyleSheet,
+  ScrollView, View, Text, TouchableOpacity, Image, StyleSheet, Button,
 } from 'react-native';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import * as ImagePicker from 'expo-image-picker';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { logout } from '../../../redux/authSlice';
 import OptionStyle from './OptionStyle';
 
 export default function Options({ navigation }) {
   const options = ['personal info(name, etc)', 'account info (email, pass)', 'mental health info', 'push notifications', 'content recommendations', 'check-ins'];
-
+  const dispatch = useDispatch();
   const navigateFunctions = (key) => {
     if (key === 4) {
       navigation.navigate('NotificationsTest');
@@ -17,6 +19,15 @@ export default function Options({ navigation }) {
     if (key === 5) {
       navigation.navigate('BannedTags');
     }
+  };
+  const navigateToWelcome = () => {
+    navigation.navigate('Landing');
+  };
+
+  // Resets current session state
+  const handleLogout = async () => {
+    dispatch(logout());
+    navigateToWelcome();
   };
 
   const uploadPhotoStyles = StyleSheet.create({
@@ -79,6 +90,12 @@ export default function Options({ navigation }) {
         <Button title="Pick an image from camera roll" onPress={pickImage} />
         {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
       </View> */}
+      <TouchableOpacity
+        onPress={handleLogout}
+        style={OptionStyle.buttonShape}
+      >
+        <Text style={OptionStyle.buttonText}>Logout</Text>
+      </TouchableOpacity>
       {selectedImage !== '' ? (
         <Image
           source={{ uri: selectedImage }}

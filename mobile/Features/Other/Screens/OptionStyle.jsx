@@ -50,7 +50,21 @@ const OptionStyle = StyleSheet.create({
     fontSize: 20,
     color: '#00000080',
   },
-
+  buttonShape: {
+    backgroundColor: '#C0C0C0',
+    borderRadius: 40,
+    paddingVertical: 10,
+    paddingHorizontal: 40,
+    marginTop: 20,
+    width: 258,
+    height: 60,
+  },
+  buttonText: {
+    color: 'black',
+    textAlign: 'center',
+    fontSize: 20,
+    marginTop: 12,
+  },
 });
 
 export default OptionStyle;

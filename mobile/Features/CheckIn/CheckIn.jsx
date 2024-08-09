@@ -25,7 +25,7 @@ function CheckIn({ navigation }) {
   };
 
   const continueToDashBoard = () => {
-    navigation.navigate('Content Dashboard');
+    navigation.navigate('AltNavigationBar');
   };
 
   useEffect(() => {
