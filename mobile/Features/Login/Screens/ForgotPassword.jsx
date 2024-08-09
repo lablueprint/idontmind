@@ -63,7 +63,7 @@ function ForgotPassword({ navigation }) {
     }}
     >
       <Image
-        source={require('../../../assets/images/packageicon.png')}
+        source={require('../../../assets/images/security.png')}
         style={{
           height: '32%', width: '32%', overflow: 'visible', zIndex: -1, position: 'absolute', bottom: '54%',
         }}

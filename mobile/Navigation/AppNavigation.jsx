@@ -129,7 +129,7 @@ export default function AppNavigation({ user }) {
           <Stack.Screen name="Personalization" component={Personalization} options={{ headerShown: false, gestureEnabled: false }} />
           <Stack.Screen name="MoreResources" component={MoreResources} options={{ headerShown: false, gestureEnabled: false }} />
           <Stack.Screen name="WrapUp" component={WrapUp} options={{ headerShown: false, gestureEnabled: false }} />
-          <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{ headerShown: false }} />
           <Stack.Screen name="TokenInput" component={TokenInput} options={{ headerShown: false, gestureEnabled: false }} />
           <Stack.Screen name="ResetPassword" component={ResetPassword} options={{ headerShown: false, gestureEnabled: false }} />
           <Stack.Screen name="ThirtyDayOverview" component={ThirtyDayOverview} options={{ headerShown: false, gestureEnabled: false }} />

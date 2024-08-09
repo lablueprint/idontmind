@@ -62,8 +62,10 @@ export default function Login({ navigation }) {
         <Icon name="arrow-left" size={30} color="black" />
       </TouchableOpacity>
       <Image
-        source={require('../../../assets/images/security.png')}
-        style={{width: '32%', height: '32%', zIndex: -1, overflow: 'visible', position: 'absolute', bottom: '52%'}}
+        source={require('../../../assets/images/account.png')}
+        style={{
+          width: '32%', height: '32%', zIndex: -1, overflow: 'visible', position: 'absolute', bottom: '52%', opacity: 0.4, transform: [{ rotate: '-25deg' }],
+        }}
       />
       <Text style={styles.title}>Welcome back!</Text>
       <View style={styles.inputContainer}>
@@ -92,7 +94,10 @@ export default function Login({ navigation }) {
           </TouchableOpacity>
         </View>
       </View>
-      <View style={{flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'flex-end', width: '90%', marginTop: '2%'}}>
+      <View style={{
+        flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'flex-end', width: '90%', marginTop: '2%',
+      }}
+      >
         <TouchableOpacity
           onPress={handleForget}
         >
