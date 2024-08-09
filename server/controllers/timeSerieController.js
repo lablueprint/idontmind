@@ -59,6 +59,7 @@ const getUserTimeSeries = async (req, res) => {
           moodValue: { $exists: true, $ne: null },
           sleepScore: { $exists: true, $ne: null },
           energyChosen: { $exists: true, $ne: null },
+          waterIntake: { $exists: true, $ne: null },
         },
       },
       { $sort: { timestamp: 1 } }, // sort by timestamp
@@ -147,6 +148,10 @@ const getUserTimeSeries = async (req, res) => {
       { value: item.energyChosen, label: item.timestamp.toISOString().slice(0, 10) }
     )), startSecondPeriod, endSecondPeriod, period);
 
+    const secondPeriodWater = fillGaps(secondPeriod.map((item) => (
+      { value: item.waterIntake, label: item.timestamp.toISOString().slice(0, 10) }
+    )), startSecondPeriod, endSecondPeriod, period);
+
     const calculateAvg = (data) => data.filter(
       (item) => !item.isDummy,
     ).reduce((sum, item) => sum + item.value, 0) / data.filter((item) => !item.isDummy).length;
@@ -182,6 +187,7 @@ const getUserTimeSeries = async (req, res) => {
         MoodData: secondPeriodMood || [],
         SleepData: secondPeriodSleep || [],
         EnergyData: secondPeriodEnergy || [],
+        WaterData: secondPeriodWater || [],
       },
     });
   } catch (err) {
@@ -200,6 +206,7 @@ const getUserTimeSeries = async (req, res) => {
         MoodData: [],
         SleepData: [],
         EnergyData: [],
+        WaterData: [],
       },
       error: 'Failed to fetch data',
     });
@@ -208,32 +215,36 @@ const getUserTimeSeries = async (req, res) => {
 
 const sampleData = [
   {
-    metadata: { email: 'user1@example.com', userId: 'user1' },
+    metadata: { email: 'user2@example.com', userId: 'user2' },
     timestamp: new Date('2024-08-04T12:00:00.000Z'),
     moodValue: 4,
     sleepScore: 3,
     energyChosen: 1,
+    waterIntake: 1
   },
   {
-    metadata: { email: 'user1@example.com', userId: 'user1' },
+    metadata: { email: 'user2@example.com', userId: 'user2' },
     timestamp: new Date('2024-08-05T12:00:00.000Z'),
     moodValue: 5,
     sleepScore: 3,
     energyChosen: 2,
+    waterIntake: 4,
   },
   {
-    metadata: { email: 'user1@example.com', userId: 'user1' },
+    metadata: { email: 'user2@example.com', userId: 'user2' },
     timestamp: new Date('2024-08-07T12:00:00.000Z'),
     moodValue: 5,
     sleepScore: 3,
     energyChosen: 1,
+    waterIntake: 4,
   },
   {
-    metadata: { email: 'user1@example.com', userId: 'user1' },
+    metadata: { email: 'user2@example.com', userId: 'user2' },
     timestamp: new Date('2024-08-08T12:00:00.000Z'),
     moodValue: 4,
     sleepScore: 3,
     energyChosen: 1,
+    waterIntake: 10,
   },
 ];
 
