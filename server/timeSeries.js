@@ -13,8 +13,7 @@ const timeSeriesCreation = async () => {
 
     // Specify database and collection names
     const databaseName = 'test';
-    const collectionName = 'timeseries';
-
+    const collectionName = 'checkin_time_series1';
     // Access the database and create the collection with options
     const db = client.db(databaseName);
     const collection = db.collection(collectionName);

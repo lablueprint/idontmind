@@ -45,10 +45,10 @@ function Feeling({ navigation }) {
     navigation.navigate('Feeling', { numPages, moodValueChosen: slider + 1 });
   };
 
-  const skipButton = () => {
-    // note: if we skip, what do we set mood as for this day? should it be null or 2
-    navigation.navigate('Feeling', { numPages, moodValueChosen: null });
-  };
+  // const skipButton = () => {
+  //   // note: if we skip, what do we set mood as for this day? should it be null or 2
+  //   navigation.navigate('Feeling', { numPages, moodValueChosen: null });
+  // };
 
   return (
     <View style={{ backgroundColor: '#E5F8F3' }}>
@@ -94,11 +94,11 @@ function Feeling({ navigation }) {
         <Pressable style={styles.continueButton} onPress={continueButton}>
           <Text style={styles.continueText}>Continue</Text>
         </Pressable>
-        <TouchableOpacity onPress={skipButton} style={styles.skip}>
+        {/* <TouchableOpacity onPress={skipButton} style={styles.skip}>
           <Text>
             SKIP
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </View>
   );

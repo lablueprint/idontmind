@@ -13,10 +13,6 @@ export default function JournalDetails({ navigation }) {
   const text = route.params?.body;
   const date = route.params?.day;
 
-  const navigateToJournalHistory = () => {
-    navigation.navigate('Journal History');
-  }; // navigate to Journal History page
-
   return (
     <ScrollView contentContainerStyle={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <View style={styles.container}>
@@ -31,11 +27,6 @@ export default function JournalDetails({ navigation }) {
       <Button
         title="Go back"
         onPress={navigation.goBack}
-      />
-
-      <Button
-        title="To Past Journal Entries"
-        onPress={navigateToJournalHistory}
       />
     </ScrollView>
 

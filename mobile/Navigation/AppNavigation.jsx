@@ -33,9 +33,12 @@ import TokenInput from '../Features/Login/Screens/TokenInput';
 import ResetPassword from '../Features/Login/Screens/ResetPassword';
 import TrendsTab from '../Features/Trends/Components/Trends';
 import TrendsBody from '../Features/Trends/Screens/TrendsBody';
+import ThirtyDayChallenge from '../Features/Tutorial/ThirtyDayChallenge';
+
+import JournalDetails from '../Features/Journal/Screens/JournalDetails';
+import PostDetails from '../Features/Journal/Screens/PostDetails';
 
 import CheckIn from '../Features/CheckIn/CheckIn';
-import JournalDetails from '../Features/Journal/Screens/JournalDetails';
 import Sleep from '../Features/CheckIn/Sleep';
 import Mood from '../Features/CheckIn/Mood';
 import AddMood from '../Features/CheckIn/AddMood';
@@ -50,7 +53,9 @@ import Water from '../Features/CheckIn/Water';
 import Meal from '../Features/CheckIn/Meal';
 import EndCheckIn from '../Features/CheckIn/EndCheckIn';
 import Exercise from '../Features/CheckIn/Exercise';
+
 import NotificationsTest from '../Features/Settings/Screens/NotificationsTest';
+import FindHelp from '../Features/Other/Screens/FindHelp';
 
 const Stack = createStackNavigator();
 
@@ -116,7 +121,10 @@ export default function AppNavigation({ user }) {
           <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{ headerShown: false }} />
           <Stack.Screen name="TokenInput" component={TokenInput} options={{ headerShown: false }} />
           <Stack.Screen name="ResetPassword" component={ResetPassword} options={{ headerShown: false }} />
-          <Stack.Screen name="ThirtyDayOverview" component={ThirtyDayOverview} options={{ headerShown: false }} />
+          {/* <Stack.Screen name="ThirtyDayOverview" component={ThirtyDayOverview} options={{ headerShown: false }} />
+          <Stack.Screen name="ThirtyDayChallenge" component={ThirtyDayChallenge} options={{ headerShown: false }} /> */}
+          {/* <Stack.Screen name="PushNotifications" component={PushNotifications}
+           options={{ headerShown: false }} /> */}
           <Stack.Screen name="Notifications Test" component={NotificationsTest} options={{ headerShown: false }} />
           <Stack.Screen name="Overview" component={Overview} options={{ headerShown: false }} />
           <Stack.Screen name="Favorites" component={FavoritesList} options={{ headerShown: false }} />
@@ -136,6 +144,8 @@ export default function AppNavigation({ user }) {
           <Stack.Screen name="EndCheckIn" component={EndCheckIn} options={{ headerShown: false }} />
           <Stack.Screen name="Exercise" component={Exercise} options={{ headerShown: false }} />
           <Stack.Screen name="JournalDetails" component={JournalDetails} options={{ headerShown: false }} />
+          <Stack.Screen name="FindHelp" component={FindHelp} options={{ headerShown: false }} />
+          <Stack.Screen name="PostDetails" component={PostDetails} options={{ headerShown: false }} />
         </Stack.Navigator>
       </TagProvider>
     </NavigationContainer>
