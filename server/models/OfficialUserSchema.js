@@ -50,6 +50,10 @@ const officialUserSchema = new mongoose.Schema({
     default: {},
     type: Map,
     of: {
+      description: {
+        type: String,
+        default: '',
+      },
       tags: {
         type: [String],
         default: [],
@@ -59,6 +63,18 @@ const officialUserSchema = new mongoose.Schema({
         default: [],
       },
     },
+  },
+  tagToFolders: {
+    required: true,
+    default: {},
+    type: Map,
+    of: [String],
+  },
+  resourceToFolders: {
+    required: true,
+    default: {},
+    type: Map,
+    of: [String],
   },
   journalEntries: {
     default: [],

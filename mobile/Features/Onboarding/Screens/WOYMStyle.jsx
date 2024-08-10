@@ -131,4 +131,7 @@ export default StyleSheet.create({
     right: 0,
     alignItems: 'center',
   },
+  space: {
+    height: 150,
+  },
 });

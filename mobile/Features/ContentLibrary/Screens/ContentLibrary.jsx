@@ -10,13 +10,19 @@ import style from '../Components/ContentStyle';
 import bookmark from '../../../assets/images/bookmark_fill.png';
 import searchImage from '../../../assets/images/search.png';
 import TagContext from '../Context/TagContext';
-// do want to change routing though:
-import SearchBar from '../../Other/Components/SearchBar';
-import jsonData from '../../../content_library.json';
+
 import CategoryCard from '../Components/CategoryCard';
 import RecommendationCard from '../Components/RecommendationCard';
+import SearchBar from '../../Other/Screens/SearchBar';
+import jsonData from '../../../content_library.json';
 
 export default function ContentLibrary({ navigation }) {
+  const transformedData = Object.keys(jsonData).map((tagName, index) => ({
+    id: index.toString(), // Unique ID for each category
+    tagName, // Category name
+    subtopics: jsonData[tagName], // Array of sub-items
+  }));
+
   const { initTags, initFavorites } = useContext(TagContext);
   const { id, authHeader } = useSelector((state) => state.auth);
 
@@ -163,6 +169,7 @@ export default function ContentLibrary({ navigation }) {
                   />
                 </View>
                 <SearchBar
+                  navigation={navigation}
                   visible={isOpen}
                   onClose={closeSearch}
                   onSearch={handleSearch}

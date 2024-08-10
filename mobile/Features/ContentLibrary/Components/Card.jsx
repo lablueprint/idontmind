@@ -21,6 +21,7 @@ import Mental from '../../../assets/images/mental.png';
 import Support from '../../../assets/images/support.png';
 import Trauma from '../../../assets/images/trauma.png';
 import Improvement from '../../../assets/images/improvement.png';
+import shapeImage from '../../../assets/images/shape.png';
 
 export default function Card({
   navigateToTag, index, item, orientation,
@@ -58,7 +59,7 @@ export default function Card({
   };
 
   /* Grab item fields */
-  const { id, tagName, category } = item;
+  const { id, tagName, subtopics } = item;
 
   /* Check if current tag is favorited */
   const favorited = findFavorite(id);
@@ -90,7 +91,7 @@ export default function Card({
       { orientation === 'horizontal' ? (
         <TouchableOpacity
           style={[style.horizontalCard, { width: 295 }]}
-          onPress={() => navigateToTag(index)}
+          onPress={() => navigateToTag(index, tagName, subtopics)}
         >
           <View style={{ flexDirection: 'row' }}>
             <View
@@ -123,9 +124,9 @@ export default function Card({
       ) : (
         <TouchableOpacity
           style={[style.verticalCard, { width: Math.floor((3.83 * width) / 9), height: 200, paddingHorizontal: 15 }]}
-          onPress={() => navigateToTag(index)}
+          onPress={() => navigateToTag(index, tagName, subtopics)}
         >
-          <View style={{ flexDirection: 'row' }}>
+          <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'center' }}>
             <Text
               style={[style.verticalText]}
             >
@@ -160,6 +161,7 @@ Card.propTypes = {
   item: PropTypes.shape({
     id: PropTypes.string,
     tagName: PropTypes.string,
+    subtopics: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,
   orientation: PropTypes.string.isRequired,
 };

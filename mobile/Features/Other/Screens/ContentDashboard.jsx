@@ -34,7 +34,7 @@ export default function ContentDashboard({ navigation }) {
   }, []);
 
   const navigateToDayChallenge = () => {
-    navigation.navigate('Day Challenge');
+    navigation.navigate('Detox');
   };
 
   const navigateToResource = (resource) => {
@@ -46,9 +46,14 @@ export default function ContentDashboard({ navigation }) {
   };
 
   const navigateToContentLibrary = () => {
-    navigation.navigate('Content', {
-      screen: 'Content Library',
-    });
+    navigation.navigate('Content Library');
+    // navigation.navigate('Content', {
+    //   screen: 'Content Library',
+    // });
+  };
+
+  const navigateToCheckin = () => {
+    navigation.navigate('CheckIn');
   };
 
   return (
@@ -80,19 +85,13 @@ export default function ContentDashboard({ navigation }) {
         }}
         >
           <View style={{ flexDirection: 'row' }}>
-            <Text style={styles.largeText}>Welcome </Text>
-            <Text style={styles.capitalLetter}>D</Text>
-            <Text style={styles.largeText}>aniel,</Text>
+            <Text style={styles.largeText}>Welcome!</Text> 
           </View>
           <Text style={styles.medText}>We&apos;re so glad you&apos;re here!</Text>
         </View>
-        <Text style={styles.insights}>Your Insights</Text>
-        <TouchableOpacity style={styles.moodTendencies}>
-          <Text style={styles.MTText}>Mood Tendencies</Text>
-        </TouchableOpacity>
         <View style={{ height: 20 }} />
         <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <TouchableOpacity style={styles.middleButtons}>
+          <TouchableOpacity style={styles.middleButtons} onPress={navigateToCheckin}>
             <Image
               source={rightChev}
               style={styles.leftChev}
@@ -121,12 +120,7 @@ export default function ContentDashboard({ navigation }) {
         </View>
         <View style={{ height: 20 }} />
         <View style={[styles.resourceContainer]}>
-          <Text style={styles.resources}>Your Resources</Text>
-          <TouchableOpacity style={styles.allResources} onPress={navigateToContentLibrary}>
-            <Text style={styles.allResourcesText}>
-              All Resources
-            </Text>
-          </TouchableOpacity>
+          <Text style={styles.resources}>Daily Resource Discovery</Text>          
         </View>
         <View>
           {resources.map(
@@ -138,27 +132,6 @@ export default function ContentDashboard({ navigation }) {
               />
             ),
           )}
-        </View>
-        <View style={styles.dailyBookmarkLine}>
-          <Text style={styles.dailydiscovery}>Daily Discovery</Text>
-          <TouchableOpacity>
-            <Text style={styles.yourBookmarks}>Your Bookmarks</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={{
-          display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
-        }}
-        >
-          <TouchableOpacity style={styles.DDButtons}>
-            <Text style={styles.DDText}>Check-In</Text>
-          </TouchableOpacity>
-          <View style={{ height: 20 }} />
-          <TouchableOpacity
-            style={styles.DDButtons}
-            onPress={navigateToDayChallenge}
-          >
-            <Text style={styles.DDText}>30 Day Challenge</Text>
-          </TouchableOpacity>
         </View>
       </View>
     </ScrollView>
