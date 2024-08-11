@@ -8,18 +8,22 @@ const s3 = new AWS.S3({
 
 const getImage = async (req, res) => {
   try {
+    const { imageKey } = req.query;
+    console.log('the key is:', imageKey);
     await s3.getObject({
       Bucket: process.env.S3_BUCKET,
-      Key: 'CB817395-4799-4233-9C4F-125BD7E0C18E.jpg',
+      Key: imageKey, // Use the dynamic key passed as a parameter
     }, (err, data) => {
       if (err) {
         console.log(err);
+        res.status(500).send('Error fetching image');
       } else {
         res.send((`data:${data.ContentType};base64,${Buffer.from(data.Body, 'binary').toString('base64')}`));
       }
     });
   } catch (err) {
     console.error(err);
+    res.status(500).send('Error fetching image');
   }
 };
 

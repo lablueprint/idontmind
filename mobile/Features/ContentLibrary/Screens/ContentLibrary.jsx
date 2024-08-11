@@ -11,20 +11,29 @@ import bookmark from '../../../assets/images/bookmark_fill.png';
 import searchImage from '../../../assets/images/search.png';
 import TagContext from '../Context/TagContext';
 // do want to change routing though:
-import SearchBar from '../../Other/Components/SearchBar';
-import jsonData from '../../../content_library.json';
 import CategoryCard from '../Components/CategoryCard';
+import Card from '../Components/Card';
 import RecommendationCard from '../Components/RecommendationCard';
+import SearchBar from '../../Other/Screens/SearchBar';
+import jsonData from '../../../content_library.json';
 
 export default function ContentLibrary({ navigation }) {
+  const transformedData = Object.keys(jsonData).map((tagName, index) => ({
+    id: index.toString(), // Unique ID for each category
+    tagName, // Category name
+    subtopics: jsonData[tagName], // Array of sub-items
+  }));
+
   const { initTags, initFavorites } = useContext(TagContext);
   const { id, authHeader } = useSelector((state) => state.auth);
 
   /* width of screen */
   const { width } = Dimensions.get('window');
 
-  const navigateToTag = (categoryName) => {
-    navigation.navigate('Tag', { routeName: 'Content', categoryName });
+  const navigateToTag = (index, tagName, subtopics) => {
+    navigation.navigate('Tag', {
+      index, routeName: 'Content', tagName, subtopics,
+    });
   };
 
   const navigateToResourceList = (subtopicName) => {
@@ -83,10 +92,16 @@ export default function ContentLibrary({ navigation }) {
   );
 
   /* RenderItem function for Vertical Card Carousel */
-  const verticalRenderItem = ({ item }) => (
-    <CategoryCard
-      categoryName={item}
+  const verticalRenderItem = ({ item, index }) => (
+    // <CategoryCard
+    //   categoryName={item}
+    //   navigateToTag={navigateToTag}
+    // />
+    <Card
       navigateToTag={navigateToTag}
+      index={index}
+      item={item}
+      orientation="vertical"
     />
   );
 
@@ -195,8 +210,9 @@ export default function ContentLibrary({ navigation }) {
 
       <View style={[style.row, { flex: 2 }]}>
         <FlatList
-          data={categories}
+          data={transformedData}
           renderItem={verticalRenderItem}
+          keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator={false}
           numColumns={2}
           style={{ paddingLeft: width / 18 }}

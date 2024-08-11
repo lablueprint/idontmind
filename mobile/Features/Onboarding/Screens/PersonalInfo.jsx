@@ -33,7 +33,7 @@ export default function PersonalInfo({ navigation }) {
   };
 
   const navigateToCustomization = () => {
-    navigation.navigate('Customization', { loginInfo: route.params, firstName });
+    navigation.navigate('WOYM', { loginInfo: route.params, firstName });
   };
 
   const areStatesDefaulted = () => (firstName === '' || age === '' || country === '' || gender === '');

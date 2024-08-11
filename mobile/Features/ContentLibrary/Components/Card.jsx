@@ -21,6 +21,7 @@ import Mental from '../../../assets/images/mental.png';
 import Support from '../../../assets/images/support.png';
 import Trauma from '../../../assets/images/trauma.png';
 import Improvement from '../../../assets/images/improvement.png';
+import shapeImage from '../../../assets/images/shape.png';
 
 export default function Card({
   navigateToTag, index, item, orientation,
@@ -57,42 +58,51 @@ export default function Card({
     'Trauma + Recovery': '#9B8C8C',
   };
 
-  /* Grab item fields */
-  const { id, tagName, category } = item;
-
-  /* Check if current tag is favorited */
-  const favorited = findFavorite(id);
-
-  /* Adds Tag to Users Favorites List */
-  const favoriteTag = async () => {
-    addFavorite(id);
-    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/favoriteTag`, { tag: { id, tagName }, email }, { headers: authHeader });
-  };
-
-  /* Remove Tag from Users Favorites List */
-  const unfavoriteTag = async () => {
-    deleteFavorite(id);
-    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/unfavoriteTag`, { tag: { id, tagName }, email }, { headers: authHeader });
-  };
-
-  /* Handles Favorite Change */
-  const handleFavoriteChange = () => {
-    /* checks if the tag is not not in the user's favorite list */
-    if (findFavorite(id) === false) {
-      favoriteTag();
-    } else {
-      unfavoriteTag();
-    }
-  };
-
-  return (
-    <View>
-      { orientation === 'horizontal' ? (
-        <TouchableOpacity
-          style={[style.horizontalCard, { width: 295 }]}
-          onPress={() => navigateToTag(index)}
-        >
-          <View style={{ flexDirection: 'row' }}>
+    /* Grab item fields */
+    const { id, tagName, subtopics } = item;
+  
+    /* Check if current tag is favorited */
+    const favorited = findFavorite(id);
+  
+    /* Adds Tag to Users Favorites List */
+    const favoriteTag = async () => {
+      addFavorite(id);
+      await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/favoriteTag`, { tag: { id, tagName }, email }, { headers: authHeader });
+    };
+  
+    /* Remove Tag from Users Favorites List */
+    const unfavoriteTag = async () => {
+      deleteFavorite(id);
+      await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/unfavoriteTag`, { tag: { id, tagName }, email }, { headers: authHeader });
+    };
+  
+    /* Handles Favorite Change */
+    const handleFavoriteChange = () => {
+      /* checks if the tag is not not in the user's favorite list */
+      if (findFavorite(id) === false) {
+        favoriteTag();
+      } else {
+        unfavoriteTag();
+      }
+    };
+  
+    return (
+      <View>
+        { orientation === 'horizontal' ? (
+          <TouchableOpacity
+            style={[style.horizontalCard]}
+            onPress={() => navigateToTag(index, tagName, subtopics)}
+          >
+            <TouchableOpacity
+              onPress={() => handleFavoriteChange()}
+            >
+              <Image
+                style={[style.star,
+                  { alignSelf: 'flex-end' },
+                ]}
+                source={favorited === false ? starImage : goldStar}
+              />
+            </TouchableOpacity>
             <View
               style={[style.horizontalCardInfo]}
             >
@@ -102,28 +112,11 @@ export default function Card({
                 {tagName}
               </Text>
             </View>
-            <TouchableOpacity
-              onPress={() => handleFavoriteChange()}
-            >
-              <Image
-                style={[style.star,
-                  { alignSelf: 'flex-end' },
-                ]}
-                source={favorited === false ? emptyBookmark : Bookmark}
-              />
-            </TouchableOpacity>
-          </View>
-          <View style={[style.verticalCardInfo]}>
-            <Image
-              style={[style.horizontalShape, { resizeMode: 'contain' }]}
-              source={imageDict[category]}
-            />
-          </View>
-        </TouchableOpacity>
-      ) : (
+          </TouchableOpacity>
+        ) : (
         <TouchableOpacity
           style={[style.verticalCard, { width: Math.floor((3.83 * width) / 9), height: 200, paddingHorizontal: 15 }]}
-          onPress={() => navigateToTag(index)}
+          onPress={() => navigateToTag(index, tagName, subtopics)}
         >
           <View style={{ flexDirection: 'row' }}>
             <Text
@@ -149,17 +142,20 @@ export default function Card({
             </Text>
           </View>
         </TouchableOpacity>
-      )}
-    </View>
-  );
-}
-
-Card.propTypes = {
-  navigateToTag: PropTypes.func.isRequired,
-  index: PropTypes.number.isRequired,
-  item: PropTypes.shape({
-    id: PropTypes.string,
-    tagName: PropTypes.string,
-  }).isRequired,
-  orientation: PropTypes.string.isRequired,
-};
+  
+        )}
+      </View>
+    );
+  }
+  
+  Card.propTypes = {
+    navigateToTag: PropTypes.func.isRequired,
+    index: PropTypes.number.isRequired,
+    item: PropTypes.shape({
+      id: PropTypes.string,
+      tagName: PropTypes.string,
+      subtopics: PropTypes.arrayOf(PropTypes.string),
+    }).isRequired,
+    orientation: PropTypes.string.isRequired,
+  };
+  

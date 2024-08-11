@@ -13,6 +13,8 @@ miscRouter.post('/searchByKeyword', searchController.searchByKeyword);
 
 miscRouter.post('/searchByTag', searchController.searchByTag);
 
+miscRouter.post('/filterResourcesByFilter', searchController.filterResourcesByFilter);
+
 miscRouter.get('/getImage', awsController.getImage);
 
 miscRouter.post('/uploadImage', awsController.uploadImage);

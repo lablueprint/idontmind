@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const OfficialStoriesSchema = new mongoose.Schema({
   content_type: {
-    required: true,
+    default: '',
     type: String,
   },
   title: {
@@ -13,9 +13,17 @@ const OfficialStoriesSchema = new mongoose.Schema({
     default: '',
     type: String,
   },
+  excerpt_titles: {
+    default: [],
+    type: [String],
+  },
   excerpts: {
     default: [],
     type: [String],
+  },
+  link: {
+    default: '',
+    type: String,
   },
   tags: {
     default: [],

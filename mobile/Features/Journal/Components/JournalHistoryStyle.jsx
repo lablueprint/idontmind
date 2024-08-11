@@ -15,7 +15,6 @@ export default StyleSheet.create({
     shadowRadius: 2,
   },
   dateContainer: {
-    // borderRadius: 10,
     alignSelf: 'flex-start',
     backgroundColor: '#BFDBD7',
     padding: 12,
@@ -33,12 +32,10 @@ export default StyleSheet.create({
   },
 
   contentContainer: {
-    // marginTop: 3,
     padding: 12,
   },
 
   prompt: {
-    // textAlign: "center",
     fontFamily: 'cabinet-grotesk-regular',
     fontSize: 18,
   },

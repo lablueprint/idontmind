@@ -174,6 +174,9 @@ const favoriteTag = async (req, res) => {
       return res.status(404).send({ message: 'User not found' });
     }
     if (!user.favoritedTags.includes(tagName)) user.favoritedTags.push(tagName);
+    // if (!user.favoritedTags.has(tag)) {
+    //   user.favoritedTags.set(tag, { folders: [] });
+    // }
     await user.save();
 
     return res.status(200).send(user.favoritedTags);
@@ -183,6 +186,9 @@ const favoriteTag = async (req, res) => {
   }
 };
 
+function sanitize(name) {
+  return name.replace(/\./g, '_');
+}
 const unfavoriteTag = async (req, res) => {
   console.log('unfavorite tag');
   const { tagName, id } = req.body;
@@ -192,6 +198,27 @@ const unfavoriteTag = async (req, res) => {
       return res.status(404).send({ message: 'User not found' });
     }
     user.favoritedTags = user.favoritedTags.filter((t) => t !== tagName);
+
+    // also remove from all favoritedFolders it is in
+    const sanitizedTag = sanitize(tagName);
+
+    const folderNames = user.tagToFolders.get(sanitizedTag);
+
+    // also remove from all favoritedFolders it is in
+    if (folderNames) {
+      folderNames.forEach((folderName) => {
+        const newTags = user.favoritedFolders.get(folderName).tags.filter(
+          (t) => t !== tagName,
+        );
+        user.favoritedFolders.get(folderName).tags = newTags;
+      });
+    }
+
+    // also delete entry from tagToFolders
+    if (user.tagToFolders.has(sanitizedTag)) {
+      user.tagToFolders.delete(sanitizedTag);
+    }
+
     await user.save();
 
     return res.status(200).send(user.favoritedTags);
@@ -229,6 +256,28 @@ const unfavoriteResource = async (req, res) => {
       return res.status(404).send({ message: 'User not found' });
     }
     user.favoritedResources = user.favoritedResources.filter((r) => r !== resource);
+
+    // also remove from all favoritedFolders it is in
+    const sanitizedResource = sanitize(resource);
+
+    const folderNames = user.resourceToFolders.get(sanitizedResource);
+
+    if (folderNames) {
+      folderNames.forEach((folderName) => {
+        const newResources = user.favoritedFolders.get(folderName).resources.filter(
+          (r) => r !== resource,
+        );
+        user.favoritedFolders.get(folderName).resources = newResources;
+      });
+    }
+
+    // also delete entry from resourceToFolders
+    if (user.resourceToFolders.has(sanitizedResource)) {
+      user.resourceToFolders.delete(sanitizedResource);
+    }
+
+    // TODO: also remove from all favoritedFolders it is in
+
     await user.save();
 
     return res.send(user.favoritedResources);
