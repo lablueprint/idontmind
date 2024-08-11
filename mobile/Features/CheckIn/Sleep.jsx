@@ -5,7 +5,6 @@ import {
 import Slider from '@react-native-community/slider';
 import PropTypes from 'prop-types';
 import { Image } from 'expo-image';
-import ProgressBar from 'react-native-progress/Bar';
 import { useRoute } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import styles from './SleepStyle';
