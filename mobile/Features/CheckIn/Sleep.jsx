@@ -56,6 +56,7 @@ function Sleep({ navigation }) {
   };
 
   const getNextPage = (currentPage) => {
+    console.log(optionalCheckins);
     const corePages = ['CheckIn', 'PreFeeling', 'Feeling', 'Energy', 'Sleep', 'EndCheckIn'];
     const allPages = corePages.slice(0, corePages.length - 1)
       .concat(optionalCheckins)
@@ -69,6 +70,8 @@ function Sleep({ navigation }) {
 
   const continueButton = () => {
     const nextPage = getNextPage('Sleep');
+    console.log(nextPage);
+    console.log('====================')
     const data = {
       numPages,
       moodValue,

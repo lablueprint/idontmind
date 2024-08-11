@@ -3,14 +3,16 @@ import {
   View, Text, TouchableOpacity,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import * as SecureStore from 'expo-secure-store';
 import axios from 'axios';
+import { setOptionalCheckins } from '../../redux/authSlice';
 import styles from './OverviewStyle';
 import ToggleSwitch from '../Settings/Components/ToggleSwitch';
 
 export default function CheckinOptional({ navigation }) {
   const { id, authHeader } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
   const allLabels = ['Full Meals', 'Water Intake', 'Physical Activity', 'Intention Setting'];
   const labelValues = {
     'Full Meals': 'Meal', 'Water Intake': 'Water', 'Physical Activity': 'Exercise', 'Intention Setting': 'Activity',
@@ -35,7 +37,8 @@ export default function CheckinOptional({ navigation }) {
     console.log(id);
     try {
       console.log('update');
-      await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/updateUser`, { id, updatedFields: { 'optionalCheckins': checkinArray } }, { headers: authHeader });
+      dispatch(setOptionalCheckins({ optionalCheckins: checkinArray }));
+      await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/updateUser`, { id, updatedFields: { optionalCheckins: checkinArray } }, { headers: authHeader });
     } catch (e) {
       console.log(e);
     }

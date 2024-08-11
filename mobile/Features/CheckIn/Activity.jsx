@@ -32,7 +32,7 @@ function Activity({ navigation }) {
   const [exercise, setExercise] = useState(route.params?.exercise);
 
   const [customActivities, setCustomActivities] = useState([]);
-  const [activityChosen, setActivityChosen] = useState('');
+  const [activityChosen, setActivityChosen] = useState({});
 
   const { email, authHeader } = useSelector((state) => state.auth);
 
@@ -99,7 +99,7 @@ function Activity({ navigation }) {
   };
 
   const pressActivity = (activity) => {
-    setActivityChosen(activity);
+    setActivityChosen({activity, activityImg: "" } );
     console.log(activity);
   };
 

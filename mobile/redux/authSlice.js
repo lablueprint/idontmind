@@ -47,6 +47,12 @@ const authSlice = createSlice({
       obj.user.firstName = action.payload.firstName;
       SecureStore.setItemAsync('user', JSON.stringify(obj));
     },
+    setOptionalCheckins: (state, action) => {
+      state.optionalCheckins = action.payload.optionalCheckins;
+      const obj = JSON.parse(SecureStore.getItem('user'));
+      obj.user.optionalCheckins = action.payload.optionalCheckins;
+      SecureStore.setItemAsync('user', JSON.stringify(obj));
+    },
   },
 });
 
@@ -54,6 +60,7 @@ export const {
   login,
   logout,
   setFirstNameField,
+  setOptionalCheckins,
 } = authSlice.actions;
 
 const { reducer } = authSlice;

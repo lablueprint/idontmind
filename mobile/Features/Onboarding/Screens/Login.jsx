@@ -16,7 +16,7 @@ export default function Login({ navigation }) {
   const dispatch = useDispatch();
 
   const navigateToFeed = () => {
-    navigation.navigate('NavigationBar');
+    navigation.navigate('AltNavigationBar');
   };
 
   const navigateToLanding = () => {
