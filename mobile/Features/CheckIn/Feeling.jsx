@@ -33,13 +33,6 @@ function Feeling({ navigation }) {
     'Good',
     'Great',
   ];
-
-  // const moodTerms = [
-  //   'calm', 'satisfied', 'relaxed', 'unfazed', 'peaceful', 'serene',
-  //   'grateful', 'positive', 'cheery', 'pleasant', 'optimistic', 'happy',
-  //   'charged', 'joyful', 'content',
-  // ];
-
   
   const [selectedCoping, setSelectedCoping] = useState([]);
 
