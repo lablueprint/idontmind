@@ -8,6 +8,8 @@ import PropTypes from 'prop-types';
 import ProgressBar from 'react-native-progress/Bar';
 import { useRoute } from '@react-navigation/native';
 import styles from './FeelingStyle';
+import infoButton from '../../assets/images/infobutton.png';
+import CheckInModal from './CheckInModal';
 
 function Feeling({ navigation }) {
   const route = useRoute();
@@ -40,9 +42,12 @@ function Feeling({ navigation }) {
   ];
 
   const [selectedCoping, setSelectedCoping] = useState([]);
-
   const [slider, setSlider] = useState(moodValue !== undefined ? moodValue : 2);
   const [isContinueEnabled, setIsContinueEnabled] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const toggleModal = () => {
+    setModalVisible(!modalVisible);
+  };
 
   useEffect(() => {
     setIsContinueEnabled(Object.values(selectedCoping).some((value) => value));
@@ -77,9 +82,15 @@ function Feeling({ navigation }) {
     <View style={{ backgroundColor: '#E5F8F3' }}>
       <View style={styles.container}>
         <ProgressBar progress={progress} width={200} style={{ top: '-10%' }} />
+        <View style={{flexDirection: 'row'}}>
         <Text style={styles.heading}>
           How are you feeling today, really?
         </Text>
+        <Pressable onPress={toggleModal}>
+          <Image source={infoButton} style={{width: 16, height: 16, marginTop: 12, marginLeft: 10}} />
+        </Pressable>
+        </View>
+        
         <View style={{ alignItems: 'center' }}>
           <Text style={{ marginBottom: -10, fontSize: 40, fontWeight: 600 }}>{captions[moodValue - 1]}</Text>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -151,6 +162,11 @@ function Feeling({ navigation }) {
             SKIP
           </Text>
         </TouchableOpacity>
+        <CheckInModal 
+        checkInQNum = {0}
+        modalVisible = {modalVisible}
+        toggleModal = {toggleModal}
+        />
       </View>
     </View>
   );
