@@ -41,7 +41,6 @@ export default function ContentDashboard({ navigation }) {
   const navigateToResource = (resource) => {
     navigation.navigate('Resource', { resource, routeName: 'Content Dashboard' });
   };
-
   const navigateToOptions = () => {
     navigation.navigate('Options');
   };

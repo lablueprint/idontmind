@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import styles from './OverviewStyle';
-import ToggleSwitch from '../Settings/Components/ToggleSwitch';
+import ToggleSwitch from '../Other/Components/ToggleSwitch';
 
 export default function CheckinOptional({ navigation }) {
   const { id, authHeader } = useSelector((state) => state.auth);
