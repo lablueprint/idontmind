@@ -118,4 +118,6 @@ export default function TrendsHeader({ title, setSelectedPeriod, selectedPeriod 
 
 TrendsHeader.propType = {
   title: PropTypes.string.isRequired,
+  selectedPeriod: PropTypes.string.isRequired,
+  setSelectedPeriod: PropTypes.func.isRequired
 };
