@@ -4,8 +4,11 @@ import {
 } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import PropTypes from 'prop-types';
-import nicole from '../../assets/images/sleepFace.png';
+import sleepFace from '../../assets/images/sleepFace.png';
 import styles from './MoodStyle';
+import infoButton from '../../assets/images/infobutton.png';
+import CheckInModal from './CheckInModal';
+
 
 function Mood({ navigation }) {
   const route = useRoute();
@@ -14,6 +17,10 @@ function Mood({ navigation }) {
 
   const [addedMoods, setAddedMoods] = useState([]);
   const [moodChosen, setMoodChosen] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
+  const toggleModal = () => {
+    setModalVisible(!modalVisible);
+  };
 
   useEffect(() => {
     // update addedMoods with the route parameters from the AddColor screen (mood and color)
@@ -48,9 +55,9 @@ function Mood({ navigation }) {
   // moodImages is an array of each of the rows
   // each row contains mood, image pairs
   const moodImages = [
-    [['NEUTRAL', nicole], ['HAPPY', nicole], ['SAD', nicole]],
-    [['UGLY', nicole], ['MAD', nicole], ['DELIGHTED', nicole]],
-    [['DEPRESSED', nicole], ['STRESSED', nicole], ['OVERWHELMED', nicole]],
+    [['NEUTRAL', sleepFace], ['HAPPY', sleepFace], ['SAD', sleepFace]],
+    [['UGLY', sleepFace], ['MAD', sleepFace], ['DELIGHTED', sleepFace]],
+    [['DEPRESSED', sleepFace], ['STRESSED', sleepFace], ['OVERWHELMED', sleepFace]],
   ];
 
   // depending on how many moods have been added, the bottom row will look different
@@ -132,6 +139,9 @@ function Mood({ navigation }) {
         <Text>
           how are you feeling today, really?
         </Text>
+        <Pressable onPress={toggleModal}>
+          <Image source={infoButton} style={{width: 16, height: 16, marginTop: 12, marginLeft: 10}} />
+        </Pressable>
       </View>
       <View style={styles.content}>
         {moodImages.map((row) => (
@@ -156,6 +166,11 @@ function Mood({ navigation }) {
           <Text>SKIP</Text>
         </Pressable>
       </View>
+      <CheckInModal 
+        checkInQNum = {0}
+        modalVisible = {modalVisible}
+        toggleModal = {toggleModal}
+        />
     </View>
   );
 }

@@ -65,14 +65,7 @@ export default function CalendarPage({ navigation }) {
   const [guidedTimestamps, setGuidedTimestamps] = useState([]);
   const [currentMonth, setCurrentMonth] = useState(new XDate());
 
-  function formatDate(dateString) {
-    const date = new Date(dateString);
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
-    const year = date.getFullYear().toString().slice(-2);
-    return `${month}/${day}/${year}`;
-  }
-
+  
   const datesAreOnSameDay = (first, second) => {
     if (first && second) {
       return (
@@ -158,12 +151,12 @@ export default function CalendarPage({ navigation }) {
   };
 
   const navigateToJournalPage = () => {
-    navigation.navigate('JournalPage');
+    navigation.navigate('Journal Tabs');
   };
 
-  const navigateToPastJournal = (username, prompt, text, date) => {
+  const navigateToPastJournal = (username, prompt, text, timestamp, type) => {
     navigation.navigate('JournalDetails', {
-      email: username, question: prompt, body: text, day: date,
+      email: username, question: prompt, body: text, timestamp, type,
     });
   };
 
@@ -320,7 +313,7 @@ export default function CalendarPage({ navigation }) {
                     <JournalCard
                       key={x._id}
                       email={x.email}
-                      date={formatDate(x.timestamp)}
+                      timestamp={x.timestamp}
                       prompt={x.prompt}
                       text={x.text}
                       type={x.guided}
@@ -351,7 +344,7 @@ export default function CalendarPage({ navigation }) {
                     <JournalCard
                       key={x._id}
                       email={x.username}
-                      date={formatDate(x.timestamp)}
+                      timestamp={x.timestamp}
                       prompt={x.prompt}
                       text={x.text}
                       type={x.guided}

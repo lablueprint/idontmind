@@ -1,43 +1,35 @@
 import React from 'react';
 import { useRoute } from '@react-navigation/native';
 import {
-  ScrollView, Text, View, Button
+  Pressable, Image, ScrollView, Text, View, Button
   ,
 } from 'react-native';
-import styles from '../Components/JournalStyle';
+import backArrowJournal from '../../../assets/images/backArrowJournal.png'
 
 export default function JournalDetails({ navigation }) {
   const route = useRoute();
   // const username = route.params?.user;
   const prompt = route.params?.question;
   const text = route.params?.body;
-  const date = route.params?.day;
-
-  const navigateToJournalHistory = () => {
-    navigation.navigate('Journal History');
-  }; // navigate to Journal History page
+  const date = route.params?.timestamp;
+  const guided = route.params?.type;
 
   return (
-    <ScrollView contentContainerStyle={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <View style={styles.container}>
-        <View style={styles.textBox}>
+    <View style={{width: '100%', height: '100%', paddingTop: '15%', paddingHorizontal: '10%', backgroundColor: '#E4F6F3'}}>
+      <View style={{flexDirection: 'row', marginVertical: '3%'}}>
+    <Pressable onPress={navigation.goBack}>
+    <Image style={{width: 11.7, height: 19.8}}source={backArrowJournal}></Image>
+  </Pressable>
+  {guided ? <Text style={{marginLeft: '30%', fontSize: 40, fontFamily: 'recoleta-medium'}}>Guided Journal </Text>: <Text style={{marginLeft: '30%', fontSize: 40, fontFamily: 'recoleta-medium'}}> Free Write </Text>}
+  </View>
+    <ScrollView contentContainerStyle={{ flex: 1 }}>
           <ScrollView automaticallyAdjustKeyboardInsets>
-            <Text>{date}</Text>
-            <Text style={{ fontSize: 20 }}>{prompt}</Text>
-            <Text>{text}</Text>
+            <Text style={{fontSize: 16, fontFamily: 'cabinet-grotesk-regular'}}>{date}</Text>
+            <Text style={{ marginVertical: '5%', fontSize: 32, fontFamily: 'recoleta-medium' }}>{prompt}</Text>
+            <Text style={{fontSize: 16,fontFamily: 'cabinet-grotesk-regular'}}>{text}</Text>
           </ScrollView>
-        </View>
-      </View>
-      <Button
-        title="Go back"
-        onPress={navigation.goBack}
-      />
-
-      <Button
-        title="To Past Journal Entries"
-        onPress={navigateToJournalHistory}
-      />
     </ScrollView>
+    </View>
 
   );
 }

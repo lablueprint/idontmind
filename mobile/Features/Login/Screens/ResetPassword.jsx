@@ -5,8 +5,7 @@ import {
 import PropTypes from 'prop-types';
 import { Image } from 'expo-image';
 import axios from 'axios';
-import { MaterialIcons } from '@expo/vector-icons'; 
-import { FontAwesome } from '@expo/vector-icons';
+import { MaterialIcons, FontAwesome } from '@expo/vector-icons';
 import styles from './ResetPasswordStyle';
 
 function ResetPassword({ route, navigation }) {
@@ -57,22 +56,33 @@ function ResetPassword({ route, navigation }) {
   }, [password, confirmPassword]);
 
   return (
-    <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: '#E5F8F3' }}>
+    <View style={{
+      flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: '#E5F8F3',
+    }}
+    >
       <View style={{ width: '83%', marginTop: '40%' }}>
         <Image
-          source={require('../../../assets/images/package.png')}
-          style={{height: '78%', width: '78%', overflow: 'visible', zIndex: -1, position: 'absolute', bottom: '70%', marginLeft: '10%'}}
+          source={require('../../../assets/images/packageicon.png')}
+          style={{
+            height: '78%', width: '78%', overflow: 'visible', zIndex: -1, position: 'absolute', bottom: '70%', marginLeft: '10%',
+          }}
         />
-        <Text style={{ fontSize: 40, fontWeight: 300, marginBottom: '10%'}}>
+        <Text style={{ fontSize: 40, fontWeight: 300, marginBottom: '10%' }}>
           Reset Password
         </Text>
-        <Text style={{ fontSize: 16, fontWeight: 500, marginBottom: '2%', color: '#767C7C' }}>
+        <Text style={{
+          fontSize: 16, fontWeight: 500, marginBottom: '2%', color: '#767C7C',
+        }}
+        >
           Password
         </Text>
         <View style={[styles.emailInput, styles.shadowProp]}>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '85%', height: '100%', alignItems: 'center'}}>
+          <View style={{
+            flexDirection: 'row', justifyContent: 'space-between', width: '85%', height: '100%', alignItems: 'center',
+          }}
+          >
             <TextInput
-              style={{width: '70%'}}
+              style={{ width: '70%' }}
               placeholder="Enter password"
               onFocus={() => {
                 setShowPasswordConditions(true);
@@ -88,7 +98,10 @@ function ResetPassword({ route, navigation }) {
           </View>
         </View>
         {showPasswordConditions && (
-          <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', marginTop: 10 }}>
+          <View style={{
+            flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', marginTop: 10,
+          }}
+          >
             <View style={{ width: '50%' }}>
               <PasswordRequirement isValid={hasLowercase} text="A lowercase letter" />
             </View>
@@ -103,13 +116,19 @@ function ResetPassword({ route, navigation }) {
             </View>
           </View>
         )}
-        <Text style={{ fontSize: 16, fontWeight: 500, marginBottom: '2%', marginTop: '6%', color: '#767C7C' }}>
+        <Text style={{
+          fontSize: 16, fontWeight: 500, marginBottom: '2%', marginTop: '6%', color: '#767C7C',
+        }}
+        >
           Confirm Password
         </Text>
         <View style={[styles.emailInput, styles.shadowProp]}>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '85%', height: '100%', alignItems: 'center'}}>
+          <View style={{
+            flexDirection: 'row', justifyContent: 'space-between', width: '85%', height: '100%', alignItems: 'center',
+          }}
+          >
             <TextInput
-              style={{width: '70%'}}
+              style={{ width: '70%' }}
               placeholder="Confirm password"
               onFocus={() => {
                 setShowPasswordConditions(false);
@@ -144,12 +163,14 @@ function ResetPassword({ route, navigation }) {
   );
 }
 
-const PasswordRequirement = ({ isValid, text }) => (
-  <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5 }}>
-    <FontAwesome name={isValid ? 'check-circle' : 'times-circle'} size={16} color={isValid ? 'green' : '#9B290F'} />
-    <Text style={{ fontSize: 13, marginLeft: 10, color: '#676C6C'}}>{text}</Text>
-  </View>
-);
+function PasswordRequirement({ isValid, text }) {
+  return (
+    <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5 }}>
+      <FontAwesome name={isValid ? 'check-circle' : 'times-circle'} size={16} color={isValid ? 'green' : '#9B290F'} />
+      <Text style={{ fontSize: 13, marginLeft: 10, color: '#676C6C' }}>{text}</Text>
+    </View>
+  );
+}
 
 PasswordRequirement.propTypes = {
   isValid: PropTypes.bool.isRequired,

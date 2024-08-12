@@ -1,15 +1,22 @@
 import React, { useState } from 'react';
-import { Text, View, Pressable, Dimensions } from 'react-native';
+import {
+  Text, View, Pressable, Dimensions,
+} from 'react-native';
 import Slider from '@react-native-community/slider';
 import PropTypes from 'prop-types';
 import { Image } from 'expo-image';
-import ProgressBar from 'react-native-progress/Bar';
 import { useRoute } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 import styles from './SleepStyle';
+import infoButton from '../../assets/images/infobutton.png';
+import CheckInModal from './CheckInModal';
 
 function Sleep({ navigation }) {
   const route = useRoute();
   const numPages = route.params?.numPages;
+  const moodValue = route.params?.moodValue;
+  const moodsChosen = route.params?.moodsChosen;
+  const energyChosen = route.params?.energyChosen;
   const progress = 3 / numPages;
 
   const { width } = Dimensions.get('window');
@@ -33,6 +40,12 @@ function Sleep({ navigation }) {
   const initialSliderValue = 2;
   const [slider, setSlider] = useState(initialSliderValue);
   const [hasMovedSlider, setHasMovedSlider] = useState(false);
+  // const { optionalCheckins } = useSelector((state) => state.auth);
+  const optionalCheckins = ['Meal', 'Water', 'Exercise', 'Activity'];
+  const [modalVisible, setModalVisible] = useState(false);
+  const toggleModal = () => {
+    setModalVisible(!modalVisible);
+  };
 
   const onSliderChange = (sliderValue) => {
     setSlider(sliderValue);
@@ -41,24 +54,68 @@ function Sleep({ navigation }) {
     }
   };
 
-  const continueButton = () => {
-    if (hasMovedSlider) {
-      navigation.navigate('Meal', {
-        sleepScore: slider,
-      });
+  const onImagePress = (index) => {
+    setSlider(index);
+    if (!hasMovedSlider) {
+      setHasMovedSlider(true);
     }
   };
 
-  const skipButton = () => {
-    navigation.navigate('Meal');
+  const getNextPage = (currentPage) => {
+    const corePages = ['CheckIn', 'PreFeeling', 'Feeling', 'Energy', 'Sleep', 'EndCheckIn'];
+    const allPages = corePages.slice(0, corePages.length - 1)
+      .concat(optionalCheckins)
+      .concat(corePages.slice(corePages.length - 1));
+
+    const currentIndex = allPages.indexOf(currentPage);
+    return currentIndex !== -1 && currentIndex < allPages.length - 1
+      ? allPages[currentIndex + 1]
+      : null;
   };
+
+  const continueButton = () => {
+    const nextPage = getNextPage('Sleep');
+    const data = {
+      numPages,
+      moodValue,
+      moodsChosen,
+      energyChosen,
+      sleepScore: 5 - slider,
+    };
+    if (nextPage) {
+      navigation.navigate(nextPage, data);
+    } else {
+      navigation.navigate('EndCheckIn', data);
+    }
+  };
+
+  // const skipButton = () => {
+  //   const nextPage = getNextPage('Sleep');
+  //   const data = {
+  //     numPages,
+  //     moodValue,
+  //     moodsChosen,
+  //     energyChosen,
+  //     sleepScore: null,
+  //   };
+  //   if (nextPage) {
+  //     navigation.navigate(nextPage, data);
+  //   } else {
+  //     navigation.navigate('EndCheckIn', data);
+  //   }
+  // };
 
   return (
     <View style={styles.container}>
       <View>
+        <View style={{flexDirection: 'row', marginBottom: '0%', width: '80%', marginTop: '25%'}}>
         <Text style={styles.topHeading}>
           How would you rate your sleep quality last night?
         </Text>
+        <Pressable onPress={toggleModal}>
+          <Image source={infoButton} style={{width: 16, height: 16, marginTop: 12, marginLeft: 10}} />
+        </Pressable>
+        </View>
       </View>
       <View style={styles.content}>
         <View style={styles.rating}>
@@ -79,23 +136,28 @@ function Sleep({ navigation }) {
               thumbTintColor="#374342"
               onValueChange={onSliderChange}
               step={1}
-              value={initialSliderValue}
+              value={slider}
               vertical
             />
           </View>
         </View>
         <View style={styles.faces}>
           {images.map((image, index) => (
-            <View key={index} style={[
-              styles.singularFace,
-              { width: 80 + (slider === index ? 20 : 0), height: 70 + (slider === index ? 20 : 0) },
-              slider === index ? styles.shadowEffect : null,
-            ]}>
-              <Image
-                source={image}
-                style={{ width: 30 + (slider === index ? 20 : 0), height: 30 + (slider === index ? 40 : 0), overflow: 'visible', }}
-              />
-            </View>
+            <Pressable key={index} onPress={() => onImagePress(index)} style={styles.faces}>
+              <View
+                key={index}
+                style={[
+                  styles.singularFace,
+                  { width: 80 + (slider === index ? 20 : 0), height: 70 + (slider === index ? 20 : 0) },
+                  slider === index ? styles.shadowEffect : null,
+                ]}
+              >
+                <Image
+                  source={image}
+                  style={{ width: 30 + (slider === index ? 20 : 0), height: 30 + (slider === index ? 40 : 0), overflow: 'visible' }}
+                />
+              </View>
+            </Pressable>
           ))}
         </View>
       </View>
@@ -112,10 +174,15 @@ function Sleep({ navigation }) {
             Continue
           </Text>
         </Pressable>
-        <Pressable onPress={skipButton}>
+        {/* <Pressable onPress={skipButton}>
           <Text style={styles.skip}>Skip</Text>
-        </Pressable>
+        </Pressable> */}
       </View>
+      <CheckInModal 
+        checkInQNum = {1}
+        modalVisible = {modalVisible}
+        toggleModal = {toggleModal}
+        />
     </View>
   );
 }

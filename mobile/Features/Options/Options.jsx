@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import styles from '../Other/Screens/OptionStyle';
 import Back from '../../assets/images/back.png';
 import Settings from '../../assets/images/settings.png';
-import Account from '../../assets/images/account.png';
+import Account from '../../assets/images/account-icon.png';
 import Right from '../../assets/images/right_options.png';
 import Customize from '../../assets/images/pen.png';
 
