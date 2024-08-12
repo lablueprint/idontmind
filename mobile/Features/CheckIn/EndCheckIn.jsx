@@ -58,7 +58,7 @@ function EndCheckIn({ navigation }) {
   }, [submitted, email, id, authHeader, route.params]);
 
   const handleEnd = () => {
-    navigation.navigate('Landing');
+    navigation.navigate('Content Dashboard');
   };
 
   return (

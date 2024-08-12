@@ -7,6 +7,8 @@ import Slider from '@react-native-community/slider';
 import PropTypes from 'prop-types';
 import { useRoute } from '@react-navigation/native';
 import styles from './PreFeelingStyles';
+import infoButton from '../../assets/images/infobutton.png';
+import CheckInModal from './CheckInModal';
 
 function Feeling({ navigation }) {
   const route = useRoute();
@@ -32,6 +34,10 @@ function Feeling({ navigation }) {
   ];
 
   const [slider, setSlider] = useState(2);
+  const [modalVisible, setModalVisible] = useState(false);
+  const toggleModal = () => {
+    setModalVisible(!modalVisible);
+  };
 
   const onSliderChange = (sliderValue) => {
     setSlider(sliderValue);
@@ -53,9 +59,14 @@ function Feeling({ navigation }) {
   return (
     <View style={{ backgroundColor: '#E5F8F3' }}>
       <View style={styles.container}>
+        <View style={{flexDirection: 'row'}}>
         <Text style={styles.heading}>
           How are you feeling today, really?
         </Text>
+        <Pressable onPress={toggleModal}>
+          <Image source={infoButton} style={{width: 16, height: 16, marginTop: 12, marginLeft: 10}} />
+        </Pressable>
+        </View>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: width * 0.9 }}>
           {images.map((image, index) => (
             <Pressable key={index} onPress={() => onImagePress(index)}>
@@ -100,6 +111,11 @@ function Feeling({ navigation }) {
           </Text>
         </TouchableOpacity> */}
       </View>
+      <CheckInModal 
+        checkInQNum = {0}
+        modalVisible = {modalVisible}
+        toggleModal = {toggleModal}
+        />
     </View>
   );
 }

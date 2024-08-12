@@ -25,14 +25,6 @@ export default function Landing({ navigation }) {
     navigation.navigate('CheckIn');
   };
 
-  const navigateToOverview = () => {
-    navigation.navigate('Overview');
-  };
-
-  const navigateToExercise = () => {
-    navigation.navigate('Exercise');
-  };
-
   const dispatch = useDispatch();
 
   // Handles a hardcoded login for testing
@@ -105,21 +97,13 @@ export default function Landing({ navigation }) {
         title="To Splash"
         onPress={navigateToSplash}
       />
-      <Button
+      {/* <Button
         title="To CheckIn"
         onPress={navigateToCheckIn}
-      />
+      /> */}
       <Button
         title="To Loading"
         onPress={navigateToLoading}
-      />
-      <Button
-        title="To Overview"
-        onPress={navigateToOverview}
-      />
-      <Button
-        title="To Exercise Checkin Question"
-        onPress={navigateToExercise}
       />
     </View>
   );

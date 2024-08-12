@@ -1,9 +1,12 @@
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const bcrypt = require('bcrypt');
+const jsonData = require('../content_library.json');
 const User = require('../models/OfficialUserSchema');
 const passport = require('../passport');
-
+const OfficialArticle = require('../models/OfficialArticleSchema');
+const OfficialQnA = require('../models/OfficialQnASchema');
+const OfficialPersonalStory = require('../models/OfficialStoriesSchema');
 // Creates user with given email, password, and to send to backend
 const signUpUser = async (req, res, next) => {
   try {
@@ -204,19 +207,19 @@ const getFavorites = async (req, res) => {
 
 const favoriteTag = async (req, res) => {
   console.log('favorite tag');
-  const { id, tag } = req.body;
+  const { tagName, id } = req.body;
   try {
     const user = await User.findById(id);
     if (!user) {
       return res.status(404).send({ message: 'User not found' });
     }
-    if (!user.favoritedTags.includes(tag)) user.favoritedTags.push(tag);
+    if (!user.favoritedTags.includes(tagName)) user.favoritedTags.push(tagName);
     // if (!user.favoritedTags.has(tag)) {
     //   user.favoritedTags.set(tag, { folders: [] });
     // }
     await user.save();
 
-    return res.send(user.favoritedTags);
+    return res.status(200).send(user.favoritedTags);
   } catch (err) {
     console.error(err);
     return res.status(500).send(err);
@@ -228,16 +231,16 @@ function sanitize(name) {
 }
 const unfavoriteTag = async (req, res) => {
   console.log('unfavorite tag');
-  const { id, tag } = req.body;
+  const { tagName, id } = req.body;
   try {
     const user = await User.findById(id);
     if (!user) {
       return res.status(404).send({ message: 'User not found' });
     }
-    user.favoritedTags = user.favoritedTags.filter((t) => t !== tag);
+    user.favoritedTags = user.favoritedTags.filter((t) => t !== tagName);
 
     // also remove from all favoritedFolders it is in
-    const sanitizedTag = sanitize(tag);
+    const sanitizedTag = sanitize(tagName);
 
     const folderNames = user.tagToFolders.get(sanitizedTag);
 
@@ -245,7 +248,7 @@ const unfavoriteTag = async (req, res) => {
     if (folderNames) {
       folderNames.forEach((folderName) => {
         const newTags = user.favoritedFolders.get(folderName).tags.filter(
-          (t) => t !== tag,
+          (t) => t !== tagName,
         );
         user.favoritedFolders.get(folderName).tags = newTags;
       });
@@ -258,7 +261,7 @@ const unfavoriteTag = async (req, res) => {
 
     await user.save();
 
-    return res.send(user.favoritedTags);
+    return res.status(200).send(user.favoritedTags);
   } catch (err) {
     console.error(err);
     return res.status(500).send(err);
@@ -502,6 +505,115 @@ const resetPassword = async (req, res) => {
   }
 };
 
+const getRecommendedTags = async (req, res) => {
+  const { id } = req.body;
+  try {
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).send({ message: 'User not found' });
+    }
+    const combinedList = [].concat(user.favoritedTags, user.banTags);
+
+    let tags = Object.keys(jsonData);
+    // filter out favorited and banned tags
+    tags = tags.filter((tag) => !combinedList.includes(tag));
+    // map to individual objects with priority property
+    tags = tags.map((tag) => {
+      if (user.interestedTags.includes(tag) && !user.seenTags.includes(tag)) {
+        return ({
+          tagName: tag,
+          priority: 2,
+        });
+      } if (user.seenTags.includes(tag)) {
+        return ({
+          tagName: tag,
+          priority: 0,
+        });
+      }
+      return ({
+        tagName: tag,
+        priority: 1,
+      });
+    });
+
+    // randomize array of tags
+    let currentIndex = tags.length;
+
+    while (currentIndex !== 0) {
+      // Pick a remaining element...
+      const randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+
+      // And swap it with the current element.
+      [tags[currentIndex], tags[randomIndex]] = [
+        tags[randomIndex], tags[currentIndex]];
+    }
+    // sort by priority
+    tags.sort((a, b) => b.priority - a.priority);
+    tags = tags.map((tag) => tag.tagName);
+    console.log(tags);
+    return res.send(tags.slice(0, 10));
+    // update priority of tags
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+};
+
+const getRecommendedResources = async (req, res) => {
+  console.log('get recommended resources');
+  const { id } = req.body;
+  try {
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).send({ message: 'User not found' });
+    }
+    const combinedList = [].concat(user.favoritedTags, user.banTags);
+
+    let resources = [].concat(
+      await OfficialArticle.find({ tags: { $nin: combinedList.map((tag) => tag) } }),
+      await OfficialQnA.find({ tags: { $nin: combinedList.map((tag) => tag) } }),
+      await OfficialPersonalStory.find({ tags: { $nin: combinedList.map((tag) => tag) } }),
+    );
+
+    // map to individual objects with priority property
+    resources = resources.map((resource) => {
+      let priority = 0;
+      resource.tags.forEach((tag) => {
+        if (user.interestedTags.includes(tag) && !user.seenTags.includes(tag)) {
+          priority += 1;
+        } else if (user.seenTags.includes(tag)) {
+          priority -= 1;
+        }
+      });
+      return ({
+        resource,
+        priority,
+      });
+    });
+    // randomize array of tags
+    let currentIndex = resources.length;
+
+    while (currentIndex !== 0) {
+      // Pick a remaining element...
+      const randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+
+      // And swap it with the current element.
+      [resources[currentIndex], resources[randomIndex]] = [
+        resources[randomIndex], resources[currentIndex]];
+    }
+    // sort by priority
+    resources.sort((a, b) => b.priority - a.priority);
+
+    console.log(resources.slice(0, 4));
+    return res.send(resources.slice(0, 4));
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+};
+
 module.exports = {
   signInUser,
   signUpUser,
@@ -530,5 +642,6 @@ module.exports = {
   checkUserByEmail,
   sendEmail,
   resetPassword,
-
+  getRecommendedResources,
+  getRecommendedTags,
 };

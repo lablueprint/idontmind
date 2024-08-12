@@ -7,6 +7,8 @@ import Slider from '@react-native-community/slider';
 import PropTypes from 'prop-types';
 import { useRoute } from '@react-navigation/native';
 import styles from './EnergyStyles';
+import infoButton from '../../assets/images/infobutton.png';
+import CheckInModal from './CheckInModal';
 
 function Energy({ navigation }) {
   const route = useRoute();
@@ -35,6 +37,10 @@ function Energy({ navigation }) {
 
   const [slider, setSlider] = useState(2);
   const [sliderMoved, setSliderMoved] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const toggleModal = () => {
+    setModalVisible(!modalVisible);
+  };
 
   const onSliderChange = (sliderValue) => {
     setSlider(sliderValue);
@@ -75,9 +81,18 @@ function Energy({ navigation }) {
     <View style={{ backgroundColor: '#E5F8F3' }}>
       <View style={styles.container}>
         <View>
+          <View
+          style={{
+            flexDirection: 'row', justifyContent: 'space-between', alignSelf: 'center', marginBottom: '25%',
+            marginTop: '40%', alignItems: 'center'
+          }}>
           <Text style={styles.heading}>
             How would you describe your energy today?
           </Text>
+          <Pressable onPress={toggleModal}>
+            <Image source={infoButton} style={{width: 16, height: 16, marginLeft: 10}} />
+          </Pressable>
+          </View>
           <View style={{
             flexDirection: 'row', justifyContent: 'space-between', width: width * 0.8, alignSelf: 'center',
           }}
@@ -137,6 +152,11 @@ function Energy({ navigation }) {
             </Text>
           </TouchableOpacity> */}
         </View>
+        <CheckInModal 
+        checkInQNum = {2}
+        modalVisible = {modalVisible}
+        toggleModal = {toggleModal}
+        />
       </View>
     </View>
   );

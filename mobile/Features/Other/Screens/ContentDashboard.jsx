@@ -1,23 +1,52 @@
 import {
   View, Text, TouchableOpacity, Image,
-  ScrollView,
+  ScrollView, Dimensions,
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import gear from '../../../assets/images/gear.png';
 import background from '../../../assets/images/contentbackground.png';
 import styles from './ContentDashboardStyle';
 import rightChev from '../../../assets/images/rightChevron.png';
+import ResourceCard from '../Components/ResourceCard';
 
 export default function ContentDashboard({ navigation }) {
-  const { firstName } = useSelector((state) => state.auth);
+  const [resources, setResources] = useState([]);
+  const { id, authHeader, firstName } = useSelector((state) => state.auth);
+
+  /* width of screen */
+  const { width } = Dimensions.get('window');
+
+  useEffect(() => {
+    const getRecommendedResources = async () => {
+      try {
+        const resResources = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/getRecommendedResources`, { id }, { headers: authHeader });
+        const recommendedResources = resResources.data;
+
+        setResources(recommendedResources);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    getRecommendedResources();
+  }, []);
 
   const navigateToDayChallenge = () => {
     navigation.navigate('Detox');
   };
 
+  // TODO: known to currently not work
+  const navigateToResource = (resource) => {
+    navigation.navigate('Resource', { resource, routeName: 'Content Dashboard' });
+  };
   const navigateToOptions = () => {
     navigation.navigate('Options');
+  };
+
+  const navigateToContentLibrary = () => {
+    navigation.navigate('Content Library');
   };
 
   const navigateToCheckin = () => {
@@ -54,15 +83,10 @@ export default function ContentDashboard({ navigation }) {
         >
           <View style={{ flexDirection: 'row' }}>
             <Text style={styles.largeText}>Welcome </Text>
-            <Text style={styles.capitalLetter}>{firstName ? firstName[0].toUpperCase() : ""}</Text>
-            <Text style={styles.largeText}>{firstName ? firstName.substr(1) : ""}</Text>
+            <Text style={styles.largeText}>{firstName}!</Text>
           </View>
           <Text style={styles.medText}>We&apos;re so glad you&apos;re here!</Text>
         </View>
-        <Text style={styles.insights}>Your Insights</Text>
-        <TouchableOpacity style={styles.moodTendencies}>
-          <Text style={styles.MTText}>Mood Tendencies</Text>
-        </TouchableOpacity>
         <View style={{ height: 20 }} />
         <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <TouchableOpacity style={styles.middleButtons} onPress={navigateToCheckin}>
@@ -93,26 +117,19 @@ export default function ContentDashboard({ navigation }) {
           </TouchableOpacity>
         </View>
         <View style={{ height: 20 }} />
-        <View style={styles.dailyBookmarkLine}>
-          <Text style={styles.dailydiscovery}>Daily Discovery</Text>
-          <TouchableOpacity>
-            <Text style={styles.yourBookmarks}>Your Bookmarks</Text>
-          </TouchableOpacity>
+        <View style={[styles.resourceContainer]}>
+          <Text style={styles.resources}>Daily Resource Discovery</Text>          
         </View>
-        <View style={{
-          display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
-        }}
-        >
-          <TouchableOpacity style={styles.DDButtons}>
-            <Text style={styles.DDText}>Check-In</Text>
-          </TouchableOpacity>
-          <View style={{ height: 20 }} />
-          <TouchableOpacity
-            style={styles.DDButtons}
-            onPress={navigateToDayChallenge}
-          >
-            <Text style={styles.DDText}>30 Day Challenge</Text>
-          </TouchableOpacity>
+        <View>
+          {resources.map(
+            (resource) => (
+              <ResourceCard
+                resource={resource.resource}
+                navigateToResource={navigateToResource}
+                key={resource.resource._id}
+              />
+            ),
+          )}
         </View>
       </View>
     </ScrollView>

@@ -32,6 +32,14 @@ const officialUserSchema = new mongoose.Schema({
     default: [],
     type: [String],
   },
+  seenTags: {
+    default: [],
+    type: [String],
+  },
+  interestedTags: {
+    default: [],
+    type: [String],
+  },
   favoritedResources: {
     required: true,
     default: [],
