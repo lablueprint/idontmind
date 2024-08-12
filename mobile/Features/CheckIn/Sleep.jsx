@@ -5,7 +5,6 @@ import {
 import Slider from '@react-native-community/slider';
 import PropTypes from 'prop-types';
 import { Image } from 'expo-image';
-import ProgressBar from 'react-native-progress/Bar';
 import { useRoute } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import styles from './SleepStyle';
@@ -109,7 +108,7 @@ function Sleep({ navigation }) {
   return (
     <View style={styles.container}>
       <View>
-        <View style={{flexDirection: 'row', marginBottom: '0%', marginTop: '25%'}}>
+        <View style={{flexDirection: 'row', marginBottom: '0%', width: '80%', marginTop: '25%'}}>
         <Text style={styles.topHeading}>
           How would you rate your sleep quality last night?
         </Text>

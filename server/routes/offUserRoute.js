@@ -50,4 +50,8 @@ offUserRouter.post('/favoriteResource', offUserController.favoriteResource);
 
 offUserRouter.post('/unfavoriteResource', offUserController.unfavoriteResource);
 
+offUserRouter.post('/getRecommendedResources', offUserController.getRecommendedResources);
+
+offUserRouter.post('/getRecommendedTags', offUserController.getRecommendedTags);
+
 module.exports = offUserRouter;

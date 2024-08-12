@@ -61,6 +61,9 @@ const searchByKeyword = async (req, res) => {
 // filter resources by tag
 const searchByTag = async (req, res) => {
   const { tag, filter } = req.body;
+  if (!tag) {
+    res.status(400).send('Tag name is empty');
+  }
   const tagSearch = tag.toLowerCase();
   const aggregateCalls = [];
 

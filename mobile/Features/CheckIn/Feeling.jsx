@@ -5,11 +5,11 @@ import {
 import { Image } from 'expo-image';
 import Slider from '@react-native-community/slider';
 import PropTypes from 'prop-types';
-import ProgressBar from 'react-native-progress/Bar';
 import { useRoute } from '@react-navigation/native';
 import styles from './FeelingStyle';
 import infoButton from '../../assets/images/infobutton.png';
 import CheckInModal from './CheckInModal';
+import moodWords from './MoodWords.json';
 
 function Feeling({ navigation }) {
   const route = useRoute();
@@ -35,12 +35,6 @@ function Feeling({ navigation }) {
     'Great',
   ];
 
-  const moodTerms = [
-    'calm', 'satisfied', 'relaxed', 'unfazed', 'peaceful', 'serene',
-    'grateful', 'positive', 'cheery', 'pleasant', 'optimistic', 'happy',
-    'charged', 'joyful', 'content',
-  ];
-
   const [selectedCoping, setSelectedCoping] = useState([]);
   const [slider, setSlider] = useState(moodValue !== undefined ? moodValue : 2);
   const [isContinueEnabled, setIsContinueEnabled] = useState(false);
@@ -48,6 +42,8 @@ function Feeling({ navigation }) {
   const toggleModal = () => {
     setModalVisible(!modalVisible);
   };
+
+  const [moodTerms, setMoodTerms] = useState(moodWords[captions[slider - 1]]);
 
   useEffect(() => {
     setIsContinueEnabled(Object.values(selectedCoping).some((value) => value));
@@ -65,6 +61,7 @@ function Feeling({ navigation }) {
   const onSliderChange = (sliderValue) => {
     if (moodValue === undefined) {
       setSlider(sliderValue);
+      setMoodTerms(moodWords[captions[sliderValue-1]]);
     }
   };
 
@@ -80,8 +77,7 @@ function Feeling({ navigation }) {
 
   return (
     <View style={{ backgroundColor: '#E5F8F3' }}>
-      <View style={styles.container}>
-        <ProgressBar progress={progress} width={200} style={{ top: '-10%' }} />
+      <View style={styles.container}>        
         <View style={{flexDirection: 'row'}}>
         <Text style={styles.heading}>
           How are you feeling today, really?
