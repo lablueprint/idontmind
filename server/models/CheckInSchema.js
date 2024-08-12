@@ -26,7 +26,7 @@ const TimeSerie = new mongoose.Schema(
     },
     activityChosen: {
       required: false,
-      type: String,
+      type: Object,
     },
     moodsChosen: {
       required: false,

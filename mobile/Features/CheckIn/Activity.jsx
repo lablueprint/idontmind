@@ -32,7 +32,7 @@ function Activity({ navigation }) {
   const [exercise, setExercise] = useState(route.params?.exercise);
 
   const [customActivities, setCustomActivities] = useState([]);
-  const [activityChosen, setActivityChosen] = useState({});
+  const [activityChosen, setActivityChosen] = useState("");
 
   const { email, authHeader } = useSelector((state) => state.auth);
 
@@ -99,8 +99,14 @@ function Activity({ navigation }) {
   };
 
   const pressActivity = (activity) => {
-    setActivityChosen({activity, activityImg: "" } );
-    console.log(activity);
+    let iconImg = activityImagesPaths[activity]
+    let activitySelected = activity
+    //custom activity
+    if (activity.icon) {
+      iconImg = activity.icon;
+      activitySelected = activity.activity;
+    }
+    setActivityChosen({activity: activitySelected, activityImg: iconImg } );
   };
 
   /* pressing the plus button takes user to AddActivity screen */
@@ -127,7 +133,7 @@ function Activity({ navigation }) {
   const renderActivities = (activities) => (
     activities.map((activityObj) => (
       <View key={activityObj._id} style={styles.singularMood}>
-        <Pressable onPress={() => pressActivity(activityObj.activity)}>
+        <Pressable onPress={() => pressActivity(activityObj)}>
           <View style={{ width: 120, height: 120, backgroundColor: activityObj.icon }} />
           <Text>{activityObj.activity}</Text>
         </Pressable>
@@ -150,6 +156,18 @@ function Activity({ navigation }) {
     [['Nature', activity4], ['TV', activity5], ['Music', activity6]],
     [['Art', activity7], ['Friends', activity8], ['Family', activity9]],
   ];
+  const activityImagesPaths = {
+    'Exercise': '../../assets/images/activity/activity1.png',
+    'Eating': '../../assets/images/activity/activity2.png',
+    'Reading': '../../assets/images/activity/activity3.png',
+    'Nature': '../../assets/images/activity/activity4.png',
+    'TV': '../../assets/images/activity/activity5.png',
+    'Music': '../../assets/images/activity/activity6.png',
+    'Art': '../../assets/images/activity/activity7.png',
+    'Friends': '../../assets/images/activity/activity8.png',
+    'Family': '../../assets/images/activity/activity9.png',
+
+  };
 
   // Render the activities including the custom ones
   // depending on how many activities have been added, the bottom row will look different

@@ -2,7 +2,7 @@ const TimeSerie = require('../models/CheckInSchema');
 
 const insertTimeSeries = async (req, res) => {
   const data = req.body;
-
+  console.log(data);
   try {
     const newTimeSeries = new TimeSerie(data);
     await newTimeSeries.save();
@@ -45,7 +45,8 @@ const getUserTimeSeries = async (req, res) => {
   const {
     email, userId, startDate, midDate, endDate, period,
   } = req.body;
-
+  console.log(email);
+  console.log(userId);
   try {
     const timeSeries = await TimeSerie.aggregate([
       {
@@ -111,6 +112,35 @@ const getUserTimeSeries = async (req, res) => {
       return filledData;
     };
 
+    const getTop5ValuesByField = (items, field, topN) => {
+      // Create a frequency map, ignoring null values
+      const frequencyMap = items.reduce((acc, item) => {
+        if (item && item[field] && item[field].activity) {
+          const key = item[field].activity; // Use the 'activity' field as the key
+          acc[key] = (acc[key] || 0) + 1;
+        }
+        return acc;
+      }, {});
+
+      // Sort the keys by frequency in descending order and pick the top N
+      const topValues = Object.keys(frequencyMap)
+        .sort((a, b) => frequencyMap[b] - frequencyMap[a])
+        .slice(0, topN);
+
+      // Map the top values to include their corresponding images
+      const topActivitiesWithImages = topValues.map((activity) => {
+        // Find an item with the same activity to get the image
+        const itemWithImage = items.find((item) => item[field]?.activity === activity);
+        return {
+          activity,
+          activityImg: itemWithImage?.[field]?.activityImg || null,
+        };
+      });
+
+      return topActivitiesWithImages;
+    };
+
+    console.log(timeSeries);
     const firstPeriod = timeSeries.filter((item) => item.timestamp < new Date(midDate));
     const secondPeriod = timeSeries.filter((item) => item.timestamp >= new Date(midDate));
 
@@ -133,6 +163,14 @@ const getUserTimeSeries = async (req, res) => {
       { value: item.moodValue, label: item.timestamp.toISOString().slice(0, 10) }
     )), startSecondPeriod, endSecondPeriod, period);
 
+    const top5Values = getTop5ValuesByField(secondPeriod, 'activityChosen', 5);
+    if (top5Values.length < 5) {
+      const amountLeft = 5 - top5Values.length;
+      for (let i = 0; i < amountLeft; i++) {
+
+        top5Values.push({ activity: '', activityImg: '' });
+      }
+    }
     const firstPeriodSleep = fillGaps(firstPeriod.map((item) => (
       { value: item.sleepScore, label: item.timestamp.toISOString().slice(0, 10) }
     )), startFirstPeriod, endFirstPeriod, period);
@@ -183,6 +221,7 @@ const getUserTimeSeries = async (req, res) => {
         SleepData: secondPeriodSleep || [],
         EnergyData: secondPeriodEnergy || [],
       },
+      top5Values,
     });
   } catch (err) {
     console.error(err);
