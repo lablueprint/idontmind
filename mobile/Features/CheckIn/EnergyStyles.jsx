@@ -15,8 +15,8 @@ export default StyleSheet.create({
     zIndex: 1,
     fontWeight: 400,
     textAlign: 'center',
-    marginBottom: '25%',
-    marginTop: '40%',
+    // marginBottom: '25%',
+    // marginTop: '40%',
   },
   continueButton: {
     width: '65%',

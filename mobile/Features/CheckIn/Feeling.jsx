@@ -7,6 +7,8 @@ import Slider from '@react-native-community/slider';
 import PropTypes from 'prop-types';
 import { useRoute } from '@react-navigation/native';
 import styles from './FeelingStyle';
+import infoButton from '../../assets/images/infobutton.png';
+import CheckInModal from './CheckInModal';
 import moodWords from './MoodWords.json';
 
 function Feeling({ navigation }) {
@@ -34,9 +36,12 @@ function Feeling({ navigation }) {
   ];
 
   const [selectedCoping, setSelectedCoping] = useState([]);
-
   const [slider, setSlider] = useState(moodValue !== undefined ? moodValue : 2);
   const [isContinueEnabled, setIsContinueEnabled] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const toggleModal = () => {
+    setModalVisible(!modalVisible);
+  };
 
   const [moodTerms, setMoodTerms] = useState(moodWords[captions[slider - 1]]);
 
@@ -73,9 +78,15 @@ function Feeling({ navigation }) {
   return (
     <View style={{ backgroundColor: '#E5F8F3' }}>
       <View style={styles.container}>        
+        <View style={{flexDirection: 'row'}}>
         <Text style={styles.heading}>
           How are you feeling today, really?
         </Text>
+        <Pressable onPress={toggleModal}>
+          <Image source={infoButton} style={{width: 16, height: 16, marginTop: 12, marginLeft: 10}} />
+        </Pressable>
+        </View>
+        
         <View style={{ alignItems: 'center' }}>
           <Text style={{ marginBottom: -10, fontSize: 40, fontWeight: 600 }}>{captions[moodValue - 1]}</Text>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -147,6 +158,11 @@ function Feeling({ navigation }) {
             SKIP
           </Text>
         </TouchableOpacity>
+        <CheckInModal 
+        checkInQNum = {0}
+        modalVisible = {modalVisible}
+        toggleModal = {toggleModal}
+        />
       </View>
     </View>
   );

@@ -15,8 +15,6 @@ export default StyleSheet.create({
     zIndex: 1,
     fontWeight: 400,
     textAlign: 'center',
-    marginBottom: '0%',
-    marginTop: '25%',
   },
   content: {
     flex: 4,

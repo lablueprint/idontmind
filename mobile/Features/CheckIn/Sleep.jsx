@@ -8,6 +8,8 @@ import { Image } from 'expo-image';
 import { useRoute } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import styles from './SleepStyle';
+import infoButton from '../../assets/images/infobutton.png';
+import CheckInModal from './CheckInModal';
 
 function Sleep({ navigation }) {
   const route = useRoute();
@@ -40,6 +42,10 @@ function Sleep({ navigation }) {
   const [hasMovedSlider, setHasMovedSlider] = useState(false);
   // const { optionalCheckins } = useSelector((state) => state.auth);
   const optionalCheckins = ['Meal', 'Water', 'Exercise', 'Activity'];
+  const [modalVisible, setModalVisible] = useState(false);
+  const toggleModal = () => {
+    setModalVisible(!modalVisible);
+  };
 
   const onSliderChange = (sliderValue) => {
     setSlider(sliderValue);
@@ -102,9 +108,14 @@ function Sleep({ navigation }) {
   return (
     <View style={styles.container}>
       <View>
+        <View style={{flexDirection: 'row', marginBottom: '0%', width: '80%', marginTop: '25%'}}>
         <Text style={styles.topHeading}>
           How would you rate your sleep quality last night?
         </Text>
+        <Pressable onPress={toggleModal}>
+          <Image source={infoButton} style={{width: 16, height: 16, marginTop: 12, marginLeft: 10}} />
+        </Pressable>
+        </View>
       </View>
       <View style={styles.content}>
         <View style={styles.rating}>
@@ -167,6 +178,11 @@ function Sleep({ navigation }) {
           <Text style={styles.skip}>Skip</Text>
         </Pressable> */}
       </View>
+      <CheckInModal 
+        checkInQNum = {1}
+        modalVisible = {modalVisible}
+        toggleModal = {toggleModal}
+        />
     </View>
   );
 }
