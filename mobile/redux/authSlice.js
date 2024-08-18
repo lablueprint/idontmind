@@ -10,6 +10,7 @@ const initialState = {
   email: null,
   firstName: null,
   authHeader: null,
+  optionalCheckins: null,
 };
 
 const authSlice = createSlice({
@@ -22,6 +23,7 @@ const authSlice = createSlice({
       state.email = action.payload.user.email;
       state.firstName = action.payload.user.firstName;
       state.token = action.payload.token;
+      state.optionalCheckins = action.payload.user.optionalCheckins;
       state.authHeader = {
         Authorization: `Bearer ${action.payload.token}`,
       };
@@ -34,7 +36,22 @@ const authSlice = createSlice({
       state.firstName = null;
       state.token = null;
       state.authHeader = null;
+      state.optionalCheckins = null;
       SecureStore.deleteItemAsync('user');
+    },
+    setFirstNameField: (state, action) => {
+      console.log('set First Name');
+      state.firstName = action.payload.firstName;
+      // Update user object in Secure Store
+      const obj = JSON.parse(SecureStore.getItem('user'));
+      obj.user.firstName = action.payload.firstName;
+      SecureStore.setItemAsync('user', JSON.stringify(obj));
+    },
+    setOptionalCheckins: (state, action) => {
+      state.optionalCheckins = action.payload.optionalCheckins;
+      const obj = JSON.parse(SecureStore.getItem('user'));
+      obj.user.optionalCheckins = action.payload.optionalCheckins;
+      SecureStore.setItemAsync('user', JSON.stringify(obj));
     },
   },
 });
@@ -42,6 +59,8 @@ const authSlice = createSlice({
 export const {
   login,
   logout,
+  setFirstNameField,
+  setOptionalCheckins,
 } = authSlice.actions;
 
 const { reducer } = authSlice;

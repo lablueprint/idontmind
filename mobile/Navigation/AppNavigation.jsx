@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import * as SecureStore from 'expo-secure-store';
 import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { login } from '../redux/authSlice';
@@ -17,6 +18,7 @@ import Filter from '../Features/Other/Screens/Filter';
 import BannedTags from '../Features/Other/Screens/BannedTags';
 import Splash from '../Features/GettingStarted/Splash';
 import Terms from '../Features/GettingStarted/Terms';
+// import Loading from '../Features/Register/Loading';
 import Loading from '../Features/Onboarding/Screens/Loading';
 import DontCareSee from '../Features/Onboarding/Screens/DontCareSee';
 import WOYM from '../Features/Onboarding/Screens/WOYM';
@@ -60,13 +62,15 @@ const Stack = createStackNavigator();
 
 export default function AppNavigation({ user }) {
   const [isLoading, setIsLoading] = useState(true);
+  const [initialRoute, setInitialRoute] = useState('Landing');
   const dispatch = useDispatch();
 
-  const popRedux = () => {
+  const popRedux = async () => {
     console.log(user);
     if (!user) {
       return;
     }
+    // fill redux storage
     dispatch(login(JSON.parse(user)));
   };
 
@@ -80,6 +84,25 @@ export default function AppNavigation({ user }) {
     popRedux();
   }, [user]);
 
+  useEffect(() => {
+    // if user is not logged in then navigate to landing
+    if (!user) return;
+
+    // Load last screen for user after logging in
+    const loadLastScreen = async () => {
+      try {
+        const lastScreen = await SecureStore.getItemAsync('lastScreen');
+        if (lastScreen) {
+          setInitialRoute(lastScreen);
+        }
+      } catch (e) {
+        console.error('unable to load last screen from storage: ', e);
+      }
+    };
+
+    loadLastScreen();
+  }, [user]);
+
   if (isLoading) {
     return (<Loading />);
   }
@@ -87,36 +110,28 @@ export default function AppNavigation({ user }) {
   return (
     <NavigationContainer>
       <TagProvider>
-        <Stack.Navigator>
-          { user ? (
-            <Stack.Screen name="NavigationBar" component={NavigationBar} options={{ headerShown: false }} />
-          ) : (
-            <Stack.Screen name="Landing" component={Landing} options={{ headerShown: false }} />
-          )}
+        <Stack.Navigator initialRouteName={initialRoute}>
+          <Stack.Screen name="Landing" component={Landing} options={{ headerShown: false }} />
           <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
           <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
-          <Stack.Screen name="PersonalInfo" component={PersonalInfo} options={{ headerShown: false }} />
-          <Stack.Screen name="DontCareSee" component={DontCareSee} options={{ headerShown: false }} />
-          <Stack.Screen name="WOYM" component={WOYM} options={{ headerShown: false }} />
-          { user ? (
-            <Stack.Screen name="Landing" component={Landing} options={{ headerShown: false }} />
-          ) : (
-            <Stack.Screen name="NavigationBar" component={NavigationBar} options={{ headerShown: false }} />
-          )}
-          <Stack.Screen name="Filter" component={Filter} options={{ headerShown: false }} />
-          <Stack.Screen name="BannedTags" component={BannedTags} options={{ headerShown: false }} />
-          <Stack.Screen name="Loading" component={Loading} options={{ headerShown: false }} />
+          <Stack.Screen name="NavigationBar" component={NavigationBar} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="PersonalInfo" component={PersonalInfo} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="DontCareSee" component={DontCareSee} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="WOYM" component={WOYM} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="Filter" component={Filter} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="BannedTags" component={BannedTags} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="Loading" component={Loading} options={{ headerShown: false, gestureEnabled: false }} />
           <Stack.Screen name="Trends" component={TrendsTab} options={{ headerShown: false }} />
           <Stack.Screen name="TrendsBody" component={TrendsBody} options={{ headerShown: false }} />
-          <Stack.Screen name="AltNavigationBar" component={AltNavigationBar} options={{ headerShown: false }} />
-          <Stack.Screen name="Splash" component={Splash} options={{ headerShown: false }} />
-          <Stack.Screen name="Terms" component={Terms} options={{ headerShown: false }} />
-          <Stack.Screen name="TutorialCheckIn1" component={TutorialCheckIn1} options={{ headerShown: false }} />
-          <Stack.Screen name="CheckinOptional" component={CheckinOptional} options={{ headerShown: false }} />
-          <Stack.Screen name="TutorialCheckIn2" component={TutorialCheckIn2} options={{ headerShown: false }} />
-          <Stack.Screen name="Personalization" component={Personalization} options={{ headerShown: false }} />
-          <Stack.Screen name="MoreResources" component={MoreResources} options={{ headerShown: false }} />
-          <Stack.Screen name="WrapUp" component={WrapUp} options={{ headerShown: false }} />
+          <Stack.Screen name="AltNavigationBar" component={AltNavigationBar} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="Splash" component={Splash} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="Terms" component={Terms} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="TutorialCheckIn1" component={TutorialCheckIn1} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="CheckinOptional" component={CheckinOptional} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="TutorialCheckIn2" component={TutorialCheckIn2} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="Personalization" component={Personalization} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="MoreResources" component={MoreResources} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="WrapUp" component={WrapUp} options={{ headerShown: false, gestureEnabled: false }} />
           <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{ headerShown: false }} />
           <Stack.Screen name="TokenInput" component={TokenInput} options={{ headerShown: false }} />
           <Stack.Screen name="ResetPassword" component={ResetPassword} options={{ headerShown: false }} />

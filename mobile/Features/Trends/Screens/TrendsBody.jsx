@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 import { LinearGradient } from 'expo-linear-gradient';
 import TrendsHeader from '../Components/TrendsHeader';
 import Bookmark from '../../Other/Components/Bookmark';
+import LookingForward from '../Components/lookingForward';
 import styles from './TrendsPageStyles';
 import { useSelector } from 'react-redux';
 import { useRoute } from '@react-navigation/native';
@@ -105,10 +106,11 @@ export default function TrendsBody({ route, navigation }) {
   const [energyMessage, setEnergyMessage] = useState(null);
   const [notEnoughData, setNotEnoughData] = useState(false);
   const [selectedPeriod, setSelectedPeriod] = useState('Week');
+  const [top5Values, setTop5Values] = useState([]);
 
   const { title } = route.params;
 
-  const { email, userId, authHeader} = useSelector((state) => state.auth);
+  const { email, id, authHeader } = useSelector((state) => state.auth);
 
   useEffect(() => {
     const getUserTimeSeries = async () => {
@@ -133,15 +135,15 @@ export default function TrendsBody({ route, navigation }) {
           //THE EMAIL AND USERID HERE ARE JUST FOR TESTING. need to change to just email and userId with no colon
           //email,
           //userID,
-          email: 'user1@example.com',
-          userId: 'user1',
+          email,
+          userId: id,
           startDate,
           midDate,
           endDate,
           period: selectedPeriod,
         }, { headers: authHeader });
 
-        console.log('Response data:', res.data);
+        setTop5Values(res.data.top5Values);
 
         if (res.data.message) {
           setNotEnoughData(true);
@@ -403,9 +405,11 @@ export default function TrendsBody({ route, navigation }) {
           <TrendSection header="Mood Levels" name="mood levels" description="Tracking mood changes over time" data={lastPeriodMood} data2={currentPeriodMood} avg={avgMoodPercentage} notEnoughData={notEnoughData} period={selectedPeriod}/>
         </View>
         <TrendSection header="Sleep Quality" name="sleep quality" description="Monitoring sleep patterns and quality." data={lastPeriodSleep} data2={currentPeriodSleep} avg={avgSleepPercentage} notEnoughData={notEnoughData} period={selectedPeriod}/>
+        <LookingForward top5Values={top5Values}/>
         <View style={{ marginBottom: 75 }}>
         <TrendSection header="Energy Levels" name="energy levels" description="Observing energy levels throughout the day." data={lastPeriodEnergy} data2={currentPeriodEnergy} avg={avgEnergyPercentage} notEnoughData={notEnoughData} period={selectedPeriod}/>
         </View>
+
       </LinearGradient>
     </ScrollView>
 

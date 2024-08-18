@@ -40,8 +40,8 @@ function Sleep({ navigation }) {
   const initialSliderValue = 2;
   const [slider, setSlider] = useState(initialSliderValue);
   const [hasMovedSlider, setHasMovedSlider] = useState(false);
-  // const { optionalCheckins } = useSelector((state) => state.auth);
-  const optionalCheckins = ['Meal', 'Water', 'Exercise', 'Activity'];
+  const { optionalCheckins } = useSelector((state) => state.auth);
+
   const [modalVisible, setModalVisible] = useState(false);
   const toggleModal = () => {
     setModalVisible(!modalVisible);
@@ -62,6 +62,7 @@ function Sleep({ navigation }) {
   };
 
   const getNextPage = (currentPage) => {
+    console.log(optionalCheckins);
     const corePages = ['CheckIn', 'PreFeeling', 'Feeling', 'Energy', 'Sleep', 'EndCheckIn'];
     const allPages = corePages.slice(0, corePages.length - 1)
       .concat(optionalCheckins)
@@ -75,6 +76,8 @@ function Sleep({ navigation }) {
 
   const continueButton = () => {
     const nextPage = getNextPage('Sleep');
+    console.log(nextPage);
+    console.log('====================')
     const data = {
       numPages,
       moodValue,

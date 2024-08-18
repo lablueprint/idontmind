@@ -48,8 +48,9 @@ export default StyleSheet.create({
     paddingHorizontal: 40,
     marginTop: 20,
     width: 258,
-    top: 120,
+    bottom: 40,
     height: 60,
+    position: 'absolute',
   },
   buttonText: {
     color: 'black',

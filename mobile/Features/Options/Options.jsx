@@ -1,15 +1,19 @@
 import {
-  View, Text, TouchableOpacity, ScrollView, Pressable, Image,
+  View, Text, TouchableOpacity, ScrollView, Pressable, Image, Button
 } from 'react-native';
 import PropTypes from 'prop-types';
-import styles from '../Other/Screens/OptionStyle';
 import Back from '../../assets/images/back.png';
 import Settings from '../../assets/images/settings.png';
 import Account from '../../assets/images/account-icon.png';
 import Right from '../../assets/images/right_options.png';
 import Customize from '../../assets/images/pen.png';
 
+import { useDispatch } from 'react-redux';
+import { logout } from '../../redux/authSlice';
+
 function Options({ navigation }) {
+  const dispatch = useDispatch();
+
   const navigateToDashBoard = () => {
     navigation.navigate('Content Dashboard');
   };
@@ -27,6 +31,16 @@ function Options({ navigation }) {
   };
   const navigateToContentAvoid = () => {
     navigation.navigate('Content To Avoid');
+  };
+
+  const navigateToWelcome = () => {
+    navigation.navigate('Landing'); //TODO: later on will be splash
+  };
+
+  // Resets current session state
+  const handleLogout = async () => {
+    dispatch(logout());
+    navigateToWelcome();
   };
 
   return (
@@ -207,9 +221,32 @@ function Options({ navigation }) {
             />
           </View>
         </Pressable>
-
+        <View style={{ alignItems: 'center', marginTop: 20 }}>
+          <TouchableOpacity
+            onPress={handleLogout}
+            style={{
+              backgroundColor: '#D2E4E3',
+              borderRadius: 40,
+              paddingVertical: 10,
+              paddingHorizontal: 40,
+              width: 258,
+              height: 60,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Text
+              style={{
+                color: 'black',
+                textAlign: 'center',
+                fontSize: 20,
+              }}
+            >
+              Logout
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
-
     </View>
   );
 }

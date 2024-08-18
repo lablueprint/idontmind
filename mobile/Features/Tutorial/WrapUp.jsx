@@ -2,6 +2,8 @@ import {
   View, Text, TouchableOpacity, Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
+import { useEffect } from 'react';
+import * as SecureStore from 'expo-secure-store';
 import reward from '../../assets/images/reward.png';
 import styles from './OverviewStyle';
 
@@ -9,6 +11,17 @@ export default function WrapUp({ navigation }) {
   const next = () => {
     navigation.navigate('CheckIn');
   };
+  useEffect(() => {
+    const saveLastScreen = async () => {
+      try {
+        await SecureStore.setItemAsync('lastScreen', 'TutorialCheckIn2');
+      } catch (e) {
+        console.error('unable to set screen in storage: ', e);
+      }
+    };
+
+    saveLastScreen();
+  }, []);
   return (
     <View style={{
       display: 'flex', flexDirection: 'column', marginTop: 100, width: '80%', alignSelf: 'center',

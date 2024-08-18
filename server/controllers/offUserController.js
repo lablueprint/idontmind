@@ -10,7 +10,7 @@ const OfficialPersonalStory = require('../models/OfficialStoriesSchema');
 // Creates user with given email, password, and to send to backend
 const signUpUser = async (req, res, next) => {
   try {
-    const { email, password, firstName } = req.body;
+    const { email, password } = req.body;
 
     const userAlreadyExists = await User.findOne({ email });
 
@@ -18,7 +18,7 @@ const signUpUser = async (req, res, next) => {
       return res.status(400).send({ message: 'This user already has an account' });
     }
 
-    const user = new User({ email, password, firstName });
+    const user = new User({ email, password });
     await user.save();
     res.json(user);
   } catch (error) {
@@ -46,6 +46,46 @@ const signInUser = async (req, res, next) => {
       return res.json({ user, token });
     });
   })(req, res, next);
+};
+
+const setPersonalInfo = async (req, res) => {
+  const {
+    email, firstName, age, country, gender,
+  } = req.body;
+  try {
+    const user = await User.findOneAndUpdate({ email }, {
+      firstName, age, country, gender,
+    });
+    res.send(user);
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+const setInterestedTags = async (req, res) => {
+  const { email, interestedTags } = req.body;
+  console.log(email);
+  console.log(interestedTags);
+  try {
+    const user = await User.findOneAndUpdate(
+      { email },
+      { $set: { InterestedTags: interestedTags } },
+    );
+    console.log(user);
+    res.send(user);
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+const setBanTags = async (req, res) => {
+  const { email, banTags } = req.body;
+  try {
+    const user = await User.findOneAndUpdate({ email }, { $set: { banTags } });
+    res.send(user);
+  } catch (e) {
+    console.error(e);
+  }
 };
 
 const welcomeUser = (req, res) => {
@@ -357,7 +397,7 @@ const increaseChallengeDay = async (req, res) => {
   } catch (err) {
     console.error(err);
     return res.status(500).send(err);
-  }a;
+  }
 };
 
 // req has tag object, email
@@ -597,6 +637,11 @@ module.exports = {
   getUserChallengeDay,
   resetChallengeDay,
   increaseChallengeDay,
+  // favoriteTag,
+  // unfavoriteTag,
+  setPersonalInfo,
+  setInterestedTags,
+  setBanTags,
   checkUserByEmail,
   sendEmail,
   resetPassword,

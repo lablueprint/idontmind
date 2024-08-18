@@ -2,10 +2,10 @@ import {
   View, Text, TouchableOpacity, Image,
   ScrollView, Dimensions,
 } from 'react-native';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
 import gear from '../../../assets/images/gear.png';
 import background from '../../../assets/images/contentbackground.png';
 import styles from './ContentDashboardStyle';
@@ -85,7 +85,11 @@ export default function ContentDashboard({ navigation }) {
         }}
         >
           <View style={{ flexDirection: 'row' }}>
-            <Text style={styles.largeText}>Welcome, {firstName}!</Text> 
+            <Text>
+              <Text style={styles.largeText}>Welcome, </Text>
+              <Text style={styles.capitalLetter}>{firstName ? firstName[0].toUpperCase() : ""}</Text>
+              <Text style={styles.largeText}>{firstName ? firstName.substr(1) : ""}!</Text>              
+            </Text>          
           </View>
           <Text style={styles.medText}>We&apos;re so glad you&apos;re here!</Text>
         </View>

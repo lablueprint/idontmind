@@ -3,9 +3,10 @@ import {
 } from 'react-native';
 import { Image } from 'expo-image';
 import PropTypes from 'prop-types';
+import * as SecureStore from 'expo-secure-store';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-import { useState, useEffect } from 'react';
 import styles from './CheckInStyles';
 
 function CheckIn({ navigation }) {
@@ -24,8 +25,20 @@ function CheckIn({ navigation }) {
   };
 
   const continueToDashBoard = () => {
-    navigation.navigate('Content Dashboard');
+    navigation.navigate('AltNavigationBar');
   };
+
+  useEffect(() => {
+    const saveLastScreen = async () => {
+      try {
+        await SecureStore.setItemAsync('lastScreen', 'NavigationBar');
+      } catch (e) {
+        console.error('cant delete item from storage: ', e);
+      }
+    };
+
+    saveLastScreen();
+  });
 
   const checkExistingCheckIn = async () => {
     try {

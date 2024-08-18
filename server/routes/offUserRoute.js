@@ -5,6 +5,9 @@ const offUserController = require('../controllers/offUserController');
 
 offUserRouter.post('/signin', offUserController.signInUser);
 offUserRouter.post('/signup', offUserController.signUpUser);
+offUserRouter.post('/setPersonalInfo', offUserController.setPersonalInfo);
+offUserRouter.post('/setInterestedTags', offUserController.setInterestedTags);
+offUserRouter.post('/setBanTags', offUserController.setBanTags);
 
 offUserRouter.post('/sendEmail', offUserController.sendEmail);
 
@@ -21,6 +24,8 @@ offUserRouter.get('/get', (req, res) => {
   res.send('Get API');
 });
 offUserRouter.get('/protected', offUserController.authenticatePassport, offUserController.welcomeUser);
+
+
 
 offUserRouter.post('/createUser', offUserController.createUser);
 

@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Text, View, Pressable, Image,
   ScrollView,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import * as SecureStore from 'expo-secure-store';
 import PropTypes from 'prop-types';
 import chev from '../../../assets/images/chevron-up.png';
 import data from './PillTags.json';
@@ -17,7 +18,6 @@ function DontCareSee({ navigation }) {
     });
     return resultMap;
   }
-
   const [selectedCoping, setSelectedCoping] = useState(createMaps(data.coping));
   const [selectedEWB, setSelectedEWB] = useState(createMaps(data.ewb));
   const [selectedIdentity, setSelectedIdentity] = useState(createMaps(data.identity));
@@ -132,6 +132,19 @@ function DontCareSee({ navigation }) {
   const navigateToOverview = () => {
     navigation.navigate('Overview');
   };
+
+  // Save last visited screen in Secure Storage
+  useEffect(() => {
+    const saveLastScreen = async () => {
+      try {
+        await SecureStore.setItemAsync('lastScreen', 'DontCareSee');
+      } catch (e) {
+        console.error('unable to set screen in storage: ', e);
+      }
+    };
+
+    saveLastScreen();
+  }, []);
 
   return (
     <View style={{ flex: 1 }}>
