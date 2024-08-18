@@ -67,7 +67,7 @@ function CheckIn({ navigation }) {
         </View>
       </View>
       <Image
-        source={require('../../assets/images/lilGuy.png')}
+        source={require('../../assets/images/lilSun.png')}
         style={styles.checkInMascot}
       />
     </View>

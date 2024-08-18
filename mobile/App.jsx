@@ -9,7 +9,7 @@ import store from './redux/store';
 import Loading from './Features/Onboarding/Screens/Loading';
 
 import gear from './assets/images/gear.png';
-import lilGuy from './assets/images/lilGuy.png';
+import lilSun from './assets/images/lilSun.png';
 import bookmarkBlue from './assets/images/bookmark_blue.png';
 import science from './assets/images/science.png';
 import icon from './assets/images/icon.png';
