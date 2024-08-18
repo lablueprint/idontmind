@@ -127,7 +127,7 @@ export default function App() {
 
     async function loadImages() {
       Asset.fromModule(gear).downloadAsync();
-      Asset.fromModule(lilGuy).downloadAsync();
+      Asset.fromModule(lilSun).downloadAsync();
       Asset.fromModule(bookmarkBlue).downloadAsync();
       Asset.fromModule(science).downloadAsync();
       Asset.fromModule(icon).downloadAsync();
