@@ -32,7 +32,8 @@ export default function CheckinOptional({ navigation }) {
       temp.add(label);
       setCheckinSet(temp);
     }
-    const checkinArray = Array.from(temp, (value) => labelValues[value]);
+    const ranking = ['Meal', 'Water Intake', 'Exercise', 'Activity']; // activity must occur last if it occurs at all
+    const checkinArray = Array.from(temp, (value) => labelValues[value]).sort((a, b) => ranking.indexOf(a) - ranking.indexOf(b));    
     console.log(checkinArray);
     console.log(id);
     try {

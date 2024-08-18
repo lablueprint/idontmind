@@ -13,7 +13,8 @@ import styles from './ExerciseStyle';
 
 export default function Exercise({ navigation }) {
   const [exercise, setExercise] = useState('');
-  const { optionalCheckins } = useSelector((state) => state.auth);
+  const { optionalCheckins } = useSelector((state) => state.auth);  
+  
   const route = useRoute();
   const numPages = route.params?.numPages;
   const moodValue = route.params?.moodValue;
