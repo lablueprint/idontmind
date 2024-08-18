@@ -55,10 +55,9 @@ function EndCheckIn({ navigation }) {
     if (!submitted) {
       submitData();
     }
-  }, [submitted, email, id, authHeader, route.params]);
-
+  }, [submitted, email, id, authHeader, route.params])
   const handleEnd = () => {
-    navigation.navigate('Landing');
+    navigation.navigate('AltNavigationBar');
   };
 
   return (

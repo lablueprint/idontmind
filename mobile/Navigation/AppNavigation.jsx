@@ -56,7 +56,6 @@ import Meal from '../Features/CheckIn/Meal';
 import EndCheckIn from '../Features/CheckIn/EndCheckIn';
 import Exercise from '../Features/CheckIn/Exercise';
 
-import NotificationsTest from '../Features/Settings/Screens/NotificationsTest';
 import FindHelp from '../Features/Other/Screens/FindHelp';
 
 const Stack = createStackNavigator();
@@ -140,7 +139,6 @@ export default function AppNavigation({ user }) {
           <Stack.Screen name="ThirtyDayChallenge" component={ThirtyDayChallenge} options={{ headerShown: false }} /> */}
           {/* <Stack.Screen name="PushNotifications" component={PushNotifications}
            options={{ headerShown: false }} /> */}
-          <Stack.Screen name="Notifications Test" component={NotificationsTest} options={{ headerShown: false }} />
           <Stack.Screen name="Overview" component={Overview} options={{ headerShown: false }} />
           <Stack.Screen name="Favorites" component={FavoritesList} options={{ headerShown: false }} />
           <Stack.Screen name="CheckIn" component={CheckIn} options={{ headerShown: false }} />

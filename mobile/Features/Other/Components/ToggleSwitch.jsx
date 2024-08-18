@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { Switch } from 'react-native-switch';
 import PropTypes from 'prop-types';
-import styles from '../Screens/PushNotificationsStyle';
+import styles from '../../Options/PushNotificationsStyle';
 
 function ToggleSwitch({ label, value, onValueChange }) {
   const handleValueChange = () => {

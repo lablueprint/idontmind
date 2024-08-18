@@ -40,13 +40,9 @@ module.exports = {
 };
 
 const getUserTimeSeries = async (req, res) => {
-  console.log('getUserTimeSeries');
-
   const {
     email, userId, startDate, midDate, endDate, period,
   } = req.body;
-  console.log(email);
-  console.log(userId);
   try {
     const timeSeries = await TimeSerie.aggregate([
       {
@@ -166,8 +162,7 @@ const getUserTimeSeries = async (req, res) => {
     const top5Values = getTop5ValuesByField(secondPeriod, 'activityChosen', 5);
     if (top5Values.length < 5) {
       const amountLeft = 5 - top5Values.length;
-      for (let i = 0; i < amountLeft; i++) {
-
+      for (let i = 0; i < amountLeft; i += 1) {
         top5Values.push({ activity: '', activityImg: '' });
       }
     }

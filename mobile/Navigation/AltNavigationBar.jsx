@@ -18,12 +18,11 @@ import ContentIcon from '../assets/navbaricons/contenticon.png';
 import FindHelpIcon from '../assets/navbaricons/findhelpicon.png';
 import BlackCircle from '../assets/navbaricons/blackcircle.png';
 
-// import PostSignInLanding from '../Features/Other/Screens/PostSignInLanding';
-
-// removed bc want to remove the bottom nav bar:
-// import CheckIn from '../Features/CheckIn/CheckIn';
-
-import Options from '../Features/Other/Screens/Options';
+import Options from '../Features/Options/Options';
+import PersonalInfo from '../Features/Options/PersonalInfo';
+import PushNotificationsOptions from '../Features/Options/PushNotifications';
+import ResetPassword from '../Features/Options/ResetPassword';
+// import Options from '../Features/Other/Screens/Options';
 
 import ThirtyDayOverview from '../Features/Tutorial/ThirtyDayOverview';
 import ThirtyDayChallenge from '../Features/Tutorial/ThirtyDayChallenge';
@@ -33,13 +32,17 @@ import BookmarksEdgeCase from '../Features/ContentLibrary/Screens/BookmarksEdgeC
 import Resource from '../Features/ContentLibrary/Screens/Resource';
 import ResourceList from '../Features/ContentLibrary/Screens/ResourceList';
 import Tag from '../Features/ContentLibrary/Screens/Tag';
+import ContentRecs from '../Features/Options/ContentRecs';
+import ContentToAvoid from '../Features/Options/ContentToAvoid';
 import FolderContent from '../Features/ContentLibrary/Screens/FolderContent';
-import NotificationsTest from '../Features/Settings/Screens/NotificationsTest';
+import NotificationsTest from '../Features/Options/NotificationsTest';
 
 const Stack = createStackNavigator();
-const otherNames = ['Detox', 'ThirtyDayChallenge', 'Notifs', 'Options'];
-const otherPages = [ThirtyDayOverview, ThirtyDayChallenge, NotificationsTest,
-  Options];
+const otherNames = ['Detox', 'ThirtyDayChallenge', 'Options', 'Personal Info', 'Push Notifications Options', 'Reset Password',
+  'Content Recs', 'Content To Avoid'];
+const otherPages = [ThirtyDayOverview, ThirtyDayChallenge,
+  Options, PersonalInfo, NotificationsTest, ResetPassword,
+  ContentRecs, ContentToAvoid];
 
 function HomeWithExtraPages() {
   return (

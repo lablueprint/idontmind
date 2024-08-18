@@ -78,7 +78,10 @@ function ResourceList({ navigation }) {
       navigation.navigate('FolderContent', {
         folderName, folderDescription, resources: folderResources, tags: folderTags,
       }); // set index to 0 as default for now
-    } else {
+    } else if (prevRoute === 'Content Library') {
+      navigation.navigate('Content Library'); // set index to 0 as default for now
+    }
+    else {
       navigation.navigate('Tag', { index: 0, routeName: 'Content Library', tagName }); // set index to 0 as default for now
     }
   };
@@ -161,8 +164,13 @@ function ResourceList({ navigation }) {
     getFolders();
   }, [modalVisibleCreated]);
   useEffect(() => {
-    getFavorites();
-  }, []);
+    const unsubscribe = navigation.addListener('focus', () => {
+      getFavorites();
+    });
+  
+    // Cleanup the listener when the component unmounts
+    return unsubscribe;
+  }, [navigation]);
 
   return (
     <View
