@@ -5,10 +5,6 @@ import {
 import PropTypes from 'prop-types';
 
 export default function PostSignInLanding({ navigation }) {
-  const navigateToJournalHistory = () => {
-    navigation.navigate('Journal History');
-  };
-
   const navigateToWOYM = () => {
     navigation.navigate('WOYM');
   };
@@ -16,10 +12,6 @@ export default function PostSignInLanding({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>IDONTMIND</Text>
-      <Button
-        title="To Journal History"
-        onPress={navigateToJournalHistory}
-      />
       <Button
         title="To WOYM"
         onPress={navigateToWOYM}

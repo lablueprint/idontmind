@@ -3,22 +3,24 @@ import {
   Text, View, Pressable, Image,
 } from 'react-native';
 import { useRoute } from '@react-navigation/native';
-import ProgressBar from 'react-native-progress/Bar';
 import PropTypes from 'prop-types';
-import nicole from '../../assets/images/sleepFace.png';
+import sleepFace from '../../assets/images/sleepFace.png';
 import styles from './MoodStyle';
+import infoButton from '../../assets/images/infobutton.png';
+import CheckInModal from './CheckInModal';
+
 
 function Mood({ navigation }) {
-  // get numPages from route, set progress to 1 / numpages
   const route = useRoute();
-  const numPages = route.params?.numPages;
   const newMood = route.params?.moodPassedIn;
   const newColor = route.params?.colorChosen;
 
-  const progress = 1 / numPages;
-  // addedMoods array to keep track of the new moods the user has added
   const [addedMoods, setAddedMoods] = useState([]);
   const [moodChosen, setMoodChosen] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
+  const toggleModal = () => {
+    setModalVisible(!modalVisible);
+  };
 
   useEffect(() => {
     // update addedMoods with the route parameters from the AddColor screen (mood and color)
@@ -30,11 +32,11 @@ function Mood({ navigation }) {
   }, [newMood, newColor]);
 
   const continueButton = () => {
-    navigation.navigate('Activity', { numPages, moodChosen });
+    navigation.navigate('Activity', { moodChosen });
   };
 
   const skipButton = () => {
-    navigation.navigate('Activity', { numPages });
+    navigation.navigate('Activity');
   };
 
   // later implement functionality for pressing on a mood button:
@@ -47,15 +49,15 @@ function Mood({ navigation }) {
   /* pressing the plus button takes user to AddMood screen, passes in setAddedMoods
   and addedMoods so user can edit the addedMoods array */
   const addMood = () => {
-    navigation.navigate('AddMood', { numPages });
+    navigation.navigate('AddMood');
   };
 
   // moodImages is an array of each of the rows
   // each row contains mood, image pairs
   const moodImages = [
-    [['NEUTRAL', nicole], ['HAPPY', nicole], ['SAD', nicole]],
-    [['UGLY', nicole], ['MAD', nicole], ['DELIGHTED', nicole]],
-    [['DEPRESSED', nicole], ['STRESSED', nicole], ['OVERWHELMED', nicole]],
+    [['NEUTRAL', sleepFace], ['HAPPY', sleepFace], ['SAD', sleepFace]],
+    [['UGLY', sleepFace], ['MAD', sleepFace], ['DELIGHTED', sleepFace]],
+    [['DEPRESSED', sleepFace], ['STRESSED', sleepFace], ['OVERWHELMED', sleepFace]],
   ];
 
   // depending on how many moods have been added, the bottom row will look different
@@ -133,11 +135,13 @@ function Mood({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <ProgressBar progress={progress} width={200} style={{ top: '5%' }} />
       <View style={styles.heading}>
         <Text>
           how are you feeling today, really?
         </Text>
+        <Pressable onPress={toggleModal}>
+          <Image source={infoButton} style={{width: 16, height: 16, marginTop: 12, marginLeft: 10}} />
+        </Pressable>
       </View>
       <View style={styles.content}>
         {moodImages.map((row) => (
@@ -162,6 +166,11 @@ function Mood({ navigation }) {
           <Text>SKIP</Text>
         </Pressable>
       </View>
+      <CheckInModal 
+        checkInQNum = {0}
+        modalVisible = {modalVisible}
+        toggleModal = {toggleModal}
+        />
     </View>
   );
 }

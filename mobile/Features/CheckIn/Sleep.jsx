@@ -1,111 +1,188 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import {
-  Text, View, Pressable, Image,
+  Text, View, Pressable, Dimensions,
 } from 'react-native';
-import { useRoute } from '@react-navigation/native';
 import Slider from '@react-native-community/slider';
-import ProgressBar from 'react-native-progress/Bar';
 import PropTypes from 'prop-types';
+import { Image } from 'expo-image';
+import { useRoute } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 import styles from './SleepStyle';
+import infoButton from '../../assets/images/infobutton.png';
+import CheckInModal from './CheckInModal';
 
 function Sleep({ navigation }) {
   const route = useRoute();
-  const moodsChosen = route.params?.moodsChosen;
-  const moodValueChosen = route.params?.moodValueChosen;
-  const activityChosen = route.params?.activityChosen;
-  // update progress
   const numPages = route.params?.numPages;
+  const moodValue = route.params?.moodValue;
+  const moodsChosen = route.params?.moodsChosen;
+  const energyChosen = route.params?.energyChosen;
   const progress = 3 / numPages;
-  // slider state
-  const [slider, setSlider] = useState(0);
+
+  const { width } = Dimensions.get('window');
+
+  const images = [
+    require('../../assets/images/happylilguy.png'),
+    require('../../assets/images/smilinglilguy.png'),
+    require('../../assets/images/normallilguy.png'),
+    require('../../assets/images/sadlilguy.png'),
+    require('../../assets/images/crylilguy.png'),
+  ];
+
+  const captions = [
+    'Excellent',
+    'Good',
+    'Fair',
+    'Poor',
+    'Worst',
+  ];
+
+  const initialSliderValue = 2;
+  const [slider, setSlider] = useState(initialSliderValue);
+  const [hasMovedSlider, setHasMovedSlider] = useState(false);
+  // const { optionalCheckins } = useSelector((state) => state.auth);
+  const optionalCheckins = ['Meal', 'Water', 'Exercise', 'Activity'];
+  const [modalVisible, setModalVisible] = useState(false);
+  const toggleModal = () => {
+    setModalVisible(!modalVisible);
+  };
 
   const onSliderChange = (sliderValue) => {
     setSlider(sliderValue);
-  };
-
-  const continueButton = () => {
-    if (slider !== 0) {
-      navigation.navigate('EndCheckIn', {
-        moodsChosen, moodValueChosen, activityChosen, sleepScore: slider,
-      });
+    if (!hasMovedSlider) {
+      setHasMovedSlider(true);
     }
   };
 
-  const skipButton = () => {
-    navigation.navigate('EndCheckIn', { moodsChosen, moodValueChosen, activityChosen });
+  const onImagePress = (index) => {
+    setSlider(index);
+    if (!hasMovedSlider) {
+      setHasMovedSlider(true);
+    }
   };
+
+  const getNextPage = (currentPage) => {
+    const corePages = ['CheckIn', 'PreFeeling', 'Feeling', 'Energy', 'Sleep', 'EndCheckIn'];
+    const allPages = corePages.slice(0, corePages.length - 1)
+      .concat(optionalCheckins)
+      .concat(corePages.slice(corePages.length - 1));
+
+    const currentIndex = allPages.indexOf(currentPage);
+    return currentIndex !== -1 && currentIndex < allPages.length - 1
+      ? allPages[currentIndex + 1]
+      : null;
+  };
+
+  const continueButton = () => {
+    const nextPage = getNextPage('Sleep');
+    const data = {
+      numPages,
+      moodValue,
+      moodsChosen,
+      energyChosen,
+      sleepScore: 5 - slider,
+    };
+    if (nextPage) {
+      navigation.navigate(nextPage, data);
+    } else {
+      navigation.navigate('EndCheckIn', data);
+    }
+  };
+
+  // const skipButton = () => {
+  //   const nextPage = getNextPage('Sleep');
+  //   const data = {
+  //     numPages,
+  //     moodValue,
+  //     moodsChosen,
+  //     energyChosen,
+  //     sleepScore: null,
+  //   };
+  //   if (nextPage) {
+  //     navigation.navigate(nextPage, data);
+  //   } else {
+  //     navigation.navigate('EndCheckIn', data);
+  //   }
+  // };
 
   return (
     <View style={styles.container}>
-      <ProgressBar progress={progress} width={200} style={{ top: '5%' }} />
-      <View style={styles.heading}>
-        <Text>
-          rate your sleep quality last night.
+      <View>
+        <View style={{flexDirection: 'row', marginBottom: '0%', width: '80%', marginTop: '25%'}}>
+        <Text style={styles.topHeading}>
+          How would you rate your sleep quality last night?
         </Text>
+        <Pressable onPress={toggleModal}>
+          <Image source={infoButton} style={{width: 16, height: 16, marginTop: 12, marginLeft: 10}} />
+        </Pressable>
+        </View>
       </View>
       <View style={styles.content}>
         <View style={styles.rating}>
-          <Text style={styles.singularRating}>10 excellent</Text>
-          <Text style={styles.singularRating}>9</Text>
-          <Text style={styles.singularRating}>8</Text>
-          <Text style={styles.singularRating}>7</Text>
-          <Text style={styles.singularRating}>6</Text>
-          <Text style={styles.singularRating}>5 average</Text>
-          <Text style={styles.singularRating}>4</Text>
-          <Text style={styles.singularRating}>3</Text>
-          <Text style={styles.singularRating}>2</Text>
-          <Text style={styles.singularRating}>1 very poor</Text>
+          {captions.map((caption, index) => (
+            <View key={index} style={styles.singularRating}>
+              <Text style={styles.singularRating2}>{caption}</Text>
+            </View>
+          ))}
         </View>
         <View style={styles.slider}>
-          <View style={{ transform: [{ rotate: '-90deg' }] }}>
+          <View style={{ transform: [{ rotate: '90deg' }] }}>
             <Slider
-              style={{ width: 600, height: 40, alignSelf: 'center' }}
-              minimumValue={1}
-              maximumValue={12}
-              minimumTrackTintColor="#000000"
-              maximumTrackTintColor="#000000"
+              style={{ width: 375, height: 40, alignSelf: 'center' }}
+              minimumValue={0}
+              maximumValue={4}
+              minimumTrackTintColor="#FFFFFF"
+              maximumTrackTintColor="#374342"
+              thumbTintColor="#374342"
               onValueChange={onSliderChange}
               step={1}
+              value={slider}
               vertical
             />
           </View>
         </View>
         <View style={styles.faces}>
-          <View style={styles.singularFace}>
-            <Image
-              source={require('../../assets/images/sleepFace.png')}
-            />
-          </View>
-          <View style={styles.singularFace}>
-            <Image
-              source={require('../../assets/images/sleepFace.png')}
-            />
-          </View>
-          <View style={styles.singularFace}>
-            <Image
-              source={require('../../assets/images/sleepFace.png')}
-            />
-          </View>
-          <View style={styles.singularFace}>
-            <Image
-              source={require('../../assets/images/sleepFace.png')}
-            />
-          </View>
-          <View style={styles.singularFace}>
-            <Image
-              source={require('../../assets/images/sleepFace.png')}
-            />
-          </View>
+          {images.map((image, index) => (
+            <Pressable key={index} onPress={() => onImagePress(index)} style={styles.faces}>
+              <View
+                key={index}
+                style={[
+                  styles.singularFace,
+                  { width: 80 + (slider === index ? 20 : 0), height: 70 + (slider === index ? 20 : 0) },
+                  slider === index ? styles.shadowEffect : null,
+                ]}
+              >
+                <Image
+                  source={image}
+                  style={{ width: 30 + (slider === index ? 20 : 0), height: 30 + (slider === index ? 40 : 0), overflow: 'visible' }}
+                />
+              </View>
+            </Pressable>
+          ))}
         </View>
       </View>
       <View style={styles.buttons}>
-        <Pressable onPress={continueButton}>
-          <Text>CONTINUE</Text>
+        <Pressable
+          style={[
+            styles.continueButton,
+            { backgroundColor: hasMovedSlider ? '#374342' : '#C6CECE' },
+          ]}
+          onPress={continueButton}
+          disabled={!hasMovedSlider}
+        >
+          <Text style={[styles.continueText, { color: hasMovedSlider ? '#FFFFFF' : '#000000' }]}>
+            Continue
+          </Text>
         </Pressable>
-        <Pressable onPress={skipButton}>
-          <Text>SKIP</Text>
-        </Pressable>
+        {/* <Pressable onPress={skipButton}>
+          <Text style={styles.skip}>Skip</Text>
+        </Pressable> */}
       </View>
+      <CheckInModal 
+        checkInQNum = {1}
+        modalVisible = {modalVisible}
+        toggleModal = {toggleModal}
+        />
     </View>
   );
 }
@@ -114,6 +191,6 @@ export default Sleep;
 
 Sleep.propTypes = {
   navigation: PropTypes.shape({
-    navigate: PropTypes.func,
+    navigate: PropTypes.func.isRequired,
   }).isRequired,
 };

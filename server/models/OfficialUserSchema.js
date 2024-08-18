@@ -27,6 +27,55 @@ const officialUserSchema = new mongoose.Schema({
     default: [],
     type: [String],
   },
+  favoritedTags: {
+    required: true,
+    default: [],
+    type: [String],
+  },
+  seenTags: {
+    default: [],
+    type: [String],
+  },
+  interestedTags: {
+    default: [],
+    type: [String],
+  },
+  favoritedResources: {
+    required: true,
+    default: [],
+    type: [String],
+  },
+  favoritedFolders: {
+    required: true,
+    default: {},
+    type: Map,
+    of: {
+      description: {
+        type: String,
+        default: '',
+      },
+      tags: {
+        type: [String],
+        default: [],
+      },
+      resources: {
+        type: [String],
+        default: [],
+      },
+    },
+  },
+  tagToFolders: {
+    required: true,
+    default: {},
+    type: Map,
+    of: [String],
+  },
+  resourceToFolders: {
+    required: true,
+    default: {},
+    type: Map,
+    of: [String],
+  },
   journalEntries: {
     default: [],
     type: [String],
@@ -35,9 +84,10 @@ const officialUserSchema = new mongoose.Schema({
     default: [],
     type: [Object],
   },
-  checkInPreferences: {
-    default: {},
-    type: Object,
+  // true if want to get notifs, false if not
+  checkInPreference: {
+    default: true,
+    type: Boolean,
   },
   pushNotifs: {
     default: {
@@ -49,6 +99,10 @@ const officialUserSchema = new mongoose.Schema({
   ChallengeDay: {
     default: 0,
     type: Number,
+  },
+  code: {
+    type: String,
+    required: false,
   },
 });
 

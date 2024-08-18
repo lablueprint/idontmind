@@ -3,11 +3,13 @@ import { createStackNavigator } from '@react-navigation/stack';
 import {
   Image, ImageBackground, View, Dimensions,
 } from 'react-native';
-import TrendsPage from '../Trends/Screens/TrendsPage';
-import JournalPage from '../Features/Journal/Screens/JournalPage';
+import TrendsPage from '../Features/Trends/Screens/TrendsPage';
+
+import JournalTabs from '../Features/Journal/Screens/JournalPage';
 import ContentDashboard from '../Features/Other/Screens/ContentDashboard';
 import ContentLibrary from '../Features/ContentLibrary/Screens/ContentLibrary';
 import FindHelp from '../Features/Other/Screens/FindHelp';
+import CalendarPage from '../Features/Other/Screens/Calendar';
 
 import TrendsIcon from '../assets/navbaricons/trendsicon.png';
 import JournalIcon from '../assets/navbaricons/journalicon.png';
@@ -16,25 +18,31 @@ import ContentIcon from '../assets/navbaricons/contenticon.png';
 import FindHelpIcon from '../assets/navbaricons/findhelpicon.png';
 import BlackCircle from '../assets/navbaricons/blackcircle.png';
 
-import PostSignInLanding from '../Features/Other/Screens/PostSignInLanding';
-import Feed from '../Features/Other/Screens/Feed';
-import CheckIn from '../Features/Other/Screens/CheckIn';
-import PushNotifications from '../Features/Settings/Screens/PushNotifications';
-import Options from '../Features/Other/Screens/Options';
-import JournalHistoryPage from '../Features/Other/Screens/JournalHistoryPage';
-import WOYM from '../Features/Register/WOYM';
-import DayChallenge from '../Features/Other/Screens/DayChallenge';
+import Options from '../Features/Options/Options';
+import PersonalInfo from '../Features/Options/PersonalInfo';
+import PushNotificationsOptions from '../Features/Options/PushNotifications';
+import ResetPassword from '../Features/Options/ResetPassword';
+// import Options from '../Features/Other/Screens/Options';
+
+import ThirtyDayOverview from '../Features/Tutorial/ThirtyDayOverview';
+import ThirtyDayChallenge from '../Features/Tutorial/ThirtyDayChallenge';
 
 import Bookmarks from '../Features/ContentLibrary/Screens/Bookmarks';
 import BookmarksEdgeCase from '../Features/ContentLibrary/Screens/BookmarksEdgeCase';
 import Resource from '../Features/ContentLibrary/Screens/Resource';
 import ResourceList from '../Features/ContentLibrary/Screens/ResourceList';
 import Tag from '../Features/ContentLibrary/Screens/Tag';
+import ContentRecs from '../Features/Options/ContentRecs';
+import ContentToAvoid from '../Features/Options/ContentToAvoid';
+import FolderContent from '../Features/ContentLibrary/Screens/FolderContent';
+import NotificationsTest from '../Features/Options/NotificationsTest';
 
 const Stack = createStackNavigator();
-const otherNames = ['Day Challenge', 'CheckIn', 'PostSignInLanding', 'Feed', 'Notifs', 'Options', 'Journal History', 'WOYM'];
-const otherPages = [DayChallenge, CheckIn, PostSignInLanding, Feed,
-  PushNotifications, Options, JournalHistoryPage, WOYM];
+const otherNames = ['Detox', 'ThirtyDayChallenge', 'Options', 'Personal Info', 'Push Notifications Options', 'Reset Password',
+  'Content Recs', 'Content To Avoid'];
+const otherPages = [ThirtyDayOverview, ThirtyDayChallenge,
+  Options, PersonalInfo, NotificationsTest, ResetPassword,
+  ContentRecs, ContentToAvoid];
 
 function HomeWithExtraPages() {
   return (
@@ -59,8 +67,8 @@ function HomeWithExtraPages() {
     </Stack.Navigator>
   );
 }
-const contentNames = ['Bookmarks', 'Bookmarks Edge Case', 'Resource', 'Resource List', 'Tag'];
-const contentPages = [Bookmarks, BookmarksEdgeCase, Resource, ResourceList, Tag];
+const contentNames = ['Bookmarks', 'Bookmarks Edge Case', 'Resource', 'Resource List', 'Tag', 'FolderContent'];
+const contentPages = [Bookmarks, BookmarksEdgeCase, Resource, ResourceList, Tag, FolderContent];
 function ContentLibraryWithExtraPages() {
   return (
     <Stack.Navigator>
@@ -85,17 +93,40 @@ function ContentLibraryWithExtraPages() {
   );
 }
 
+function JournalCalendar() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        key="Journal Tabs"
+        name="Journal Tabs"
+        component={JournalTabs}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        key="Calendar Screen"
+        name="Calendar Screen"
+        component={CalendarPage}
+        options={{
+          headerShown: false,
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
+
 export default function AltNavigationBar() {
   const Tab = createBottomTabNavigator();
 
   const names = ['Trends', 'Journal', 'Home', 'Content', 'Find Help'];
   const icons = [TrendsIcon, JournalIcon, HomeIcon, ContentIcon, FindHelpIcon];
-  const components = [TrendsPage, JournalPage, HomeWithExtraPages,
+  const components = [TrendsPage, JournalCalendar, HomeWithExtraPages,
     ContentLibraryWithExtraPages, FindHelp];
 
   return (
     <Tab.Navigator
-      initialRouteName="Feed"
+      initialRouteName="Home"
       screenOptions={({ route, navigation }) => ({
         tabBarLabel: navigation.isFocused() ? route.name : '',
         tabBarStyle: {

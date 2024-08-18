@@ -1,20 +1,18 @@
 import { useState } from 'react';
 import {
-  Text, View, Pressable,
+  Text, View, Pressable, Image,
 } from 'react-native';
 import { useRoute } from '@react-navigation/native';
-import ProgressBar from 'react-native-progress/Bar';
 import PropTypes from 'prop-types';
-import styles from './AddColorStyles';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
+import activity1 from '../../assets/images/activity/activity1.png';
+import styles from './AddIconStyle';
 
 function AddIcon({ navigation }) {
   // get parameters from route (activityPassedIn and numPages)
   const route = useRoute();
   const activityPassedIn = route.params?.activity;
-
-  // set progress
-  const numPages = route.params?.numPages;
-  const progress = 2 / numPages;
 
   // array of rows
   // each row contains color, image pairs
@@ -27,14 +25,44 @@ function AddIcon({ navigation }) {
   // state to keep track of which color the user chose
   const [colorChosen, setColorChosen] = useState('');
 
+  const { email, authHeader } = useSelector((state) => state.auth);
+
   // also navigate back to the original activity screen and pass the activity and color chosen
-  const continueButton = () => {
-    navigation.navigate('Activity', { numPages, activityPassedIn, iconChosen: colorChosen });
+  const continueButton = async () => {
+    try {
+      const res = await axios.post(
+        `${process.env.EXPO_PUBLIC_SERVER_URL}/timeSerie/addCustomActivity`,
+        {
+          email,
+          activity: activityPassedIn,
+          icon: colorChosen,
+        },
+        { headers: authHeader },
+      );
+      if (res.status === 201) {
+        navigation.navigate('Activity', {
+          activityPassedIn,
+          iconChosen: colorChosen,
+        });
+      } else {
+        console.error('Failed to save custom activity:', res.statusText);
+      }
+    } catch (err) {
+      console.error('Failed to fetch:', err);
+      if (err.response) {
+        console.error('Error response data:', err.response.data);
+        console.error('Error response status:', err.response.status);
+        console.error('Error response headers:', err.response.headers);
+      } else if (err.request) {
+        console.error('Error request:', err.request);
+      } else {
+        console.error('Error message:', err.message);
+      }
+    }
   };
 
   return (
     <View style={styles.container}>
-      <ProgressBar progress={progress} width={200} style={{ top: '5%' }} />
       <View style={styles.heading}>
         <Text>
           now, select an icon to represent this option.
@@ -49,7 +77,7 @@ function AddIcon({ navigation }) {
                 style={styles.singularColor}
                 onPress={() => setColorChosen(pair[1])}
               >
-                <View style={{ width: 120, height: 120, backgroundColor: pair[1] }} />
+                <Image source={activity1} style={styles.iconPhoto} />
                 <Text>{pair[0]}</Text>
               </Pressable>
             ))}
