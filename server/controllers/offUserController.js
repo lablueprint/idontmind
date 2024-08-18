@@ -167,19 +167,22 @@ const getFavorites = async (req, res) => {
 
 const favoriteTag = async (req, res) => {
   console.log('favorite tag');
-  const { tagName, id } = req.body;
+  const { id, tag } = req.body;
   try {
     const user = await User.findById(id);
     if (!user) {
       return res.status(404).send({ message: 'User not found' });
     }
-    if (!user.favoritedTags.includes(tagName)) user.favoritedTags.push(tagName);
+
+    if (!user.favoritedTags.includes(tag)) user.favoritedTags.push(tag);
+    console.log(tag);
+    console.log(user.favoritedTags);
     // if (!user.favoritedTags.has(tag)) {
     //   user.favoritedTags.set(tag, { folders: [] });
     // }
     await user.save();
 
-    return res.status(200).send(user.favoritedTags);
+    return res.send(user.favoritedTags);
   } catch (err) {
     console.error(err);
     return res.status(500).send(err);
@@ -191,16 +194,16 @@ function sanitize(name) {
 }
 const unfavoriteTag = async (req, res) => {
   console.log('unfavorite tag');
-  const { tagName, id } = req.body;
+  const { id, tag } = req.body;
   try {
     const user = await User.findById(id);
     if (!user) {
       return res.status(404).send({ message: 'User not found' });
     }
-    user.favoritedTags = user.favoritedTags.filter((t) => t !== tagName);
+    user.favoritedTags = user.favoritedTags.filter((t) => t !== tag);
 
     // also remove from all favoritedFolders it is in
-    const sanitizedTag = sanitize(tagName);
+    const sanitizedTag = sanitize(tag);
 
     const folderNames = user.tagToFolders.get(sanitizedTag);
 
@@ -208,7 +211,7 @@ const unfavoriteTag = async (req, res) => {
     if (folderNames) {
       folderNames.forEach((folderName) => {
         const newTags = user.favoritedFolders.get(folderName).tags.filter(
-          (t) => t !== tagName,
+          (t) => t !== tag,
         );
         user.favoritedFolders.get(folderName).tags = newTags;
       });
@@ -221,7 +224,7 @@ const unfavoriteTag = async (req, res) => {
 
     await user.save();
 
-    return res.status(200).send(user.favoritedTags);
+    return res.send(user.favoritedTags);
   } catch (err) {
     console.error(err);
     return res.status(500).send(err);
