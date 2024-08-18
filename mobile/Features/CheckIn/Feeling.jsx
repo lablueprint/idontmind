@@ -101,7 +101,7 @@ function Feeling({ navigation }) {
               ]}
               >
                 <Image
-                  source={images[moodValue]}
+                  source={images[moodValue-1]}
                   style={[
                     styles.image,
                     {
@@ -137,7 +137,7 @@ function Feeling({ navigation }) {
                 style={[styles.pill, selectedCoping.includes(term) ? styles.selectedPill : styles.nonselectedPill]}
               >
                 <Pressable onPress={() => toggleCoping(term)}>
-                  <Text>{term}</Text>
+                  <Text style={{ color: selectedCoping.includes(term) ? 'white' : 'black' }}>{term}</Text>
                 </Pressable>
               </View>
             ))}

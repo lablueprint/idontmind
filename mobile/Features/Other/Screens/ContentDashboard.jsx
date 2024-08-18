@@ -14,7 +14,7 @@ import ResourceCard from '../Components/ResourceCard';
 
 export default function ContentDashboard({ navigation }) {
   const [resources, setResources] = useState([]);
-  const { id, authHeader } = useSelector((state) => state.auth);
+  const { id, authHeader, firstName } = useSelector((state) => state.auth);
 
   /* width of screen */
   const { width } = Dimensions.get('window');
@@ -85,7 +85,7 @@ export default function ContentDashboard({ navigation }) {
         }}
         >
           <View style={{ flexDirection: 'row' }}>
-            <Text style={styles.largeText}>Welcome!</Text> 
+            <Text style={styles.largeText}>Welcome, {firstName}!</Text> 
           </View>
           <Text style={styles.medText}>We&apos;re so glad you&apos;re here!</Text>
         </View>
