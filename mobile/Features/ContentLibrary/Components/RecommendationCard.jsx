@@ -28,7 +28,7 @@ export default function RecommendationCard({
 
   /* Adds Tag to Users Favorites List */
   const favoriteTag = async () => {
-    const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/favoriteTag`, { tagName, id }, { headers: authHeader });
+    const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/favoriteTag`, { tag: tagName, id }, { headers: authHeader });
     if (res.status === 200) {
       addFavorite(tagName);
     }
@@ -36,7 +36,7 @@ export default function RecommendationCard({
 
   // /* Remove Tag from Users Favorites List */
   const unfavoriteTag = async () => {
-    const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/unfavoriteTag`, { tagName, id }, { headers: authHeader });
+    const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/offUser/unfavoriteTag`, { tag: tagName, id }, { headers: authHeader });
     if (res.status === 200) {
       deleteFavorite(tagName);
     }

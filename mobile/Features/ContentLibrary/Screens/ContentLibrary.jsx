@@ -37,7 +37,7 @@ export default function ContentLibrary({ navigation }) {
 
   const navigateToResourceList = (subtopicName, tagName) => {
     // navigation.navigate('Resource List', { subtopicName, routeName: 'Content Library' });
-    navigation.navigate('Resource List', { subtopicName, tagName, routeName: 'Content Library' });
+    navigation.navigate('Resource List', { subtopicName, tagName, route: 'Content Library' });
     // const navigateToResourceList = (subtopicName) => {
     //   navigation.navigate('Resource List', { subtopicName, tagName });
     // };

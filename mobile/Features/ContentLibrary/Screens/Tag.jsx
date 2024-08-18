@@ -98,8 +98,13 @@ export default function Tag({ navigation, route }) {
     getFolders();
   }, [modalVisibleCreated]);
   useEffect(() => {
-    getFavorites();
-  }, []);
+    const unsubscribe = navigation.addListener('focus', () => {
+      getFavorites();
+    });
+  
+    // Cleanup the listener when the component unmounts
+    return unsubscribe;
+  }, [navigation]);
 
   return (
     <ScrollView
