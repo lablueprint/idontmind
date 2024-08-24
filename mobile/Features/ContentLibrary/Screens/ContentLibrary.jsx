@@ -185,6 +185,7 @@ export default function ContentLibrary({ navigation }) {
                   onClose={closeSearch}
                   onSearch={handleSearch}
                   recentSearches={recentSearches}
+                  navigation={navigation}
                 />
               </TouchableOpacity>
             </View>

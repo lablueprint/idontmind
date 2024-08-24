@@ -35,6 +35,7 @@ export default function ContentScreen({ navigation }) {
         onClose={closeSearch}
         onSearch={handleSearch}
         recentSearches={recentSearches}
+        navigation={navigation}
       />
       <Button title="Filter" onPress={navigateToFilter} />
     </View>
