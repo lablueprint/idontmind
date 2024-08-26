@@ -68,7 +68,8 @@ export default function ResourceCard({ resource, navigateToResource }) {
           </Text>
         </View>
         <View style={{ flex: 1 }}>
-          <TouchableOpacity style={style.continue} onPress={navigateToResource}>
+          {/* Todo: currently not working <TouchableOpacity style={style.continue} onPress={navigateToResource}> */}
+          <TouchableOpacity style={style.continue}>
             <Text style={style.contText}>Read More</Text>
           </TouchableOpacity>
         </View>
