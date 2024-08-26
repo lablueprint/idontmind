@@ -17,6 +17,30 @@ import BottomHalfModal from '../Components/BottomModal';
 import NewFolderModal from '../Components/NewFolderModal';
 import FolderCreatedModal from '../Components/FolderCreatedModal';
 
+import TagContext from '../Context/TagContext';
+import Relationships from '../../../assets/images/Relationships.png';
+import Coping from '../../../assets/images/coping.png';
+import Emotional from '../../../assets/images/emotional.png';
+import identity from '../../../assets/images/identity.png';
+import Lifestyle from '../../../assets/images/lifestyle.png';
+import Mental from '../../../assets/images/mental.png';
+import Support from '../../../assets/images/support.png';
+import Trauma from '../../../assets/images/trauma.png';
+import Improvement from '../../../assets/images/improvement.png';
+
+const imageDict = {
+  relationships: Relationships,
+  coping: Coping,
+  ewb: Emotional,
+  identity,
+  lifestyle: Lifestyle,
+  mental: Mental,
+  self: Improvement,
+  support: Support,
+  trauma: Trauma,
+};
+
+
 export default function Tag({ navigation, route }) {
   const { tagName } = route.params;
   const subtopics = jsonData[tagName];
@@ -44,7 +68,7 @@ export default function Tag({ navigation, route }) {
   };
 
   const navigateToResourceList = (subtopicName) => {
-    navigation.navigate('Resource List', { subtopicName, tagName });
+    navigation.navigate('Resource List', { subtopicName, tagName, route: 'Tag' });
   };
 
   // modal functions
@@ -131,7 +155,7 @@ export default function Tag({ navigation, route }) {
           style={{
             alignSelf: 'center', width: 200, resizeMode: 'contain', height: 200,
           }}
-          source={shapeImage}
+          source={imageDict[tagName]}
         />
         <View
           style={{ }}

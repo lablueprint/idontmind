@@ -78,11 +78,11 @@ function ResourceList({ navigation }) {
       navigation.navigate('FolderContent', {
         folderName, folderDescription, resources: folderResources, tags: folderTags,
       }); // set index to 0 as default for now
-    } else if (prevRoute === 'Content Library') {
-      navigation.navigate('Content Library'); // set index to 0 as default for now
+    } else if (prevRoute === 'Tag') {
+      navigation.navigate('Tag', { index: 0, routeName: 'Content Library', tagName }); // set index to 0 as default for now
     }
     else {
-      navigation.navigate('Tag', { index: 0, routeName: 'Content Library', tagName }); // set index to 0 as default for now
+      navigation.navigate('Content Library');
     }
   };
   const navigateToResource = (resourceName, authorName, content, tags) => {
